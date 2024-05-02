@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using Visitor.Persistence.Repositories;
 
 namespace Visitor.Application.Models
 {
@@ -29,7 +30,10 @@ namespace Visitor.Application.Models
         public int? NoofUserAdd { get; set; }
         public bool? IsActive { get; set; }
     }
-
+    public class BranchSearch_Request : BaseSearchEntity
+    {
+        public int? CompanyId { get; set; }
+    }
     public class Branch_Response : BaseResponseEntity
     {
         public string? BranchName { get; set; }

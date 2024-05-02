@@ -44,7 +44,7 @@ namespace Visitor.API.Controllers.Admin
                     iBranchCanAdd = tblCompanies.NoofBranchAdd ?? 0;
                 }
 
-                var bParameter = new BaseSearchEntity();
+                var bParameter = new BranchSearch_Request();
                 var tblBranchesList = await _branchRepository.GetBranchList(bParameter);
                 var vBranchList = tblBranchesList.ToList();
                 if (vBranchList.Count > 0)
@@ -90,7 +90,7 @@ namespace Visitor.API.Controllers.Admin
 
         [Route("[action]")]
         [HttpPost]
-        public async Task<ResponseModel> GetBranchList(BaseSearchEntity parameters)
+        public async Task<ResponseModel> GetBranchList(BranchSearch_Request parameters)
         {
             IEnumerable<Branch_Response> lstBranchs = await _branchRepository.GetBranchList(parameters);
             _response.Data = lstBranchs.ToList();

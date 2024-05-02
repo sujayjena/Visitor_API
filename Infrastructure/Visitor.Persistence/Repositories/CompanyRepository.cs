@@ -49,9 +49,10 @@ namespace Visitor.Persistence.Repositories
             return await SaveByStoredProcedure<int>("SaveCompany", queryParameters);
         }
 
-        public async Task<IEnumerable<Company_Response>> GetCompanyList(BaseSearchEntity parameters)
+        public async Task<IEnumerable<Company_Response>> GetCompanyList(CompanySearch_Request parameters)
         {
             DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@CompanyId", parameters.CompanyId);
             queryParameters.Add("@SearchText", parameters.SearchText.SanitizeValue());
             queryParameters.Add("@IsActive", parameters.IsActive);
             queryParameters.Add("@PageNo", parameters.PageNo);

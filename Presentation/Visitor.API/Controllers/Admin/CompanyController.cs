@@ -66,7 +66,7 @@ namespace Visitor.API.Controllers.Admin
 
         [Route("[action]")]
         [HttpPost]
-        public async Task<ResponseModel> GetCompanyList(BaseSearchEntity parameters)
+        public async Task<ResponseModel> GetCompanyList(CompanySearch_Request parameters)
         {
             IEnumerable<Company_Response> lstCompanys = await _companyRepository.GetCompanyList(parameters);
             _response.Data = lstCompanys.ToList();

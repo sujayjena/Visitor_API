@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Visitor.Persistence.Repositories;
 
 namespace Visitor.Application.Models
 {
@@ -32,11 +33,15 @@ namespace Visitor.Application.Models
         public string? PANNumber { get; set; }
         public string? CompanyLogoFileName { get; set; }
         public string? CompanyLogo_Base64 { get; set; }
-        public int? NoofUserAdd{ get; set; }
-        public int? NoofBranchAdd{ get; set; }
+        public int? NoofUserAdd { get; set; }
+        public int? NoofBranchAdd { get; set; }
         public bool? IsActive { get; set; }
     }
 
+    public class CompanySearch_Request : BaseSearchEntity
+    {
+        public int? CompanyId { get; set; }
+    }
     public class Company_Response : BaseResponseEntity
     {
         public string? CompanyName { get; set; }

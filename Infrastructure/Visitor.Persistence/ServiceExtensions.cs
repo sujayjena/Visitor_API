@@ -29,6 +29,7 @@ namespace Visitor.Persistence
             services.AddScoped<ICompanyRepository, CompanyRepository>();
             services.AddScoped<IBranchRepository, BranchRepository>();
             services.AddScoped<ITerritoryRepository, TerritoryRepository>();
+            services.AddScoped<IAdminMasterRepository, AdminMasterRepository>();
         }
     }
 }
