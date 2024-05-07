@@ -101,4 +101,115 @@ namespace Visitor.Application.Models
     }
 
     #endregion
+
+    #region Meeting Location
+    public class MeetingLocation_Request : BaseEntity
+    {
+        [DefaultValue("")]
+        public string MeetingLocation { get; set; }
+
+        public bool? IsActive { get; set; }
+    }
+
+    public class MeetingLocation_Response : BaseResponseEntity
+    {
+        public string MeetingLocation { get; set; }
+
+        public bool? IsActive { get; set; }
+    }
+
+    #endregion
+
+    #region Document Type
+    public class DocumentType_Request : BaseEntity
+    {
+        public int DocumentId { get; set; }
+
+        [DefaultValue("")]
+        public string DocumentType { get; set; }
+
+        public bool? IsActive { get; set; }
+    }
+
+    public class DocumentType_Response : BaseResponseEntity
+    {
+        public int DocumentId { get; set; }
+        public string DocumentType { get; set; }
+
+        public bool? IsActive { get; set; }
+    }
+
+    #endregion
+
+    #region Rejection Reason
+    public class RejectionReason_Request : BaseEntity
+    {
+        [DefaultValue("")]
+        public string RejectionReason { get; set; }
+
+        public bool? IsActive { get; set; }
+    }
+
+    public class RejectionReason_Response : BaseResponseEntity
+    {
+        public string RejectionReason { get; set; }
+
+        public bool? IsActive { get; set; }
+    }
+
+    #endregion
+
+    #region UOM
+    public class UOM_Request : BaseEntity
+    {
+        [DefaultValue("")]
+        public string UOMName { get; set; }
+
+        public bool? IsActive { get; set; }
+    }
+
+    public class UOM_Response : BaseResponseEntity
+    {
+        public string UOMName { get; set; }
+
+        public bool? IsActive { get; set; }
+    }
+
+    #endregion
+
+    #region Contract Type
+    public class ContractType_Request : BaseEntity
+    {
+        [DefaultValue("")]
+        public string ContractType { get; set; }
+
+        public bool? IsActive { get; set; }
+    }
+
+    public class ContractType_Response : BaseResponseEntity
+    {
+        public string ContractType { get; set; }
+
+        public bool? IsActive { get; set; }
+    }
+
+    #endregion
+
+    #region Discipline
+    public class Discipline_Request : BaseEntity
+    {
+        [DefaultValue("")]
+        public string Discipline { get; set; }
+
+        public bool? IsActive { get; set; }
+    }
+
+    public class Discipline_Response : BaseResponseEntity
+    {
+        public string Discipline { get; set; }
+
+        public bool? IsActive { get; set; }
+    }
+
+    #endregion
 }

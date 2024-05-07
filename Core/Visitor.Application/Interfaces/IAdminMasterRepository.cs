@@ -49,5 +49,53 @@ namespace Visitor.Application.Interfaces
 
         Task<MaterialWithVisitor_Response?> GetMaterialWithVisitorById(int Id);
         #endregion
+
+        #region Meeting Location
+        Task<int> SaveMeetingLocation(MeetingLocation_Request parameters);
+
+        Task<IEnumerable<MeetingLocation_Response>> GetMeetingLocationList(BaseSearchEntity parameters);
+
+        Task<MeetingLocation_Response?> GetMeetingLocationById(int Id);
+        #endregion
+
+        #region Document Type
+        Task<int> SaveDocumentType(DocumentType_Request parameters);
+
+        Task<IEnumerable<DocumentType_Response>> GetDocumentTypeList(BaseSearchEntity parameters);
+
+        Task<DocumentType_Response?> GetDocumentTypeById(int Id);
+        #endregion
+
+        #region Rejection Reason
+        Task<int> SaveRejectionReason(RejectionReason_Request parameters);
+
+        Task<IEnumerable<RejectionReason_Response>> GetRejectionReasonList(BaseSearchEntity parameters);
+
+        Task<RejectionReason_Response?> GetRejectionReasonById(int Id);
+        #endregion
+
+        #region UOM
+        Task<int> SaveUOM(UOM_Request parameters);
+
+        Task<IEnumerable<UOM_Response>> GetUOMList(BaseSearchEntity parameters);
+
+        Task<UOM_Response?> GetUOMById(int Id);
+        #endregion
+
+        #region Contract Type
+        Task<int> SaveContractType(ContractType_Request parameters);
+
+        Task<IEnumerable<ContractType_Response>> GetContractTypeList(BaseSearchEntity parameters);
+
+        Task<ContractType_Response?> GetContractTypeById(int Id);
+        #endregion
+
+        #region Discipline
+        Task<int> SaveDiscipline(Discipline_Request parameters);
+
+        Task<IEnumerable<Discipline_Response>> GetDisciplineList(BaseSearchEntity parameters);
+
+        Task<Discipline_Response?> GetDisciplineById(int Id);
+        #endregion
     }
 }
