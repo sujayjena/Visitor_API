@@ -82,6 +82,14 @@ namespace Visitor.Application.Interfaces
         Task<UOM_Response?> GetUOMById(int Id);
         #endregion
 
+        #region Canteen Name
+        Task<int> SaveCanteenName(CanteenName_Request parameters);
+
+        Task<IEnumerable<CanteenName_Response>> GetCanteenNameList(BaseSearchEntity parameters);
+
+        Task<CanteenName_Response?> GetCanteenNameById(int Id);
+        #endregion
+
         #region Contract Type
         Task<int> SaveContractType(ContractType_Request parameters);
 
@@ -96,6 +104,22 @@ namespace Visitor.Application.Interfaces
         Task<IEnumerable<Discipline_Response>> GetDisciplineList(BaseSearchEntity parameters);
 
         Task<Discipline_Response?> GetDisciplineById(int Id);
+        #endregion
+
+        #region Leave Type
+        Task<int> SaveLeaveType(LeaveType_Request parameters);
+
+        Task<IEnumerable<LeaveType_Response>> GetLeaveTypeList(BaseSearchEntity parameters);
+
+        Task<LeaveType_Response?> GetLeaveTypeById(int Id);
+        #endregion
+
+        #region Rooster Group
+        Task<int> SaveRoosterGroup(RoosterGroup_Request parameters);
+
+        Task<IEnumerable<RoosterGroup_Response>> GetRoosterGroupList(BaseSearchEntity parameters);
+
+        Task<RoosterGroup_Response?> GetRoosterGroupById(int Id);
         #endregion
     }
 }

@@ -177,6 +177,24 @@ namespace Visitor.Application.Models
 
     #endregion
 
+    #region Canteen Name
+    public class CanteenName_Request : BaseEntity
+    {
+        [DefaultValue("")]
+        public string CanteenName { get; set; }
+
+        public bool? IsActive { get; set; }
+    }
+
+    public class CanteenName_Response : BaseResponseEntity
+    {
+        public string CanteenName { get; set; }
+
+        public bool? IsActive { get; set; }
+    }
+
+    #endregion
+
     #region Contract Type
     public class ContractType_Request : BaseEntity
     {
@@ -207,6 +225,42 @@ namespace Visitor.Application.Models
     public class Discipline_Response : BaseResponseEntity
     {
         public string Discipline { get; set; }
+
+        public bool? IsActive { get; set; }
+    }
+
+    #endregion
+
+    #region Leave Type
+    public class LeaveType_Request : BaseEntity
+    {
+        [DefaultValue("")]
+        public string LeaveType { get; set; }
+
+        public bool? IsActive { get; set; }
+    }
+
+    public class LeaveType_Response : BaseResponseEntity
+    {
+        public string LeaveType { get; set; }
+
+        public bool? IsActive { get; set; }
+    }
+
+    #endregion
+
+    #region Rooster Group
+    public class RoosterGroup_Request : BaseEntity
+    {
+        [DefaultValue("")]
+        public string RoosterGroup { get; set; }
+
+        public bool? IsActive { get; set; }
+    }
+
+    public class RoosterGroup_Response : BaseResponseEntity
+    {
+        public string RoosterGroup { get; set; }
 
         public bool? IsActive { get; set; }
     }

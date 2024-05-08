@@ -527,6 +527,62 @@ namespace Visitor.API.Controllers.Admin
 
         #endregion
 
+        #region Canteen Name
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> SaveCanteenName(CanteenName_Request parameters)
+        {
+            int result = await _adminMasterRepository.SaveCanteenName(parameters);
+
+            if (result == (int)SaveOperationEnums.NoRecordExists)
+            {
+                _response.Message = "No record exists";
+            }
+            else if (result == (int)SaveOperationEnums.ReocrdExists)
+            {
+                _response.Message = "Record is already exists";
+            }
+            else if (result == (int)SaveOperationEnums.NoResult)
+            {
+                _response.Message = "Something went wrong, please try again";
+            }
+            else
+            {
+                _response.Message = "Record details saved sucessfully";
+            }
+            return _response;
+        }
+
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> GetCanteenNameList(BaseSearchEntity parameters)
+        {
+            IEnumerable<CanteenName_Response> lstRoles = await _adminMasterRepository.GetCanteenNameList(parameters);
+            _response.Data = lstRoles.ToList();
+            _response.Total = parameters.Total;
+            return _response;
+        }
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> GetCanteenNameById(int Id)
+        {
+            if (Id <= 0)
+            {
+                _response.Message = "Id is required";
+            }
+            else
+            {
+                var vResultObj = await _adminMasterRepository.GetCanteenNameById(Id);
+                _response.Data = vResultObj;
+            }
+            return _response;
+        }
+
+        #endregion
+
         #region Contract Type
 
         [Route("[action]")]
@@ -632,6 +688,118 @@ namespace Visitor.API.Controllers.Admin
             else
             {
                 var vResultObj = await _adminMasterRepository.GetDisciplineById(Id);
+                _response.Data = vResultObj;
+            }
+            return _response;
+        }
+
+        #endregion
+
+        #region Leave Type
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> SaveLeaveType(LeaveType_Request parameters)
+        {
+            int result = await _adminMasterRepository.SaveLeaveType(parameters);
+
+            if (result == (int)SaveOperationEnums.NoRecordExists)
+            {
+                _response.Message = "No record exists";
+            }
+            else if (result == (int)SaveOperationEnums.ReocrdExists)
+            {
+                _response.Message = "Record is already exists";
+            }
+            else if (result == (int)SaveOperationEnums.NoResult)
+            {
+                _response.Message = "Something went wrong, please try again";
+            }
+            else
+            {
+                _response.Message = "Record details saved sucessfully";
+            }
+            return _response;
+        }
+
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> GetLeaveTypeList(BaseSearchEntity parameters)
+        {
+            IEnumerable<LeaveType_Response> lstRoles = await _adminMasterRepository.GetLeaveTypeList(parameters);
+            _response.Data = lstRoles.ToList();
+            _response.Total = parameters.Total;
+            return _response;
+        }
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> GetLeaveTypeById(int Id)
+        {
+            if (Id <= 0)
+            {
+                _response.Message = "Id is required";
+            }
+            else
+            {
+                var vResultObj = await _adminMasterRepository.GetLeaveTypeById(Id);
+                _response.Data = vResultObj;
+            }
+            return _response;
+        }
+
+        #endregion
+
+        #region Rooster Group
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> SaveRoosterGroup(RoosterGroup_Request parameters)
+        {
+            int result = await _adminMasterRepository.SaveRoosterGroup(parameters);
+
+            if (result == (int)SaveOperationEnums.NoRecordExists)
+            {
+                _response.Message = "No record exists";
+            }
+            else if (result == (int)SaveOperationEnums.ReocrdExists)
+            {
+                _response.Message = "Record is already exists";
+            }
+            else if (result == (int)SaveOperationEnums.NoResult)
+            {
+                _response.Message = "Something went wrong, please try again";
+            }
+            else
+            {
+                _response.Message = "Record details saved sucessfully";
+            }
+            return _response;
+        }
+
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> GetRoosterGroupList(BaseSearchEntity parameters)
+        {
+            IEnumerable<RoosterGroup_Response> lstRoles = await _adminMasterRepository.GetRoosterGroupList(parameters);
+            _response.Data = lstRoles.ToList();
+            _response.Total = parameters.Total;
+            return _response;
+        }
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> GetRoosterGroupById(int Id)
+        {
+            if (Id <= 0)
+            {
+                _response.Message = "Id is required";
+            }
+            else
+            {
+                var vResultObj = await _adminMasterRepository.GetRoosterGroupById(Id);
                 _response.Data = vResultObj;
             }
             return _response;
