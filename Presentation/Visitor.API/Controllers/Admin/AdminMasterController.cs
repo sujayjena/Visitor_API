@@ -583,6 +583,62 @@ namespace Visitor.API.Controllers.Admin
 
         #endregion
 
+        #region Canteen Coupon Purpose
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> SaveCanteenCouponPurpose(CanteenCouponPurpose_Request parameters)
+        {
+            int result = await _adminMasterRepository.SaveCanteenCouponPurpose(parameters);
+
+            if (result == (int)SaveOperationEnums.NoRecordExists)
+            {
+                _response.Message = "No record exists";
+            }
+            else if (result == (int)SaveOperationEnums.ReocrdExists)
+            {
+                _response.Message = "Record is already exists";
+            }
+            else if (result == (int)SaveOperationEnums.NoResult)
+            {
+                _response.Message = "Something went wrong, please try again";
+            }
+            else
+            {
+                _response.Message = "Record details saved sucessfully";
+            }
+            return _response;
+        }
+
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> GetCanteenCouponPurposeList(BaseSearchEntity parameters)
+        {
+            IEnumerable<CanteenCouponPurpose_Response> lstRoles = await _adminMasterRepository.GetCanteenCouponPurposeList(parameters);
+            _response.Data = lstRoles.ToList();
+            _response.Total = parameters.Total;
+            return _response;
+        }
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> GetCanteenCouponPurposeById(int Id)
+        {
+            if (Id <= 0)
+            {
+                _response.Message = "Id is required";
+            }
+            else
+            {
+                var vResultObj = await _adminMasterRepository.GetCanteenCouponPurposeById(Id);
+                _response.Data = vResultObj;
+            }
+            return _response;
+        }
+
+        #endregion
+
         #region Contract Type
 
         [Route("[action]")]
@@ -800,6 +856,230 @@ namespace Visitor.API.Controllers.Admin
             else
             {
                 var vResultObj = await _adminMasterRepository.GetRoosterGroupById(Id);
+                _response.Data = vResultObj;
+            }
+            return _response;
+        }
+
+        #endregion
+
+        #region Food Delivery Location
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> SaveFoodDeliveryLocation(FoodDeliveryLocation_Request parameters)
+        {
+            int result = await _adminMasterRepository.SaveFoodDeliveryLocation(parameters);
+
+            if (result == (int)SaveOperationEnums.NoRecordExists)
+            {
+                _response.Message = "No record exists";
+            }
+            else if (result == (int)SaveOperationEnums.ReocrdExists)
+            {
+                _response.Message = "Record is already exists";
+            }
+            else if (result == (int)SaveOperationEnums.NoResult)
+            {
+                _response.Message = "Something went wrong, please try again";
+            }
+            else
+            {
+                _response.Message = "Record details saved sucessfully";
+            }
+            return _response;
+        }
+
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> GetFoodDeliveryLocationList(BaseSearchEntity parameters)
+        {
+            IEnumerable<FoodDeliveryLocation_Response> lstRoles = await _adminMasterRepository.GetFoodDeliveryLocationList(parameters);
+            _response.Data = lstRoles.ToList();
+            _response.Total = parameters.Total;
+            return _response;
+        }
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> GetFoodDeliveryLocationById(int Id)
+        {
+            if (Id <= 0)
+            {
+                _response.Message = "Id is required";
+            }
+            else
+            {
+                var vResultObj = await _adminMasterRepository.GetFoodDeliveryLocationById(Id);
+                _response.Data = vResultObj;
+            }
+            return _response;
+        }
+
+        #endregion
+
+        #region Gate Type
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> SaveGateType(GateType_Request parameters)
+        {
+            int result = await _adminMasterRepository.SaveGateType(parameters);
+
+            if (result == (int)SaveOperationEnums.NoRecordExists)
+            {
+                _response.Message = "No record exists";
+            }
+            else if (result == (int)SaveOperationEnums.ReocrdExists)
+            {
+                _response.Message = "Record is already exists";
+            }
+            else if (result == (int)SaveOperationEnums.NoResult)
+            {
+                _response.Message = "Something went wrong, please try again";
+            }
+            else
+            {
+                _response.Message = "Record details saved sucessfully";
+            }
+            return _response;
+        }
+
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> GetGateTypeList(BaseSearchEntity parameters)
+        {
+            IEnumerable<GateType_Response> lstRoles = await _adminMasterRepository.GetGateTypeList(parameters);
+            _response.Data = lstRoles.ToList();
+            _response.Total = parameters.Total;
+            return _response;
+        }
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> GetGateTypeById(int Id)
+        {
+            if (Id <= 0)
+            {
+                _response.Message = "Id is required";
+            }
+            else
+            {
+                var vResultObj = await _adminMasterRepository.GetGateTypeById(Id);
+                _response.Data = vResultObj;
+            }
+            return _response;
+        }
+
+        #endregion
+
+        #region Gate Name
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> SaveGateName(GateName_Request parameters)
+        {
+            int result = await _adminMasterRepository.SaveGateName(parameters);
+
+            if (result == (int)SaveOperationEnums.NoRecordExists)
+            {
+                _response.Message = "No record exists";
+            }
+            else if (result == (int)SaveOperationEnums.ReocrdExists)
+            {
+                _response.Message = "Record is already exists";
+            }
+            else if (result == (int)SaveOperationEnums.NoResult)
+            {
+                _response.Message = "Something went wrong, please try again";
+            }
+            else
+            {
+                _response.Message = "Record details saved sucessfully";
+            }
+            return _response;
+        }
+
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> GetGateNameList(BaseSearchEntity parameters)
+        {
+            IEnumerable<GateName_Response> lstRoles = await _adminMasterRepository.GetGateNameList(parameters);
+            _response.Data = lstRoles.ToList();
+            _response.Total = parameters.Total;
+            return _response;
+        }
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> GetGateNameById(int Id)
+        {
+            if (Id <= 0)
+            {
+                _response.Message = "Id is required";
+            }
+            else
+            {
+                var vResultObj = await _adminMasterRepository.GetGateNameById(Id);
+                _response.Data = vResultObj;
+            }
+            return _response;
+        }
+
+        #endregion
+
+        #region Gate Details
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> SaveGateDetails(GateDetails_Request parameters)
+        {
+            int result = await _adminMasterRepository.SaveGateDetails(parameters);
+
+            if (result == (int)SaveOperationEnums.NoRecordExists)
+            {
+                _response.Message = "No record exists";
+            }
+            else if (result == (int)SaveOperationEnums.ReocrdExists)
+            {
+                _response.Message = "Record is already exists";
+            }
+            else if (result == (int)SaveOperationEnums.NoResult)
+            {
+                _response.Message = "Something went wrong, please try again";
+            }
+            else
+            {
+                _response.Message = "Record details saved sucessfully";
+            }
+            return _response;
+        }
+
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> GetGateDetailsList(BaseSearchEntity parameters)
+        {
+            IEnumerable<GateDetails_Response> lstRoles = await _adminMasterRepository.GetGateDetailsList(parameters);
+            _response.Data = lstRoles.ToList();
+            _response.Total = parameters.Total;
+            return _response;
+        }
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> GetGateDetailsById(int Id)
+        {
+            if (Id <= 0)
+            {
+                _response.Message = "Id is required";
+            }
+            else
+            {
+                var vResultObj = await _adminMasterRepository.GetGateDetailsById(Id);
                 _response.Data = vResultObj;
             }
             return _response;

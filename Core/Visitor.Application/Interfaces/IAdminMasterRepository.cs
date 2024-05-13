@@ -90,6 +90,14 @@ namespace Visitor.Application.Interfaces
         Task<CanteenName_Response?> GetCanteenNameById(int Id);
         #endregion
 
+        #region Canteen Coupon Purpose
+        Task<int> SaveCanteenCouponPurpose(CanteenCouponPurpose_Request parameters);
+
+        Task<IEnumerable<CanteenCouponPurpose_Response>> GetCanteenCouponPurposeList(BaseSearchEntity parameters);
+
+        Task<CanteenCouponPurpose_Response?> GetCanteenCouponPurposeById(int Id);
+        #endregion
+
         #region Contract Type
         Task<int> SaveContractType(ContractType_Request parameters);
 
@@ -120,6 +128,38 @@ namespace Visitor.Application.Interfaces
         Task<IEnumerable<RoosterGroup_Response>> GetRoosterGroupList(BaseSearchEntity parameters);
 
         Task<RoosterGroup_Response?> GetRoosterGroupById(int Id);
+        #endregion
+
+        #region Food Delivery Location
+        Task<int> SaveFoodDeliveryLocation(FoodDeliveryLocation_Request parameters);
+
+        Task<IEnumerable<FoodDeliveryLocation_Response>> GetFoodDeliveryLocationList(BaseSearchEntity parameters);
+
+        Task<FoodDeliveryLocation_Response?> GetFoodDeliveryLocationById(int Id);
+        #endregion
+
+        #region Gate Type
+        Task<int> SaveGateType(GateType_Request parameters);
+
+        Task<IEnumerable<GateType_Response>> GetGateTypeList(BaseSearchEntity parameters);
+
+        Task<GateType_Response?> GetGateTypeById(int Id);
+        #endregion
+
+        #region Gate Name
+        Task<int> SaveGateName(GateName_Request parameters);
+
+        Task<IEnumerable<GateName_Response>> GetGateNameList(BaseSearchEntity parameters);
+
+        Task<GateName_Response?> GetGateNameById(int Id);
+        #endregion
+
+        #region Gate Details
+        Task<int> SaveGateDetails(GateDetails_Request parameters);
+
+        Task<IEnumerable<GateDetails_Response>> GetGateDetailsList(BaseSearchEntity parameters);
+
+        Task<GateDetails_Response?> GetGateDetailsById(int Id);
         #endregion
     }
 }

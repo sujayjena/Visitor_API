@@ -391,6 +391,47 @@ namespace Visitor.Persistence.Repositories
 
         #endregion
 
+        #region Canteen Coupon Purpose
+        public async Task<int> SaveCanteenCouponPurpose(CanteenCouponPurpose_Request parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@Id", parameters.Id);
+            queryParameters.Add("@CanteenId", parameters.CanteenId);
+            queryParameters.Add("@CouponCode", parameters.CouponCode);
+            queryParameters.Add("@CouponPurpose", parameters.CouponPurpose);
+            queryParameters.Add("@ValidFrom", parameters.ValidFrom);
+            queryParameters.Add("@ValidTo", parameters.ValidTo);
+            queryParameters.Add("@IsActive", parameters.IsActive);
+            queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
+
+            return await SaveByStoredProcedure<int>("SaveCanteenCouponPurpose", queryParameters);
+        }
+
+        public async Task<IEnumerable<CanteenCouponPurpose_Response>> GetCanteenCouponPurposeList(BaseSearchEntity parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@SearchText", parameters.SearchText.SanitizeValue());
+            queryParameters.Add("@IsActive", parameters.IsActive);
+            queryParameters.Add("@PageNo", parameters.PageNo);
+            queryParameters.Add("@PageSize", parameters.PageSize);
+            queryParameters.Add("@Total", parameters.Total, null, System.Data.ParameterDirection.Output);
+            queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
+
+            var result = await ListByStoredProcedure<CanteenCouponPurpose_Response>("GetCanteenCouponPurposeList", queryParameters);
+            parameters.Total = queryParameters.Get<int>("Total");
+
+            return result;
+        }
+
+        public async Task<CanteenCouponPurpose_Response?> GetCanteenCouponPurposeById(int Id)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@Id", Id);
+            return (await ListByStoredProcedure<CanteenCouponPurpose_Response>("GetCanteenCouponPurposeById", queryParameters)).FirstOrDefault();
+        }
+
+        #endregion
+
         #region Contract Type
         public async Task<int> SaveContractType(ContractType_Request parameters)
         {
@@ -535,6 +576,156 @@ namespace Visitor.Persistence.Repositories
             DynamicParameters queryParameters = new DynamicParameters();
             queryParameters.Add("@Id", Id);
             return (await ListByStoredProcedure<RoosterGroup_Response>("GetRoosterGroupById", queryParameters)).FirstOrDefault();
+        }
+
+        #endregion
+
+        #region Food Delivery Location
+        public async Task<int> SaveFoodDeliveryLocation(FoodDeliveryLocation_Request parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@Id", parameters.Id);
+            queryParameters.Add("@FoodDeliveryLocation", parameters.FoodDeliveryLocation);
+            queryParameters.Add("@IsActive", parameters.IsActive);
+            queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
+
+            return await SaveByStoredProcedure<int>("SaveFoodDeliveryLocation", queryParameters);
+        }
+
+        public async Task<IEnumerable<FoodDeliveryLocation_Response>> GetFoodDeliveryLocationList(BaseSearchEntity parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@SearchText", parameters.SearchText.SanitizeValue());
+            queryParameters.Add("@IsActive", parameters.IsActive);
+            queryParameters.Add("@PageNo", parameters.PageNo);
+            queryParameters.Add("@PageSize", parameters.PageSize);
+            queryParameters.Add("@Total", parameters.Total, null, System.Data.ParameterDirection.Output);
+            queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
+
+            var result = await ListByStoredProcedure<FoodDeliveryLocation_Response>("GetFoodDeliveryLocationList", queryParameters);
+            parameters.Total = queryParameters.Get<int>("Total");
+
+            return result;
+        }
+
+        public async Task<FoodDeliveryLocation_Response?> GetFoodDeliveryLocationById(int Id)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@Id", Id);
+            return (await ListByStoredProcedure<FoodDeliveryLocation_Response>("GetFoodDeliveryLocationById", queryParameters)).FirstOrDefault();
+        }
+
+        #endregion
+
+        #region Gate Type
+        public async Task<int> SaveGateType(GateType_Request parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@Id", parameters.Id);
+            queryParameters.Add("@GateType", parameters.GateType);
+            queryParameters.Add("@IsActive", parameters.IsActive);
+            queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
+
+            return await SaveByStoredProcedure<int>("SaveGateType", queryParameters);
+        }
+
+        public async Task<IEnumerable<GateType_Response>> GetGateTypeList(BaseSearchEntity parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@SearchText", parameters.SearchText.SanitizeValue());
+            queryParameters.Add("@IsActive", parameters.IsActive);
+            queryParameters.Add("@PageNo", parameters.PageNo);
+            queryParameters.Add("@PageSize", parameters.PageSize);
+            queryParameters.Add("@Total", parameters.Total, null, System.Data.ParameterDirection.Output);
+            queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
+
+            var result = await ListByStoredProcedure<GateType_Response>("GetGateTypeList", queryParameters);
+            parameters.Total = queryParameters.Get<int>("Total");
+
+            return result;
+        }
+
+        public async Task<GateType_Response?> GetGateTypeById(int Id)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@Id", Id);
+            return (await ListByStoredProcedure<GateType_Response>("GetGateTypeById", queryParameters)).FirstOrDefault();
+        }
+
+        #endregion
+
+        #region Gate Name
+        public async Task<int> SaveGateName(GateName_Request parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@Id", parameters.Id);
+            queryParameters.Add("@GateName", parameters.GateName);
+            queryParameters.Add("@IsActive", parameters.IsActive);
+            queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
+
+            return await SaveByStoredProcedure<int>("SaveGateName", queryParameters);
+        }
+
+        public async Task<IEnumerable<GateName_Response>> GetGateNameList(BaseSearchEntity parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@SearchText", parameters.SearchText.SanitizeValue());
+            queryParameters.Add("@IsActive", parameters.IsActive);
+            queryParameters.Add("@PageNo", parameters.PageNo);
+            queryParameters.Add("@PageSize", parameters.PageSize);
+            queryParameters.Add("@Total", parameters.Total, null, System.Data.ParameterDirection.Output);
+            queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
+
+            var result = await ListByStoredProcedure<GateName_Response>("GetGateNameList", queryParameters);
+            parameters.Total = queryParameters.Get<int>("Total");
+
+            return result;
+        }
+
+        public async Task<GateName_Response?> GetGateNameById(int Id)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@Id", Id);
+            return (await ListByStoredProcedure<GateName_Response>("GetGateNameById", queryParameters)).FirstOrDefault();
+        }
+
+        #endregion
+
+        #region Gate Details
+        public async Task<int> SaveGateDetails(GateDetails_Request parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@Id", parameters.Id);
+            queryParameters.Add("@GateTypeId", parameters.GateTypeId);
+            queryParameters.Add("@GateNameId", parameters.GateNameId);
+            queryParameters.Add("@Remarks", parameters.Remarks);
+            queryParameters.Add("@IsActive", parameters.IsActive);
+            queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
+
+            return await SaveByStoredProcedure<int>("SaveGateDetails", queryParameters);
+        }
+
+        public async Task<IEnumerable<GateDetails_Response>> GetGateDetailsList(BaseSearchEntity parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@SearchText", parameters.SearchText.SanitizeValue());
+            queryParameters.Add("@IsActive", parameters.IsActive);
+            queryParameters.Add("@PageNo", parameters.PageNo);
+            queryParameters.Add("@PageSize", parameters.PageSize);
+            queryParameters.Add("@Total", parameters.Total, null, System.Data.ParameterDirection.Output);
+            queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
+
+            var result = await ListByStoredProcedure<GateDetails_Response>("GetGateDetailsList", queryParameters);
+            parameters.Total = queryParameters.Get<int>("Total");
+
+            return result;
+        }
+
+        public async Task<GateDetails_Response?> GetGateDetailsById(int Id)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@Id", Id);
+            return (await ListByStoredProcedure<GateDetails_Response>("GetGateDetailsById", queryParameters)).FirstOrDefault();
         }
 
         #endregion

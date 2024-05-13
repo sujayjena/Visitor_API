@@ -195,6 +195,36 @@ namespace Visitor.Application.Models
 
     #endregion
 
+    #region Canteen Coupon Purpose
+    public class CanteenCouponPurpose_Request : BaseEntity
+    {
+        public int CanteenId { get; set; }
+
+        [DefaultValue("")]
+        public string CouponCode { get; set; }
+
+        [DefaultValue("")]
+        public string CouponPurpose { get; set; }
+        public DateTime ValidFrom { get; set; }
+        public DateTime ValidTo { get; set; }
+
+        public bool? IsActive { get; set; }
+    }
+
+    public class CanteenCouponPurpose_Response : BaseResponseEntity
+    {
+        public int CanteenId { get; set; }
+        public string CanteenName { get; set; }
+        public string CouponCode { get; set; }
+        public string CouponPurpose { get; set; }
+        public DateTime ValidFrom { get; set; }
+        public DateTime ValidTo { get; set; }
+
+        public bool? IsActive { get; set; }
+    }
+
+    #endregion
+
     #region Contract Type
     public class ContractType_Request : BaseEntity
     {
@@ -262,6 +292,85 @@ namespace Visitor.Application.Models
     {
         public string RoosterGroup { get; set; }
 
+        public bool? IsActive { get; set; }
+    }
+
+    #endregion
+
+    #region Food Delivery Location
+    public class FoodDeliveryLocation_Request : BaseEntity
+    {
+        [DefaultValue("")]
+        public string FoodDeliveryLocation { get; set; }
+
+        public bool? IsActive { get; set; }
+    }
+
+    public class FoodDeliveryLocation_Response : BaseResponseEntity
+    {
+        public string FoodDeliveryLocation { get; set; }
+
+        public bool? IsActive { get; set; }
+    }
+
+    #endregion
+
+    #region Gate Type
+    public class GateType_Request : BaseEntity
+    {
+        [DefaultValue("")]
+        public string GateType { get; set; }
+
+        public bool? IsActive { get; set; }
+    }
+
+    public class GateType_Response : BaseResponseEntity
+    {
+        public string GateType { get; set; }
+
+        public bool? IsActive { get; set; }
+    }
+
+    #endregion
+
+    #region Gate Name
+    public class GateName_Request : BaseEntity
+    {
+        [DefaultValue("")]
+        public string GateName { get; set; }
+
+        public bool? IsActive { get; set; }
+    }
+
+    public class GateName_Response : BaseResponseEntity
+    {
+        public string GateName { get; set; }
+
+        public bool? IsActive { get; set; }
+    }
+
+    #endregion
+
+    #region Gate Details
+    public class GateDetails_Request : BaseEntity
+    {
+        public int GateNameId { get; set; }
+        public int GateTypeId { get; set; }
+
+        [DefaultValue("")]
+        public string Remarks { get; set; }
+
+        public bool? IsActive { get; set; }
+    }
+
+    public class GateDetails_Response : BaseResponseEntity
+    {
+        public int GateNameId { get; set; }
+        public string GateName { get; set; }
+        public int GateTypeId { get; set; }
+        public string GateType { get; set; }
+       
+        public string Remarks { get; set; }
         public bool? IsActive { get; set; }
     }
 
