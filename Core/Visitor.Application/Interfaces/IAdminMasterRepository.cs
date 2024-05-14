@@ -161,5 +161,13 @@ namespace Visitor.Application.Interfaces
 
         Task<GateDetails_Response?> GetGateDetailsById(int Id);
         #endregion
+
+        #region Worker Type
+        Task<int> SaveWorkerType(WorkerType_Request parameters);
+
+        Task<IEnumerable<WorkerType_Response>> GetWorkerTypeList(BaseSearchEntity parameters);
+
+        Task<WorkerType_Response?> GetWorkerTypeById(int Id);
+        #endregion
     }
 }

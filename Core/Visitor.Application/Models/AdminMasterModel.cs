@@ -375,4 +375,22 @@ namespace Visitor.Application.Models
     }
 
     #endregion
+
+    #region Worker Type
+    public class WorkerType_Request : BaseEntity
+    {
+        [DefaultValue("")]
+        public string WorkerType { get; set; }
+
+        public bool? IsActive { get; set; }
+    }
+
+    public class WorkerType_Response : BaseResponseEntity
+    {
+        public string WorkerType { get; set; }
+
+        public bool? IsActive { get; set; }
+    }
+
+    #endregion
 }

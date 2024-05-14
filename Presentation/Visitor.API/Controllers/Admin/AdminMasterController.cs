@@ -1086,5 +1086,61 @@ namespace Visitor.API.Controllers.Admin
         }
 
         #endregion
+
+        #region Worker Type
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> SaveWorkerType(WorkerType_Request parameters)
+        {
+            int result = await _adminMasterRepository.SaveWorkerType(parameters);
+
+            if (result == (int)SaveOperationEnums.NoRecordExists)
+            {
+                _response.Message = "No record exists";
+            }
+            else if (result == (int)SaveOperationEnums.ReocrdExists)
+            {
+                _response.Message = "Record is already exists";
+            }
+            else if (result == (int)SaveOperationEnums.NoResult)
+            {
+                _response.Message = "Something went wrong, please try again";
+            }
+            else
+            {
+                _response.Message = "Record details saved sucessfully";
+            }
+            return _response;
+        }
+
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> GetWorkerTypeList(BaseSearchEntity parameters)
+        {
+            IEnumerable<WorkerType_Response> lstRoles = await _adminMasterRepository.GetWorkerTypeList(parameters);
+            _response.Data = lstRoles.ToList();
+            _response.Total = parameters.Total;
+            return _response;
+        }
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> GetWorkerTypeById(int Id)
+        {
+            if (Id <= 0)
+            {
+                _response.Message = "Id is required";
+            }
+            else
+            {
+                var vResultObj = await _adminMasterRepository.GetWorkerTypeById(Id);
+                _response.Data = vResultObj;
+            }
+            return _response;
+        }
+
+        #endregion
     }
 }
