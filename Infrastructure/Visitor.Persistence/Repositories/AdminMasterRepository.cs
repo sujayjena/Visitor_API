@@ -766,5 +766,85 @@ namespace Visitor.Persistence.Repositories
         }
 
         #endregion
+
+        #region Meeting Type
+        public async Task<int> SaveMeetingType(MeetingType_Request parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@Id", parameters.Id);
+            queryParameters.Add("@MeetingType", parameters.MeetingType);
+            queryParameters.Add("@IsActive", parameters.IsActive);
+            queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
+
+            return await SaveByStoredProcedure<int>("SaveMeetingType", queryParameters);
+        }
+
+        public async Task<IEnumerable<MeetingType_Response>> GetMeetingTypeList(BaseSearchEntity parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@SearchText", parameters.SearchText.SanitizeValue());
+            queryParameters.Add("@IsActive", parameters.IsActive);
+            queryParameters.Add("@PageNo", parameters.PageNo);
+            queryParameters.Add("@PageSize", parameters.PageSize);
+            queryParameters.Add("@Total", parameters.Total, null, System.Data.ParameterDirection.Output);
+            queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
+
+            var result = await ListByStoredProcedure<MeetingType_Response>("GetMeetingTypeList", queryParameters);
+            parameters.Total = queryParameters.Get<int>("Total");
+
+            return result;
+        }
+
+        public async Task<MeetingType_Response?> GetMeetingTypeById(int Id)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@Id", Id);
+            return (await ListByStoredProcedure<MeetingType_Response>("GetMeetingTypeById", queryParameters)).FirstOrDefault();
+        }
+
+        #endregion
+
+        #region Item Details
+        public async Task<int> SaveItemDetails(ItemDetails_Request parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@Id", parameters.Id);
+            queryParameters.Add("@ItemCode", parameters.ItemCode);
+            queryParameters.Add("@ItemName", parameters.ItemName);
+            queryParameters.Add("@ItemDesc", parameters.ItemDesc);
+            queryParameters.Add("@UOMId", parameters.UOMId);
+            queryParameters.Add("@ItemRate", parameters.ItemRate);
+            queryParameters.Add("@Serial", parameters.Serial);
+            queryParameters.Add("@Batch", parameters.Batch);
+            queryParameters.Add("@IsActive", parameters.IsActive);
+            queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
+
+            return await SaveByStoredProcedure<int>("SaveItemDetails", queryParameters);
+        }
+
+        public async Task<IEnumerable<ItemDetails_Response>> GetItemDetailsList(BaseSearchEntity parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@SearchText", parameters.SearchText.SanitizeValue());
+            queryParameters.Add("@IsActive", parameters.IsActive);
+            queryParameters.Add("@PageNo", parameters.PageNo);
+            queryParameters.Add("@PageSize", parameters.PageSize);
+            queryParameters.Add("@Total", parameters.Total, null, System.Data.ParameterDirection.Output);
+            queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
+
+            var result = await ListByStoredProcedure<ItemDetails_Response>("GetItemDetailsList", queryParameters);
+            parameters.Total = queryParameters.Get<int>("Total");
+
+            return result;
+        }
+
+        public async Task<ItemDetails_Response?> GetItemDetailsById(int Id)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@Id", Id);
+            return (await ListByStoredProcedure<ItemDetails_Response>("GetItemDetailsById", queryParameters)).FirstOrDefault();
+        }
+
+        #endregion
     }
 }

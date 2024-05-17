@@ -393,4 +393,63 @@ namespace Visitor.Application.Models
     }
 
     #endregion
+
+    #region Meeting Type
+    public class MeetingType_Request : BaseEntity
+    {
+        [DefaultValue("")]
+        public string MeetingType { get; set; }
+
+        public bool? IsActive { get; set; }
+    }
+
+    public class MeetingType_Response : BaseResponseEntity
+    {
+        public string MeetingType { get; set; }
+
+        public bool? IsActive { get; set; }
+    }
+
+    #endregion
+
+    #region Item Details
+    public class ItemDetails_Request : BaseEntity
+    {
+        [DefaultValue("")]
+        public string ItemCode { get; set; }
+
+        [DefaultValue("")]
+        public string ItemName { get; set; }
+
+        [DefaultValue("")]
+        public string ItemDesc { get; set; }
+
+        public int UOMId { get; set; }
+
+        public decimal ItemRate { get; set; }
+
+        [DefaultValue("")]
+        public string Serial { get; set; }
+
+        [DefaultValue("")]
+        public string Batch { get; set; }
+
+        public bool? IsActive { get; set; }
+    }
+
+    public class ItemDetails_Response : BaseResponseEntity
+    {
+        public string ItemCode { get; set; }
+        public string ItemName { get; set; }
+        public string ItemDesc { get; set; }
+        public int UOMId { get; set; }
+        public string UOMName { get; set; }
+        public string ItemRate { get; set; }
+        public string Serial { get; set; }
+        public string Batch { get; set; }
+
+        public bool? IsActive { get; set; }
+    }
+
+    #endregion
 }

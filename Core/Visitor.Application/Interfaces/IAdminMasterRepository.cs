@@ -169,5 +169,21 @@ namespace Visitor.Application.Interfaces
 
         Task<WorkerType_Response?> GetWorkerTypeById(int Id);
         #endregion
+
+        #region Meeting Type
+        Task<int> SaveMeetingType(MeetingType_Request parameters);
+
+        Task<IEnumerable<MeetingType_Response>> GetMeetingTypeList(BaseSearchEntity parameters);
+
+        Task<MeetingType_Response?> GetMeetingTypeById(int Id);
+        #endregion
+
+        #region Item Details
+        Task<int> SaveItemDetails(ItemDetails_Request parameters);
+
+        Task<IEnumerable<ItemDetails_Response>> GetItemDetailsList(BaseSearchEntity parameters);
+
+        Task<ItemDetails_Response?> GetItemDetailsById(int Id);
+        #endregion
     }
 }
