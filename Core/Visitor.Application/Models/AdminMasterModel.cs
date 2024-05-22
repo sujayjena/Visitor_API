@@ -165,12 +165,16 @@ namespace Visitor.Application.Models
         [DefaultValue("")]
         public string UOMName { get; set; }
 
+        [DefaultValue("")]
+        public string UOMDesc { get; set; }
+
         public bool? IsActive { get; set; }
     }
 
     public class UOM_Response : BaseResponseEntity
     {
         public string UOMName { get; set; }
+        public string UOMDesc { get; set; }
 
         public bool? IsActive { get; set; }
     }

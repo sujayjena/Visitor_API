@@ -323,6 +323,7 @@ namespace Visitor.Persistence.Repositories
             DynamicParameters queryParameters = new DynamicParameters();
             queryParameters.Add("@Id", parameters.Id);
             queryParameters.Add("@UOMName", parameters.UOMName.SanitizeValue());
+            queryParameters.Add("@UOMDesc", parameters.UOMDesc.SanitizeValue());
             queryParameters.Add("@IsActive", parameters.IsActive);
             queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
 
