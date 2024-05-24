@@ -185,5 +185,53 @@ namespace Visitor.Application.Interfaces
 
         Task<ItemDetails_Response?> GetItemDetailsById(int Id);
         #endregion
+
+        #region ID Type
+        Task<int> SaveIDType(IDType_Request parameters);
+
+        Task<IEnumerable<IDType_Response>> GetIDTypeList(BaseSearchEntity parameters);
+
+        Task<IDType_Response?> GetIDTypeById(int Id);
+        #endregion
+
+        #region Contractor Type
+        Task<int> SaveContractorType(ContractorType_Request parameters);
+
+        Task<IEnumerable<ContractorType_Response>> GetContractorTypeList(BaseSearchEntity parameters);
+
+        Task<ContractorType_Response?> GetContractorTypeById(int Id);
+        #endregion
+
+        #region Template Type
+        Task<int> SaveTemplateType(TemplateType_Request parameters);
+
+        Task<IEnumerable<TemplateType_Response>> GetTemplateTypeList(BaseSearchEntity parameters);
+
+        Task<TemplateType_Response?> GetTemplateTypeById(int Id);
+        #endregion
+
+        #region Template Text
+        Task<int> SaveTemplateText(TemplateText_Request parameters);
+
+        Task<IEnumerable<TemplateText_Response>> GetTemplateTextList(BaseSearchEntity parameters);
+
+        Task<TemplateText_Response?> GetTemplateTextById(int Id);
+        #endregion
+
+        #region Canteen Feedback
+        Task<int> SaveCanteenFeedback(CanteenFeedback_Request parameters);
+
+        Task<IEnumerable<CanteenFeedback_Response>> GetCanteenFeedbackList(BaseSearchEntity parameters);
+
+        Task<CanteenFeedback_Response?> GetCanteenFeedbackById(int Id);
+        #endregion
+
+        #region Attendance
+        Task<int> SaveAttendance(AttendanceDetails_Request parameters);
+
+        Task<IEnumerable<Attendance_Response>> GetAttendanceList(BaseSearchEntity parameters);
+
+        Task<Attendance_Response?> GetAttendanceById(int Id);
+        #endregion
     }
 }

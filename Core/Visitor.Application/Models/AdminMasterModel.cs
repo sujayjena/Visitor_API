@@ -456,4 +456,136 @@ namespace Visitor.Application.Models
     }
 
     #endregion
+
+    #region ID Type
+    public class IDType_Request : BaseEntity
+    {
+        [DefaultValue("")]
+        public string IDType { get; set; }
+
+        public bool? IsActive { get; set; }
+    }
+
+    public class IDType_Response : BaseResponseEntity
+    {
+        public string IDType { get; set; }
+
+        public bool? IsActive { get; set; }
+    }
+
+    #endregion
+
+    #region Contractor Type
+    public class ContractorType_Request : BaseEntity
+    {
+        [DefaultValue("")]
+        public string ContractorType { get; set; }
+
+        public bool? IsActive { get; set; }
+    }
+
+    public class ContractorType_Response : BaseResponseEntity
+    {
+        public string ContractorType { get; set; }
+
+        public bool? IsActive { get; set; }
+    }
+
+    #endregion
+
+    #region Template Type
+    public class TemplateType_Request : BaseEntity
+    {
+        [DefaultValue("")]
+        public string TemplateType { get; set; }
+
+        public bool? IsActive { get; set; }
+    }
+
+    public class TemplateType_Response : BaseResponseEntity
+    {
+        public string TemplateType { get; set; }
+
+        public bool? IsActive { get; set; }
+    }
+
+    #endregion
+
+    #region Template Text
+    public class TemplateText_Request : BaseEntity
+    {
+        public int TemplateTypeId { get; set; }
+
+        [DefaultValue("")]
+        public string TemplateText { get; set; }
+
+        public bool? IsActive { get; set; }
+    }
+
+    public class TemplateText_Response : BaseResponseEntity
+    {
+        public int TemplateTypeId { get; set; }
+        public string TemplateType { get; set; }
+        public string TemplateText { get; set; }
+
+        public bool? IsActive { get; set; }
+    }
+
+    #endregion
+
+    #region Canteen Feedback
+    public class CanteenFeedback_Request : BaseEntity
+    {
+        public int CanteenId { get; set; }
+
+        [DefaultValue("")]
+        public string CanteenFeedback { get; set; }
+
+        public int Rating { get; set; }
+
+        public bool? IsActive { get; set; }
+    }
+
+    public class CanteenFeedback_Response : BaseResponseEntity
+    {
+        public int CanteenId { get; set; }
+        public string CanteenName { get; set; }
+        public string CanteenFeedback { get; set; }
+        public int Rating { get; set; }
+
+        public bool? IsActive { get; set; }
+    }
+
+    #endregion
+
+    #region Attendance
+    public class Attendance_Request
+    {
+        public Attendance_Request()
+        {
+            attendanceDetails = new List<AttendanceDetails_Request>();
+        }
+
+        public List<AttendanceDetails_Request> attendanceDetails { get; set; }
+    }
+
+    public class AttendanceDetails_Request : BaseEntity
+    {
+        [DefaultValue("")]
+        public string DayName { get; set; }
+
+        [DefaultValue("")]
+        public string ColorSelection { get; set; }
+        public bool? IsActive { get; set; }
+    }
+
+    public class Attendance_Response : BaseResponseEntity
+    {
+        public string DayName { get; set; }
+        public string ColorSelection { get; set; }
+
+        public bool? IsActive { get; set; }
+    }
+
+    #endregion
 }
