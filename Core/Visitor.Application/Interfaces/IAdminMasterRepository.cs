@@ -233,5 +233,22 @@ namespace Visitor.Application.Interfaces
 
         Task<Attendance_Response?> GetAttendanceById(int Id);
         #endregion
+
+        #region Marital Status
+        Task<int> SaveMaritalStatus(MaritalStatus_Request parameters);
+
+        Task<IEnumerable<MaritalStatus_Response>> GetMaritalStatusList(BaseSearchEntity parameters);
+
+        Task<MaritalStatus_Response?> GetMaritalStatusById(int Id);
+        #endregion
+
+        #region Blood Group
+        Task<int> SaveBloodGroup(BloodGroup_Request parameters);
+
+        Task<IEnumerable<BloodGroup_Response>> GetBloodGroupList(BaseSearchEntity parameters);
+
+        Task<BloodGroup_Response?> GetBloodGroupById(int Id);
+
+        #endregion
     }
 }

@@ -588,4 +588,39 @@ namespace Visitor.Application.Models
     }
 
     #endregion
+
+    #region Marital Status
+    public class MaritalStatus_Request : BaseEntity
+    {
+        [DefaultValue("")]
+        public string MaritalStatus { get; set; }
+
+        public bool? IsActive { get; set; }
+    }
+
+    public class MaritalStatus_Response : BaseResponseEntity
+    {
+        public string MaritalStatus { get; set; }
+
+        public bool? IsActive { get; set; }
+    }
+
+    #endregion
+
+    #region Blood Group
+    public class BloodGroup_Request : BaseEntity
+    {
+        [DefaultValue("")]
+        public string BloodGroup { get; set; }
+
+        public bool? IsActive { get; set; }
+    }
+
+    public class BloodGroup_Response : BaseResponseEntity
+    {
+        public string BloodGroup { get; set; }
+
+        public bool? IsActive { get; set; }
+    }
+    #endregion
 }
