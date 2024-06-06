@@ -19,5 +19,16 @@ namespace Visitor.Application.Interfaces
         Task<User_Response?> GetUserById(long Id);
 
         #endregion
+
+        #region User Other Details
+        Task<int> SaveUserOtherDetails(UserOtherDetails_Request parameters);
+
+        Task<IEnumerable<UserOtherDetails_Response>> GetUserOtherDetailsByEmployeeId(int EmployeeId);
+
+        Task<UserOtherDetails_Response?> GetUserOtherDetailsById(int Id);
+
+        Task<int> DeleteUserOtherDetails(int Id);
+
+        #endregion
     }
 }

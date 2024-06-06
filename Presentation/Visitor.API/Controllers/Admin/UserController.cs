@@ -142,6 +142,17 @@ namespace Visitor.API.Controllers.Admin
                 }
             }
 
+            // Other Proof Upload
+            if (parameters != null && !string.IsNullOrWhiteSpace(parameters.OtherProofImage_Base64))
+            {
+                var vUploadFile = _fileManager.UploadDocumentsBase64ToFile(parameters.OtherProofImage_Base64, "\\Uploads\\Employee\\", parameters.OtherProofOriginalFileName);
+
+                if (!string.IsNullOrWhiteSpace(vUploadFile))
+                {
+                    parameters.OtherProofImage = vUploadFile;
+                }
+            }
+
             int result = await _userRepository.SaveUser(parameters);
 
             if (result == (int)SaveOperationEnums.NoRecordExists)
@@ -184,6 +195,25 @@ namespace Visitor.API.Controllers.Admin
                     };
 
                     int resultBranchMapping = await _branchRepository.SaveBranchMapping(vBracnMapObj);
+                }
+
+                // Add new mapping of employee
+                if (result > 0)
+                {
+                    foreach (var items in parameters.UserOtherDetailsList)
+                    {
+                        var vUserOtherDetails = new UserOtherDetails_Request()
+                        {
+                            Id = items.Id,
+                            EmployeeId = result,
+                            PastCompanyName = items.PastCompanyName,
+                            TotalExp = items.TotalExp,
+                            Remark = items.Remark
+                        };
+
+                        int resultUserOtherDetails = await _userRepository.SaveUserOtherDetails(vUserOtherDetails);
+                    }
+
                 }
 
                 #endregion
@@ -231,8 +261,91 @@ namespace Visitor.API.Controllers.Admin
 
                         vResultObj.BranchList.Add(vBrMapResOnj);
                     }
+
+                    //get user other details
+                    var vUserOtherDetailsObj = await _userRepository.GetUserOtherDetailsByEmployeeId(vResultObj.Id);
+                    foreach (var item in vUserOtherDetailsObj)
+                    {
+                        var vUserOtherDetailsResObj = new UserOtherDetails_Response()
+                        {
+                            Id = item.Id,
+                            EmployeeId = vResultObj.Id,
+                            PastCompanyName = item.PastCompanyName,
+                            TotalExp = item.TotalExp,
+                            Remark = item.Remark
+                        };
+
+                        vResultObj.UserOtherDetailsList.Add(vUserOtherDetailsResObj);
+                    }
                 }
                 _response.Data = vResultObj;
+            }
+            return _response;
+        }
+
+        #endregion
+
+        #region User Other Details
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> SaveUserOtherDetails(UserOtherDetails_Request parameters)
+        {
+            int result = await _userRepository.SaveUserOtherDetails(parameters);
+
+            if (result == (int)SaveOperationEnums.NoRecordExists)
+            {
+                _response.Message = "No record exists";
+            }
+            else if (result == (int)SaveOperationEnums.ReocrdExists)
+            {
+                _response.Message = "Record is already exists";
+            }
+            else if (result == (int)SaveOperationEnums.NoResult)
+            {
+                _response.Message = "Something went wrong, please try again";
+            }
+            else
+            {
+                _response.Message = "Record details saved sucessfully";
+            }
+            return _response;
+        }
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> GetUserOtherDetailsById(int Id)
+        {
+            if (Id <= 0)
+            {
+                _response.Message = "Id is required";
+            }
+            else
+            {
+                var vResultObj = await _userRepository.GetUserOtherDetailsById(Id);
+
+                _response.Data = vResultObj;
+            }
+            return _response;
+        }
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> DeleteUserOtherDetails(int Id)
+        {
+            int result = await _userRepository.DeleteUserOtherDetails(Id);
+
+            if (result == (int)SaveOperationEnums.NoRecordExists)
+            {
+                _response.Message = "No record exists";
+            }
+            else if (result == (int)SaveOperationEnums.NoResult)
+            {
+                _response.Message = "Something went wrong, please try again";
+            }
+            else
+            {
+                _response.Message = "Record details deleted sucessfully";
             }
             return _response;
         }

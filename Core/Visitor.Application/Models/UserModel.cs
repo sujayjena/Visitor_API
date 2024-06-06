@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Collections;
 
 namespace Visitor.Application.Models
 {
@@ -18,12 +19,6 @@ namespace Visitor.Application.Models
         {
             BranchList = new List<BranchMapping_Request>();
         }
-
-        [DefaultValue(1)]
-        public int CompanyId { get; set; }
-
-        [DefaultValue(1)]
-        public int? DepartmentId { get; set; }
 
         //public string UserCode { get; set; }
 
@@ -41,6 +36,24 @@ namespace Visitor.Application.Models
 
         public int? ReportingTo { get; set; }
 
+        [DefaultValue(1)]
+        public int CompanyId { get; set; }
+
+        [DefaultValue(1)]
+        public int? DepartmentId { get; set; }
+
+        public DateTime? DateOfBirth { get; set; }
+
+        public DateTime? DateOfJoining { get; set; }
+
+        public string MobileUniqId { get; set; }
+
+        public int BloodGroupId { get; set; }
+
+        public int GenderId { get; set; }
+
+        public int MaritalStatusId { get; set; }
+
         public string AddressLine { get; set; }
 
         public int? RegionId { get; set; }
@@ -55,15 +68,22 @@ namespace Visitor.Application.Models
 
         public int? Pincode { get; set; }
 
-        public DateTime? DateOfBirth { get; set; }
+        public bool IsSameAsPermanent { get; set; }
+        public string TemporaryAddress { get; set; }
 
-        public DateTime? DateOfJoining { get; set; }
+        public int? Temporary_RegionId { get; set; }
 
+        public int? Temporary_StateId { get; set; }
+
+        public int? Temporary_DistrictId { get; set; }
+
+        public int? Temporary_CityId { get; set; }
+
+        public int? Temporary_Pincode { get; set; }
+
+        public string EmergencyName { get; set; }
         public string EmergencyContactNumber { get; set; }
-
-        public string BloodGroup { get; set; }
-
-        public string MobileUniqId { get; set; }
+        public string EmergencyRelation { get; set; }
 
         public string AadharNumber { get; set; }
 
@@ -87,6 +107,14 @@ namespace Visitor.Application.Models
 
         public string? ProfileOriginalFileName { get; set; }
 
+        public string OtherProof { get; set; }
+
+        public string OtherProofImage { get; set; }
+
+        public string OtherProofImage_Base64 { get; set; }
+
+        public string? OtherProofOriginalFileName { get; set; }
+
         public bool? IsMobileUser { get; set; }
 
         public bool? IsWebUser { get; set; }
@@ -94,6 +122,7 @@ namespace Visitor.Application.Models
         public bool? IsActive { get; set; }
 
         public List<BranchMapping_Request>? BranchList { get; set; }
+        public List<UserOtherDetails_Request>? UserOtherDetailsList { get; set; }
     }
 
     public class User_Response : BaseResponseEntity
@@ -101,6 +130,7 @@ namespace Visitor.Application.Models
         public User_Response()
         {
             BranchList = new List<BranchMapping_Response>();
+            UserOtherDetailsList = new List<UserOtherDetails_Response>();
         }
 
         //public string UserCode { get; set; }
@@ -160,9 +190,33 @@ namespace Visitor.Application.Models
 
         public DateTime? DateOfJoining { get; set; }
 
-        public string EmergencyContactNumber { get; set; }
+        public int BloodGroupId { get; set; }
 
         public string BloodGroup { get; set; }
+
+        public int GenderId { get; set; }
+
+        public string GenderName { get; set; }
+
+        public int MaritalStatusId { get; set; }
+
+        public string MaritalStatus { get; set; }
+
+        public bool IsSameAsPermanent { get; set; }
+
+        public string TemporaryAddress { get; set; }
+        public int Temporary_RegionId { get; set; }
+        public string Temporary_RegionName { get; set; }
+        public int Temporary_StateId { get; set; }
+        public string Temporary_StateName { get; set; }
+        public int Temporary_DistrictId { get; set; }
+        public string Temporary_DistrictName { get; set; }
+        public int Temporary_CityId { get; set; }
+        public string Temporary_CityName { get; set; }
+        public string Temporary_Pincode { get; set; }
+        public string EmergencyName { get; set; }
+        public string EmergencyContactNumber { get; set; }
+        public string EmergencyRelation { get; set; }
 
         public string MobileUniqueId { get; set; }
 
@@ -188,6 +242,14 @@ namespace Visitor.Application.Models
 
         public string ProfileImageURL { get; set; }
 
+        public string OtherProof { get; set; }
+
+        public string OtherProofImage { get; set; }
+
+        public string? OtherProofOriginalFileName { get; set; }
+
+        public string OtherProofImageURL { get; set; }
+
         public bool? IsMobileUser { get; set; }
 
         public bool? IsWebUser { get; set; }
@@ -195,5 +257,22 @@ namespace Visitor.Application.Models
         public bool? IsActive { get; set; }
 
         public List<BranchMapping_Response>? BranchList { get; set; }
+        public List<UserOtherDetails_Response>? UserOtherDetailsList { get; set; }
+    }
+
+    public class UserOtherDetails_Request : BaseEntity
+    {
+        public int? EmployeeId { get; set; }
+        public string PastCompanyName { get; set; }
+        public string TotalExp { get; set; }
+        public string Remark { get; set; }
+    }
+
+    public class UserOtherDetails_Response : BaseEntity
+    {
+        public int? EmployeeId { get; set; }
+        public string PastCompanyName { get; set; }
+        public string TotalExp { get; set; }
+        public string Remark { get; set; }
     }
 }
