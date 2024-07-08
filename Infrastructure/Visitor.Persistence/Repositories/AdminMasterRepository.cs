@@ -1147,5 +1147,49 @@ namespace Visitor.Persistence.Repositories
         }
 
         #endregion
+
+        #region Work Shift
+        public async Task<int> SaveWorkShift(WorkShift_Request parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@Id", parameters.Id);
+            queryParameters.Add("@DaysId", parameters.DaysId);
+            queryParameters.Add("@ShiftName", parameters.ShiftName);
+            queryParameters.Add("@ShiftIn", parameters.ShiftIn);
+            queryParameters.Add("@ShiftOut", parameters.ShiftOut);
+            queryParameters.Add("@TotalHours", parameters.TotalHours);
+            queryParameters.Add("@ShiftOverLay", parameters.ShiftOverLay);
+            queryParameters.Add("@CompanyId", parameters.CompanyId);
+            queryParameters.Add("@BranchId", parameters.BranchId);
+            queryParameters.Add("@IsActive", parameters.IsActive);
+            queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
+
+            return await SaveByStoredProcedure<int>("SaveWorkShift", queryParameters);
+        }
+
+        public async Task<IEnumerable<WorkShift_Response>> GetWorkShiftList(BaseSearchEntity parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@SearchText", parameters.SearchText.SanitizeValue());
+            queryParameters.Add("@IsActive", parameters.IsActive);
+            queryParameters.Add("@PageNo", parameters.PageNo);
+            queryParameters.Add("@PageSize", parameters.PageSize);
+            queryParameters.Add("@Total", parameters.Total, null, System.Data.ParameterDirection.Output);
+            queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
+
+            var result = await ListByStoredProcedure<WorkShift_Response>("GetWorkShiftList", queryParameters);
+            parameters.Total = queryParameters.Get<int>("Total");
+
+            return result;
+        }
+
+        public async Task<WorkShift_Response?> GetWorkShiftById(int Id)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@Id", Id);
+            return (await ListByStoredProcedure<WorkShift_Response>("GetWorkShiftById", queryParameters)).FirstOrDefault();
+        }
+
+        #endregion
     }
 }

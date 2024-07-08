@@ -250,5 +250,14 @@ namespace Visitor.Application.Interfaces
         Task<BloodGroup_Response?> GetBloodGroupById(int Id);
 
         #endregion
+
+        #region Work Shift
+        Task<int> SaveWorkShift(WorkShift_Request parameters);
+
+        Task<IEnumerable<WorkShift_Response>> GetWorkShiftList(BaseSearchEntity parameters);
+
+        Task<WorkShift_Response?> GetWorkShiftById(int Id);
+
+        #endregion
     }
 }

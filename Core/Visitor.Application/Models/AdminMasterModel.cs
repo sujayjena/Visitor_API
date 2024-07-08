@@ -623,4 +623,37 @@ namespace Visitor.Application.Models
         public bool? IsActive { get; set; }
     }
     #endregion
+
+    #region Work Shift
+    public class WorkShift_Request : BaseEntity
+    {
+        public int? DaysId { get; set; }
+
+        [DefaultValue("")]
+        public string? ShiftName { get; set; }
+        public string? ShiftIn { get; set; }
+        public string? ShiftOut { get; set; }
+        public decimal? TotalHours { get; set; }
+        public bool ShiftOverLay { get; set; }
+        public int? CompanyId { get; set; }
+        public int? BranchId { get; set; }
+        public bool? IsActive { get; set; }
+    }
+    
+    public class WorkShift_Response : BaseResponseEntity
+    {
+        public int? DaysId { get; set; }
+        public string? DaysName { get; set; }
+        public string? ShiftName { get; set; }
+        public string? ShiftIn { get; set; }
+        public string? ShiftOut { get; set; }
+        public decimal? TotalHours { get; set; }
+        public bool ShiftOverLay { get; set; }
+        public int? CompanyId { get; set; }
+        public string? CompanyName { get; set; }
+        public int? BranchId { get; set; }
+        public string? BranchName { get; set; }
+        public bool? IsActive { get; set; }
+    }
+    #endregion
 }
