@@ -20,20 +20,20 @@ namespace Visitor.Persistence.Repositories
             _configuration = configuration;
         }
 
-        #region Region
+        #region Country
 
-        public async Task<int> SaveRegion(Region_Request parameters)
+        public async Task<int> SaveCountry(Country_Request parameters)
         {
             DynamicParameters queryParameters = new DynamicParameters();
             queryParameters.Add("@Id", parameters.Id);
-            queryParameters.Add("@RegionName", parameters.RegionName.SanitizeValue());
+            queryParameters.Add("@CountryName", parameters.CountryName.SanitizeValue());
             queryParameters.Add("@IsActive", parameters.IsActive);
             queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
 
-            return await SaveByStoredProcedure<int>("SaveRegion", queryParameters);
+            return await SaveByStoredProcedure<int>("SaveCountry", queryParameters);
         }
 
-        public async Task<IEnumerable<Region_Response>> GetRegionList(BaseSearchEntity parameters)
+        public async Task<IEnumerable<Country_Response>> GetCountryList(BaseSearchEntity parameters)
         {
             DynamicParameters queryParameters = new DynamicParameters();
             queryParameters.Add("@SearchText", parameters.SearchText.SanitizeValue());
@@ -43,17 +43,17 @@ namespace Visitor.Persistence.Repositories
             queryParameters.Add("@Total", parameters.Total, null, System.Data.ParameterDirection.Output);
             queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
 
-            var result = await ListByStoredProcedure<Region_Response>("GetRegionList", queryParameters);
+            var result = await ListByStoredProcedure<Country_Response>("GetCountryList", queryParameters);
             parameters.Total = queryParameters.Get<int>("Total");
 
             return result;
         }
 
-        public async Task<Region_Response?> GetRegionById(long Id)
+        public async Task<Country_Response?> GetCountryById(long Id)
         {
             DynamicParameters queryParameters = new DynamicParameters();
             queryParameters.Add("@Id", Id);
-            return (await ListByStoredProcedure<Region_Response>("GetRegionById", queryParameters)).FirstOrDefault();
+            return (await ListByStoredProcedure<Country_Response>("GetCountryById", queryParameters)).FirstOrDefault();
         }
 
         #endregion
@@ -216,7 +216,7 @@ namespace Visitor.Persistence.Repositories
         {
             DynamicParameters queryParameters = new DynamicParameters();
             queryParameters.Add("@Id", parameters.Id);
-            queryParameters.Add("@RegionId", parameters.RegionId);
+            queryParameters.Add("@CountryId", parameters.CountryId);
             queryParameters.Add("@StateId", parameters.StateId);
             queryParameters.Add("@DistrictId", parameters.DistrictId);
             queryParameters.Add("@CityId", parameters.CityId);

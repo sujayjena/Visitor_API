@@ -56,7 +56,7 @@ namespace Visitor.Application.Models
 
         public string AddressLine { get; set; }
 
-        public int? RegionId { get; set; }
+        public int? CountryId { get; set; }
 
         public int? StateId { get; set; }
 
@@ -71,7 +71,7 @@ namespace Visitor.Application.Models
         public bool IsSameAsPermanent { get; set; }
         public string TemporaryAddress { get; set; }
 
-        public int? Temporary_RegionId { get; set; }
+        public int? Temporary_CountryId { get; set; }
 
         public int? Temporary_StateId { get; set; }
 
@@ -165,9 +165,9 @@ namespace Visitor.Application.Models
 
         public string AddressLine { get; set; }
 
-        public int? RegionId { get; set; }
+        public int? CountryId { get; set; }
 
-        public string RegionName { get; set; }
+        public string CountryName { get; set; }
 
         public int? StateId { get; set; }
 
@@ -205,8 +205,8 @@ namespace Visitor.Application.Models
         public bool IsSameAsPermanent { get; set; }
 
         public string TemporaryAddress { get; set; }
-        public int Temporary_RegionId { get; set; }
-        public string Temporary_RegionName { get; set; }
+        public int Temporary_CountryId { get; set; }
+        public string Temporary_CountryName { get; set; }
         public int Temporary_StateId { get; set; }
         public string Temporary_StateName { get; set; }
         public int Temporary_DistrictId { get; set; }

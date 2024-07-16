@@ -1199,6 +1199,62 @@ namespace Visitor.API.Controllers.Admin
 
         #endregion
 
+        #region Meeting Status
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> SaveMeetingStatus(MeetingStatus_Request parameters)
+        {
+            int result = await _adminMasterRepository.SaveMeetingStatus(parameters);
+
+            if (result == (int)SaveOperationEnums.NoRecordExists)
+            {
+                _response.Message = "No record exists";
+            }
+            else if (result == (int)SaveOperationEnums.ReocrdExists)
+            {
+                _response.Message = "Record is already exists";
+            }
+            else if (result == (int)SaveOperationEnums.NoResult)
+            {
+                _response.Message = "Something went wrong, please try again";
+            }
+            else
+            {
+                _response.Message = "Record details saved sucessfully";
+            }
+            return _response;
+        }
+
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> GetMeetingStatusList(BaseSearchEntity parameters)
+        {
+            IEnumerable<MeetingStatus_Response> lstRoles = await _adminMasterRepository.GetMeetingStatusList(parameters);
+            _response.Data = lstRoles.ToList();
+            _response.Total = parameters.Total;
+            return _response;
+        }
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> GetMeetingStatusById(int Id)
+        {
+            if (Id <= 0)
+            {
+                _response.Message = "Id is required";
+            }
+            else
+            {
+                var vResultObj = await _adminMasterRepository.GetMeetingStatusById(Id);
+                _response.Data = vResultObj;
+            }
+            return _response;
+        }
+
+        #endregion
+
         #region Item Details
 
         [Route("[action]")]
@@ -1765,6 +1821,62 @@ namespace Visitor.API.Controllers.Admin
             else
             {
                 var vResultObj = await _adminMasterRepository.GetWorkShiftById(Id);
+                _response.Data = vResultObj;
+            }
+            return _response;
+        }
+
+        #endregion
+
+        #region Pass Type
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> SavePassType(PassType_Request parameters)
+        {
+            int result = await _adminMasterRepository.SavePassType(parameters);
+
+            if (result == (int)SaveOperationEnums.NoRecordExists)
+            {
+                _response.Message = "No record exists";
+            }
+            else if (result == (int)SaveOperationEnums.ReocrdExists)
+            {
+                _response.Message = "Record is already exists";
+            }
+            else if (result == (int)SaveOperationEnums.NoResult)
+            {
+                _response.Message = "Something went wrong, please try again";
+            }
+            else
+            {
+                _response.Message = "Record details saved sucessfully";
+            }
+            return _response;
+        }
+
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> GetPassTypeList(BaseSearchEntity parameters)
+        {
+            IEnumerable<PassType_Response> lstRoles = await _adminMasterRepository.GetPassTypeList(parameters);
+            _response.Data = lstRoles.ToList();
+            _response.Total = parameters.Total;
+            return _response;
+        }
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> GetPassTypeById(int Id)
+        {
+            if (Id <= 0)
+            {
+                _response.Message = "Id is required";
+            }
+            else
+            {
+                var vResultObj = await _adminMasterRepository.GetPassTypeById(Id);
                 _response.Data = vResultObj;
             }
             return _response;

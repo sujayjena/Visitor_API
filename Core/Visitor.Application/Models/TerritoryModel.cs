@@ -12,18 +12,18 @@ namespace Visitor.Application.Models
     {
     }
 
-    #region Region
+    #region Country
 
-    public class Region_Request : BaseEntity
+    public class Country_Request : BaseEntity
     {
-        public string RegionName { get; set; }
+        public string? CountryName { get; set; }
 
         public bool? IsActive { get; set; }
     }
 
-    public class Region_Response : BaseResponseEntity
+    public class Country_Response : BaseResponseEntity
     {
-        public string RegionName { get; set; }
+        public string? CountryName { get; set; }
 
         public bool? IsActive { get; set; }
     }
@@ -34,14 +34,14 @@ namespace Visitor.Application.Models
 
     public class State_Request : BaseEntity
     {
-        public string StateName { get; set; }
+        public string? StateName { get; set; }
 
         public bool? IsActive { get; set; }
     }
 
     public class State_Response : BaseResponseEntity
     {
-        public string StateName { get; set; }
+        public string? StateName { get; set; }
 
         public bool? IsActive { get; set; }
     }
@@ -52,14 +52,14 @@ namespace Visitor.Application.Models
 
     public class District_Request : BaseEntity
     {
-        public string DistrictName { get; set; }
+        public string? DistrictName { get; set; }
 
         public bool? IsActive { get; set; }
     }
 
     public class District_Response : BaseResponseEntity
     {
-        public string DistrictName { get; set; }
+        public string? DistrictName { get; set; }
 
         public bool? IsActive { get; set; }
     }
@@ -70,14 +70,14 @@ namespace Visitor.Application.Models
 
     public class City_Request : BaseEntity
     {
-        public string CityName { get; set; }
+        public string? CityName { get; set; }
 
         public bool? IsActive { get; set; }
     }
 
     public class City_Response : BaseResponseEntity
     {
-        public string CityName { get; set; }
+        public string? CityName { get; set; }
 
         public bool? IsActive { get; set; }
     }
@@ -88,14 +88,14 @@ namespace Visitor.Application.Models
 
     public class Area_Request : BaseEntity
     {
-        public string AreaName { get; set; }
+        public string? AreaName { get; set; }
 
         public bool? IsActive { get; set; }
     }
 
     public class Area_Response : BaseResponseEntity
     {
-        public string AreaName { get; set; }
+        public string? AreaName { get; set; }
 
         public bool? IsActive { get; set; }
     }
@@ -106,7 +106,7 @@ namespace Visitor.Application.Models
 
     public class Territories_Request : BaseEntity
     {
-        public int? RegionId { get; set; }
+        public int? CountryId { get; set; }
 
         public int? StateId { get; set; }
 
@@ -121,9 +121,9 @@ namespace Visitor.Application.Models
 
     public class Territories_Response : BaseResponseEntity
     {
-        public int? RegionId { get; set; }
+        public int? CountryId { get; set; }
 
-        public string RegionName { get; set; }
+        public string CountryName { get; set; }
 
         public int? StateId { get; set; }
 

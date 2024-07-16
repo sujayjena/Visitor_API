@@ -805,6 +805,43 @@ namespace Visitor.Persistence.Repositories
 
         #endregion
 
+        #region Meeting Status
+        public async Task<int> SaveMeetingStatus(MeetingStatus_Request parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@Id", parameters.Id);
+            queryParameters.Add("@MeetingStatus", parameters.MeetingStatus);
+            queryParameters.Add("@IsActive", parameters.IsActive);
+            queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
+
+            return await SaveByStoredProcedure<int>("SaveMeetingStatus", queryParameters);
+        }
+
+        public async Task<IEnumerable<MeetingStatus_Response>> GetMeetingStatusList(BaseSearchEntity parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@SearchText", parameters.SearchText.SanitizeValue());
+            queryParameters.Add("@IsActive", parameters.IsActive);
+            queryParameters.Add("@PageNo", parameters.PageNo);
+            queryParameters.Add("@PageSize", parameters.PageSize);
+            queryParameters.Add("@Total", parameters.Total, null, System.Data.ParameterDirection.Output);
+            queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
+
+            var result = await ListByStoredProcedure<MeetingStatus_Response>("GetMeetingStatusList", queryParameters);
+            parameters.Total = queryParameters.Get<int>("Total");
+
+            return result;
+        }
+
+        public async Task<MeetingStatus_Response?> GetMeetingStatusById(int Id)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@Id", Id);
+            return (await ListByStoredProcedure<MeetingStatus_Response>("GetMeetingStatusById", queryParameters)).FirstOrDefault();
+        }
+
+        #endregion
+
         #region Item Details
         public async Task<int> SaveItemDetails(ItemDetails_Request parameters)
         {
@@ -1188,6 +1225,43 @@ namespace Visitor.Persistence.Repositories
             DynamicParameters queryParameters = new DynamicParameters();
             queryParameters.Add("@Id", Id);
             return (await ListByStoredProcedure<WorkShift_Response>("GetWorkShiftById", queryParameters)).FirstOrDefault();
+        }
+
+        #endregion
+
+        #region Pass Type
+        public async Task<int> SavePassType(PassType_Request parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@Id", parameters.Id);
+            queryParameters.Add("@PassType", parameters.PassType);
+            queryParameters.Add("@IsActive", parameters.IsActive);
+            queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
+
+            return await SaveByStoredProcedure<int>("SavePassType", queryParameters);
+        }
+
+        public async Task<IEnumerable<PassType_Response>> GetPassTypeList(BaseSearchEntity parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@SearchText", parameters.SearchText.SanitizeValue());
+            queryParameters.Add("@IsActive", parameters.IsActive);
+            queryParameters.Add("@PageNo", parameters.PageNo);
+            queryParameters.Add("@PageSize", parameters.PageSize);
+            queryParameters.Add("@Total", parameters.Total, null, System.Data.ParameterDirection.Output);
+            queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
+
+            var result = await ListByStoredProcedure<PassType_Response>("GetPassTypeList", queryParameters);
+            parameters.Total = queryParameters.Get<int>("Total");
+
+            return result;
+        }
+
+        public async Task<PassType_Response?> GetPassTypeById(int Id)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@Id", Id);
+            return (await ListByStoredProcedure<PassType_Response>("GetPassTypeById", queryParameters)).FirstOrDefault();
         }
 
         #endregion

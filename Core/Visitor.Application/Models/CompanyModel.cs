@@ -24,7 +24,7 @@ namespace Visitor.Application.Models
         public string? TaxNumber { get; set; }
         public string? AddressLine1 { get; set; }
         public string? AddressLine2 { get; set; }
-        public int? RegionId { get; set; }
+        public int? CountryId { get; set; }
         public int? StateId { get; set; }
         public int? DistrictId { get; set; }
         public int? CityId { get; set; }
@@ -53,8 +53,8 @@ namespace Visitor.Application.Models
         public string? Website { get; set; }
         public string? AddressLine1 { get; set; }
         public string? AddressLine2 { get; set; }
-        public int? RegionId { get; set; }
-        public string? RegionName { get; set; }
+        public int? CountryId { get; set; }
+        public string? CountryName { get; set; }
         public int? StateId { get; set; }
         public string? StateName { get; set; }
         public int? DistrictId { get; set; }

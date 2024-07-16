@@ -22,13 +22,13 @@ namespace Visitor.API.Controllers.Admin
             _response.IsSuccess = true;
         }
 
-        #region Region 
+        #region Country 
 
         [Route("[action]")]
         [HttpPost]
-        public async Task<ResponseModel> SaveRegion(Region_Request parameters)
+        public async Task<ResponseModel> SaveCountry(Country_Request parameters)
         {
-            int result = await _territoryRepository.SaveRegion(parameters);
+            int result = await _territoryRepository.SaveCountry(parameters);
 
             if (result == (int)SaveOperationEnums.NoRecordExists)
             {
@@ -52,17 +52,17 @@ namespace Visitor.API.Controllers.Admin
 
         [Route("[action]")]
         [HttpPost]
-        public async Task<ResponseModel> GetRegionList(BaseSearchEntity parameters)
+        public async Task<ResponseModel> GetCountryList(BaseSearchEntity parameters)
         {
-            IEnumerable<Region_Response> lstRegions = await _territoryRepository.GetRegionList(parameters);
-            _response.Data = lstRegions.ToList();
+            IEnumerable<Country_Response> lstCountrys = await _territoryRepository.GetCountryList(parameters);
+            _response.Data = lstCountrys.ToList();
             _response.Total = parameters.Total;
             return _response;
         }
 
         [Route("[action]")]
         [HttpPost]
-        public async Task<ResponseModel> GetRegionById(long Id)
+        public async Task<ResponseModel> GetCountryById(long Id)
         {
             if (Id <= 0)
             {
@@ -70,7 +70,7 @@ namespace Visitor.API.Controllers.Admin
             }
             else
             {
-                var vResultObj = await _territoryRepository.GetRegionById(Id);
+                var vResultObj = await _territoryRepository.GetCountryById(Id);
                 _response.Data = vResultObj;
             }
             return _response;

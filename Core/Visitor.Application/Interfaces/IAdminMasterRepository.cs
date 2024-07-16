@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Visitor.Application.Helpers;
 using Visitor.Application.Models;
 using Visitor.Persistence.Repositories;
 
@@ -178,6 +179,14 @@ namespace Visitor.Application.Interfaces
         Task<MeetingType_Response?> GetMeetingTypeById(int Id);
         #endregion
 
+        #region Meeting Status
+        Task<int> SaveMeetingStatus(MeetingStatus_Request parameters);
+
+        Task<IEnumerable<MeetingStatus_Response>> GetMeetingStatusList(BaseSearchEntity parameters);
+
+        Task<MeetingStatus_Response?> GetMeetingStatusById(int Id);
+        #endregion
+
         #region Item Details
         Task<int> SaveItemDetails(ItemDetails_Request parameters);
 
@@ -257,6 +266,15 @@ namespace Visitor.Application.Interfaces
         Task<IEnumerable<WorkShift_Response>> GetWorkShiftList(BaseSearchEntity parameters);
 
         Task<WorkShift_Response?> GetWorkShiftById(int Id);
+
+        #endregion
+
+        #region Pass Type
+        Task<int> SavePassType(PassType_Request parameters);
+
+        Task<IEnumerable<PassType_Response>> GetPassTypeList(BaseSearchEntity parameters);
+
+        Task<PassType_Response?> GetPassTypeById(int Id);
 
         #endregion
     }

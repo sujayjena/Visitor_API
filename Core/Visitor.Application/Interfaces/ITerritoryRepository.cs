@@ -10,13 +10,13 @@ namespace Visitor.Application.Interfaces
 {
     public interface ITerritoryRepository
     {
-        #region Region 
+        #region Country 
 
-        Task<int> SaveRegion(Region_Request parameters);
+        Task<int> SaveCountry(Country_Request parameters);
 
-        Task<IEnumerable<Region_Response>> GetRegionList(BaseSearchEntity parameters);
+        Task<IEnumerable<Country_Response>> GetCountryList(BaseSearchEntity parameters);
 
-        Task<Region_Response?> GetRegionById(long Id);
+        Task<Country_Response?> GetCountryById(long Id);
 
         #endregion
 

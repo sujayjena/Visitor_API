@@ -45,7 +45,7 @@ namespace Visitor.Persistence.Repositories
             queryParameters.Add("@MaritalStatusId", parameters.MaritalStatusId);
 
             queryParameters.Add("@AddressLine", parameters.AddressLine);
-            queryParameters.Add("@RegionId", parameters.RegionId);
+            queryParameters.Add("@CountryId", parameters.CountryId);
             queryParameters.Add("@StateId", parameters.StateId);
             queryParameters.Add("@DistrictId", parameters.DistrictId);
             queryParameters.Add("@CityId", parameters.CityId);
@@ -55,7 +55,7 @@ namespace Visitor.Persistence.Repositories
             queryParameters.Add("@IsSameAsPermanent", parameters.IsSameAsPermanent);
 
             queryParameters.Add("@TemporaryAddress", parameters.TemporaryAddress);
-            queryParameters.Add("@Temporary_RegionId", parameters.Temporary_RegionId);
+            queryParameters.Add("@Temporary_CountryId", parameters.Temporary_CountryId);
             queryParameters.Add("@Temporary_StateId", parameters.Temporary_StateId);
             queryParameters.Add("@Temporary_DistrictId", parameters.Temporary_DistrictId);
             queryParameters.Add("@Temporary_CityId", parameters.Temporary_CityId);
