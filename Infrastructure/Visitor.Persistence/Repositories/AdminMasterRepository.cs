@@ -768,6 +768,43 @@ namespace Visitor.Persistence.Repositories
 
         #endregion
 
+        #region Worker Status
+        public async Task<int> SaveWorkerStatus(WorkerStatus_Request parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@Id", parameters.Id);
+            queryParameters.Add("@WorkerStatus", parameters.WorkerStatus);
+            queryParameters.Add("@IsActive", parameters.IsActive);
+            queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
+
+            return await SaveByStoredProcedure<int>("SaveWorkerStatus", queryParameters);
+        }
+
+        public async Task<IEnumerable<WorkerStatus_Response>> GetWorkerStatusList(BaseSearchEntity parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@SearchText", parameters.SearchText.SanitizeValue());
+            queryParameters.Add("@IsActive", parameters.IsActive);
+            queryParameters.Add("@PageNo", parameters.PageNo);
+            queryParameters.Add("@PageSize", parameters.PageSize);
+            queryParameters.Add("@Total", parameters.Total, null, System.Data.ParameterDirection.Output);
+            queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
+
+            var result = await ListByStoredProcedure<WorkerStatus_Response>("GetWorkerStatusList", queryParameters);
+            parameters.Total = queryParameters.Get<int>("Total");
+
+            return result;
+        }
+
+        public async Task<WorkerStatus_Response?> GetWorkerStatusById(int Id)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@Id", Id);
+            return (await ListByStoredProcedure<WorkerStatus_Response>("GetWorkerStatusById", queryParameters)).FirstOrDefault();
+        }
+
+        #endregion
+
         #region Meeting Type
         public async Task<int> SaveMeetingType(MeetingType_Request parameters)
         {

@@ -398,6 +398,24 @@ namespace Visitor.Application.Models
 
     #endregion
 
+    #region Worker Status
+    public class WorkerStatus_Request : BaseEntity
+    {
+        [DefaultValue("")]
+        public string? WorkerStatus { get; set; }
+
+        public bool? IsActive { get; set; }
+    }
+
+    public class WorkerStatus_Response : BaseResponseEntity
+    {
+        public string? WorkerStatus { get; set; }
+
+        public bool? IsActive { get; set; }
+    }
+
+    #endregion
+
     #region Meeting Type
     public class MeetingType_Request : BaseEntity
     {

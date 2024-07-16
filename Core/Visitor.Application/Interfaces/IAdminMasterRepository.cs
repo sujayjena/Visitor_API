@@ -171,6 +171,14 @@ namespace Visitor.Application.Interfaces
         Task<WorkerType_Response?> GetWorkerTypeById(int Id);
         #endregion
 
+        #region Worker Status
+        Task<int> SaveWorkerStatus(WorkerStatus_Request parameters);
+
+        Task<IEnumerable<WorkerStatus_Response>> GetWorkerStatusList(BaseSearchEntity parameters);
+
+        Task<WorkerStatus_Response?> GetWorkerStatusById(int Id);
+        #endregion
+
         #region Meeting Type
         Task<int> SaveMeetingType(MeetingType_Request parameters);
 
