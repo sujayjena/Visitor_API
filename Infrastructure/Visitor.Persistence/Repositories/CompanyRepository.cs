@@ -43,6 +43,8 @@ namespace Visitor.Persistence.Repositories
             queryParameters.Add("@CompanyLogo", parameters.CompanyLogoFileName);
             queryParameters.Add("@NoofUserAdd", parameters.NoofUserAdd);
             queryParameters.Add("@NoofBranchAdd", parameters.NoofBranchAdd);
+            queryParameters.Add("@LicenseStartDate", parameters.LicenseStartDate);
+            queryParameters.Add("@LicenseEndDate", parameters.LicenseEndDate);
             queryParameters.Add("@IsActive", parameters.IsActive);
             queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
 

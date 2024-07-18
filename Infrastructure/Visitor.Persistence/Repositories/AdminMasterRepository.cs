@@ -891,6 +891,8 @@ namespace Visitor.Persistence.Repositories
             queryParameters.Add("@ItemRate", parameters.ItemRate);
             queryParameters.Add("@Serial", parameters.Serial);
             queryParameters.Add("@Batch", parameters.Batch);
+            queryParameters.Add("@CompanyId", parameters.CompanyId);
+            queryParameters.Add("@BranchId", parameters.BranchId);
             queryParameters.Add("@IsActive", parameters.IsActive);
             queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
 
@@ -1299,6 +1301,80 @@ namespace Visitor.Persistence.Repositories
             DynamicParameters queryParameters = new DynamicParameters();
             queryParameters.Add("@Id", Id);
             return (await ListByStoredProcedure<PassType_Response>("GetPassTypeById", queryParameters)).FirstOrDefault();
+        }
+
+        #endregion
+
+        #region Item Type
+        public async Task<int> SaveItemType(ItemType_Request parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@Id", parameters.Id);
+            queryParameters.Add("@ItemType", parameters.ItemType);
+            queryParameters.Add("@IsActive", parameters.IsActive);
+            queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
+
+            return await SaveByStoredProcedure<int>("SaveItemType", queryParameters);
+        }
+
+        public async Task<IEnumerable<ItemType_Response>> GetItemTypeList(BaseSearchEntity parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@SearchText", parameters.SearchText.SanitizeValue());
+            queryParameters.Add("@IsActive", parameters.IsActive);
+            queryParameters.Add("@PageNo", parameters.PageNo);
+            queryParameters.Add("@PageSize", parameters.PageSize);
+            queryParameters.Add("@Total", parameters.Total, null, System.Data.ParameterDirection.Output);
+            queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
+
+            var result = await ListByStoredProcedure<ItemType_Response>("GetItemTypeList", queryParameters);
+            parameters.Total = queryParameters.Get<int>("Total");
+
+            return result;
+        }
+
+        public async Task<ItemType_Response?> GetItemTypeById(int Id)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@Id", Id);
+            return (await ListByStoredProcedure<ItemType_Response>("GetItemTypeById", queryParameters)).FirstOrDefault();
+        }
+
+        #endregion
+
+        #region Days
+        public async Task<int> SaveDays(Days_Request parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@Id", parameters.Id);
+            queryParameters.Add("@DaysName", parameters.DaysName);
+            queryParameters.Add("@IsActive", parameters.IsActive);
+            queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
+
+            return await SaveByStoredProcedure<int>("SaveDays", queryParameters);
+        }
+
+        public async Task<IEnumerable<Days_Response>> GetDaysList(BaseSearchEntity parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@SearchText", parameters.SearchText.SanitizeValue());
+            queryParameters.Add("@IsActive", parameters.IsActive);
+            queryParameters.Add("@PageNo", parameters.PageNo);
+            queryParameters.Add("@PageSize", parameters.PageSize);
+            queryParameters.Add("@Total", parameters.Total, null, System.Data.ParameterDirection.Output);
+            queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
+
+            var result = await ListByStoredProcedure<Days_Response>("GetDaysList", queryParameters);
+            parameters.Total = queryParameters.Get<int>("Total");
+
+            return result;
+        }
+
+        public async Task<Days_Response?> GetDaysById(int Id)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@Id", Id);
+            return (await ListByStoredProcedure<Days_Response>("GetDaysById", queryParameters)).FirstOrDefault();
         }
 
         #endregion

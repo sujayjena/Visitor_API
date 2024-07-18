@@ -474,6 +474,9 @@ namespace Visitor.Application.Models
         [DefaultValue("")]
         public string? Batch { get; set; }
 
+        public int? CompanyId { get; set; }
+        public int? BranchId { get; set; }
+
         public bool? IsActive { get; set; }
     }
 
@@ -487,6 +490,10 @@ namespace Visitor.Application.Models
         public string? ItemRate { get; set; }
         public string? Serial { get; set; }
         public string? Batch { get; set; }
+        public int? CompanyId { get; set; }
+        public string? CompanyName { get; set; }
+        public int? BranchId { get; set; }
+        public string? BranchName { get; set; }
 
         public bool? IsActive { get; set; }
     }
@@ -705,6 +712,40 @@ namespace Visitor.Application.Models
     public class PassType_Response : BaseResponseEntity
     {
         public string? PassType { get; set; }
+
+        public bool? IsActive { get; set; }
+    }
+    #endregion
+
+    #region Item Type
+    public class ItemType_Request : BaseEntity
+    {
+        [DefaultValue("")]
+        public string? ItemType { get; set; }
+
+        public bool? IsActive { get; set; }
+    }
+
+    public class ItemType_Response : BaseResponseEntity
+    {
+        public string? ItemType { get; set; }
+
+        public bool? IsActive { get; set; }
+    }
+    #endregion
+
+    #region Days
+    public class Days_Request : BaseEntity
+    {
+        [DefaultValue("")]
+        public string? DaysName { get; set; }
+
+        public bool? IsActive { get; set; }
+    }
+
+    public class Days_Response : BaseResponseEntity
+    {
+        public string? DaysName { get; set; }
 
         public bool? IsActive { get; set; }
     }

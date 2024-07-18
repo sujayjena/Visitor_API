@@ -35,6 +35,8 @@ namespace Visitor.Application.Models
         public string? CompanyLogo_Base64 { get; set; }
         public int? NoofUserAdd { get; set; }
         public int? NoofBranchAdd { get; set; }
+        public DateTime? LicenseStartDate { get; set; }
+        public DateTime? LicenseEndDate { get; set; }
         public bool? IsActive { get; set; }
     }
 
@@ -68,6 +70,8 @@ namespace Visitor.Application.Models
         public string? CompanyLogoURL { get; set; }
         public int? NoofUserAdd { get; set; }
         public int? NoofBranchAdd { get; set; }
+        public DateTime? LicenseStartDate { get; set; }
+        public DateTime? LicenseEndDate { get; set; }
         public bool? IsActive { get; set; }
     }
 }

@@ -1,0 +1,108 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Text.Json.Serialization;
+using System.Threading.Tasks;
+using Visitor.Domain.Entities;
+
+namespace Visitor.Application.Models
+{
+    public class ManageVisitorsModel
+    {
+    }
+
+    public class Visitors_Request : BaseEntity
+    {
+        public int? MeetingStatusId { get; set; }
+        public string? VisitorName { get; set; }
+        public string? VisitorMobileNo { get; set; }
+        public string? VisitorEmailId { get; set; }
+        public int? GenderId { get; set; }
+        public int? VisitTypeId { get; set; }
+        public DateTime? VisitDate { get; set; }
+        public int? VisitorCompanyId { get; set; }
+        public int? CountryId { get; set; }
+        public int? StateId { get; set; }
+        public int? DistrictId { get; set; }
+        public int? CityId { get; set; }
+        public string? AddressLine { get; set; }
+        public int? Pincode { get; set; }
+        public int? IDTypeId { get; set; }
+
+        public string? IDOriginalFileName { get; set; }
+        [JsonIgnore]
+        public string? IDImage { get; set; }
+        public string? IDImage_Base64 { get; set; }
+
+        public string? VisitorPhotoOriginalFileName { get; set; }
+        [JsonIgnore]
+        public string? VisitorPhoto { get; set; }
+        public string? VisitorPhoto_Base64 { get; set; }
+
+        public int? MeetingTypeId { get; set; }
+        public int? DepartmentId { get; set; }
+        public int? EmployeeId { get; set; }
+        public string? Purpose { get; set; }
+        public int? PassTypeId { get; set; }
+        public DateTime? StartDate { get; set; }
+        public DateTime? EndDate { get; set; }
+        public string? Duration { get; set; }
+        public string? VehicleNumber { get; set; }
+        public int? VehicleTypeId { get; set; }
+        public bool? IsActive { get; set; }
+    }
+
+    public class Visitors_Response : BaseResponseEntity
+    {
+        public string? VisitNumber { get; set; }
+        public int? MeetingStatusId { get; set; }
+        public string? MeetingStatus { get; set; }
+        public string? VisitorName { get; set; }
+        public string? VisitorMobileNo { get; set; }
+        public string? VisitorEmailId { get; set; }
+        public int? GenderId { get; set; }
+        public string? GenderName { get; set; }
+        public int? VisitTypeId { get; set; }
+        public string? VisitType { get; set; }
+        public DateTime? VisitDate { get; set; }
+        public int? VisitorCompanyId { get; set; }
+        public string? CompanyName { get; set; }
+        public int? CountryId { get; set; }
+        public string? CountryName { get; set; }
+        public int? StateId { get; set; }
+        public string? StateName { get; set; }
+        public int? DistrictId { get; set; }
+        public string? DistrictName { get; set; }
+        public int? CityId { get; set; }
+        public string? CityName { get; set; }
+        public string? AddressLine { get; set; }
+        public int? Pincode { get; set; }
+        public int? IDTypeId { get; set; }
+        public string? IDType { get; set; }
+        public string? IDOriginalFileName { get; set; }
+        public string? IDImage { get; set; }
+        public string? IDImageURL { get; set; }
+        public string? VisitorPhotoOriginalFileName { get; set; }
+        public string? VisitorPhoto { get; set; }
+        public string? VisitorPhotoURL { get; set; }
+        public int? MeetingTypeId { get; set; }
+        public string? MeetingType { get; set; }
+        public int? DepartmentId { get; set; }
+        public string? DepartmentName { get; set; }
+        public int? EmployeeId { get; set; }
+        public string? EmployeeName { get; set; }
+        public string? Employee_MobileNumber { get; set; }
+        public string? Employee_EmailId { get; set; }
+        public string? Purpose { get; set; }
+        public int? PassTypeId { get; set; }
+        public string? PassType { get; set; }
+        public DateTime? StartDate { get; set; }
+        public DateTime? EndDate { get; set; }
+        public string? Duration { get; set; }
+        public string? VehicleNumber { get; set; }
+        public int? VehicleTypeId { get; set; }
+        public string? VehicleType { get; set; }
+        public bool? IsActive { get; set; }
+    }
+}

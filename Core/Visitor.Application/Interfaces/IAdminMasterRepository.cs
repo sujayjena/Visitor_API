@@ -285,5 +285,23 @@ namespace Visitor.Application.Interfaces
         Task<PassType_Response?> GetPassTypeById(int Id);
 
         #endregion
+
+        #region Item Type
+        Task<int> SaveItemType(ItemType_Request parameters);
+
+        Task<IEnumerable<ItemType_Response>> GetItemTypeList(BaseSearchEntity parameters);
+
+        Task<ItemType_Response?> GetItemTypeById(int Id);
+
+        #endregion
+
+        #region Days
+        Task<int> SaveDays(Days_Request parameters);
+
+        Task<IEnumerable<Days_Response>> GetDaysList(BaseSearchEntity parameters);
+
+        Task<Days_Response?> GetDaysById(int Id);
+
+        #endregion
     }
 }
