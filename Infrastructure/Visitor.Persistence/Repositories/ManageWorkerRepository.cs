@@ -43,6 +43,7 @@ namespace Visitor.Persistence.Repositories
             queryParameters.Add("@SearchText", parameters.SearchText.SanitizeValue());
             queryParameters.Add("@IsActive", parameters.IsActive);
             queryParameters.Add("@IsBlackList", parameters.IsBlackList);
+            queryParameters.Add("@ContractorId", parameters.ContractorId);
             queryParameters.Add("@PageNo", parameters.PageNo);
             queryParameters.Add("@PageSize", parameters.PageSize);
             queryParameters.Add("@Total", parameters.Total, null, System.Data.ParameterDirection.Output);

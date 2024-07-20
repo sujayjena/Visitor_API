@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Visitor.Domain.Entities;
+using Visitor.Persistence.Repositories;
 
 namespace Visitor.Application.Models
 {
@@ -373,7 +375,7 @@ namespace Visitor.Application.Models
         public string? GateName { get; set; }
         public int? GateTypeId { get; set; }
         public string? GateType { get; set; }
-       
+
         public string? Remarks { get; set; }
         public bool? IsActive { get; set; }
     }
@@ -670,7 +672,10 @@ namespace Visitor.Application.Models
     #region Work Shift
     public class WorkShift_Request : BaseEntity
     {
-        public int? DaysId { get; set; }
+        public WorkShift_Request()
+        {
+            daysList = new List<WorkShiftDays_Request>();
+        }
 
         [DefaultValue("")]
         public string? ShiftName { get; set; }
@@ -681,12 +686,22 @@ namespace Visitor.Application.Models
         public int? CompanyId { get; set; }
         public int? BranchId { get; set; }
         public bool? IsActive { get; set; }
+        public List<WorkShiftDays_Request> daysList { get; set; }
     }
-    
+
+    public class WorkShiftDays_Request : BaseEntity
+    {
+        [JsonIgnore]
+        public int? WorkShiftId { get; set; }
+        public int? DaysId { get; set; }
+    }
+
     public class WorkShift_Response : BaseResponseEntity
     {
-        public int? DaysId { get; set; }
-        public string? DaysName { get; set; }
+        public WorkShift_Response()
+        {
+            daysList = new List<WorkShiftDays_Response>();
+        }
         public string? ShiftName { get; set; }
         public string? ShiftIn { get; set; }
         public string? ShiftOut { get; set; }
@@ -697,6 +712,19 @@ namespace Visitor.Application.Models
         public int? BranchId { get; set; }
         public string? BranchName { get; set; }
         public bool? IsActive { get; set; }
+        public List<WorkShiftDays_Response> daysList { get; set; }
+    }
+
+    public class WorkShiftDays_Search_Request : BaseSearchEntity
+    {
+        public int? WorkShiftId { get; set; }
+    }
+
+    public class WorkShiftDays_Response : BaseResponseEntity
+    {
+        //public int? WorkShiftId { get; set; }
+        public int? DaysId { get; set; }
+        public string? DaysName { get; set; }
     }
     #endregion
 

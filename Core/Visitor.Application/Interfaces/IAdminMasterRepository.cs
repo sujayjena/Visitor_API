@@ -275,6 +275,10 @@ namespace Visitor.Application.Interfaces
 
         Task<WorkShift_Response?> GetWorkShiftById(int Id);
 
+        Task<int> SaveWorkShiftDays(WorkShiftDays_Request parameters);
+
+        Task<IEnumerable<WorkShiftDays_Response>> GetWorkShiftDaysList(WorkShiftDays_Search_Request parameters);
+
         #endregion
 
         #region Pass Type

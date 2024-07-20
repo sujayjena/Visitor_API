@@ -1851,6 +1851,18 @@ namespace Visitor.API.Controllers.Admin
             else
             {
                 _response.Message = "Record details saved sucessfully";
+
+                foreach (var items in parameters.daysList)
+                {
+                    var vWorkShiftDays = new WorkShiftDays_Request()
+                    {
+                        Id = items.Id,
+                        WorkShiftId = result,
+                        DaysId = items.DaysId,
+                    };
+
+                    int resultWorkShiftDays = await _adminMasterRepository.SaveWorkShiftDays(vWorkShiftDays);
+                }
             }
             return _response;
         }
@@ -1861,6 +1873,15 @@ namespace Visitor.API.Controllers.Admin
         public async Task<ResponseModel> GetWorkShiftList(BaseSearchEntity parameters)
         {
             IEnumerable<WorkShift_Response> lstRoles = await _adminMasterRepository.GetWorkShiftList(parameters);
+            foreach(var item in lstRoles)
+            {
+                var vSearchRequest = new WorkShiftDays_Search_Request();
+                vSearchRequest.WorkShiftId = item.Id;
+
+                var vDayList = await _adminMasterRepository.GetWorkShiftDaysList(vSearchRequest);
+                item.daysList = vDayList.ToList();
+            }
+
             _response.Data = lstRoles.ToList();
             _response.Total = parameters.Total;
             return _response;
@@ -1877,6 +1898,15 @@ namespace Visitor.API.Controllers.Admin
             else
             {
                 var vResultObj = await _adminMasterRepository.GetWorkShiftById(Id);
+                if(vResultObj != null)
+                {
+                    var vSearchRequest = new WorkShiftDays_Search_Request();
+                    vSearchRequest.WorkShiftId = vResultObj.Id;
+
+                    var vDayList = await _adminMasterRepository.GetWorkShiftDaysList(vSearchRequest);
+                    vResultObj.daysList = vDayList.ToList();
+                }
+
                 _response.Data = vResultObj;
             }
             return _response;

@@ -1229,7 +1229,6 @@ namespace Visitor.Persistence.Repositories
         {
             DynamicParameters queryParameters = new DynamicParameters();
             queryParameters.Add("@Id", parameters.Id);
-            queryParameters.Add("@DaysId", parameters.DaysId);
             queryParameters.Add("@ShiftName", parameters.ShiftName);
             queryParameters.Add("@ShiftIn", parameters.ShiftIn);
             queryParameters.Add("@ShiftOut", parameters.ShiftOut);
@@ -1264,6 +1263,34 @@ namespace Visitor.Persistence.Repositories
             DynamicParameters queryParameters = new DynamicParameters();
             queryParameters.Add("@Id", Id);
             return (await ListByStoredProcedure<WorkShift_Response>("GetWorkShiftById", queryParameters)).FirstOrDefault();
+        }
+
+        public async Task<int> SaveWorkShiftDays(WorkShiftDays_Request parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@Id", parameters.Id);
+            queryParameters.Add("@WorkShiftId", parameters.WorkShiftId);
+            queryParameters.Add("@DaysId", parameters.DaysId);
+            queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
+
+            return await SaveByStoredProcedure<int>("SaveWorkShiftDays", queryParameters);
+        }
+
+        public async Task<IEnumerable<WorkShiftDays_Response>> GetWorkShiftDaysList(WorkShiftDays_Search_Request parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@WorkShiftId", parameters.WorkShiftId);
+            queryParameters.Add("@SearchText", parameters.SearchText.SanitizeValue());
+            queryParameters.Add("@IsActive", parameters.IsActive);
+            queryParameters.Add("@PageNo", parameters.PageNo);
+            queryParameters.Add("@PageSize", parameters.PageSize);
+            queryParameters.Add("@Total", parameters.Total, null, System.Data.ParameterDirection.Output);
+            queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
+
+            var result = await ListByStoredProcedure<WorkShiftDays_Response>("GetWorkShiftDaysList", queryParameters);
+            parameters.Total = queryParameters.Get<int>("Total");
+
+            return result;
         }
 
         #endregion

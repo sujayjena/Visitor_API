@@ -32,6 +32,7 @@ namespace Visitor.Application.Models
     {
         [DefaultValue(null)]
         public bool? IsBlackList { get; set; }
+        public int? ContractorId { get; set; }
     }
 
     public class Worker_Response : BaseResponseEntity
