@@ -681,7 +681,7 @@ namespace Visitor.Application.Models
         public string? ShiftName { get; set; }
         public string? ShiftIn { get; set; }
         public string? ShiftOut { get; set; }
-        public decimal? TotalHours { get; set; }
+        public string? TotalHours { get; set; }
         public bool? ShiftOverLay { get; set; }
         public int? CompanyId { get; set; }
         public int? BranchId { get; set; }
@@ -705,7 +705,7 @@ namespace Visitor.Application.Models
         public string? ShiftName { get; set; }
         public string? ShiftIn { get; set; }
         public string? ShiftOut { get; set; }
-        public decimal? TotalHours { get; set; }
+        public string? TotalHours { get; set; }
         public bool? ShiftOverLay { get; set; }
         public int? CompanyId { get; set; }
         public string? CompanyName { get; set; }
