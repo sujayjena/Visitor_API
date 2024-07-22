@@ -778,4 +778,184 @@ namespace Visitor.Application.Models
         public bool? IsActive { get; set; }
     }
     #endregion
+
+    #region Meal Type
+    public class MealType_Request : BaseEntity
+    {
+        public MealType_Request()
+        {
+            daysList = new List<MealTypeDays_Request>();
+        }
+
+        public int? CanteenId { get; set; }
+
+        [DefaultValue("")]
+        public string? MealType { get; set; }
+
+        [DefaultValue("")]
+        public string? StartTime { get; set; }
+
+        [DefaultValue("")]
+        public string? EndTime { get; set; }
+        public bool? IsActive { get; set; }
+        public List<MealTypeDays_Request> daysList { get; set; }
+    }
+
+    public class MealTypeDays_Request : BaseEntity
+    {
+        [JsonIgnore]
+        public int? MealTypeId { get; set; }
+        public int? DaysId { get; set; }
+        public bool? IsActive { get; set; }
+    }
+
+    public class MealType_Search_Request : BaseSearchEntity
+    {
+        public int? CanteenId { get; set; }
+    }
+
+    public class MealType_Response : BaseResponseEntity
+    {
+        public MealType_Response()
+        {
+            daysList = new List<MealTypeDays_Response>();
+        }
+
+        public int? CanteenId { get; set; }
+        public string? CanteenName { get; set; }
+        public string? MealType { get; set; }
+        public string? StartTime { get; set; }
+        public string? EndTime { get; set; }
+        public bool? IsActive { get; set; }
+        public List<MealTypeDays_Response> daysList { get; set; }
+    }
+
+    public class MealTypeDays_Search_Request : BaseSearchEntity
+    {
+        public int? MealTypeId { get; set; }
+    }
+
+    public class MealTypeDays_Response : BaseResponseEntity
+    {
+        //public int? MealTypeId { get; set; }
+        public int? DaysId { get; set; }
+        public string? DaysName { get; set; }
+        public bool? IsActive { get; set; }
+    }
+    #endregion
+
+    #region Food Item
+    public class FoodItem_Request : BaseEntity
+    {
+        public FoodItem_Request()
+        {
+            mealTypeList = new List<FoodItemMealType_Request>();
+            daysList = new List<FoodItemDays_Request>();
+        }
+
+        public int? CanteenId { get; set; }
+
+        [DefaultValue("")]
+        public string? FoodItemName { get; set; }
+
+        [DefaultValue("")]
+        public string? FoodItemDesc { get; set; }
+        public bool? IsVeg { get; set; }
+        public bool? IsSubsidized { get; set; }
+        public decimal? SellingPrice { get; set; }
+        public decimal? SubsidizedPrice { get; set; }
+        public bool? IsDiscounted { get; set; }
+        public decimal? DiscountPrice { get; set; }
+        public bool? IsEmployee { get; set; }
+
+        [DefaultValue("")]
+        public string? FoodItemOriginalFileName { get; set; }
+        [JsonIgnore]
+        public string? FoodItemImage { get; set; }
+        public string? FoodItemImage_Base64 { get; set; }
+
+        public bool? IsActive { get; set; }
+        public List<FoodItemMealType_Request> mealTypeList { get; set; }
+        public List<FoodItemDays_Request> daysList { get; set; }
+    }
+
+    public class FoodItemMealType_Request : BaseEntity
+    {
+        [JsonIgnore]
+        public int? FoodItemId { get; set; }
+        public int? MealTypeId { get; set; }
+        public bool? IsActive { get; set; }
+    }
+    public class FoodItemDays_Request : BaseEntity
+    {
+        [JsonIgnore]
+        public int? FoodItemId { get; set; }
+        public int? DaysId { get; set; }
+        public bool? IsActive { get; set; }
+    }
+
+    public class FoodItem_Search_Request : BaseSearchEntity
+    {
+        public int? CanteenId { get; set; }
+
+        [DefaultValue(null)]
+        public bool? IsVeg { get; set; }
+
+        [DefaultValue(null)]
+        public bool? IsSubsidized { get; set; }
+
+        [DefaultValue(null)]
+        public bool? IsEmployee { get; set; }
+        public int? MealTypeId { get; set; }
+    }
+
+    public class FoodItem_Response : BaseResponseEntity
+    {
+        public FoodItem_Response()
+        {
+            mealTypeList = new List<FoodItemMealType_Response>();
+            daysList = new List<FoodItemDays_Response>();
+        }
+
+        public int? CanteenId { get; set; }
+        public string? CanteenName { get; set; }
+        public string? FoodItemName { get; set; }
+        public string? FoodItemDesc { get; set; }
+        public bool? IsVeg { get; set; }
+        public bool? IsSubsidized { get; set; }
+        public decimal? SellingPrice { get; set; }
+        public decimal? SubsidizedPrice { get; set; }
+        public bool? IsDiscounted { get; set; }
+        public decimal? DiscountPrice { get; set; }
+        public bool? IsEmployee { get; set; }
+        public string? FoodItemOriginalFileName { get; set; }
+        public string? FoodItemImage { get; set; }
+        public string? FoodItemImageURL { get; set; }
+        public bool? IsActive { get; set; }
+
+        public List<FoodItemMealType_Response> mealTypeList { get; set; }
+        public List<FoodItemDays_Response> daysList { get; set; }
+    }
+
+    public class FoodItemDays_Search_Request : BaseSearchEntity
+    {
+        public int? FoodItemId { get; set; }
+    }
+
+    public class FoodItemDays_Response : BaseResponseEntity
+    {
+        //public int? FoodItemId { get; set; }
+        public int? DaysId { get; set; }
+        public string? DaysName { get; set; }
+        public bool? IsActive { get; set; }
+    }
+
+    public class FoodItemMealType_Response : BaseResponseEntity
+    {
+        //public int? FoodItemId { get; set; }
+        public int? MealTypeId { get; set; }
+        public string? MealType { get; set; }
+        public bool? IsActive { get; set; }
+    }
+    #endregion
 }

@@ -14,10 +14,12 @@ namespace Visitor.API.Controllers.Admin
     {
         private ResponseModel _response;
         private readonly IAdminMasterRepository _adminMasterRepository;
+        private readonly IFileManager _fileManager;
 
-        public AdminMasterController(IAdminMasterRepository adminMasterRepository)
+        public AdminMasterController(IAdminMasterRepository adminMasterRepository, IFileManager fileManager)
         {
             _adminMasterRepository = adminMasterRepository;
+            _fileManager = fileManager;
 
             _response = new ResponseModel();
             _response.IsSuccess = true;
@@ -2075,6 +2077,212 @@ namespace Visitor.API.Controllers.Admin
             else
             {
                 var vResultObj = await _adminMasterRepository.GetDaysById(Id);
+                _response.Data = vResultObj;
+            }
+            return _response;
+        }
+
+        #endregion
+
+        #region Meal Type
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> SaveMealType(MealType_Request parameters)
+        {
+            int result = await _adminMasterRepository.SaveMealType(parameters);
+
+            if (result == (int)SaveOperationEnums.NoRecordExists)
+            {
+                _response.Message = "No record exists";
+            }
+            else if (result == (int)SaveOperationEnums.ReocrdExists)
+            {
+                _response.Message = "Record is already exists";
+            }
+            else if (result == (int)SaveOperationEnums.NoResult)
+            {
+                _response.Message = "Something went wrong, please try again";
+            }
+            else
+            {
+                _response.Message = "Record details saved sucessfully";
+
+                foreach (var items in parameters.daysList)
+                {
+                    var vMealTypeDays = new MealTypeDays_Request()
+                    {
+                        Id = items.Id,
+                        MealTypeId = result,
+                        DaysId = items.DaysId,
+                        IsActive = items.IsActive,
+                    };
+
+                    int resultMealTypeDays = await _adminMasterRepository.SaveMealTypeDays(vMealTypeDays);
+                }
+            }
+            return _response;
+        }
+
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> GetMealTypeList(MealType_Search_Request parameters)
+        {
+            IEnumerable<MealType_Response> lstRoles = await _adminMasterRepository.GetMealTypeList(parameters);
+            foreach (var item in lstRoles)
+            {
+                var vSearchRequest = new MealTypeDays_Search_Request();
+                vSearchRequest.MealTypeId = item.Id;
+
+                var vDayList = await _adminMasterRepository.GetMealTypeDaysList(vSearchRequest);
+                item.daysList = vDayList.ToList();
+            }
+
+            _response.Data = lstRoles.ToList();
+            _response.Total = parameters.Total;
+            return _response;
+        }
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> GetMealTypeById(int Id)
+        {
+            if (Id <= 0)
+            {
+                _response.Message = "Id is required";
+            }
+            else
+            {
+                var vResultObj = await _adminMasterRepository.GetMealTypeById(Id);
+                if (vResultObj != null)
+                {
+                    var vSearchRequest = new MealTypeDays_Search_Request();
+                    vSearchRequest.MealTypeId = vResultObj.Id;
+
+                    var vDayList = await _adminMasterRepository.GetMealTypeDaysList(vSearchRequest);
+                    vResultObj.daysList = vDayList.ToList();
+                }
+
+                _response.Data = vResultObj;
+            }
+            return _response;
+        }
+
+        #endregion
+
+        #region Food Item
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> SaveFoodItem(FoodItem_Request parameters)
+        {
+            // image Upload
+            if (parameters! != null && !string.IsNullOrWhiteSpace(parameters.FoodItemImage_Base64))
+            {
+                var vUploadFile = _fileManager.UploadDocumentsBase64ToFile(parameters.FoodItemImage_Base64, "\\Uploads\\FoodItem\\", parameters.FoodItemOriginalFileName);
+
+                if (!string.IsNullOrWhiteSpace(vUploadFile))
+                {
+                    parameters.FoodItemImage = vUploadFile;
+                }
+            }
+
+            int result = await _adminMasterRepository.SaveFoodItem(parameters);
+
+            if (result == (int)SaveOperationEnums.NoRecordExists)
+            {
+                _response.Message = "No record exists";
+            }
+            else if (result == (int)SaveOperationEnums.ReocrdExists)
+            {
+                _response.Message = "Record is already exists";
+            }
+            else if (result == (int)SaveOperationEnums.NoResult)
+            {
+                _response.Message = "Something went wrong, please try again";
+            }
+            else
+            {
+                _response.Message = "Record details saved sucessfully";
+
+                //insert / update meal type
+                foreach (var items in parameters.mealTypeList)
+                {
+                    var vFoodItemMealType = new FoodItemMealType_Request()
+                    {
+                        Id = items.Id,
+                        FoodItemId = result,
+                        MealTypeId = items.MealTypeId,
+                        IsActive = items.IsActive,
+                    };
+
+                    int resultFoodItemMealType = await _adminMasterRepository.SaveFoodItemMealType(vFoodItemMealType);
+                }
+
+                //insert / update days
+                foreach (var items in parameters.daysList)
+                {
+                    var vFoodItemDays = new FoodItemDays_Request()
+                    {
+                        Id = items.Id,
+                        FoodItemId = result,
+                        DaysId = items.DaysId,
+                        IsActive = items.IsActive,
+                    };
+
+                    int resultFoodItemDays = await _adminMasterRepository.SaveFoodItemDays(vFoodItemDays);
+                }
+            }
+            return _response;
+        }
+
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> GetFoodItemList(FoodItem_Search_Request parameters)
+        {
+            IEnumerable<FoodItem_Response> lstRoles = await _adminMasterRepository.GetFoodItemList(parameters);
+            foreach (var item in lstRoles)
+            {
+                var vSearchRequest = new FoodItemDays_Search_Request();
+                vSearchRequest.FoodItemId = item.Id;
+
+                var vDayList = await _adminMasterRepository.GetFoodItemDaysList(vSearchRequest);
+                item.daysList = vDayList.ToList();
+
+                var vMealTypeList = await _adminMasterRepository.GetFoodItemMealTypeList(vSearchRequest);
+                item.mealTypeList = vMealTypeList.ToList();
+            }
+
+            _response.Data = lstRoles.ToList();
+            _response.Total = parameters.Total;
+            return _response;
+        }
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> GetFoodItemById(int Id)
+        {
+            if (Id <= 0)
+            {
+                _response.Message = "Id is required";
+            }
+            else
+            {
+                var vResultObj = await _adminMasterRepository.GetFoodItemById(Id);
+                if (vResultObj != null)
+                {
+                    var vSearchRequest = new FoodItemDays_Search_Request();
+                    vSearchRequest.FoodItemId = vResultObj.Id;
+
+                    var vDayList = await _adminMasterRepository.GetFoodItemDaysList(vSearchRequest);
+                    vResultObj.daysList = vDayList.ToList();
+
+                    var vMealTypeList = await _adminMasterRepository.GetFoodItemMealTypeList(vSearchRequest);
+                    vResultObj.mealTypeList = vMealTypeList.ToList();
+                }
+
                 _response.Data = vResultObj;
             }
             return _response;

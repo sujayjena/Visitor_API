@@ -307,5 +307,33 @@ namespace Visitor.Application.Interfaces
         Task<Days_Response?> GetDaysById(int Id);
 
         #endregion
+
+        #region Meal Type
+        Task<int> SaveMealType(MealType_Request parameters);
+
+        Task<IEnumerable<MealType_Response>> GetMealTypeList(MealType_Search_Request parameters);
+
+        Task<MealType_Response?> GetMealTypeById(int Id);
+
+        Task<int> SaveMealTypeDays(MealTypeDays_Request parameters);
+
+        Task<IEnumerable<MealTypeDays_Response>> GetMealTypeDaysList(MealTypeDays_Search_Request parameters);
+        #endregion
+
+        #region Food Item
+        Task<int> SaveFoodItem(FoodItem_Request parameters);
+
+        Task<IEnumerable<FoodItem_Response>> GetFoodItemList(FoodItem_Search_Request parameters);
+
+        Task<FoodItem_Response?> GetFoodItemById(int Id);
+
+        Task<int> SaveFoodItemDays(FoodItemDays_Request parameters);
+
+        Task<IEnumerable<FoodItemDays_Response>> GetFoodItemDaysList(FoodItemDays_Search_Request parameters);
+
+        Task<int> SaveFoodItemMealType(FoodItemMealType_Request parameters);
+
+        Task<IEnumerable<FoodItemMealType_Response>> GetFoodItemMealTypeList(FoodItemDays_Search_Request parameters);
+        #endregion
     }
 }
