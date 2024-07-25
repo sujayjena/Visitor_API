@@ -30,15 +30,15 @@ namespace Visitor.API.Controllers
         public async Task<ResponseModel> SaveVisitors(Visitors_Request parameters)
         {
             // ID Upload
-            if (parameters! != null && !string.IsNullOrWhiteSpace(parameters.IDImage_Base64))
-            {
-                var vUploadFile = _fileManager.UploadDocumentsBase64ToFile(parameters.IDImage_Base64, "\\Uploads\\Visitors\\", parameters.IDOriginalFileName);
+            //if (parameters! != null && !string.IsNullOrWhiteSpace(parameters.IDImage_Base64))
+            //{
+            //    var vUploadFile = _fileManager.UploadDocumentsBase64ToFile(parameters.IDImage_Base64, "\\Uploads\\Visitors\\", parameters.IDOriginalFileName);
 
-                if (!string.IsNullOrWhiteSpace(vUploadFile))
-                {
-                    parameters.IDImage = vUploadFile;
-                }
-            }
+            //    if (!string.IsNullOrWhiteSpace(vUploadFile))
+            //    {
+            //        parameters.IDImage = vUploadFile;
+            //    }
+            //}
 
             // Visitor Photo Upload
             if (parameters != null && !string.IsNullOrWhiteSpace(parameters.VisitorPhoto_Base64))

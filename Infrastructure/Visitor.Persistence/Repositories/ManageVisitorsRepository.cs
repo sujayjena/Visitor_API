@@ -24,23 +24,21 @@ namespace Visitor.Persistence.Repositories
         {
             DynamicParameters queryParameters = new DynamicParameters();
             queryParameters.Add("@Id", parameters.Id);
-            queryParameters.Add("@MeetingStatusId", parameters.MeetingStatusId);
+            queryParameters.Add("@VisitStartDate", parameters.VisitStartDate);
+            queryParameters.Add("@VisitEndDate", parameters.VisitEndDate);
+            queryParameters.Add("@VisitTypeId", parameters.VisitTypeId);
             queryParameters.Add("@VisitorName", parameters.VisitorName);
             queryParameters.Add("@VisitorMobileNo", parameters.VisitorMobileNo);
             queryParameters.Add("@VisitorEmailId", parameters.VisitorEmailId);
             queryParameters.Add("@GenderId", parameters.GenderId);
-            queryParameters.Add("@VisitTypeId", parameters.VisitTypeId);
-            queryParameters.Add("@VisitDate", parameters.VisitDate);
             queryParameters.Add("@VisitorCompanyId", parameters.VisitorCompanyId);
             queryParameters.Add("@CountryId", parameters.CountryId);
             queryParameters.Add("@StateId", parameters.StateId);
             queryParameters.Add("@DistrictId", parameters.DistrictId);
             queryParameters.Add("@CityId", parameters.CityId);
-            queryParameters.Add("@AddressLine", parameters.AddressLine);
             queryParameters.Add("@Pincode", parameters.Pincode);
+            queryParameters.Add("@AddressLine", parameters.AddressLine);
             queryParameters.Add("@IDTypeId", parameters.IDTypeId);
-            queryParameters.Add("@IDOriginalFileName", parameters.IDOriginalFileName);
-            queryParameters.Add("@IDImage", parameters.IDImage);
             queryParameters.Add("@VisitorPhotoOriginalFileName", parameters.VisitorPhotoOriginalFileName);
             queryParameters.Add("@VisitorPhoto", parameters.VisitorPhoto);
             queryParameters.Add("@MeetingTypeId", parameters.MeetingTypeId);
@@ -51,8 +49,12 @@ namespace Visitor.Persistence.Repositories
             queryParameters.Add("@StartDate", parameters.StartDate);
             queryParameters.Add("@EndDate", parameters.EndDate);
             queryParameters.Add("@Duration", parameters.Duration);
+            queryParameters.Add("@MeetingStatusId", parameters.MeetingStatusId);
             queryParameters.Add("@VehicleNumber", parameters.VehicleNumber);
             queryParameters.Add("@VehicleTypeId", parameters.VehicleTypeId);
+            queryParameters.Add("@IsLaptop", parameters.IsLaptop);
+            queryParameters.Add("@IsPendrive", parameters.IsPendrive);
+            queryParameters.Add("@Others", parameters.Others);
             queryParameters.Add("@IsActive", parameters.IsActive);
             queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
 

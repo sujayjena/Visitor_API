@@ -249,6 +249,7 @@ namespace Visitor.Persistence.Repositories
             queryParameters.Add("@Id", parameters.Id);
             queryParameters.Add("@DocumentId", parameters.DocumentId);
             queryParameters.Add("@DocumentType", parameters.DocumentType.SanitizeValue());
+            queryParameters.Add("@Purpose", parameters.Purpose);
             queryParameters.Add("@IsActive", parameters.IsActive);
             queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
 
@@ -1268,7 +1269,7 @@ namespace Visitor.Persistence.Repositories
         public async Task<int> SaveWorkShiftDays(WorkShiftDays_Request parameters)
         {
             DynamicParameters queryParameters = new DynamicParameters();
-            queryParameters.Add("@Id", parameters.Id);
+            queryParameters.Add("@Action", parameters.Action);
             queryParameters.Add("@WorkShiftId", parameters.WorkShiftId);
             queryParameters.Add("@DaysId", parameters.DaysId);
             queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
@@ -1411,7 +1412,6 @@ namespace Visitor.Persistence.Repositories
         {
             DynamicParameters queryParameters = new DynamicParameters();
             queryParameters.Add("@Id", parameters.Id);
-            queryParameters.Add("@CanteenId", parameters.CanteenId);
             queryParameters.Add("@MealType", parameters.MealType);
             queryParameters.Add("@StartTime", parameters.StartTime);
             queryParameters.Add("@EndTime", parameters.EndTime);
@@ -1421,10 +1421,9 @@ namespace Visitor.Persistence.Repositories
             return await SaveByStoredProcedure<int>("SaveMealType", queryParameters);
         }
 
-        public async Task<IEnumerable<MealType_Response>> GetMealTypeList(MealType_Search_Request parameters)
+        public async Task<IEnumerable<MealType_Response>> GetMealTypeList(BaseSearchEntity parameters)
         {
             DynamicParameters queryParameters = new DynamicParameters();
-            queryParameters.Add("@CanteenId", parameters.CanteenId);
             queryParameters.Add("@SearchText", parameters.SearchText.SanitizeValue());
             queryParameters.Add("@IsActive", parameters.IsActive);
             queryParameters.Add("@PageNo", parameters.PageNo);
@@ -1445,35 +1444,6 @@ namespace Visitor.Persistence.Repositories
             return (await ListByStoredProcedure<MealType_Response>("GetMealTypeById", queryParameters)).FirstOrDefault();
         }
 
-        public async Task<int> SaveMealTypeDays(MealTypeDays_Request parameters)
-        {
-            DynamicParameters queryParameters = new DynamicParameters();
-            queryParameters.Add("@Id", parameters.Id);
-            queryParameters.Add("@MealTypeId", parameters.MealTypeId);
-            queryParameters.Add("@DaysId", parameters.DaysId);
-            queryParameters.Add("@IsActive", parameters.IsActive);
-            queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
-
-            return await SaveByStoredProcedure<int>("SaveMealTypeDays", queryParameters);
-        }
-
-        public async Task<IEnumerable<MealTypeDays_Response>> GetMealTypeDaysList(MealTypeDays_Search_Request parameters)
-        {
-            DynamicParameters queryParameters = new DynamicParameters();
-            queryParameters.Add("@MealTypeId", parameters.MealTypeId);
-            queryParameters.Add("@SearchText", parameters.SearchText.SanitizeValue());
-            queryParameters.Add("@IsActive", parameters.IsActive);
-            queryParameters.Add("@PageNo", parameters.PageNo);
-            queryParameters.Add("@PageSize", parameters.PageSize);
-            queryParameters.Add("@Total", parameters.Total, null, System.Data.ParameterDirection.Output);
-            queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
-
-            var result = await ListByStoredProcedure<MealTypeDays_Response>("GetMealTypeDaysList", queryParameters);
-            parameters.Total = queryParameters.Get<int>("Total");
-
-            return result;
-        }
-
         #endregion
 
         #region Food Item
@@ -1482,7 +1452,7 @@ namespace Visitor.Persistence.Repositories
             DynamicParameters queryParameters = new DynamicParameters();
             queryParameters.Add("@Id", parameters.Id);
             queryParameters.Add("@CanteenId", parameters.CanteenId);
-            queryParameters.Add("@FoodItemName", parameters.FoodItemName);
+            queryParameters.Add("@MenuItemId", parameters.MenuItemId);
             queryParameters.Add("@FoodItemDesc", parameters.FoodItemDesc);
             queryParameters.Add("@IsVeg", parameters.IsVeg);
             queryParameters.Add("@IsSubsidized", parameters.IsSubsidized);
@@ -1530,7 +1500,7 @@ namespace Visitor.Persistence.Repositories
         public async Task<int> SaveFoodItemDays(FoodItemDays_Request parameters)
         {
             DynamicParameters queryParameters = new DynamicParameters();
-            queryParameters.Add("@Id", parameters.Id);
+            queryParameters.Add("@Action", parameters.Action);
             queryParameters.Add("@FoodItemId", parameters.FoodItemId);
             queryParameters.Add("@DaysId", parameters.DaysId);
             queryParameters.Add("@IsActive", parameters.IsActive);
@@ -1559,7 +1529,7 @@ namespace Visitor.Persistence.Repositories
         public async Task<int> SaveFoodItemMealType(FoodItemMealType_Request parameters)
         {
             DynamicParameters queryParameters = new DynamicParameters();
-            queryParameters.Add("@Id", parameters.Id);
+            queryParameters.Add("@Action", parameters.Action);
             queryParameters.Add("@FoodItemId", parameters.FoodItemId);
             queryParameters.Add("@MealTypeId", parameters.MealTypeId);
             queryParameters.Add("@IsActive", parameters.IsActive);
@@ -1583,6 +1553,43 @@ namespace Visitor.Persistence.Repositories
             parameters.Total = queryParameters.Get<int>("Total");
 
             return result;
+        }
+
+        #endregion
+
+        #region MenuItem
+        public async Task<int> SaveMenuItem(MenuItem_Request parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@Id", parameters.Id);
+            queryParameters.Add("@MenuItemName", parameters.MenuItemName.SanitizeValue());
+            queryParameters.Add("@IsActive", parameters.IsActive);
+            queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
+
+            return await SaveByStoredProcedure<int>("SaveMenuItem", queryParameters);
+        }
+
+        public async Task<IEnumerable<MenuItem_Response>> GetMenuItemList(BaseSearchEntity parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@SearchText", parameters.SearchText.SanitizeValue());
+            queryParameters.Add("@IsActive", parameters.IsActive);
+            queryParameters.Add("@PageNo", parameters.PageNo);
+            queryParameters.Add("@PageSize", parameters.PageSize);
+            queryParameters.Add("@Total", parameters.Total, null, System.Data.ParameterDirection.Output);
+            queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
+
+            var result = await ListByStoredProcedure<MenuItem_Response>("GetMenuItemList", queryParameters);
+            parameters.Total = queryParameters.Get<int>("Total");
+
+            return result;
+        }
+
+        public async Task<MenuItem_Response?> GetMenuItemById(int Id)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@Id", Id);
+            return (await ListByStoredProcedure<MenuItem_Response>("GetMenuItemById", queryParameters)).FirstOrDefault();
         }
 
         #endregion

@@ -1854,16 +1854,27 @@ namespace Visitor.API.Controllers.Admin
             {
                 _response.Message = "Record details saved sucessfully";
 
+                // Delete Old days
+                var vDaysDELETEObj = new WorkShiftDays_Request()
+                {
+                    Action = "DELETE",
+                    WorkShiftId = result,
+                    DaysId = 0,
+                };
+                int resultDaysDELETE = await _adminMasterRepository.SaveWorkShiftDays(vDaysDELETEObj);
+
+
+                // Add new days
                 foreach (var items in parameters.daysList)
                 {
                     var vWorkShiftDays = new WorkShiftDays_Request()
                     {
-                        Id = items.Id,
+                        Action = "INSERT",
                         WorkShiftId = result,
                         DaysId = items.DaysId,
                     };
 
-                    int resultWorkShiftDays = await _adminMasterRepository.SaveWorkShiftDays(vWorkShiftDays);
+                    int resultMealTypeDays = await _adminMasterRepository.SaveWorkShiftDays(vWorkShiftDays);
                 }
             }
             return _response;
@@ -2107,19 +2118,6 @@ namespace Visitor.API.Controllers.Admin
             else
             {
                 _response.Message = "Record details saved sucessfully";
-
-                foreach (var items in parameters.daysList)
-                {
-                    var vMealTypeDays = new MealTypeDays_Request()
-                    {
-                        Id = items.Id,
-                        MealTypeId = result,
-                        DaysId = items.DaysId,
-                        IsActive = items.IsActive,
-                    };
-
-                    int resultMealTypeDays = await _adminMasterRepository.SaveMealTypeDays(vMealTypeDays);
-                }
             }
             return _response;
         }
@@ -2127,17 +2125,9 @@ namespace Visitor.API.Controllers.Admin
 
         [Route("[action]")]
         [HttpPost]
-        public async Task<ResponseModel> GetMealTypeList(MealType_Search_Request parameters)
+        public async Task<ResponseModel> GetMealTypeList(BaseSearchEntity parameters)
         {
             IEnumerable<MealType_Response> lstRoles = await _adminMasterRepository.GetMealTypeList(parameters);
-            foreach (var item in lstRoles)
-            {
-                var vSearchRequest = new MealTypeDays_Search_Request();
-                vSearchRequest.MealTypeId = item.Id;
-
-                var vDayList = await _adminMasterRepository.GetMealTypeDaysList(vSearchRequest);
-                item.daysList = vDayList.ToList();
-            }
 
             _response.Data = lstRoles.ToList();
             _response.Total = parameters.Total;
@@ -2155,15 +2145,7 @@ namespace Visitor.API.Controllers.Admin
             else
             {
                 var vResultObj = await _adminMasterRepository.GetMealTypeById(Id);
-                if (vResultObj != null)
-                {
-                    var vSearchRequest = new MealTypeDays_Search_Request();
-                    vSearchRequest.MealTypeId = vResultObj.Id;
-
-                    var vDayList = await _adminMasterRepository.GetMealTypeDaysList(vSearchRequest);
-                    vResultObj.daysList = vDayList.ToList();
-                }
-
+               
                 _response.Data = vResultObj;
             }
             return _response;
@@ -2206,12 +2188,22 @@ namespace Visitor.API.Controllers.Admin
             {
                 _response.Message = "Record details saved sucessfully";
 
-                //insert / update meal type
+                // Delete Old Meal Type
+                var vMealTypeDELETEObj = new FoodItemMealType_Request()
+                {
+                    Action = "DELETE",
+                    FoodItemId = result,
+                    MealTypeId = 0,
+                    IsActive = null,
+                };
+                int resultMealTypeDELETE = await _adminMasterRepository.SaveFoodItemMealType(vMealTypeDELETEObj);
+
+                // Add new days
                 foreach (var items in parameters.mealTypeList)
                 {
                     var vFoodItemMealType = new FoodItemMealType_Request()
                     {
-                        Id = items.Id,
+                        Action = "INSERT",
                         FoodItemId = result,
                         MealTypeId = items.MealTypeId,
                         IsActive = items.IsActive,
@@ -2220,12 +2212,22 @@ namespace Visitor.API.Controllers.Admin
                     int resultFoodItemMealType = await _adminMasterRepository.SaveFoodItemMealType(vFoodItemMealType);
                 }
 
-                //insert / update days
+                // Delete Old days
+                var vDaysDELETEObj = new FoodItemDays_Request()
+                {
+                    Action = "DELETE",
+                    FoodItemId = result,
+                    DaysId = 0,
+                    IsActive = null,
+                };
+                int resultDaysDELETE = await _adminMasterRepository.SaveFoodItemDays(vDaysDELETEObj);
+
+                // Add new days
                 foreach (var items in parameters.daysList)
                 {
                     var vFoodItemDays = new FoodItemDays_Request()
                     {
-                        Id = items.Id,
+                        Action = "INSERT",
                         FoodItemId = result,
                         DaysId = items.DaysId,
                         IsActive = items.IsActive,
@@ -2283,6 +2285,62 @@ namespace Visitor.API.Controllers.Admin
                     vResultObj.mealTypeList = vMealTypeList.ToList();
                 }
 
+                _response.Data = vResultObj;
+            }
+            return _response;
+        }
+
+        #endregion
+
+        #region MenuItem
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> SaveMenuItem(MenuItem_Request parameters)
+        {
+            int result = await _adminMasterRepository.SaveMenuItem(parameters);
+
+            if (result == (int)SaveOperationEnums.NoRecordExists)
+            {
+                _response.Message = "No record exists";
+            }
+            else if (result == (int)SaveOperationEnums.ReocrdExists)
+            {
+                _response.Message = "Record is already exists";
+            }
+            else if (result == (int)SaveOperationEnums.NoResult)
+            {
+                _response.Message = "Something went wrong, please try again";
+            }
+            else
+            {
+                _response.Message = "Record details saved sucessfully";
+            }
+            return _response;
+        }
+
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> GetMenuItemList(BaseSearchEntity parameters)
+        {
+            IEnumerable<MenuItem_Response> lstRoles = await _adminMasterRepository.GetMenuItemList(parameters);
+            _response.Data = lstRoles.ToList();
+            _response.Total = parameters.Total;
+            return _response;
+        }
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> GetMenuItemById(int Id)
+        {
+            if (Id <= 0)
+            {
+                _response.Message = "Id is required";
+            }
+            else
+            {
+                var vResultObj = await _adminMasterRepository.GetMenuItemById(Id);
                 _response.Data = vResultObj;
             }
             return _response;

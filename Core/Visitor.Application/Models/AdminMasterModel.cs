@@ -125,19 +125,23 @@ namespace Visitor.Application.Models
     #region Document Type
     public class DocumentType_Request : BaseEntity
     {
-        public int? DocumentId { get; set; }
+        [DefaultValue("")]
+        public string? DocumentId { get; set; }
 
         [DefaultValue("")]
         public string? DocumentType { get; set; }
+
+        [DefaultValue("")]
+        public string? Purpose { get; set; }
 
         public bool? IsActive { get; set; }
     }
 
     public class DocumentType_Response : BaseResponseEntity
     {
-        public int? DocumentId { get; set; }
+        public string? DocumentId { get; set; }
         public string? DocumentType { get; set; }
-
+        public string? Purpose { get; set; }
         public bool? IsActive { get; set; }
     }
 
@@ -692,6 +696,8 @@ namespace Visitor.Application.Models
     public class WorkShiftDays_Request : BaseEntity
     {
         [JsonIgnore]
+        public string? Action { get; set; }
+        [JsonIgnore]
         public int? WorkShiftId { get; set; }
         public int? DaysId { get; set; }
     }
@@ -782,12 +788,6 @@ namespace Visitor.Application.Models
     #region Meal Type
     public class MealType_Request : BaseEntity
     {
-        public MealType_Request()
-        {
-            daysList = new List<MealTypeDays_Request>();
-        }
-
-        public int? CanteenId { get; set; }
 
         [DefaultValue("")]
         public string? MealType { get; set; }
@@ -798,48 +798,13 @@ namespace Visitor.Application.Models
         [DefaultValue("")]
         public string? EndTime { get; set; }
         public bool? IsActive { get; set; }
-        public List<MealTypeDays_Request> daysList { get; set; }
-    }
-
-    public class MealTypeDays_Request : BaseEntity
-    {
-        [JsonIgnore]
-        public int? MealTypeId { get; set; }
-        public int? DaysId { get; set; }
-        public bool? IsActive { get; set; }
-    }
-
-    public class MealType_Search_Request : BaseSearchEntity
-    {
-        public int? CanteenId { get; set; }
     }
 
     public class MealType_Response : BaseResponseEntity
     {
-        public MealType_Response()
-        {
-            daysList = new List<MealTypeDays_Response>();
-        }
-
-        public int? CanteenId { get; set; }
-        public string? CanteenName { get; set; }
         public string? MealType { get; set; }
         public string? StartTime { get; set; }
         public string? EndTime { get; set; }
-        public bool? IsActive { get; set; }
-        public List<MealTypeDays_Response> daysList { get; set; }
-    }
-
-    public class MealTypeDays_Search_Request : BaseSearchEntity
-    {
-        public int? MealTypeId { get; set; }
-    }
-
-    public class MealTypeDays_Response : BaseResponseEntity
-    {
-        //public int? MealTypeId { get; set; }
-        public int? DaysId { get; set; }
-        public string? DaysName { get; set; }
         public bool? IsActive { get; set; }
     }
     #endregion
@@ -855,8 +820,7 @@ namespace Visitor.Application.Models
 
         public int? CanteenId { get; set; }
 
-        [DefaultValue("")]
-        public string? FoodItemName { get; set; }
+        public int? MenuItemId { get; set; }
 
         [DefaultValue("")]
         public string? FoodItemDesc { get; set; }
@@ -882,12 +846,16 @@ namespace Visitor.Application.Models
     public class FoodItemMealType_Request : BaseEntity
     {
         [JsonIgnore]
+        public string? Action { get; set; }
+        [JsonIgnore]
         public int? FoodItemId { get; set; }
         public int? MealTypeId { get; set; }
         public bool? IsActive { get; set; }
     }
     public class FoodItemDays_Request : BaseEntity
     {
+        [JsonIgnore]
+        public string? Action { get; set; }
         [JsonIgnore]
         public int? FoodItemId { get; set; }
         public int? DaysId { get; set; }
@@ -919,7 +887,8 @@ namespace Visitor.Application.Models
 
         public int? CanteenId { get; set; }
         public string? CanteenName { get; set; }
-        public string? FoodItemName { get; set; }
+        public int? MenuItemId { get; set; }
+        public string? MenuItemName { get; set; }
         public string? FoodItemDesc { get; set; }
         public bool? IsVeg { get; set; }
         public bool? IsSubsidized { get; set; }
@@ -958,4 +927,24 @@ namespace Visitor.Application.Models
         public bool? IsActive { get; set; }
     }
     #endregion
+
+    #region MenuItem
+
+    public class MenuItem_Request : BaseEntity
+    {
+        [DefaultValue("")]
+        public string? MenuItemName { get; set; }
+
+        public bool? IsActive { get; set; }
+    }
+
+    public class MenuItem_Response : BaseResponseEntity
+    {
+        public string? MenuItemName { get; set; }
+
+        public bool? IsActive { get; set; }
+    }
+
+    #endregion
+
 }
