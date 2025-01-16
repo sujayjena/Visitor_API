@@ -5,11 +5,17 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Visitor.Domain.Entities;
+using Visitor.Persistence.Repositories;
 
 namespace Visitor.Application.Models
 {
     public class ManageVisitorsModel
     {
+    }
+
+    public class Visitors_Search : BaseSearchEntity
+    {
+        public int? StatusId { get; set; }
     }
 
     public class Visitors_Request : BaseEntity
@@ -42,6 +48,7 @@ namespace Visitor.Application.Models
         public int? DepartmentId { get; set; }
         public int? EmployeeId { get; set; }
         public string? Purpose { get; set; }
+        public bool? MP_IsApproved { get; set; }
         public int? PassTypeId { get; set; }
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
@@ -52,6 +59,9 @@ namespace Visitor.Application.Models
         public bool? IsLaptop { get; set; }
         public bool? IsPendrive { get; set; }
         public string? Others { get; set; }
+        public bool? VS_IsCheckedIn { get; set; }
+        public bool? VS_IsCheckedOut { get; set; }
+        public int? StatusId { get; set; }
         public bool? IsActive { get; set; }
     }
 
@@ -96,6 +106,7 @@ namespace Visitor.Application.Models
         public string? Employee_MobileNumber { get; set; }
         public string? Employee_EmailId { get; set; }
         public string? Purpose { get; set; }
+        public bool? MP_IsApproved { get; set; }
         public int? PassTypeId { get; set; }
         public string? PassType { get; set; }
         public DateTime? StartDate { get; set; }
@@ -109,6 +120,10 @@ namespace Visitor.Application.Models
         public bool? IsLaptop { get; set; }
         public bool? IsPendrive { get; set; }
         public string? Others { get; set; }
+        public bool? VS_IsCheckedIn { get; set; }
+        public bool? VS_IsCheckedOut { get; set; }
+        public int? StatusId { get; set; }
+        public string? StatusName { get; set; }
         public bool? IsActive { get; set; }
     }
 }

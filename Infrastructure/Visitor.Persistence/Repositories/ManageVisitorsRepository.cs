@@ -45,6 +45,7 @@ namespace Visitor.Persistence.Repositories
             queryParameters.Add("@DepartmentId", parameters.DepartmentId);
             queryParameters.Add("@EmployeeId", parameters.EmployeeId);
             queryParameters.Add("@Purpose", parameters.Purpose);
+            queryParameters.Add("@MP_IsApproved", parameters.MP_IsApproved);
             queryParameters.Add("@PassTypeId", parameters.PassTypeId);
             queryParameters.Add("@StartDate", parameters.StartDate);
             queryParameters.Add("@EndDate", parameters.EndDate);
@@ -55,15 +56,19 @@ namespace Visitor.Persistence.Repositories
             queryParameters.Add("@IsLaptop", parameters.IsLaptop);
             queryParameters.Add("@IsPendrive", parameters.IsPendrive);
             queryParameters.Add("@Others", parameters.Others);
+            queryParameters.Add("@VS_IsCheckedIn", parameters.VS_IsCheckedIn);
+            queryParameters.Add("@VS_IsCheckedOut", parameters.VS_IsCheckedOut);
+            queryParameters.Add("@StatusId", parameters.StatusId);
             queryParameters.Add("@IsActive", parameters.IsActive);
             queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
 
             return await SaveByStoredProcedure<int>("SaveVisitors", queryParameters);
         }
 
-        public async Task<IEnumerable<Visitors_Response>> GetVisitorsList(BaseSearchEntity parameters)
+        public async Task<IEnumerable<Visitors_Response>> GetVisitorsList(Visitors_Search parameters)
         {
             DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@StatusId", parameters.StatusId);
             queryParameters.Add("@SearchText", parameters.SearchText.SanitizeValue());
             queryParameters.Add("@IsActive", parameters.IsActive);
             queryParameters.Add("@PageNo", parameters.PageNo);

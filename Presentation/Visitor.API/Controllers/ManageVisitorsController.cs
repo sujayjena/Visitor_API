@@ -75,7 +75,7 @@ namespace Visitor.API.Controllers
 
         [Route("[action]")]
         [HttpPost]
-        public async Task<ResponseModel> GetVisitorsList(BaseSearchEntity parameters)
+        public async Task<ResponseModel> GetVisitorsList(Visitors_Search parameters)
         {
             IEnumerable<Visitors_Response> lstVisitorss = await _manageVisitorsRepository.GetVisitorsList(parameters);
             _response.Data = lstVisitorss.ToList();

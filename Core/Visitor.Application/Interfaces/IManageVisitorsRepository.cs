@@ -12,7 +12,7 @@ namespace Visitor.Application.Interfaces
     {
         Task<int> SaveVisitors(Visitors_Request parameters);
 
-        Task<IEnumerable<Visitors_Response>> GetVisitorsList(BaseSearchEntity parameters);
+        Task<IEnumerable<Visitors_Response>> GetVisitorsList(Visitors_Search parameters);
 
         Task<Visitors_Response?> GetVisitorsById(int Id);
     }
