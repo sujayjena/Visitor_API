@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
@@ -15,11 +16,17 @@ namespace Visitor.Application.Models
 
     public class Visitors_Search : BaseSearchEntity
     {
+        public DateTime? VisitDate { get; set; }
         public int? StatusId { get; set; }
     }
 
     public class Visitors_Request : BaseEntity
     {
+        public Visitors_Request()
+        {
+            GateNumberList = new List<VisitorGateNo_Request>();
+        }
+
         public DateTime? VisitStartDate { get; set; }
         public DateTime? VisitEndDate { get; set; }
         public int? VisitTypeId { get; set; }
@@ -48,7 +55,10 @@ namespace Visitor.Application.Models
         public int? DepartmentId { get; set; }
         public int? EmployeeId { get; set; }
         public string? Purpose { get; set; }
+
+        [DefaultValue(false)]
         public bool? MP_IsApproved { get; set; }
+
         public int? PassTypeId { get; set; }
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
@@ -56,13 +66,24 @@ namespace Visitor.Application.Models
         public int? MeetingStatusId { get; set; }
         public string? VehicleNumber { get; set; }
         public int? VehicleTypeId { get; set; }
+
+        [DefaultValue(false)]
         public bool? IsLaptop { get; set; }
+
+        [DefaultValue(false)]
         public bool? IsPendrive { get; set; }
+
+        public string? LaptopSerialNo { get; set; }
         public string? Others { get; set; }
+
+        [DefaultValue(false)]
         public bool? VS_IsCheckedIn { get; set; }
+
+        [DefaultValue(false)]
         public bool? VS_IsCheckedOut { get; set; }
         public int? StatusId { get; set; }
         public bool? IsActive { get; set; }
+        public List<VisitorGateNo_Request> GateNumberList { get; set; }
     }
 
     public class Visitors_Response : BaseResponseEntity
@@ -119,11 +140,36 @@ namespace Visitor.Application.Models
         public string? VehicleType { get; set; }
         public bool? IsLaptop { get; set; }
         public bool? IsPendrive { get; set; }
+        public string? LaptopSerialNo { get; set; }
         public string? Others { get; set; }
         public bool? VS_IsCheckedIn { get; set; }
+        public DateTime? CheckedInClosedDate { get; set; }
         public bool? VS_IsCheckedOut { get; set; }
+        public DateTime? CheckedOutClosedDate { get; set; }
         public int? StatusId { get; set; }
         public string? StatusName { get; set; }
         public bool? IsActive { get; set; }
+
+        public List<VisitorGateNo_Response> GateNumberList { get; set; }
+    }
+
+    public class VisitorGateNo_Request
+    {
+        public int Id { get; set; }
+
+        [JsonIgnore]
+        public string? Action { get; set; }
+
+        [JsonIgnore]
+        public int? VisitorId { get; set; }
+        public int? GateDetailsId { get; set; }
+    }
+
+    public class VisitorGateNo_Response
+    {
+        public int Id { get; set; }
+        public int? VisitorId { get; set; }
+        public int? GateDetailsId { get; set; }
+        public string? GateNumber { get; set; }
     }
 }

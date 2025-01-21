@@ -364,6 +364,7 @@ namespace Visitor.Application.Models
     #region Gate Details
     public class GateDetails_Request : BaseEntity
     {
+        public string? GateNumber { get; set; }
         public int? GateNameId { get; set; }
         public int? GateTypeId { get; set; }
 
@@ -375,6 +376,7 @@ namespace Visitor.Application.Models
 
     public class GateDetails_Response : BaseResponseEntity
     {
+        public string? GateNumber { get; set; }
         public int? GateNameId { get; set; }
         public string? GateName { get; set; }
         public int? GateTypeId { get; set; }

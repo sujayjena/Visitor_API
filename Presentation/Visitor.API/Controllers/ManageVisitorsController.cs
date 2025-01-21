@@ -68,6 +68,33 @@ namespace Visitor.API.Controllers
             else
             {
                 _response.Message = "Record details saved sucessfully";
+
+                #region // Add/Update Visitor GateNo
+
+                // Delete Region of Branch
+                var vGateNoDELETEObj = new VisitorGateNo_Request()
+                {
+                    Action = "DELETE",
+                    VisitorId = result,
+                    GateDetailsId = 0
+                };
+                int resultGateNoDELETE = await _manageVisitorsRepository.SaveVisitorsGateNo(vGateNoDELETEObj);
+
+
+                // add new Visitor field
+                foreach (var vGateitem in parameters.GateNumberList)
+                {
+                    var vGateNoMapObj = new VisitorGateNo_Request()
+                    {
+                        Action = "INSERT",
+                        VisitorId = result,
+                        GateDetailsId = vGateitem.GateDetailsId
+                    };
+
+                    int resultGateNo = await _manageVisitorsRepository.SaveVisitorsGateNo(vGateNoMapObj);
+                }
+
+                #endregion
             }
             return _response;
         }
@@ -94,6 +121,12 @@ namespace Visitor.API.Controllers
             else
             {
                 var vResultObj = await _manageVisitorsRepository.GetVisitorsById(Id);
+                if (vResultObj != null)
+                {
+                    var gateNolistObj = await _manageVisitorsRepository.GetVisitorsGateNoByVisitorId(vResultObj.Id, 0);
+
+                    vResultObj.GateNumberList = gateNolistObj.ToList();
+                }
                 _response.Data = vResultObj;
             }
             return _response;

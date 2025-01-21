@@ -698,6 +698,7 @@ namespace Visitor.Persistence.Repositories
         {
             DynamicParameters queryParameters = new DynamicParameters();
             queryParameters.Add("@Id", parameters.Id);
+            queryParameters.Add("@GateNumber", parameters.GateNumber);
             queryParameters.Add("@GateTypeId", parameters.GateTypeId);
             queryParameters.Add("@GateNameId", parameters.GateNameId);
             queryParameters.Add("@Remarks", parameters.Remarks);

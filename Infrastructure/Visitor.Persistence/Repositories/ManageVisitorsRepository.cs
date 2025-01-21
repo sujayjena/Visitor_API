@@ -55,6 +55,7 @@ namespace Visitor.Persistence.Repositories
             queryParameters.Add("@VehicleTypeId", parameters.VehicleTypeId);
             queryParameters.Add("@IsLaptop", parameters.IsLaptop);
             queryParameters.Add("@IsPendrive", parameters.IsPendrive);
+            queryParameters.Add("@LaptopSerialNo", parameters.LaptopSerialNo);
             queryParameters.Add("@Others", parameters.Others);
             queryParameters.Add("@VS_IsCheckedIn", parameters.VS_IsCheckedIn);
             queryParameters.Add("@VS_IsCheckedOut", parameters.VS_IsCheckedOut);
@@ -68,6 +69,7 @@ namespace Visitor.Persistence.Repositories
         public async Task<IEnumerable<Visitors_Response>> GetVisitorsList(Visitors_Search parameters)
         {
             DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@VisitDate", parameters.VisitDate);
             queryParameters.Add("@StatusId", parameters.StatusId);
             queryParameters.Add("@SearchText", parameters.SearchText.SanitizeValue());
             queryParameters.Add("@IsActive", parameters.IsActive);
@@ -89,5 +91,27 @@ namespace Visitor.Persistence.Repositories
             return (await ListByStoredProcedure<Visitors_Response>("GetVisitorsById", queryParameters)).FirstOrDefault();
         }
 
+        public async Task<int> SaveVisitorsGateNo(VisitorGateNo_Request parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@Action", parameters.Action);
+            queryParameters.Add("@VisitorId", parameters.VisitorId);
+            queryParameters.Add("@GateDetailsId", parameters.GateDetailsId);
+            queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
+
+            return await SaveByStoredProcedure<int>("SaveVisitorsGateNo", queryParameters);
+        }
+
+        public async Task<IEnumerable<VisitorGateNo_Response>> GetVisitorsGateNoByVisitorId(long VisitorId, long GateDetailsId)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@VisitorId", VisitorId);
+            queryParameters.Add("@GateDetailsId", GateDetailsId);
+            queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
+
+            var result = await ListByStoredProcedure<VisitorGateNo_Response>("GetVisitorsGateNoByVisitorId", queryParameters);
+
+            return result;
+        }
     }
 }
