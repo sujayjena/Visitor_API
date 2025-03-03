@@ -63,10 +63,9 @@ namespace Visitor.Application.Interfaces
         #region Territories 
 
         Task<int> SaveTerritories(Territories_Request parameters);
-
         Task<IEnumerable<Territories_Response>> GetTerritoriesList(BaseSearchEntity parameters);
-
         Task<Territories_Response?> GetTerritoriesById(long Id);
+        Task<IEnumerable<Territories_Country_State_Dist_City_Response>> GetTerritories_Country_State_Dist_City_List_ById(Territories_Country_State_Dist_City_Search parameters);
 
         #endregion
     }

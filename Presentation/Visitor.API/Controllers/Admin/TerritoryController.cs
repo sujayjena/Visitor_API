@@ -356,6 +356,17 @@ namespace Visitor.API.Controllers.Admin
             return _response;
         }
 
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> GetTerritories_Country_State_Dist_City_List_ById(Territories_Country_State_Dist_City_Search parameters)
+        {
+            var vResultObj = await _territoryRepository.GetTerritories_Country_State_Dist_City_List_ById(parameters);
+            _response.Data = vResultObj;
+
+            return _response;
+        }
+
+
         #endregion
     }
 }

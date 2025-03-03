@@ -144,5 +144,22 @@ namespace Visitor.Application.Models
         public bool? IsActive { get; set; }
     }
 
+    public class Territories_Country_State_Dist_City_Search
+    {
+        public int? CountryId { get; set; }
+        public int? StateId { get; set; }
+        public int? DistrictId { get; set; }
+        public int? CityId { get; set; }
+    }
+
+    public class Territories_Country_State_Dist_City_Response
+    {
+        public int? Id { get; set; }
+
+        public string? Value { get; set; }
+
+        public string? Text { get; set; }
+    }
+
     #endregion
 }
