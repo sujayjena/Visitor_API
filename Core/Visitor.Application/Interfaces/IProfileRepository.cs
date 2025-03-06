@@ -19,7 +19,7 @@ namespace Visitor.Application.Interfaces
 
         Task<int> SaveRole(Role_Request parameters);
 
-        Task<IEnumerable<Role_Response>> GetRoleList(BaseSearchEntity parameters);
+        Task<IEnumerable<Role_Response>> GetRoleList(Role_Search parameters);
 
         Task<Role_Response?> GetRoleById(long Id);
 
@@ -29,7 +29,7 @@ namespace Visitor.Application.Interfaces
 
         Task<int> SaveRoleHierarchy(RoleHierarchy_Request parameters);
 
-        Task<IEnumerable<RoleHierarchy_Response>> GetRoleHierarchyList(BaseSearchEntity parameters);
+        Task<IEnumerable<RoleHierarchy_Response>> GetRoleHierarchyList(RoleHierarchy_Search parameters);
 
         Task<RoleHierarchy_Response?> GetRoleHierarchyById(long Id);
 

@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Visitor.Persistence.Repositories;
 
 namespace Visitor.Application.Models
 {
@@ -32,21 +33,28 @@ namespace Visitor.Application.Models
     #endregion
 
     #region Role
+    public class Role_Search : BaseSearchEntity
+    {
+        [DefaultValue("Admin")]
+        public string? RoleType { get; set; }
+    }
 
     public class Role_Request : BaseEntity
     {
-        public string RoleName { get; set; }
-
+        public string? RoleName { get; set; }
         public int? DepartmentId { get; set; }
 
+        [DefaultValue("Admin")]
+        public string? RoleType { get; set; }
         public bool? IsActive { get; set; }
     }
 
     public class Role_Response : BaseResponseEntity
     {
-        public string RoleName { get; set; }
+        public string? RoleName { get; set; }
         public int? DepartmentId { get; set; }
-        public string DepartmentName { get; set; }
+        public string? DepartmentName { get; set; }
+        public string? RoleType { get; set; }
 
         public bool? IsActive { get; set; }
     }
@@ -54,27 +62,30 @@ namespace Visitor.Application.Models
     #endregion
 
     #region RoleHierarchy
+    public class RoleHierarchy_Search : BaseSearchEntity
+    {
+        [DefaultValue("Admin")]
+        public string? RoleType { get; set; }
+    }
 
     public class RoleHierarchy_Request : BaseEntity
     {
         [Required]
         public int RoleId { get; set; }
-
         public int? ReportingTo { get; set; }
 
+        [DefaultValue("Admin")]
+        public string? RoleType { get; set; }
         public bool? IsActive { get; set; }
     }
 
     public class RoleHierarchy_Response : BaseResponseEntity
     {
         public int RoleId { get; set; }
-
-        public string RoleName { get; set; }
-
+        public string? RoleName { get; set; }
         public int ReportingTo { get; set; }
-
-        public string ReportingToName { get; set; }
-
+        public string? ReportingToName { get; set; }
+        public string? RoleType { get; set; }
         public bool? IsActive { get; set; }
     }
 

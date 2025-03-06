@@ -111,7 +111,7 @@ namespace Visitor.API.Controllers.Admin
 
         [Route("[action]")]
         [HttpPost]
-        public async Task<ResponseModel> GetRoleList(BaseSearchEntity parameters)
+        public async Task<ResponseModel> GetRoleList(Role_Search parameters)
         {
             IEnumerable<Role_Response> lstRoles = await _profileRepository.GetRoleList(parameters);
             _response.Data = lstRoles.ToList();
@@ -170,7 +170,7 @@ namespace Visitor.API.Controllers.Admin
 
         [Route("[action]")]
         [HttpPost]
-        public async Task<ResponseModel> GetRoleHierarchyList(BaseSearchEntity parameters)
+        public async Task<ResponseModel> GetRoleHierarchyList(RoleHierarchy_Search parameters)
         {
             IEnumerable<RoleHierarchy_Response> lstRoleHierarchys = await _profileRepository.GetRoleHierarchyList(parameters);
             _response.Data = lstRoleHierarchys.ToList();
