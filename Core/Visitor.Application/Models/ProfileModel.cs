@@ -102,6 +102,9 @@ namespace Visitor.Application.Models
     {
         public long RoleId { get; set; }
         public long? RegionId { get; set; }
+
+        [DefaultValue("Admin")]
+        public string? roleType { get; set; }
     }
     public partial class EmployeesListByReportingTo_Response
     {
