@@ -37,6 +37,8 @@ namespace Visitor.Application.Models
         public string? PhotoFileName { get; set; }
         public string? Photo_Base64 { get; set; }
         public string? Passwords { get; set; }
+        public int? RoleId { get; set; }
+        public int? ReportingTo { get; set; }
 
         [DefaultValue(false)]
         public bool? IsBlackListed { get; set; }
@@ -64,6 +66,10 @@ namespace Visitor.Application.Models
         public string? PhotoOriginalFileName { get; set; }
         public string? PhotoFileName { get; set; }
         public string? PhotoURL { get; set; }
+        public int? RoleId { get; set; }
+        public string? RoleName { get; set; }
+        public int? ReportingTo { get; set; }
+        public string? ReportingToName { get; set; }
         public bool? IsBlackListed { get; set; }
         public bool? IsActive { get; set; }
         public List<SecurityLoginGateDetails_Response>? GateDetailsList { get; set; }

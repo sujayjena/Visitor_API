@@ -34,6 +34,8 @@ namespace Visitor.Persistence.Repositories
             queryParameters.Add("@PhotoOriginalFileName", parameters.PhotoOriginalFileName);
             queryParameters.Add("@PhotoFileName", parameters.PhotoFileName);
             queryParameters.Add("@Passwords", !string.IsNullOrWhiteSpace(parameters.Passwords) ? EncryptDecryptHelper.EncryptString(parameters.Passwords) : string.Empty);
+            queryParameters.Add("@RoleId", parameters.RoleId);
+            queryParameters.Add("@ReportingTo", parameters.ReportingTo);
             queryParameters.Add("@IsBlackListed", parameters.IsBlackListed);
             queryParameters.Add("@IsActive", parameters.IsActive);
             queryParameters.Add("@UserId", SessionManager.LoggedInUserId);

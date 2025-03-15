@@ -47,7 +47,7 @@ namespace Visitor.API.Controllers
             }
             else
             {
-                _response.Message = "Record details saved sucessfully";
+                _response.Message = "Record details saved successfully";
             }
             return _response;
         }
@@ -116,7 +116,7 @@ namespace Visitor.API.Controllers
             }
             else
             {
-                _response.Message = "Record details saved sucessfully";
+                _response.Message = "Record details saved successfully";
             }
             return _response;
         }

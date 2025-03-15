@@ -47,7 +47,7 @@ namespace Visitor.API.Controllers.Admin
             }
             else
             {
-                _response.Message = "Record details saved sucessfully";
+                _response.Message = "Record details saved successfully";
             }
             return _response;
         }
@@ -103,7 +103,7 @@ namespace Visitor.API.Controllers.Admin
             }
             else
             {
-                _response.Message = "Record details saved sucessfully";
+                _response.Message = "Record details saved successfully";
             }
             return _response;
         }
@@ -159,7 +159,7 @@ namespace Visitor.API.Controllers.Admin
             }
             else
             {
-                _response.Message = "Record details saved sucessfully";
+                _response.Message = "Record details saved successfully";
             }
             return _response;
         }
@@ -215,7 +215,7 @@ namespace Visitor.API.Controllers.Admin
             }
             else
             {
-                _response.Message = "Record details saved sucessfully";
+                _response.Message = "Record details saved successfully";
             }
             return _response;
         }
@@ -271,7 +271,7 @@ namespace Visitor.API.Controllers.Admin
             }
             else
             {
-                _response.Message = "Record details saved sucessfully";
+                _response.Message = "Record details saved successfully";
             }
             return _response;
         }
@@ -327,7 +327,7 @@ namespace Visitor.API.Controllers.Admin
             }
             else
             {
-                _response.Message = "Record details saved sucessfully";
+                _response.Message = "Record details saved successfully";
             }
             return _response;
         }
@@ -383,7 +383,7 @@ namespace Visitor.API.Controllers.Admin
             }
             else
             {
-                _response.Message = "Record details saved sucessfully";
+                _response.Message = "Record details saved successfully";
             }
             return _response;
         }
@@ -439,7 +439,7 @@ namespace Visitor.API.Controllers.Admin
             }
             else
             {
-                _response.Message = "Record details saved sucessfully";
+                _response.Message = "Record details saved successfully";
             }
             return _response;
         }
@@ -495,7 +495,7 @@ namespace Visitor.API.Controllers.Admin
             }
             else
             {
-                _response.Message = "Record details saved sucessfully";
+                _response.Message = "Record details saved successfully";
             }
             return _response;
         }
@@ -551,7 +551,7 @@ namespace Visitor.API.Controllers.Admin
             }
             else
             {
-                _response.Message = "Record details saved sucessfully";
+                _response.Message = "Record details saved successfully";
             }
             return _response;
         }
@@ -607,7 +607,7 @@ namespace Visitor.API.Controllers.Admin
             }
             else
             {
-                _response.Message = "Record details saved sucessfully";
+                _response.Message = "Record details saved successfully";
             }
             return _response;
         }
@@ -663,7 +663,7 @@ namespace Visitor.API.Controllers.Admin
             }
             else
             {
-                _response.Message = "Record details saved sucessfully";
+                _response.Message = "Record details saved successfully";
             }
             return _response;
         }
@@ -719,7 +719,7 @@ namespace Visitor.API.Controllers.Admin
             }
             else
             {
-                _response.Message = "Record details saved sucessfully";
+                _response.Message = "Record details saved successfully";
             }
             return _response;
         }
@@ -775,7 +775,7 @@ namespace Visitor.API.Controllers.Admin
             }
             else
             {
-                _response.Message = "Record details saved sucessfully";
+                _response.Message = "Record details saved successfully";
             }
             return _response;
         }
@@ -831,7 +831,7 @@ namespace Visitor.API.Controllers.Admin
             }
             else
             {
-                _response.Message = "Record details saved sucessfully";
+                _response.Message = "Record details saved successfully";
             }
             return _response;
         }
@@ -887,7 +887,7 @@ namespace Visitor.API.Controllers.Admin
             }
             else
             {
-                _response.Message = "Record details saved sucessfully";
+                _response.Message = "Record details saved successfully";
             }
             return _response;
         }
@@ -943,7 +943,7 @@ namespace Visitor.API.Controllers.Admin
             }
             else
             {
-                _response.Message = "Record details saved sucessfully";
+                _response.Message = "Record details saved successfully";
             }
             return _response;
         }
@@ -999,7 +999,7 @@ namespace Visitor.API.Controllers.Admin
             }
             else
             {
-                _response.Message = "Record details saved sucessfully";
+                _response.Message = "Record details saved successfully";
             }
             return _response;
         }
@@ -1055,7 +1055,7 @@ namespace Visitor.API.Controllers.Admin
             }
             else
             {
-                _response.Message = "Record details saved sucessfully";
+                _response.Message = "Record details saved successfully";
             }
             return _response;
         }
@@ -1111,7 +1111,7 @@ namespace Visitor.API.Controllers.Admin
             }
             else
             {
-                _response.Message = "Record details saved sucessfully";
+                _response.Message = "Record details saved successfully";
             }
             return _response;
         }
@@ -1167,7 +1167,7 @@ namespace Visitor.API.Controllers.Admin
             }
             else
             {
-                _response.Message = "Record details saved sucessfully";
+                _response.Message = "Record details saved successfully";
             }
             return _response;
         }
@@ -1223,7 +1223,7 @@ namespace Visitor.API.Controllers.Admin
             }
             else
             {
-                _response.Message = "Record details saved sucessfully";
+                _response.Message = "Record details saved successfully";
             }
             return _response;
         }
@@ -1279,7 +1279,7 @@ namespace Visitor.API.Controllers.Admin
             }
             else
             {
-                _response.Message = "Record details saved sucessfully";
+                _response.Message = "Record details saved successfully";
             }
             return _response;
         }
@@ -1335,7 +1335,7 @@ namespace Visitor.API.Controllers.Admin
             }
             else
             {
-                _response.Message = "Record details saved sucessfully";
+                _response.Message = "Record details saved successfully";
             }
             return _response;
         }
@@ -1391,7 +1391,7 @@ namespace Visitor.API.Controllers.Admin
             }
             else
             {
-                _response.Message = "Record details saved sucessfully";
+                _response.Message = "Record details saved successfully";
             }
             return _response;
         }
@@ -1447,7 +1447,7 @@ namespace Visitor.API.Controllers.Admin
             }
             else
             {
-                _response.Message = "Record details saved sucessfully";
+                _response.Message = "Record details saved successfully";
             }
             return _response;
         }
@@ -1503,7 +1503,7 @@ namespace Visitor.API.Controllers.Admin
             }
             else
             {
-                _response.Message = "Record details saved sucessfully";
+                _response.Message = "Record details saved successfully";
             }
             return _response;
         }
@@ -1559,7 +1559,7 @@ namespace Visitor.API.Controllers.Admin
             }
             else
             {
-                _response.Message = "Record details saved sucessfully";
+                _response.Message = "Record details saved successfully";
             }
             return _response;
         }
@@ -1615,7 +1615,7 @@ namespace Visitor.API.Controllers.Admin
             }
             else
             {
-                _response.Message = "Record details saved sucessfully";
+                _response.Message = "Record details saved successfully";
             }
             return _response;
         }
@@ -1683,7 +1683,7 @@ namespace Visitor.API.Controllers.Admin
             }
             else
             {
-                _response.Message = "Record details saved sucessfully";
+                _response.Message = "Record details saved successfully";
             }
 
             return _response;
@@ -1740,7 +1740,7 @@ namespace Visitor.API.Controllers.Admin
             }
             else
             {
-                _response.Message = "Record details saved sucessfully";
+                _response.Message = "Record details saved successfully";
             }
             return _response;
         }
@@ -1796,7 +1796,7 @@ namespace Visitor.API.Controllers.Admin
             }
             else
             {
-                _response.Message = "Record details saved sucessfully";
+                _response.Message = "Record details saved successfully";
             }
             return _response;
         }
@@ -1852,7 +1852,7 @@ namespace Visitor.API.Controllers.Admin
             }
             else
             {
-                _response.Message = "Record details saved sucessfully";
+                _response.Message = "Record details saved successfully";
 
                 // Delete Old days
                 var vDaysDELETEObj = new WorkShiftDays_Request()
@@ -1949,7 +1949,7 @@ namespace Visitor.API.Controllers.Admin
             }
             else
             {
-                _response.Message = "Record details saved sucessfully";
+                _response.Message = "Record details saved successfully";
             }
             return _response;
         }
@@ -2005,7 +2005,7 @@ namespace Visitor.API.Controllers.Admin
             }
             else
             {
-                _response.Message = "Record details saved sucessfully";
+                _response.Message = "Record details saved successfully";
             }
             return _response;
         }
@@ -2061,7 +2061,7 @@ namespace Visitor.API.Controllers.Admin
             }
             else
             {
-                _response.Message = "Record details saved sucessfully";
+                _response.Message = "Record details saved successfully";
             }
             return _response;
         }
@@ -2117,7 +2117,7 @@ namespace Visitor.API.Controllers.Admin
             }
             else
             {
-                _response.Message = "Record details saved sucessfully";
+                _response.Message = "Record details saved successfully";
             }
             return _response;
         }
@@ -2186,7 +2186,7 @@ namespace Visitor.API.Controllers.Admin
             }
             else
             {
-                _response.Message = "Record details saved sucessfully";
+                _response.Message = "Record details saved successfully";
 
                 // Delete Old Meal Type
                 var vMealTypeDELETEObj = new FoodItemMealType_Request()
@@ -2314,7 +2314,7 @@ namespace Visitor.API.Controllers.Admin
             }
             else
             {
-                _response.Message = "Record details saved sucessfully";
+                _response.Message = "Record details saved successfully";
             }
             return _response;
         }

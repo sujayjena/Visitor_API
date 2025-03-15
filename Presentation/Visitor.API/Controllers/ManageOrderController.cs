@@ -46,7 +46,7 @@ namespace Visitor.API.Controllers
             }
             else
             {
-                _response.Message = "Record details saved sucessfully";
+                _response.Message = "Record details saved successfully";
 
                 foreach (var items in parameters.foodItemList)
                 {

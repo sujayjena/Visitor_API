@@ -35,13 +35,19 @@ namespace Visitor.Persistence.Repositories
 
             claims.Add(new Claim("UserId", EncryptDecryptHelper.EncryptString(parameters.UserId.ToString())));
             claims.Add(new Claim("MobileNumber", parameters.MobileNumber));
-            claims.Add(new Claim("EmailId", parameters.EmailId));
+            if (parameters.EmailId != null)
+            {
+                claims.Add(new Claim("EmailId", parameters.EmailId));
+            }
 
             if (parameters.UserId != null)
             {
                 claims.Add(new Claim("UserCode", parameters.UserCode));
                 claims.Add(new Claim("UserName", parameters.UserName));
-                claims.Add(new Claim("RoleName", parameters.RoleName));
+                if (parameters.RoleName != null)
+                {
+                    claims.Add(new Claim("RoleName", parameters.RoleName));
+                }
             }
             //else if (parameters.CustomerId != null)
             //{
