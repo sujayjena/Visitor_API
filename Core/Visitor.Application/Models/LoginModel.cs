@@ -65,6 +65,7 @@ namespace Visitor.Application.Models
     public class UsersLoginSessionData
     {
         public long? UserId { get; set; }
+        public long? SecurityId { get; set; }
         public string UserCode { get; set; }
         public string UserName { get; set; }
         public string MobileNumber { get; set; }
@@ -89,6 +90,7 @@ namespace Visitor.Application.Models
     public class SessionDataEmployee
     {
         public long? UserId { get; set; }
+        public long? SecurityId { get; set; }
         public string UserCode { get; set; }
         public string UserName { get; set; }
         public string MobileNumber { get; set; }

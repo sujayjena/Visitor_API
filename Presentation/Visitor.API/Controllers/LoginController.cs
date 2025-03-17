@@ -88,6 +88,7 @@ namespace Visitor.API.Controllers
                         employeeSessionData = new SessionDataEmployee
                         {
                             UserId = loginResponse.UserId,
+                            SecurityId = loginResponse.SecurityId,
                             UserCode = loginResponse.UserCode,
                             UserName = loginResponse.UserName,
                             MobileNumber = loginResponse.MobileNumber,
