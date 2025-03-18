@@ -365,8 +365,10 @@ namespace Visitor.Application.Models
     public class GateDetails_Request : BaseEntity
     {
         public string? GateNumber { get; set; }
-        public int? GateNameId { get; set; }
-        public int? GateTypeId { get; set; }
+        public string? GateName { get; set; }
+
+        //public int? GateNameId { get; set; }
+        //public int? GateTypeId { get; set; }
 
         [DefaultValue("")]
         public string? Remarks { get; set; }
@@ -377,10 +379,12 @@ namespace Visitor.Application.Models
     public class GateDetails_Response : BaseResponseEntity
     {
         public string? GateNumber { get; set; }
-        public int? GateNameId { get; set; }
         public string? GateName { get; set; }
-        public int? GateTypeId { get; set; }
-        public string? GateType { get; set; }
+
+        //public int? GateNameId { get; set; }
+        //public string? GateName { get; set; }
+        //public int? GateTypeId { get; set; }
+        //public string? GateType { get; set; }
 
         public string? Remarks { get; set; }
         public bool? IsActive { get; set; }
@@ -937,13 +941,15 @@ namespace Visitor.Application.Models
         [DefaultValue("")]
         public string? MenuItemName { get; set; }
 
+        [DefaultValue(false)]
+        public bool? IsVeg { get; set; }
         public bool? IsActive { get; set; }
     }
 
     public class MenuItem_Response : BaseResponseEntity
     {
         public string? MenuItemName { get; set; }
-
+        public bool? IsVeg { get; set; }
         public bool? IsActive { get; set; }
     }
 

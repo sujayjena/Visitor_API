@@ -28,6 +28,7 @@ namespace Visitor.Persistence.Repositories
             queryParameters.Add("@CompanyAddress", parameters.CompanyAddress);
             queryParameters.Add("@CountryId", parameters.CountryId);
             queryParameters.Add("@StateId", parameters.StateId);
+            queryParameters.Add("@DistrictId", parameters.DistrictId);
             queryParameters.Add("@CityId", parameters.CityId);
             queryParameters.Add("@Pincode", parameters.Pincode);
             queryParameters.Add("@CompanyPhone", parameters.CompanyPhone);

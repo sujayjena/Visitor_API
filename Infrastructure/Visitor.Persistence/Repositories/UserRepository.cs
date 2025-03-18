@@ -84,9 +84,10 @@ namespace Visitor.Persistence.Repositories
             return await SaveByStoredProcedure<int>("SaveUser", queryParameters);
         }
 
-        public async Task<IEnumerable<User_Response>> GetUserList(BaseSearchEntity parameters)
+        public async Task<IEnumerable<User_Response>> GetUserList(User_Search parameters)
         {
             DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@DepartmentId", parameters.DepartmentId);
             queryParameters.Add("@SearchText", parameters.SearchText.SanitizeValue());
             queryParameters.Add("@IsActive", parameters.IsActive);
             queryParameters.Add("@PageNo", parameters.PageNo);

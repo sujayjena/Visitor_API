@@ -48,7 +48,9 @@ namespace Visitor.API.Controllers.Admin
 
             if (parameters.Id == 0)
             {
-                var baseSearch = new BaseSearchEntity();
+                var baseSearch = new User_Search();
+                baseSearch.DepartmentId = 0;
+
                 var vUser = await _userRepository.GetUserList(baseSearch);
 
                 #region Company Wise User Check
@@ -224,7 +226,7 @@ namespace Visitor.API.Controllers.Admin
 
         [Route("[action]")]
         [HttpPost]
-        public async Task<ResponseModel> GetUserList(BaseSearchEntity parameters)
+        public async Task<ResponseModel> GetUserList(User_Search parameters)
         {
             IEnumerable<User_Response> lstUsers = await _userRepository.GetUserList(parameters);
             _response.Data = lstUsers.ToList();

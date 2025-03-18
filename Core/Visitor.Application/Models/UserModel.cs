@@ -6,11 +6,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Collections;
+using Visitor.Persistence.Repositories;
 
 namespace Visitor.Application.Models
 {
     public class UserModel
     {
+    }
+    public class User_Search : BaseSearchEntity
+    {
+        public int DepartmentId { get; set; }
     }
 
     public class User_Request : BaseEntity

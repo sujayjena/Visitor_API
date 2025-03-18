@@ -699,8 +699,9 @@ namespace Visitor.Persistence.Repositories
             DynamicParameters queryParameters = new DynamicParameters();
             queryParameters.Add("@Id", parameters.Id);
             queryParameters.Add("@GateNumber", parameters.GateNumber);
-            queryParameters.Add("@GateTypeId", parameters.GateTypeId);
-            queryParameters.Add("@GateNameId", parameters.GateNameId);
+            queryParameters.Add("@GateName", parameters.GateName);
+            //queryParameters.Add("@GateTypeId", parameters.GateTypeId);
+            //queryParameters.Add("@GateNameId", parameters.GateNameId);
             queryParameters.Add("@Remarks", parameters.Remarks);
             queryParameters.Add("@IsActive", parameters.IsActive);
             queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
@@ -1564,6 +1565,7 @@ namespace Visitor.Persistence.Repositories
             DynamicParameters queryParameters = new DynamicParameters();
             queryParameters.Add("@Id", parameters.Id);
             queryParameters.Add("@MenuItemName", parameters.MenuItemName.SanitizeValue());
+            queryParameters.Add("@IsVeg", parameters.IsVeg);
             queryParameters.Add("@IsActive", parameters.IsActive);
             queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
 

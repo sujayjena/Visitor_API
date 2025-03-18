@@ -15,6 +15,7 @@ namespace Visitor.Application.Interfaces
         Task<IEnumerable<Visitors_Response>> GetVisitorsList(Visitors_Search parameters);
 
         Task<Visitors_Response?> GetVisitorsById(int Id);
+        Task<Visitors_Response?> GetVisitorDetailByMobileNumber(string MobileNumber);
 
         Task<int> SaveVisitorsGateNo(VisitorGateNo_Request parameters);
         Task<IEnumerable<VisitorGateNo_Response>> GetVisitorsGateNoByVisitorId(long VisitorId, long GateDetailsId);

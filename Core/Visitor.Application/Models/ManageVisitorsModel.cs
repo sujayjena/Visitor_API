@@ -16,7 +16,12 @@ namespace Visitor.Application.Models
 
     public class Visitors_Search : BaseSearchEntity
     {
-        public DateTime? VisitDate { get; set; }
+        public string? MobileNo { get; set; }
+        public int? VisitorId { get; set; }
+        public int? GateDetailsId { get; set; }
+        public int? PassTypeId { get; set; }
+        public DateTime? FromDate { get; set; }
+        public DateTime? ToDate { get; set; }
         public int? StatusId { get; set; }
     }
 
@@ -29,6 +34,7 @@ namespace Visitor.Application.Models
 
         public DateTime? VisitStartDate { get; set; }
         public DateTime? VisitEndDate { get; set; }
+        public int? IsVisitor_Contractor_Vendor { get; set; }
         public int? VisitTypeId { get; set; }
        
         public string? VisitorName { get; set; }
@@ -91,6 +97,7 @@ namespace Visitor.Application.Models
         public string? VisitNumber { get; set; }
         public DateTime? VisitStartDate { get; set; }
         public DateTime? VisitEndDate { get; set; }
+        public int? IsVisitor_Contractor_Vendor { get; set; }
         public int? VisitTypeId { get; set; }
         public string? VisitType { get; set; }
 

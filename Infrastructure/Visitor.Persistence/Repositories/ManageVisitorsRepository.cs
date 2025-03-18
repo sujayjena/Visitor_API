@@ -26,6 +26,7 @@ namespace Visitor.Persistence.Repositories
             queryParameters.Add("@Id", parameters.Id);
             queryParameters.Add("@VisitStartDate", parameters.VisitStartDate);
             queryParameters.Add("@VisitEndDate", parameters.VisitEndDate);
+            queryParameters.Add("@IsVisitor_Contractor_Vendor", parameters.IsVisitor_Contractor_Vendor);
             queryParameters.Add("@VisitTypeId", parameters.VisitTypeId);
             queryParameters.Add("@VisitorName", parameters.VisitorName);
             queryParameters.Add("@VisitorMobileNo", parameters.VisitorMobileNo);
@@ -69,7 +70,12 @@ namespace Visitor.Persistence.Repositories
         public async Task<IEnumerable<Visitors_Response>> GetVisitorsList(Visitors_Search parameters)
         {
             DynamicParameters queryParameters = new DynamicParameters();
-            queryParameters.Add("@VisitDate", parameters.VisitDate);
+            queryParameters.Add("@MobileNo", parameters.MobileNo);
+            queryParameters.Add("@VisitorId", parameters.VisitorId);
+            queryParameters.Add("@GateDetailsId", parameters.GateDetailsId);
+            queryParameters.Add("@PassTypeId", parameters.PassTypeId);
+            queryParameters.Add("@FromDate", parameters.FromDate);
+            queryParameters.Add("@ToDate", parameters.ToDate);
             queryParameters.Add("@StatusId", parameters.StatusId);
             queryParameters.Add("@SearchText", parameters.SearchText.SanitizeValue());
             queryParameters.Add("@IsActive", parameters.IsActive);
@@ -89,6 +95,13 @@ namespace Visitor.Persistence.Repositories
             DynamicParameters queryParameters = new DynamicParameters();
             queryParameters.Add("@Id", Id);
             return (await ListByStoredProcedure<Visitors_Response>("GetVisitorsById", queryParameters)).FirstOrDefault();
+        }
+
+        public async Task<Visitors_Response?> GetVisitorDetailByMobileNumber(string MobileNumber)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@MobileNumber", MobileNumber);
+            return (await ListByStoredProcedure<Visitors_Response>("GetVisitorDetailByMobileNumber", queryParameters)).FirstOrDefault();
         }
 
         public async Task<int> SaveVisitorsGateNo(VisitorGateNo_Request parameters)

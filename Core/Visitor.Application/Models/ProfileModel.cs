@@ -35,6 +35,8 @@ namespace Visitor.Application.Models
     #region Role
     public class Role_Search : BaseSearchEntity
     {
+        public int? DepartmentId { get; set; }
+
         [DefaultValue("Admin")]
         public string? RoleType { get; set; }
     }

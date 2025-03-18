@@ -132,5 +132,26 @@ namespace Visitor.API.Controllers
             return _response;
         }
 
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> GetVisitorDetailByMobileNumber(string MobileNumber)
+        {
+            if (MobileNumber == "")
+            {
+                _response.Message = "Mobile Number is required";
+            }
+            else
+            {
+                var vResultObj = await _manageVisitorsRepository.GetVisitorDetailByMobileNumber(MobileNumber);
+                if (vResultObj != null)
+                {
+                    var gateNolistObj = await _manageVisitorsRepository.GetVisitorsGateNoByVisitorId(vResultObj.Id, 0);
+
+                    vResultObj.GateNumberList = gateNolistObj.ToList();
+                }
+                _response.Data = vResultObj;
+            }
+            return _response;
+        }
     }
 }

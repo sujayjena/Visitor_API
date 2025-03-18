@@ -73,6 +73,7 @@ namespace Visitor.Persistence.Repositories
         public async Task<IEnumerable<Role_Response>> GetRoleList(Role_Search parameters)
         {
             DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@DepartmentId", parameters.DepartmentId);
             queryParameters.Add("@RoleType", parameters.RoleType);
             queryParameters.Add("@SearchText", parameters.SearchText.SanitizeValue());
             queryParameters.Add("@IsActive", parameters.IsActive);
