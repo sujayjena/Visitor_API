@@ -109,6 +109,28 @@ namespace Visitor.API.Controllers
         public async Task<ResponseModel> GetSecurityLoginList(SecurityLogin_Search parameters)
         {
             IEnumerable<SecurityLogin_Response> lstUsers = await _manageSecurityRepository.GetSecurityLoginList(parameters);
+            if (lstUsers != null)
+            {
+                foreach (var user in lstUsers)
+                {
+                    var vGateDetailsObj = await _manageSecurityRepository.GetSecurityLoginGateDetailsById(user.Id, 0);
+
+                    foreach (var item in vGateDetailsObj)
+                    {
+                        var vGateObj = await _adminMasterRepository.GetGateDetailsById(Convert.ToInt32(item.GateDetailsId));
+                        var vGateResOnj = new SecurityLoginGateDetails_Response()
+                        {
+                            Id = item.Id,
+                            SecurityLoginId = user.Id,
+                            GateDetailsId = item.GateDetailsId,
+                            GateNumber = vGateObj != null ? vGateObj.GateNumber : string.Empty,
+                        };
+
+                        user.GateDetailsList.Add(vGateResOnj);
+                    }
+                }
+            }
+
             _response.Data = lstUsers.ToList();
             _response.Total = parameters.Total;
             return _response;

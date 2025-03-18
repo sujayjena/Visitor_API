@@ -12,6 +12,7 @@ namespace Visitor.Application.Models
 {
     public class SecurityLogin_Search : BaseSearchEntity
     {
+        [DefaultValue(null)]
         public bool? IsBlackListed { get; set; }
     }
 

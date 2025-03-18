@@ -14,6 +14,6 @@ namespace Visitor.Application.Interfaces
         Task<SecurityLogin_Response?> GetSecurityLoginById(int Id);
 
         Task<int> SaveSecurityLoginGateDetails(SecurityLoginGateDetails_Request parameters);
-        Task<IEnumerable<SecurityLoginGateDetails_Response>> GetSecurityLoginGateDetailsById(int SecurityLoginId, int SecurityLoginGateDetailsId);
+        Task<IEnumerable<SecurityLoginGateDetails_Response>> GetSecurityLoginGateDetailsById(int SecurityLoginId, int GateDetailsId);
     }
 }

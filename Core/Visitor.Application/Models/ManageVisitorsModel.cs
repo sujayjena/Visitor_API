@@ -20,9 +20,16 @@ namespace Visitor.Application.Models
         public int? VisitorId { get; set; }
         public int? GateDetailsId { get; set; }
         public int? PassTypeId { get; set; }
+
+        [DefaultValue(null)]
         public DateTime? FromDate { get; set; }
+
+        [DefaultValue(null)]
         public DateTime? ToDate { get; set; }
         public int? StatusId { get; set; }
+
+        [DefaultValue("")]
+        public string? GateDetailsId_Filter { get; set; }
     }
 
     public class Visitors_Request : BaseEntity

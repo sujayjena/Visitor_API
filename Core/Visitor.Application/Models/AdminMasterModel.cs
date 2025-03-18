@@ -955,4 +955,31 @@ namespace Visitor.Application.Models
 
     #endregion
 
+    #region Canteen Item Details
+    public class CanteenItemDetails_Search : BaseSearchEntity
+    {
+    }
+
+    public class CanteenItemDetails_Request : BaseEntity
+    {
+        [DefaultValue("")]
+        public string? RawMaterial { get; set; }
+        public int? UOMId { get; set; }
+        public decimal? MinQty { get; set; }
+        public decimal? AvailableQty { get; set; }
+        public bool? IsActive { get; set; }
+    }
+
+    public class CanteenItemDetails_Response : BaseResponseEntity
+    {
+        public string? RawMaterial { get; set; }
+        public int? UOMId { get; set; }
+        public string? UOMName { get; set; }
+        public decimal? MinQty { get; set; }
+        public decimal? AvailableQty { get; set; }
+        public bool? IsActive { get; set; }
+    }
+
+    #endregion
+
 }

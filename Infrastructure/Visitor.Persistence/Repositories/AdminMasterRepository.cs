@@ -1596,5 +1596,45 @@ namespace Visitor.Persistence.Repositories
         }
 
         #endregion
+
+        #region Canteen Item Details
+        public async Task<int> SaveCanteenItemDetails(CanteenItemDetails_Request parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@Id", parameters.Id);
+            queryParameters.Add("@RawMaterial", parameters.RawMaterial.SanitizeValue());
+            queryParameters.Add("@UOMId", parameters.UOMId);
+            queryParameters.Add("@MinQty", parameters.MinQty);
+            queryParameters.Add("@AvailableQty", parameters.AvailableQty);
+            queryParameters.Add("@IsActive", parameters.IsActive);
+            queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
+
+            return await SaveByStoredProcedure<int>("SaveCanteenItemDetails", queryParameters);
+        }
+
+        public async Task<IEnumerable<CanteenItemDetails_Response>> GetCanteenItemDetailsList(CanteenItemDetails_Search parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@SearchText", parameters.SearchText.SanitizeValue());
+            queryParameters.Add("@IsActive", parameters.IsActive);
+            queryParameters.Add("@PageNo", parameters.PageNo);
+            queryParameters.Add("@PageSize", parameters.PageSize);
+            queryParameters.Add("@Total", parameters.Total, null, System.Data.ParameterDirection.Output);
+            queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
+
+            var result = await ListByStoredProcedure<CanteenItemDetails_Response>("GetCanteenItemDetailsList", queryParameters);
+            parameters.Total = queryParameters.Get<int>("Total");
+
+            return result;
+        }
+
+        public async Task<CanteenItemDetails_Response?> GetCanteenItemDetailsById(int Id)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@Id", Id);
+            return (await ListByStoredProcedure<CanteenItemDetails_Response>("GetCanteenItemDetailsById", queryParameters)).FirstOrDefault();
+        }
+
+        #endregion
     }
 }

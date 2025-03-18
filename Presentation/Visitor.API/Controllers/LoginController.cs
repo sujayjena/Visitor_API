@@ -18,18 +18,21 @@ namespace Visitor.API.Controllers
         private readonly IRolePermissionRepository _rolePermissionRepository;
         private readonly IUserRepository _userRepository;
         private readonly IBranchRepository _branchRepository;
+        private readonly IManageSecurityRepository _manageSecurityRepository;
 
         public LoginController(ILoginRepository loginRepository,
             IJwtUtilsRepository jwt,
             IRolePermissionRepository rolePermissionRepository,
             IUserRepository userRepository,
-            IBranchRepository branchRepository)
+            IBranchRepository branchRepository,
+            IManageSecurityRepository manageSecurityRepository)
         {
             _loginRepository = loginRepository;
             _jwt = jwt;
             _userRepository = userRepository;
             _rolePermissionRepository = rolePermissionRepository;
             _branchRepository = branchRepository;
+            _manageSecurityRepository = manageSecurityRepository;
 
             _response = new ResponseModel();
             _response.IsSuccess = true;
@@ -75,14 +78,22 @@ namespace Visitor.API.Controllers
                     if (loginResponse.UserId != null)
                     {
                         string strBrnachIdList = string.Empty;
+                        string strGateDetailsIdList = string.Empty;
 
                         var vRoleList = await _rolePermissionRepository.GetRoleMasterEmployeePermissionById(Convert.ToInt64(loginResponse.UserId));
                         //var vUserNotificationList = await _notificationService.GetNotificationListById(Convert.ToInt64(loginResponse.EmployeeId));
                         var vUserDetail = await _userRepository.GetUserById(Convert.ToInt32(loginResponse.UserId));
+
                         var vUserBranchMappingDetail = await _branchRepository.GetBranchMappingByEmployeeId(EmployeeId: Convert.ToInt32(loginResponse.UserId), BranchId: 0);
                         if (vUserBranchMappingDetail.ToList().Count > 0)
                         {
                             strBrnachIdList = string.Join(",", vUserBranchMappingDetail.ToList().OrderBy(x => x.BranchId).Select(x => x.BranchId));
+                        }
+
+                        var vSecurityGateDetail = await _manageSecurityRepository.GetSecurityLoginGateDetailsById(SecurityLoginId: Convert.ToInt32(loginResponse.SecurityId), GateDetailsId: 0);
+                        if (vSecurityGateDetail.ToList().Count > 0)
+                        {
+                            strGateDetailsIdList = string.Join(",", vSecurityGateDetail.ToList().OrderBy(x => x.GateDetailsId).Select(x => x.GateDetailsId));
                         }
 
                         employeeSessionData = new SessionDataEmployee
@@ -106,6 +117,7 @@ namespace Visitor.API.Controllers
                             DepartmentId = vUserDetail != null ? Convert.ToInt32(vUserDetail.DepartmentId) : 0,
                             DepartmentName = vUserDetail != null ? vUserDetail.DepartmentName : String.Empty,
                             BranchId = strBrnachIdList,
+                            GateDetailsId = strGateDetailsIdList,
 
                             ProfileImage = vUserDetail != null ? vUserDetail.ProfileImage : String.Empty,
                             ProfileOriginalFileName = vUserDetail != null ? vUserDetail.ProfileOriginalFileName : String.Empty,

@@ -340,5 +340,11 @@ namespace Visitor.Application.Interfaces
 
         Task<MenuItem_Response?> GetMenuItemById(int Id);
         #endregion
+
+        #region Canteen Item Details
+        Task<int> SaveCanteenItemDetails(CanteenItemDetails_Request parameters);
+        Task<IEnumerable<CanteenItemDetails_Response>> GetCanteenItemDetailsList(CanteenItemDetails_Search parameters);
+        Task<CanteenItemDetails_Response?> GetCanteenItemDetailsById(int Id);
+        #endregion
     }
 }
