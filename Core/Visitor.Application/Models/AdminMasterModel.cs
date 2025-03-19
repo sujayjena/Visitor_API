@@ -881,6 +881,7 @@ namespace Visitor.Application.Models
         [DefaultValue(null)]
         public bool? IsEmployee { get; set; }
         public int? MealTypeId { get; set; }
+        public int? DaysId { get; set; }
     }
 
     public class FoodItem_Response : BaseResponseEntity

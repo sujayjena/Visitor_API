@@ -98,6 +98,20 @@ namespace Visitor.Persistence.Repositories
             return (await ListByStoredProcedure<Visitors_Response>("GetVisitorsById", queryParameters)).FirstOrDefault();
         }
 
+        public async Task<int> VisitorsApproveNReject(Visitor_ApproveNReject parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+
+            queryParameters.Add("@Id", parameters.Id);
+            queryParameters.Add("@StatusId", parameters.StatusId);
+            //queryParameters.Add("@BarcodeOriginalFileName", parameters.BarcodeOriginalFileName);
+            //queryParameters.Add("@BarcodeFileName", parameters.BarcodeFileName);
+            queryParameters.Add("@Remarks", parameters.Remarks);
+            queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
+
+            return await SaveByStoredProcedure<int>("VisitorsApproveNReject", queryParameters);
+        }
+
         public async Task<Visitors_Response?> GetVisitorDetailByMobileNumber(string MobileNumber)
         {
             DynamicParameters queryParameters = new DynamicParameters();
@@ -127,5 +141,16 @@ namespace Visitor.Persistence.Repositories
 
             return result;
         }
+
+        public async Task<IEnumerable<VisitorApproveNRejectHistory_Response>> GetVisitorApproveNRejectHistoryListById(VisitorApproveNRejectHistory_Search parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@VisitorId", parameters.VisitorId);
+
+            var result = await ListByStoredProcedure<VisitorApproveNRejectHistory_Response>("GetVisitorApproveNRejectHistoryListById", queryParameters);
+            return result;
+        }
+
+       
     }
 }

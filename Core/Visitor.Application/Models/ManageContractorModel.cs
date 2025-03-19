@@ -21,11 +21,14 @@ namespace Visitor.Application.Models
         public string? ContractorName { get; set; }
         public string? ContractorPerson { get; set; }
         public string? MobileNo { get; set; }
+        public DateTime? ValidFromDate { get; set; }
+        public DateTime? ValidToDate { get; set; }
         public string? AddressLine { get; set; }
         public int? CountryId { get; set; }
         public int? StateId { get; set; }
+        public int? DistrictId { get; set; }
         public int? CityId { get; set; }
-        public int? Pincode { get; set; }
+        public string? Pincode { get; set; }
         public int? DocumentTypeId { get; set; }
 
         public string? DocumentOriginalFileName { get; set; }
@@ -57,14 +60,18 @@ namespace Visitor.Application.Models
         public string? ContractorName { get; set; }
         public string? ContractorPerson { get; set; }
         public string? MobileNo { get; set; }
+        public DateTime? ValidFromDate { get; set; }
+        public DateTime? ValidToDate { get; set; }
         public string? AddressLine { get; set; }
         public int? CountryId { get; set; }
         public string? CountryName { get; set; }
         public int? StateId { get; set; }
         public string? StateName { get; set; }
+        public int? DistrictId { get; set; }
+        public string? DistrictName { get; set; }
         public int? CityId { get; set; }
         public string? CityName { get; set; }
-        public int? Pincode { get; set; }
+        public string? Pincode { get; set; }
         public int? DocumentTypeId { get; set; }
         public string? DocumentType { get; set; }
         public string? DocumentOriginalFileName { get; set; }

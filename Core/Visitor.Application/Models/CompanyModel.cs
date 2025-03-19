@@ -28,7 +28,7 @@ namespace Visitor.Application.Models
         public int? StateId { get; set; }
         public int? DistrictId { get; set; }
         public int? CityId { get; set; }
-        public int? Pincode { get; set; }
+        public string? Pincode { get; set; }
         public string? GSTNumber { get; set; }
         public string? PANNumber { get; set; }
         public string? CompanyLogoFileName { get; set; }
@@ -63,7 +63,7 @@ namespace Visitor.Application.Models
         public string? DistrictName { get; set; }
         public int? CityId { get; set; }
         public string? CityName { get; set; }
-        public int? Pincode { get; set; }
+        public string? Pincode { get; set; }
         public string? GSTNumber { get; set; }
         public string? PANNumber { get; set; }
         public string? CompanyLogo { get; set; }

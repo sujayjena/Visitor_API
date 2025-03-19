@@ -55,7 +55,7 @@ namespace Visitor.Application.Models
         public int? StateId { get; set; }
         public int? DistrictId { get; set; }
         public int? CityId { get; set; }
-        public int? Pincode { get; set; }
+        public string? Pincode { get; set; }
         public string? AddressLine { get; set; }
         public int? IDTypeId { get; set; }
 
@@ -125,7 +125,7 @@ namespace Visitor.Application.Models
         public string? DistrictName { get; set; }
         public int? CityId { get; set; }
         public string? CityName { get; set; }
-        public int? Pincode { get; set; }
+        public string? Pincode { get; set; }
         public string? AddressLine { get; set; }
         public int? IDTypeId { get; set; }
         public string? IDType { get; set; }
@@ -185,5 +185,33 @@ namespace Visitor.Application.Models
         public int? VisitorId { get; set; }
         public int? GateDetailsId { get; set; }
         public string? GateNumber { get; set; }
+    }
+
+    public class VisitorApproveNRejectHistory_Search : BaseSearchEntity
+    {
+        public int VisitorId { get; set; }
+    }
+
+    public class VisitorApproveNRejectHistory_Response
+    {
+        public int? Id { get; set; }
+        public string? Remarks { get; set; }
+        public string? ApproveOrReject { get; set; }
+        public string? CreatorName { get; set; }
+        public long CreatedBy { get; set; }
+        public DateTime? CreatedDate { get; set; }
+    }
+
+    public class Visitor_ApproveNReject
+    {
+        public int? Id { get; set; }
+        public int? StatusId { get; set; }
+
+        [JsonIgnore]
+        public string? BarcodeOriginalFileName { get; set; }
+
+        [JsonIgnore]
+        public string? BarcodeFileName { get; set; }
+        public string? Remarks { get; set; }
     }
 }

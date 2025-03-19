@@ -29,9 +29,12 @@ namespace Visitor.Persistence.Repositories
             queryParameters.Add("@ContractorName", parameters.ContractorName);
             queryParameters.Add("@ContractorPerson", parameters.ContractorPerson);
             queryParameters.Add("@MobileNo", parameters.MobileNo);
+            queryParameters.Add("@ValidFromDate", parameters.ValidFromDate);
+            queryParameters.Add("@ValidToDate", parameters.ValidToDate);
             queryParameters.Add("@AddressLine", parameters.AddressLine);
             queryParameters.Add("@CountryId", parameters.CountryId);
             queryParameters.Add("@StateId", parameters.StateId);
+            queryParameters.Add("@DistrictId", parameters.DistrictId);
             queryParameters.Add("@CityId", parameters.CityId);
             queryParameters.Add("@Pincode", parameters.Pincode);
             queryParameters.Add("@DocumentTypeId", parameters.DocumentTypeId);

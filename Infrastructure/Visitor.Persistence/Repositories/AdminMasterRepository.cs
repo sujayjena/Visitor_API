@@ -1479,6 +1479,7 @@ namespace Visitor.Persistence.Repositories
             queryParameters.Add("@IsSubsidized", parameters.IsSubsidized);
             queryParameters.Add("@IsEmployee", parameters.IsEmployee);
             queryParameters.Add("@MealTypeId", parameters.MealTypeId);
+            queryParameters.Add("@DaysId", parameters.DaysId);
             queryParameters.Add("@SearchText", parameters.SearchText.SanitizeValue());
             queryParameters.Add("@IsActive", parameters.IsActive);
             queryParameters.Add("@PageNo", parameters.PageNo);
