@@ -52,6 +52,7 @@ namespace Visitor.Persistence.Repositories
         public async Task<IEnumerable<Contractor_Response>> GetContractorList(ContractorSearch_Request parameters)
         {
             DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@ContractorTypeId", parameters.ContractorTypeId);
             queryParameters.Add("@SearchText", parameters.SearchText.SanitizeValue());
             queryParameters.Add("@IsActive", parameters.IsActive);
             queryParameters.Add("@IsBlackList", parameters.IsBlackList);

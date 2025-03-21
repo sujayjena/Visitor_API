@@ -49,6 +49,8 @@ namespace Visitor.Application.Models
 
     public class ContractorSearch_Request : BaseSearchEntity
     {
+        public int? ContractorTypeId { get; set; }
+
         [DefaultValue(null)]
         public bool? IsBlackList { get; set; }
     }
