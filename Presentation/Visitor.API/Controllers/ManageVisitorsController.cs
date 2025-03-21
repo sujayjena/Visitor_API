@@ -95,6 +95,13 @@ namespace Visitor.API.Controllers
                 }
 
                 #endregion
+
+                #region Log History
+
+                int vLogHistory = await _manageVisitorsRepository.SaveVisitorLogHistory(result);
+
+                #endregion
+
             }
             return _response;
         }
@@ -288,5 +295,16 @@ namespace Visitor.API.Controllers
             _response.Total = parameters.Total;
             return _response;
         }
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> GetVisitorLogHistoryList(VisitorLogHistory_Search parameters)
+        {
+            IEnumerable<VisitorLogHistory_Response> lstVisitorss = await _manageVisitorsRepository.GetVisitorLogHistoryList(parameters);
+            _response.Data = lstVisitorss.ToList();
+            _response.Total = parameters.Total;
+            return _response;
+        }
+
     }
 }

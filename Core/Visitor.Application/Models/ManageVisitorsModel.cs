@@ -214,4 +214,20 @@ namespace Visitor.Application.Models
         public string? BarcodeFileName { get; set; }
         public string? Remarks { get; set; }
     }
+
+    public class VisitorLogHistory_Search : BaseSearchEntity
+    {
+        public int? VisitorId { get; set; }
+    }
+
+    public class VisitorLogHistory_Response
+    {
+        public int Id { get; set; }
+        public int? VisitorId { get; set; }
+        public string? VisitorName { get; set; }
+        public string? GateNumber { get; set; }
+        public string? CreatorName { get; set; }
+        public long CreatedBy { get; set; }
+        public DateTime? CreatedDate { get; set; }
+    }
 }

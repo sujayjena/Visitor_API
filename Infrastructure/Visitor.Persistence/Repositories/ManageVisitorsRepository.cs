@@ -151,6 +151,30 @@ namespace Visitor.Persistence.Repositories
             return result;
         }
 
-       
+        public async Task<int> SaveVisitorLogHistory(int VisitorId)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@VisitorId", VisitorId);
+            queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
+
+            return await SaveByStoredProcedure<int>("SaveVisitorLogHistory", queryParameters);
+        }
+
+        public async Task<IEnumerable<VisitorLogHistory_Response>> GetVisitorLogHistoryList(VisitorLogHistory_Search parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@VisitorId", parameters.VisitorId);
+            queryParameters.Add("@SearchText", parameters.SearchText.SanitizeValue());
+            queryParameters.Add("@IsActive", parameters.IsActive);
+            queryParameters.Add("@PageNo", parameters.PageNo);
+            queryParameters.Add("@PageSize", parameters.PageSize);
+            queryParameters.Add("@Total", parameters.Total, null, System.Data.ParameterDirection.Output);
+            queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
+
+            var result = await ListByStoredProcedure<VisitorLogHistory_Response>("GetVisitorLogHistoryList", queryParameters);
+            parameters.Total = queryParameters.Get<int>("Total");
+
+            return result;
+        }
     }
 }

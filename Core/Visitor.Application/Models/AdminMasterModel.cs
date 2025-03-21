@@ -983,4 +983,36 @@ namespace Visitor.Application.Models
 
     #endregion
 
+    #region Material Details
+    public class MaterialDetails_Search : BaseSearchEntity
+    {
+    }
+
+    public class MaterialDetails_Request : BaseEntity
+    {
+        [DefaultValue("")]
+        public string? MaterialCode { get; set; }
+
+        [DefaultValue("")]
+        public string? MaterialName { get; set; }
+        public decimal? CurrentStock { get; set; }
+        public decimal? Quantity { get; set; }
+        public int? UOMId { get; set; }
+        public string? Remarks { get; set; }
+        public bool? IsActive { get; set; }
+    }
+
+    public class MaterialDetails_Response : BaseResponseEntity
+    {
+        public string? MaterialCode { get; set; }
+        public string? MaterialName { get; set; }
+        public decimal? CurrentStock { get; set; }
+        public decimal? Quantity { get; set; }
+        public int? UOMId { get; set; }
+        public string? UOMName { get; set; }
+        public string? Remarks { get; set; }
+        public bool? IsActive { get; set; }
+    }
+
+    #endregion
 }

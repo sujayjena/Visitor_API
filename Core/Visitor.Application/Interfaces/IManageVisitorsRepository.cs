@@ -19,5 +19,8 @@ namespace Visitor.Application.Interfaces
         Task<int> SaveVisitorsGateNo(VisitorGateNo_Request parameters);
         Task<IEnumerable<VisitorGateNo_Response>> GetVisitorsGateNoByVisitorId(long VisitorId, long GateDetailsId);
         Task<IEnumerable<VisitorApproveNRejectHistory_Response>> GetVisitorApproveNRejectHistoryListById(VisitorApproveNRejectHistory_Search parameters);
+
+        Task<int> SaveVisitorLogHistory(int VisitorId);
+        Task<IEnumerable<VisitorLogHistory_Response>> GetVisitorLogHistoryList(VisitorLogHistory_Search parameters);
     }
 }

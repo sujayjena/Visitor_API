@@ -71,7 +71,7 @@ namespace Visitor.Application.Models
 
         public int? AreaId { get; set; }
 
-        public int? Pincode { get; set; }
+        public string? Pincode { get; set; }
 
         public bool IsSameAsPermanent { get; set; }
         public string TemporaryAddress { get; set; }
@@ -84,7 +84,7 @@ namespace Visitor.Application.Models
 
         public int? Temporary_CityId { get; set; }
 
-        public int? Temporary_Pincode { get; set; }
+        public string? Temporary_Pincode { get; set; }
 
         public string EmergencyName { get; set; }
         public string EmergencyContactNumber { get; set; }
@@ -189,7 +189,7 @@ namespace Visitor.Application.Models
         public int? AreaId { get; set; }
 
         public string AreaName { get; set; }
-        public int? Pincode { get; set; }
+        public string? Pincode { get; set; }
 
         public DateTime? DateOfBirth { get; set; }
 

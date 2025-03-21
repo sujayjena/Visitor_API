@@ -1637,5 +1637,47 @@ namespace Visitor.Persistence.Repositories
         }
 
         #endregion
+
+        #region Material Details
+        public async Task<int> SaveMaterialDetails(MaterialDetails_Request parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@Id", parameters.Id);
+            queryParameters.Add("@MaterialCode", parameters.MaterialCode.SanitizeValue());
+            queryParameters.Add("@MaterialName", parameters.MaterialName.SanitizeValue());
+            queryParameters.Add("@CurrentStock", parameters.CurrentStock);
+            queryParameters.Add("@Quantity", parameters.Quantity);
+            queryParameters.Add("@UOMId", parameters.UOMId);
+            queryParameters.Add("@Remarks", parameters.Remarks);
+            queryParameters.Add("@IsActive", parameters.IsActive);
+            queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
+
+            return await SaveByStoredProcedure<int>("SaveMaterialDetails", queryParameters);
+        }
+
+        public async Task<IEnumerable<MaterialDetails_Response>> GetMaterialDetailsList(MaterialDetails_Search parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@SearchText", parameters.SearchText.SanitizeValue());
+            queryParameters.Add("@IsActive", parameters.IsActive);
+            queryParameters.Add("@PageNo", parameters.PageNo);
+            queryParameters.Add("@PageSize", parameters.PageSize);
+            queryParameters.Add("@Total", parameters.Total, null, System.Data.ParameterDirection.Output);
+            queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
+
+            var result = await ListByStoredProcedure<MaterialDetails_Response>("GetMaterialDetailsList", queryParameters);
+            parameters.Total = queryParameters.Get<int>("Total");
+
+            return result;
+        }
+
+        public async Task<MaterialDetails_Response?> GetMaterialDetailsById(int Id)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@Id", Id);
+            return (await ListByStoredProcedure<MaterialDetails_Response>("GetMaterialDetailsById", queryParameters)).FirstOrDefault();
+        }
+
+        #endregion
     }
 }
