@@ -22,5 +22,8 @@ namespace Visitor.Application.Interfaces
 
         Task<int> SaveVisitorLogHistory(int VisitorId);
         Task<IEnumerable<VisitorLogHistory_Response>> GetVisitorLogHistoryList(VisitorLogHistory_Search parameters);
+
+        Task<IEnumerable<VisitorPlanned_Response>> GetVisitorPlannedList(VisitorPlanned_Search parameters);
+        Task<int> SaveVisitorCheckedInOut(VisitorCheckedInOut_Request parameters);
     }
 }

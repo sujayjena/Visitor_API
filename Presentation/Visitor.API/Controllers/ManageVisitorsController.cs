@@ -306,5 +306,60 @@ namespace Visitor.API.Controllers
             return _response;
         }
 
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> GetVisitorPlannedList(VisitorPlanned_Search parameters)
+        {
+            IEnumerable<VisitorPlanned_Response> lstVisitorss = await _manageVisitorsRepository.GetVisitorPlannedList(parameters);
+            _response.Data = lstVisitorss.ToList();
+            _response.Total = parameters.Total;
+            return _response;
+        }
+
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> SaveVisitorCheckedInOut(VisitorCheckedInOut_Request parameters)
+        {
+            int result = await _manageVisitorsRepository.SaveVisitorCheckedInOut(parameters);
+
+            if (result == (int)SaveOperationEnums.NoRecordExists)
+            {
+                _response.Message = "No record exists";
+            }
+            else if (result == (int)SaveOperationEnums.ReocrdExists)
+            {
+                _response.Message = "Record is already exists";
+            }
+            else if (result == -3)
+            {
+                _response.Message = "Already Checked In for this gate.";
+            }
+            else if (result == -4)
+            {
+                _response.Message = "Not Allowed checked In for this gate again.";
+            }
+            else if (result == -5)
+            {
+                _response.Message = "Already Checked Out for this gate.";
+            }
+            else if (result == -6)
+            {
+                _response.Message = "Not Allowed Checked Out this gate again.";
+            }
+            else if (result == -7)
+            {
+                _response.Message = "Not Allow to Checked Out from this gate";
+            }
+            else if (result == (int)SaveOperationEnums.NoResult)
+            {
+                _response.Message = "Something went wrong, please try again";
+            }
+            else
+            {
+                _response.Message = "Record details saved successfully";
+            }
+            return _response;
+        }
     }
 }

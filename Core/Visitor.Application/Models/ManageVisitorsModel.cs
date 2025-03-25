@@ -230,4 +230,47 @@ namespace Visitor.Application.Models
         public long CreatedBy { get; set; }
         public DateTime? CreatedDate { get; set; }
     }
+
+    public class VisitorPlanned_Search : BaseSearchEntity
+    {
+        [DefaultValue(null)]
+        public DateTime? VisitDate { get; set; }
+
+        [DefaultValue("")]
+        public string? GateDetailsId { get; set; }
+        public int? IsPlanned_CheckIn_CheckOut { get; set; }  
+    }
+
+    public class VisitorPlanned_Response : BaseResponseEntity
+    {
+        public int? VisitorId { get; set; }
+        public string? VisitNumber { get; set; }
+        public string? VisitorName { get; set; }
+        public string? VisitorMobileNo { get; set; }
+        public string? VisitorEmailId { get; set; }
+        public int? GateDetailsId { get; set; }
+        public string? GateNumber { get; set; }
+        public int? PassTypeId { get; set; }
+        public string? PassType { get; set; }
+        public int? VisitTypeId { get; set; }
+        public string? VisitType { get; set; }
+        public string? VisitorPhotoOriginalFileName { get; set; }
+        public string? VisitorPhoto { get; set; }
+        public string? VisitorPhotoURL { get; set; }
+        public int? StatusId { get; set; }
+        public string? StatusName { get; set; }
+        public DateTime? CheckedInDate { get; set; }
+
+        public bool? IsActive { get; set; }
+    }
+
+    public class VisitorCheckedInOut_Request : BaseEntity
+    {
+        public int? VisitorId { get; set; }
+        public int? GateDetailsId { get; set; }
+        public int? IsCheckedIn_Out { get; set; }
+
+        [DefaultValue(null)]
+        public DateTime? CheckedInDate { get; set; }
+    }
 }
