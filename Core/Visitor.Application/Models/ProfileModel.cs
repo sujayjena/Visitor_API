@@ -15,18 +15,24 @@ namespace Visitor.Application.Models
     }
 
     #region Department
+    public class Department_Search : BaseSearchEntity
+    {
+        public int? BranchId { get; set; }
+    }
 
     public class Department_Request : BaseEntity
     {
-        public string DepartmentName { get; set; }
+        public string? DepartmentName { get; set; }
+        public int? BranchId { get; set; }
 
         public bool? IsActive { get; set; }
     }
 
     public class Department_Response : BaseResponseEntity
     {
-        public string DepartmentName { get; set; }
-
+        public string? DepartmentName { get; set; }
+        public int? BranchId { get; set; }
+        public string? BranchName { get; set; }
         public bool? IsActive { get; set; }
     }
 
@@ -66,6 +72,7 @@ namespace Visitor.Application.Models
     #region RoleHierarchy
     public class RoleHierarchy_Search : BaseSearchEntity
     {
+
         [DefaultValue("Admin")]
         public string? RoleType { get; set; }
     }

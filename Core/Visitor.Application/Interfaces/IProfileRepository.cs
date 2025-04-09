@@ -9,7 +9,7 @@ namespace Visitor.Application.Interfaces
 
         Task<int> SaveDepartment(Department_Request parameters);
 
-        Task<IEnumerable<Department_Response>> GetDepartmentList(BaseSearchEntity parameters);
+        Task<IEnumerable<Department_Response>> GetDepartmentList(Department_Search parameters);
 
         Task<Department_Response?> GetDepartmentById(long Id);
 

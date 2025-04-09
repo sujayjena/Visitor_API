@@ -52,7 +52,7 @@ namespace Visitor.API.Controllers.Admin
 
         [Route("[action]")]
         [HttpPost]
-        public async Task<ResponseModel> GetDepartmentList(BaseSearchEntity parameters)
+        public async Task<ResponseModel> GetDepartmentList(Department_Search parameters)
         {
             IEnumerable<Department_Response> lstRoles = await _profileRepository.GetDepartmentList(parameters);
             _response.Data = lstRoles.ToList();
