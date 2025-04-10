@@ -65,6 +65,7 @@ namespace Visitor.Persistence.Repositories
             queryParameters.Add("@Id", parameters.Id);
             queryParameters.Add("@RoleName", parameters.RoleName.SanitizeValue());
             queryParameters.Add("@DepartmentId", parameters.DepartmentId.SanitizeValue());
+            queryParameters.Add("@BranchId", parameters.BranchId);
             queryParameters.Add("@RoleType", parameters.RoleType);
             queryParameters.Add("@IsActive", parameters.IsActive);
             queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
@@ -75,6 +76,7 @@ namespace Visitor.Persistence.Repositories
         public async Task<IEnumerable<Role_Response>> GetRoleList(Role_Search parameters)
         {
             DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@BranchId", parameters.BranchId);
             queryParameters.Add("@DepartmentId", parameters.DepartmentId);
             queryParameters.Add("@RoleType", parameters.RoleType);
             queryParameters.Add("@SearchText", parameters.SearchText.SanitizeValue());
@@ -120,6 +122,7 @@ namespace Visitor.Persistence.Repositories
             queryParameters.Add("@Id", parameters.Id);
             queryParameters.Add("@RoleId", parameters.RoleId);
             queryParameters.Add("@ReportingTo", parameters.ReportingTo);
+            queryParameters.Add("@BranchId", parameters.BranchId);
 
             queryParameters.Add("@RoleType", parameters.RoleType);
             queryParameters.Add("@IsActive", parameters.IsActive);
@@ -131,6 +134,7 @@ namespace Visitor.Persistence.Repositories
         public async Task<IEnumerable<RoleHierarchy_Response>> GetRoleHierarchyList(RoleHierarchy_Search parameters)
         {
             DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@BranchId", parameters.BranchId);
             queryParameters.Add("@RoleType", parameters.RoleType);
             queryParameters.Add("@SearchText", parameters.SearchText.SanitizeValue());
             queryParameters.Add("@IsActive", parameters.IsActive);

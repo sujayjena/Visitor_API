@@ -41,6 +41,7 @@ namespace Visitor.Application.Models
     #region Role
     public class Role_Search : BaseSearchEntity
     {
+        public int? BranchId { get; set; }
         public int? DepartmentId { get; set; }
 
         [DefaultValue("Admin")]
@@ -51,6 +52,7 @@ namespace Visitor.Application.Models
     {
         public string? RoleName { get; set; }
         public int? DepartmentId { get; set; }
+        public int? BranchId { get; set; }
 
         [DefaultValue("Admin")]
         public string? RoleType { get; set; }
@@ -62,6 +64,8 @@ namespace Visitor.Application.Models
         public string? RoleName { get; set; }
         public int? DepartmentId { get; set; }
         public string? DepartmentName { get; set; }
+        public int? BranchId { get; set; }
+        public string? BranchName { get; set; }
         public string? RoleType { get; set; }
 
         public bool? IsActive { get; set; }
@@ -72,6 +76,7 @@ namespace Visitor.Application.Models
     #region RoleHierarchy
     public class RoleHierarchy_Search : BaseSearchEntity
     {
+        public int? BranchId { get; set; }
 
         [DefaultValue("Admin")]
         public string? RoleType { get; set; }
@@ -82,6 +87,7 @@ namespace Visitor.Application.Models
         [Required]
         public int RoleId { get; set; }
         public int? ReportingTo { get; set; }
+        public int? BranchId { get; set; }
 
         [DefaultValue("Admin")]
         public string? RoleType { get; set; }
@@ -94,6 +100,8 @@ namespace Visitor.Application.Models
         public string? RoleName { get; set; }
         public int ReportingTo { get; set; }
         public string? ReportingToName { get; set; }
+        public int? BranchId { get; set; }
+        public string? BranchName { get; set; }
         public string? RoleType { get; set; }
         public bool? IsActive { get; set; }
     }
