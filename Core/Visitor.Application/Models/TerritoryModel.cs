@@ -17,6 +17,7 @@ namespace Visitor.Application.Models
     public class Country_Request : BaseEntity
     {
         public string? CountryName { get; set; }
+        public string? CountryCode { get; set; }
 
         public bool? IsActive { get; set; }
     }
@@ -24,6 +25,7 @@ namespace Visitor.Application.Models
     public class Country_Response : BaseResponseEntity
     {
         public string? CountryName { get; set; }
+        public string? CountryCode { get; set; }
 
         public bool? IsActive { get; set; }
     }

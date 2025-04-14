@@ -27,6 +27,7 @@ namespace Visitor.Persistence.Repositories
             DynamicParameters queryParameters = new DynamicParameters();
             queryParameters.Add("@Id", parameters.Id);
             queryParameters.Add("@CountryName", parameters.CountryName.SanitizeValue());
+            queryParameters.Add("@CountryCode", parameters.CountryCode);
             queryParameters.Add("@IsActive", parameters.IsActive);
             queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
 
