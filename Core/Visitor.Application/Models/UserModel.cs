@@ -26,7 +26,7 @@ namespace Visitor.Application.Models
             BranchList = new List<BranchMapping_Request>();
         }
 
-        //public string UserCode { get; set; }
+        public string UserCode { get; set; }
 
         public string UserName { get; set; }
 
@@ -145,7 +145,7 @@ namespace Visitor.Application.Models
             UserOtherDetailsList = new List<UserOtherDetails_Response>();
         }
 
-        //public string UserCode { get; set; }
+        public string UserCode { get; set; }
 
         public string UserName { get; set; }
 

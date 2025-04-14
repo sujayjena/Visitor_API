@@ -26,7 +26,7 @@ namespace Visitor.Persistence.Repositories
         {
             DynamicParameters queryParameters = new DynamicParameters();
             queryParameters.Add("@Id", parameters.Id);
-            //queryParameters.Add("@UserCode", parameters.UserCode);
+            queryParameters.Add("@UserCode", parameters.UserCode);
             queryParameters.Add("@UserName", parameters.UserName);
             queryParameters.Add("@MobileNumber", parameters.MobileNumber);
             queryParameters.Add("@EmailId", parameters.EmailId);
