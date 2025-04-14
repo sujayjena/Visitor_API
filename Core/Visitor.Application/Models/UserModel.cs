@@ -15,6 +15,7 @@ namespace Visitor.Application.Models
     }
     public class User_Search : BaseSearchEntity
     {
+        public int BranchId { get; set; }
         public int DepartmentId { get; set; }
     }
 
@@ -119,6 +120,12 @@ namespace Visitor.Application.Models
         public string OtherProofImage_Base64 { get; set; }
 
         public string? OtherProofOriginalFileName { get; set; }
+
+        public int? BranchId { get; set; }
+
+        public bool? IsHOD { get; set; }
+
+        public bool? IsManager { get; set; }
 
         public bool? IsMobileUser { get; set; }
 
@@ -254,6 +261,12 @@ namespace Visitor.Application.Models
         public string? OtherProofOriginalFileName { get; set; }
 
         public string OtherProofImageURL { get; set; }
+
+        public int? BranchId { get; set; }
+
+        public bool? IsHOD { get; set; }
+
+        public bool? IsManager { get; set; }
 
         public bool? IsMobileUser { get; set; }
 
