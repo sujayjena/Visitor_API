@@ -120,6 +120,9 @@ namespace Visitor.Application.Models
         public long RoleId { get; set; }
         public long? RegionId { get; set; }
 
+        [DefaultValue(null)]
+        public bool? IsActive { get; set; }
+
         [DefaultValue("Admin")]
         public string? roleType { get; set; }
     }

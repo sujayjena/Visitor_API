@@ -182,6 +182,7 @@ namespace Visitor.Persistence.Repositories
             DynamicParameters queryParameters = new DynamicParameters();
             queryParameters.Add("@RoleId", parameters.RoleId);
             queryParameters.Add("@RegionId", parameters.RegionId.SanitizeValue());
+            queryParameters.Add("@IsActive", parameters.IsActive);
             queryParameters.Add("@roleType", parameters.roleType.SanitizeValue());
 
             return await ListByStoredProcedure<SelectListResponse>("GetReportingToEmployeeForSelectList", queryParameters);
