@@ -36,6 +36,7 @@ namespace Visitor.Persistence.Repositories
             queryParameters.Add("@DistrictId", parameters.DistrictId);
             queryParameters.Add("@CityId", parameters.CityId);
             queryParameters.Add("@Pincode", parameters.Pincode);
+            queryParameters.Add("@GateDetailsId", parameters.GateDetailsId);
             if (SessionManager.LoggedInUserId == 1)
             {
                 queryParameters.Add("@NoofUserAdd", parameters.NoofUserAdd);

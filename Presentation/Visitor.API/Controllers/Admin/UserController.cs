@@ -163,7 +163,7 @@ namespace Visitor.API.Controllers.Admin
             }
             else if (result == (int)SaveOperationEnums.ReocrdExists)
             {
-                _response.Message = "Record already exists";
+                _response.Message = "Employee Code already exists";
             }
             else if (result == -3)
             {
