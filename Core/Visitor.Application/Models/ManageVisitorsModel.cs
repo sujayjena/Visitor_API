@@ -338,4 +338,25 @@ namespace Visitor.Application.Models
         [DefaultValue(null)]
         public DateTime? CheckedInDate { get; set; }
     }
+    public class Visitor_Barcode_Request
+    {
+        public string? value { get; set; }
+    }
+    public class Barcode_Request : BaseEntity
+    {
+        public string? BarcodeNo { get; set; }
+        public string? BarcodeType { get; set; }
+        public string? Barcode_Unique_Id { get; set; }
+        public int? RefId { get; set; }
+    }
+
+    public class Barcode_Response : BaseEntity
+    {
+        public string? BarcodeNo { get; set; }
+        public string? BarcodeType { get; set; }
+        public string? Barcode_Unique_Id { get; set; }
+        public int? RefId { get; set; }
+        public string? Validity { get; set; }
+        public DateTime? CreatedDate { get; set; }
+    }
 }

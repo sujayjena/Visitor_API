@@ -267,5 +267,24 @@ namespace Visitor.Persistence.Repositories
 
             return result;
         }
+        public async Task<int> SaveBarcode(Barcode_Request parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@Id", parameters.Id);
+            queryParameters.Add("@BarcodeNo", parameters.BarcodeNo);
+            queryParameters.Add("@BarcodeType", parameters.BarcodeType);
+            queryParameters.Add("@Barcode_Unique_Id", parameters.Barcode_Unique_Id);
+            queryParameters.Add("@RefId", parameters.RefId);
+
+            return await SaveByStoredProcedure<int>("SaveBarcode", queryParameters);
+        }
+
+        public async Task<Barcode_Response?> GetBarcodeById(string BarcodeNo)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@BarcodeNo", BarcodeNo);
+
+            return (await ListByStoredProcedure<Barcode_Response>("GetBarcodeById", queryParameters)).FirstOrDefault();
+        }
     }
 }

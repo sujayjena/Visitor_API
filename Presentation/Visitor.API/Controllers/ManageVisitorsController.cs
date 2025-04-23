@@ -1,5 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using System.Net;
+using System.Text;
 using Visitor.Application.Enums;
 using Visitor.Application.Helpers;
 using Visitor.Application.Interfaces;
@@ -158,6 +161,11 @@ namespace Visitor.API.Controllers
         public async Task<ResponseModel> GetVisitorsList(Visitors_Search parameters)
         {
             IEnumerable<Visitors_Response> lstVisitorss = await _manageVisitorsRepository.GetVisitorsList(parameters);
+            foreach (var user in lstVisitorss)
+            {
+                var gateNolistObj = await _manageVisitorsRepository.GetVisitorsGateNoByVisitorId(user.Id, 0);
+                user.GateNumberList = gateNolistObj.ToList();
+            }
             _response.Data = lstVisitorss.ToList();
             _response.Total = parameters.Total;
             return _response;
@@ -205,10 +213,10 @@ namespace Visitor.API.Controllers
             }
             else
             {
-                /*
+                
                 if (parameters.StatusId == 2)
                 {
-                    var vVisitorResponse = await _visitorRepository.GetVisitorsById(Convert.ToInt32(parameters.Id));
+                    var vVisitorResponse = await _manageVisitorsRepository.GetVisitorsById(Convert.ToInt32(parameters.Id));
                     if (vVisitorResponse != null)
                     {
                         //Prepare you post parameters  
@@ -281,7 +289,7 @@ namespace Visitor.API.Controllers
                                     Barcode_Unique_Id = vUniqueId,
                                     RefId = vVisitorResponse.Id
                                 };
-                                var resultBarcode = _visitorRepository.SaveBarcode(vBarcode_Request);
+                                var resultBarcode = _manageVisitorsRepository.SaveBarcode(vBarcode_Request);
                             }
                         }
                     }
@@ -294,7 +302,7 @@ namespace Visitor.API.Controllers
 
                     return _response;
                 }
-                */
+                
 
                 int resultExpenseDetails = await _manageVisitorsRepository.VisitorsApproveNReject(parameters);
 
@@ -415,6 +423,22 @@ namespace Visitor.API.Controllers
             else
             {
                 _response.Message = "Record details saved successfully";
+            }
+            return _response;
+        }
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> GetBarcodeById(string BarcodeNo)
+        {
+            if (BarcodeNo == "")
+            {
+                _response.Message = "Barcode No. is required";
+            }
+            else
+            {
+                var vResultObj = await _manageVisitorsRepository.GetBarcodeById(BarcodeNo);
+                _response.Data = vResultObj;
             }
             return _response;
         }
