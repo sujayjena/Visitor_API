@@ -1257,13 +1257,13 @@ namespace Visitor.API.Controllers.Admin
 
         #endregion
 
-        #region Meeting Status
+        #region Qualification
 
         [Route("[action]")]
         [HttpPost]
-        public async Task<ResponseModel> SaveMeetingStatus(MeetingStatus_Request parameters)
+        public async Task<ResponseModel> SaveQualification(Qualification_Request parameters)
         {
-            int result = await _adminMasterRepository.SaveMeetingStatus(parameters);
+            int result = await _adminMasterRepository.SaveQualification(parameters);
 
             if (result == (int)SaveOperationEnums.NoRecordExists)
             {
@@ -1287,9 +1287,9 @@ namespace Visitor.API.Controllers.Admin
 
         [Route("[action]")]
         [HttpPost]
-        public async Task<ResponseModel> GetMeetingStatusList(BaseSearchEntity parameters)
+        public async Task<ResponseModel> GetQualificationList(BaseSearchEntity parameters)
         {
-            IEnumerable<MeetingStatus_Response> lstRoles = await _adminMasterRepository.GetMeetingStatusList(parameters);
+            IEnumerable<Qualification_Response> lstRoles = await _adminMasterRepository.GetQualificationList(parameters);
             _response.Data = lstRoles.ToList();
             _response.Total = parameters.Total;
             return _response;
@@ -1297,7 +1297,7 @@ namespace Visitor.API.Controllers.Admin
 
         [Route("[action]")]
         [HttpPost]
-        public async Task<ResponseModel> GetMeetingStatusById(int Id)
+        public async Task<ResponseModel> GetQualificationById(int Id)
         {
             if (Id <= 0)
             {
@@ -1305,7 +1305,7 @@ namespace Visitor.API.Controllers.Admin
             }
             else
             {
-                var vResultObj = await _adminMasterRepository.GetMeetingStatusById(Id);
+                var vResultObj = await _adminMasterRepository.GetQualificationById(Id);
                 _response.Data = vResultObj;
             }
             return _response;

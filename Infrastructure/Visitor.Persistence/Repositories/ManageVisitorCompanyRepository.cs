@@ -33,6 +33,11 @@ namespace Visitor.Persistence.Repositories
             queryParameters.Add("@Pincode", parameters.Pincode);
             queryParameters.Add("@CompanyPhone", parameters.CompanyPhone);
             queryParameters.Add("@GSTNo", parameters.GSTNo);
+            queryParameters.Add("@GSTOriginalFileName", parameters.GSTOriginalFileName);
+            queryParameters.Add("@GSTFileName", parameters.GSTFileName);
+            queryParameters.Add("@PanCardNumber", parameters.PanCardNumber);
+            queryParameters.Add("@PanCardOriginalFileName", parameters.PanCardOriginalFileName);
+            queryParameters.Add("@PanCardFileName", parameters.PanCardFileName);
             queryParameters.Add("@IsActive", parameters.IsActive);
             queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
 

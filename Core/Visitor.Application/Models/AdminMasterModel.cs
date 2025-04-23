@@ -438,18 +438,18 @@ namespace Visitor.Application.Models
 
     #endregion
 
-    #region Meeting Status
-    public class MeetingStatus_Request : BaseEntity
+    #region Qualification
+    public class Qualification_Request : BaseEntity
     {
         [DefaultValue("")]
-        public string? MeetingStatus { get; set; }
+        public string? Qualification { get; set; }
 
         public bool? IsActive { get; set; }
     }
 
-    public class MeetingStatus_Response : BaseResponseEntity
+    public class Qualification_Response : BaseResponseEntity
     {
-        public string? MeetingStatus { get; set; }
+        public string? Qualification { get; set; }
 
         public bool? IsActive { get; set; }
     }

@@ -14,19 +14,44 @@ namespace Visitor.API.Controllers
     {
         private ResponseModel _response;
         private readonly IManageVisitorCompanyRepository _manageVisitorCompanyRepository;
+        private IFileManager _fileManager;
 
-        public ManageVisitorCompanyController(IManageVisitorCompanyRepository manageVisitorCompanyRepository)
+        public ManageVisitorCompanyController(IManageVisitorCompanyRepository manageVisitorCompanyRepository, IFileManager fileManager)
         {
             _manageVisitorCompanyRepository = manageVisitorCompanyRepository;
+            _fileManager = fileManager;
 
             _response = new ResponseModel();
             _response.IsSuccess = true;
+          
         }
 
         [Route("[action]")]
         [HttpPost]
         public async Task<ResponseModel> SaveVisitorCompany(VisitorCompany_Request parameters)
         {
+            // GSt Upload
+            if (parameters! != null && !string.IsNullOrWhiteSpace(parameters.GSTFile_Base64))
+            {
+                var vUploadFile = _fileManager.UploadDocumentsBase64ToFile(parameters.GSTFile_Base64, "\\Uploads\\Visitors\\", parameters.GSTOriginalFileName);
+
+                if (!string.IsNullOrWhiteSpace(vUploadFile))
+                {
+                    parameters.GSTFileName = vUploadFile;
+                }
+            }
+
+            // Pan Card Upload
+            if (parameters != null && !string.IsNullOrWhiteSpace(parameters.PanCardFile_Base64))
+            {
+                var vUploadFile = _fileManager.UploadDocumentsBase64ToFile(parameters.PanCardFile_Base64, "\\Uploads\\Visitors\\", parameters.PanCardOriginalFileName);
+
+                if (!string.IsNullOrWhiteSpace(vUploadFile))
+                {
+                    parameters.PanCardFileName = vUploadFile;
+                }
+            }
+
             int result = await _manageVisitorCompanyRepository.SaveVisitorCompany(parameters);
 
             if (result == (int)SaveOperationEnums.NoRecordExists)

@@ -96,6 +96,52 @@ namespace Visitor.API.Controllers
 
                 #endregion
 
+                #region Document Verification
+
+                foreach (var vitem in parameters.DocumentVerificationList)
+                {
+                    // Document Upload
+                    if (vitem != null && !string.IsNullOrWhiteSpace(vitem.DocumentFile_Base64))
+                    {
+                        var vUploadFile = _fileManager.UploadDocumentsBase64ToFile(vitem.DocumentFile_Base64, "\\Uploads\\Visitors\\", vitem.DocumentOriginalFileName);
+
+                        if (!string.IsNullOrWhiteSpace(vUploadFile))
+                        {
+                            vitem.DocumentFileName = vUploadFile;
+                        }
+                    }
+
+                    var vVisitorDocumentVerification = new VisitorDocumentVerification_Request()
+                    {
+                        Id= vitem.Id,
+                        VisitorId = result,
+                        IDTypeId = vitem.IDTypeId,
+                        DocumentOriginalFileName = vitem.DocumentOriginalFileName,
+                        DocumentFileName = vitem.DocumentFileName,
+                    };
+
+                    int resultGateNo = await _manageVisitorsRepository.SaveVisitorDocumentVerification(vVisitorDocumentVerification);
+                }
+
+                #endregion
+
+                #region Asset
+
+                foreach (var vitem in parameters.AssetList)
+                {
+                    var vVisitorAsset = new VisitorAsset_Request()
+                    {
+                        Id = vitem.Id,
+                        VisitorId = result,
+                        AssetName = vitem.AssetName,
+                        AssetDesc = vitem.AssetDesc
+                    };
+
+                    int resultGateNo = await _manageVisitorsRepository.SaveVisitorAsset(vVisitorAsset);
+                }
+
+                #endregion
+
                 #region Log History
 
                 int vLogHistory = await _manageVisitorsRepository.SaveVisitorLogHistory(result);
@@ -132,6 +178,17 @@ namespace Visitor.API.Controllers
                 {
                     var gateNolistObj = await _manageVisitorsRepository.GetVisitorsGateNoByVisitorId(vResultObj.Id, 0);
                     vResultObj.GateNumberList = gateNolistObj.ToList();
+
+                    var vVisitorDocumentVerification = new VisitorDocumentVerification_Search()
+                    {
+                        VisitorId = vResultObj.Id
+                    };
+
+                    var visitorDocumentVerificationlistObj = await _manageVisitorsRepository.GetVisitorDocumentVerificationList(vVisitorDocumentVerification);
+                    vResultObj.DocumentVerificationList = visitorDocumentVerificationlistObj.ToList();
+
+                    var visitorAssetlistObj = await _manageVisitorsRepository.GetVisitorAssetList(vVisitorDocumentVerification);
+                    vResultObj.AssetList = visitorAssetlistObj.ToList();
                 }
                 _response.Data = vResultObj;
             }

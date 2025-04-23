@@ -37,6 +37,8 @@ namespace Visitor.Application.Models
         public Visitors_Request()
         {
             GateNumberList = new List<VisitorGateNo_Request>();
+            DocumentVerificationList = new List<VisitorDocumentVerification_Request>();
+            AssetList = new List<VisitorAsset_Request>();
         }
 
         public DateTime? VisitStartDate { get; set; }
@@ -95,8 +97,24 @@ namespace Visitor.Application.Models
         [DefaultValue(false)]
         public bool? VS_IsCheckedOut { get; set; }
         public int? StatusId { get; set; }
+
+        [DefaultValue(false)]
+        public bool? IsCompany { get; set; }
+        public int? BranchId { get; set; }
+
+        [DefaultValue(false)]
+        public bool? IsDrivingLicense { get; set; }
+
+        [DefaultValue(false)]
+        public bool? IsPUC { get; set; }
+
+        [DefaultValue(false)]
+        public bool? IsInsurance { get; set; }
+        public string? Remarks { get; set; }
         public bool? IsActive { get; set; }
         public List<VisitorGateNo_Request> GateNumberList { get; set; }
+        public List<VisitorDocumentVerification_Request> DocumentVerificationList { get; set; }
+        public List<VisitorAsset_Request> AssetList { get; set; }
     }
 
     public class Visitors_Response : BaseResponseEntity
@@ -162,11 +180,58 @@ namespace Visitor.Application.Models
         public DateTime? CheckedOutClosedDate { get; set; }
         public int? StatusId { get; set; }
         public string? StatusName { get; set; }
+        public bool? IsCompany { get; set; }
+        public int? BranchId { get; set; }
+        public string? BranchName { get; set; }
+        public bool? IsDrivingLicense { get; set; }
+        public bool? IsPUC { get; set; }
+        public bool? IsInsurance { get; set; }
+        public string? Remarks { get; set; }
         public bool? IsActive { get; set; }
 
         public List<VisitorGateNo_Response> GateNumberList { get; set; }
+        public List<VisitorDocumentVerification_Response> DocumentVerificationList { get; set; }
+        public List<VisitorAsset_Response> AssetList { get; set; }
+    }
+    public class VisitorDocumentVerification_Request : BaseEntity
+    {
+        [JsonIgnore]
+        public int? VisitorId { get; set; }
+        public int? IDTypeId { get; set; }
+        public string? DocumentOriginalFileName { get; set; }
+
+        [JsonIgnore]
+        public string? DocumentFileName { get; set; }
+        public string? DocumentFile_Base64 { get; set; }
     }
 
+    public class VisitorDocumentVerification_Search : BaseSearchEntity
+    {
+        public int? VisitorId { get; set; }
+    }
+
+    public class VisitorDocumentVerification_Response : BaseEntity
+    {
+        public int? VisitorId { get; set; }
+        public string? IDType { get; set; }
+        public string? DocumentOriginalFileName { get; set; }
+        public string? DocumentFileName { get; set; }
+        public string? DocumentURL { get; set; }
+    }
+
+    public class VisitorAsset_Request : BaseEntity
+    {
+        [JsonIgnore]
+        public int? VisitorId { get; set; }
+        public string? AssetName { get; set; }
+        public string? AssetDesc { get; set; }
+    }
+    public class VisitorAsset_Response : BaseEntity
+    {
+        public int? VisitorId { get; set; }
+        public string? AssetName { get; set; }
+        public string? AssetDesc { get; set; }
+    }
     public class VisitorGateNo_Request
     {
         public int Id { get; set; }

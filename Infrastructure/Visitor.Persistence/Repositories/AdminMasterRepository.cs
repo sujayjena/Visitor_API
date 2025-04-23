@@ -843,19 +843,19 @@ namespace Visitor.Persistence.Repositories
 
         #endregion
 
-        #region Meeting Status
-        public async Task<int> SaveMeetingStatus(MeetingStatus_Request parameters)
+        #region Qualification
+        public async Task<int> SaveQualification(Qualification_Request parameters)
         {
             DynamicParameters queryParameters = new DynamicParameters();
             queryParameters.Add("@Id", parameters.Id);
-            queryParameters.Add("@MeetingStatus", parameters.MeetingStatus);
+            queryParameters.Add("@Qualification", parameters.Qualification);
             queryParameters.Add("@IsActive", parameters.IsActive);
             queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
 
-            return await SaveByStoredProcedure<int>("SaveMeetingStatus", queryParameters);
+            return await SaveByStoredProcedure<int>("SaveQualification", queryParameters);
         }
 
-        public async Task<IEnumerable<MeetingStatus_Response>> GetMeetingStatusList(BaseSearchEntity parameters)
+        public async Task<IEnumerable<Qualification_Response>> GetQualificationList(BaseSearchEntity parameters)
         {
             DynamicParameters queryParameters = new DynamicParameters();
             queryParameters.Add("@SearchText", parameters.SearchText.SanitizeValue());
@@ -865,17 +865,17 @@ namespace Visitor.Persistence.Repositories
             queryParameters.Add("@Total", parameters.Total, null, System.Data.ParameterDirection.Output);
             queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
 
-            var result = await ListByStoredProcedure<MeetingStatus_Response>("GetMeetingStatusList", queryParameters);
+            var result = await ListByStoredProcedure<Qualification_Response>("GetQualificationList", queryParameters);
             parameters.Total = queryParameters.Get<int>("Total");
 
             return result;
         }
 
-        public async Task<MeetingStatus_Response?> GetMeetingStatusById(int Id)
+        public async Task<Qualification_Response?> GetQualificationById(int Id)
         {
             DynamicParameters queryParameters = new DynamicParameters();
             queryParameters.Add("@Id", Id);
-            return (await ListByStoredProcedure<MeetingStatus_Response>("GetMeetingStatusById", queryParameters)).FirstOrDefault();
+            return (await ListByStoredProcedure<Qualification_Response>("GetQualificationById", queryParameters)).FirstOrDefault();
         }
 
         #endregion

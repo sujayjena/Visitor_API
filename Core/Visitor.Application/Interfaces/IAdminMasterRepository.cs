@@ -187,12 +187,12 @@ namespace Visitor.Application.Interfaces
         Task<MeetingType_Response?> GetMeetingTypeById(int Id);
         #endregion
 
-        #region Meeting Status
-        Task<int> SaveMeetingStatus(MeetingStatus_Request parameters);
+        #region Qualification
+        Task<int> SaveQualification(Qualification_Request parameters);
 
-        Task<IEnumerable<MeetingStatus_Response>> GetMeetingStatusList(BaseSearchEntity parameters);
+        Task<IEnumerable<Qualification_Response>> GetQualificationList(BaseSearchEntity parameters);
 
-        Task<MeetingStatus_Response?> GetMeetingStatusById(int Id);
+        Task<Qualification_Response?> GetQualificationById(int Id);
         #endregion
 
         #region Item Details
