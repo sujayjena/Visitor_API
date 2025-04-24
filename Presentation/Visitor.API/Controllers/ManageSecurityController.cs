@@ -70,7 +70,14 @@ namespace Visitor.API.Controllers
             }
             else
             {
-                _response.Message = "Record details saved successfully";
+                if (parameters.Id > 0)
+                {
+                    _response.Message = "Record updated successfully";
+                }
+                else
+                {
+                    _response.Message = "Record details saved successfully";
+                }
 
                 #region // Add/Update Gate Deatils
 

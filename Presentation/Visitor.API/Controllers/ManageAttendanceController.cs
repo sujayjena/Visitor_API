@@ -44,7 +44,14 @@ namespace Visitor.API.Controllers
             }
             else
             {
-                _response.Message = "Record details saved sucessfully";
+                if (parameters.Id > 0)
+                {
+                    _response.Message = "Record updated successfully";
+                }
+                else
+                {
+                    _response.Message = "Record details saved successfully";
+                }
             }
             return _response;
         }

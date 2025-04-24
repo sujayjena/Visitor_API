@@ -44,7 +44,14 @@ namespace Visitor.API.Controllers.Admin
             }
             else
             {
-                _response.Message = "Record details saved successfully";
+                if (parameters.Id > 0)
+                {
+                    _response.Message = "Record updated successfully";
+                }
+                else
+                {
+                    _response.Message = "Record details saved successfully";
+                }
             }
             return _response;
         }
@@ -103,7 +110,14 @@ namespace Visitor.API.Controllers.Admin
             }
             else
             {
-                _response.Message = "Record details saved successfully";
+                if (parameters.Id > 0)
+                {
+                    _response.Message = "Record updated successfully";
+                }
+                else
+                {
+                    _response.Message = "Record details saved successfully";
+                }
             }
             return _response;
         }
@@ -162,7 +176,14 @@ namespace Visitor.API.Controllers.Admin
             }
             else
             {
-                _response.Message = "Record details saved successfully";
+                if (parameters.Id > 0)
+                {
+                    _response.Message = "Record updated successfully";
+                }
+                else
+                {
+                    _response.Message = "Record details saved successfully";
+                }
             }
             return _response;
         }
