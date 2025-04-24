@@ -123,9 +123,14 @@ namespace Visitor.Application.Models
 
         public int? BranchId { get; set; }
 
+        [DefaultValue(false)]
         public bool? IsHOD { get; set; }
 
+        [DefaultValue(false)]
         public bool? IsManager { get; set; }
+
+        [DefaultValue(false)]
+        public bool? IsApprover { get; set; }
 
         public bool? IsMobileUser { get; set; }
 
@@ -267,6 +272,8 @@ namespace Visitor.Application.Models
         public bool? IsHOD { get; set; }
 
         public bool? IsManager { get; set; }
+
+        public bool? IsApprover { get; set; }
 
         public bool? IsMobileUser { get; set; }
 

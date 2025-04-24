@@ -79,6 +79,7 @@ namespace Visitor.Persistence.Repositories
             queryParameters.Add("@BranchId", parameters.BranchId);
             queryParameters.Add("@IsHOD", parameters.IsHOD);
             queryParameters.Add("@IsManager", parameters.IsManager);
+            queryParameters.Add("@IsApprover", parameters.IsApprover);
             queryParameters.Add("@IsMobileUser", parameters.IsMobileUser);
             queryParameters.Add("@IsWebUser", parameters.IsWebUser);
             queryParameters.Add("@IsActive", parameters.IsActive);
