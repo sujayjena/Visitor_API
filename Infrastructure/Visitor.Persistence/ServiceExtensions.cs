@@ -37,6 +37,7 @@ namespace Visitor.Persistence
             services.AddScoped<IManageOrderRepository, ManageOrderRepository>();
             services.AddScoped<IManageRFIDRepository, ManageRFIDRepository>();
             services.AddScoped<IManageSecurityRepository, ManageSecurityRepository>();
+            services.AddScoped<IManageAttendanceRepository, ManageAttendanceRepository>();
         }
     }
 }
