@@ -17,12 +17,14 @@ namespace Visitor.API.Controllers
     {
         private ResponseModel _response;
         private readonly IManageVisitorsRepository _manageVisitorsRepository;
+        private readonly IBarcodeRepository _barcodeRepository;
         private IFileManager _fileManager;
 
-        public ManageVisitorsController(IManageVisitorsRepository manageVisitorsRepository, IFileManager fileManager)
+        public ManageVisitorsController(IManageVisitorsRepository manageVisitorsRepository, IFileManager fileManager, IBarcodeRepository barcodeRepository)
         {
             _manageVisitorsRepository = manageVisitorsRepository;
             _fileManager = fileManager;
+            _barcodeRepository = barcodeRepository;
 
             _response = new ResponseModel();
             _response.IsSuccess = true;
@@ -123,7 +125,7 @@ namespace Visitor.API.Controllers
 
                     var vVisitorDocumentVerification = new VisitorDocumentVerification_Request()
                     {
-                        Id= vitem.Id,
+                        Id = vitem.Id,
                         VisitorId = result,
                         IDTypeId = vitem.IDTypeId,
                         DocumentOriginalFileName = vitem.DocumentOriginalFileName,
@@ -220,96 +222,36 @@ namespace Visitor.API.Controllers
             }
             else
             {
-                
                 if (parameters.StatusId == 2)
                 {
                     var vVisitorResponse = await _manageVisitorsRepository.GetVisitorsById(Convert.ToInt32(parameters.Id));
                     if (vVisitorResponse != null)
                     {
-                        //Prepare you post parameters  
-                        var postData = new Visitor_Barcode_Request()
+                        var vGenerateBarcode = _barcodeRepository.GenerateBarcode(vVisitorResponse.VisitNumber);
+                        if (vGenerateBarcode.Barcode_Unique_Id != "")
                         {
-                            value = vVisitorResponse.VisitNumber
-                        };
-
-                        //Call API
-                        string sendUri = "http://164.52.213.175:5050/generate_barcode_v2";
-
-                        //Create HTTPWebrequest  
-                        HttpWebRequest httpWReq = (HttpWebRequest)WebRequest.Create(sendUri);
-
-                        var jsonData = JsonConvert.SerializeObject(postData);
-
-                        //Prepare and Add URL Encoded data  
-                        UTF8Encoding encoding = new UTF8Encoding();
-                        byte[] data = encoding.GetBytes(jsonData);
-
-                        //Specify post method  
-                        httpWReq.Method = "POST";
-                        httpWReq.ContentType = "application/json";
-                        httpWReq.ContentLength = data.Length;
-                        using (Stream stream = httpWReq.GetRequestStream())
-                        {
-                            stream.Write(data, 0, data.Length);
+                            var vBarcode_Request = new Barcode_Request()
+                            {
+                                Id = 0,
+                                BarcodeNo = vVisitorResponse.VisitNumber,
+                                BarcodeType = "Visitor",
+                                Barcode_Unique_Id = vGenerateBarcode.Barcode_Unique_Id,
+                                BarcodeOriginalFileName = vGenerateBarcode.BarcodeOriginalFileName,
+                                BarcodeFileName = vGenerateBarcode.BarcodeFileName,
+                                RefId = vVisitorResponse.Id
+                            };
+                            var resultBarcode = _barcodeRepository.SaveBarcode(vBarcode_Request);
                         }
 
-                        //Get the response  
-                        HttpWebResponse response = (HttpWebResponse)httpWReq.GetResponse();
-                        StreamReader reader = new StreamReader(response.GetResponseStream());
-                        string responseString = reader.ReadToEnd();
-
-                        //Close the response  
-                        reader.Close();
-
-                        response.Close();
-
-                        dynamic jsonResults = JsonConvert.DeserializeObject<dynamic>(responseString);
-                        var status = jsonResults.ContainsKey("isSuccess") ? jsonResults.isSuccess : false;
-
-                        if (status == true)
+                        if (string.IsNullOrEmpty(vGenerateBarcode.BarcodeFileName) && parameters.StatusId == 2)
                         {
-                            var barcode = jsonResults["barcode"];
+                            _response.IsSuccess = false;
+                            _response.Message = "Barcode is not generated";
 
-                            var barcode_image_base64 = barcode.ContainsKey("barcode_image_base64") ? barcode.barcode_image_base64 : string.Empty;
-                            var vbarcode_image_base64 = Convert.ToString(barcode_image_base64);
-
-                            var unique_id = barcode.ContainsKey("unique_id") ? barcode.unique_id : string.Empty;
-                            var vUniqueId = Convert.ToString(unique_id);
-
-                            if (!string.IsNullOrWhiteSpace(vbarcode_image_base64))
-                            {
-                                var vUploadFile = _fileManager.UploadDocumentsBase64ToFile(vbarcode_image_base64, "\\Uploads\\Barcode\\", vUniqueId + ".png");
-                                if (!string.IsNullOrWhiteSpace(vUploadFile))
-                                {
-                                    parameters.BarcodeOriginalFileName = vUniqueId + ".png";
-                                    parameters.BarcodeFileName = vUploadFile;
-                                }
-                            }
-
-                            if (vUniqueId != "")
-                            {
-                                var vBarcode_Request = new Barcode_Request()
-                                {
-                                    Id = 0,
-                                    BarcodeNo = vVisitorResponse.VisitNumber,
-                                    BarcodeType = "Visitor",
-                                    Barcode_Unique_Id = vUniqueId,
-                                    RefId = vVisitorResponse.Id
-                                };
-                                var resultBarcode = _manageVisitorsRepository.SaveBarcode(vBarcode_Request);
-                            }
+                            return _response;
                         }
                     }
                 }
-
-                if (string.IsNullOrEmpty(parameters.BarcodeFileName) && parameters.StatusId == 2)
-                {
-                    _response.IsSuccess = false;
-                    _response.Message = "Barcode is not generated";
-
-                    return _response;
-                }
-                
 
                 int resultExpenseDetails = await _manageVisitorsRepository.VisitorsApproveNReject(parameters);
 
@@ -447,20 +389,5 @@ namespace Visitor.API.Controllers
             return _response;
         }
 
-        [Route("[action]")]
-        [HttpPost]
-        public async Task<ResponseModel> GetBarcodeById(string BarcodeNo)
-        {
-            if (BarcodeNo == "")
-            {
-                _response.Message = "Barcode No. is required";
-            }
-            else
-            {
-                var vResultObj = await _manageVisitorsRepository.GetBarcodeById(BarcodeNo);
-                _response.Data = vResultObj;
-            }
-            return _response;
-        }
     }
 }

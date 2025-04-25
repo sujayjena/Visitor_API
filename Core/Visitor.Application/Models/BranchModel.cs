@@ -29,6 +29,10 @@ namespace Visitor.Application.Models
         public int? Pincode { get; set; }
         public int? GateDetailsId { get; set; }
         public int? NoofUserAdd { get; set; }
+        public string? BranchOriginalFileName { get; set; }
+        [JsonIgnore]
+        public string? BranchFileName { get; set; }
+        public string? Branch_Base64 { get; set; }
         public bool? IsActive { get; set; }
     }
     public class BranchSearch_Request : BaseSearchEntity
@@ -57,6 +61,9 @@ namespace Visitor.Application.Models
         public int? GateDetailsId { get; set; }
         public string? GateNumber { get; set; }
         public int? NoofUserAdd { get; set; }
+        public string? BranchOriginalFileName { get; set; }
+        public string? BranchFileName { get; set; }
+        public string? BranchURL { get; set; }
         public bool? IsActive { get; set; }
     }
 

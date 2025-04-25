@@ -147,6 +147,9 @@ namespace Visitor.Application.Models
         public string? AddressLine { get; set; }
         public int? IDTypeId { get; set; }
         public string? IDType { get; set; }
+        public string? BarcodeOriginalFileName { get; set; }
+        public string? BarcodeFileName { get; set; }
+        public string? BarcodeURL { get; set; }
         public string? VisitorPhotoOriginalFileName { get; set; }
         public string? VisitorPhoto { get; set; }
         public string? VisitorPhotoURL { get; set; }
@@ -337,26 +340,5 @@ namespace Visitor.Application.Models
 
         [DefaultValue(null)]
         public DateTime? CheckedInDate { get; set; }
-    }
-    public class Visitor_Barcode_Request
-    {
-        public string? value { get; set; }
-    }
-    public class Barcode_Request : BaseEntity
-    {
-        public string? BarcodeNo { get; set; }
-        public string? BarcodeType { get; set; }
-        public string? Barcode_Unique_Id { get; set; }
-        public int? RefId { get; set; }
-    }
-
-    public class Barcode_Response : BaseEntity
-    {
-        public string? BarcodeNo { get; set; }
-        public string? BarcodeType { get; set; }
-        public string? Barcode_Unique_Id { get; set; }
-        public int? RefId { get; set; }
-        public string? Validity { get; set; }
-        public DateTime? CreatedDate { get; set; }
     }
 }

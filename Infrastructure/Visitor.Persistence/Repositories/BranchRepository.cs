@@ -41,6 +41,8 @@ namespace Visitor.Persistence.Repositories
             {
                 queryParameters.Add("@NoofUserAdd", parameters.NoofUserAdd);
             }
+            queryParameters.Add("@BranchOriginalFileName", parameters.BranchOriginalFileName);
+            queryParameters.Add("@BranchFileName", parameters.BranchFileName);
             queryParameters.Add("@IsActive", parameters.IsActive);
             queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
 

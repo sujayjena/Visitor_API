@@ -19,14 +19,16 @@ namespace Visitor.API.Controllers.Admin
         private readonly IUserRepository _userRepository;
         private readonly ICompanyRepository _companyRepository;
         private readonly IBranchRepository _branchRepository;
+        private readonly IBarcodeRepository _barcodeRepository;
         private IFileManager _fileManager;
 
-        public UserController(IUserRepository userRepository, ICompanyRepository companyRepository, IBranchRepository branchRepository, IFileManager fileManager)
+        public UserController(IUserRepository userRepository, ICompanyRepository companyRepository, IBranchRepository branchRepository, IFileManager fileManager, IBarcodeRepository barcodeRepository)
         {
             _userRepository = userRepository;
             _companyRepository = companyRepository;
             _branchRepository = branchRepository;
             _fileManager = fileManager;
+            _barcodeRepository = barcodeRepository;
 
             _response = new ResponseModel();
             _response.IsSuccess = true;
@@ -233,6 +235,27 @@ namespace Visitor.API.Controllers.Admin
 
                 }
 
+                #endregion
+
+                #region Generate Barcode
+                if (parameters.Id == 0)
+                {
+                    var vGenerateBarcode = _barcodeRepository.GenerateBarcode(parameters.UserCode);
+                    if (vGenerateBarcode.Barcode_Unique_Id != "")
+                    {
+                        var vBarcode_Request = new Barcode_Request()
+                        {
+                            Id = 0,
+                            BarcodeNo = parameters.UserCode,
+                            BarcodeType = "Employee",
+                            Barcode_Unique_Id = vGenerateBarcode.Barcode_Unique_Id,
+                            BarcodeOriginalFileName = vGenerateBarcode.BarcodeOriginalFileName,
+                            BarcodeFileName = vGenerateBarcode.BarcodeFileName,
+                            RefId = result
+                        };
+                        var resultBarcode = _barcodeRepository.SaveBarcode(vBarcode_Request);
+                    }
+                }
                 #endregion
             }
             return _response;

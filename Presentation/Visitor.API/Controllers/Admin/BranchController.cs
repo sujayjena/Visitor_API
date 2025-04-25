@@ -66,6 +66,17 @@ namespace Visitor.API.Controllers.Admin
 
             #endregion   
 
+            // Branch Upload
+            if (parameters != null && !string.IsNullOrWhiteSpace(parameters.Branch_Base64))
+            {
+                var vUploadFile = _fileManager.UploadDocumentsBase64ToFile(parameters.Branch_Base64, "\\Uploads\\Branch\\", parameters.BranchOriginalFileName);
+
+                if (!string.IsNullOrWhiteSpace(vUploadFile))
+                {
+                    parameters.BranchFileName = vUploadFile;
+                }
+            }
+
             int result = await _branchRepository.SaveBranch(parameters);
 
             if (result == (int)SaveOperationEnums.NoRecordExists)

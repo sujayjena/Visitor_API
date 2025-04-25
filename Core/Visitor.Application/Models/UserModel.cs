@@ -237,6 +237,10 @@ namespace Visitor.Application.Models
 
         public string MobileUniqueId { get; set; }
 
+        public string? BarcodeOriginalFileName { get; set; }
+        public string? BarcodeFileName { get; set; }
+        public string? BarcodeURL { get; set; }
+
         public string AadharNumber { get; set; }
 
         public string AadharImage { get; set; }
