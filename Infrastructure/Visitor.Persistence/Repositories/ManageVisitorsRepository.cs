@@ -267,5 +267,12 @@ namespace Visitor.Persistence.Repositories
 
             return result;
         }
+
+        public async Task<IEnumerable<SelectListResponse>> GetVisitorMobileNoListForSelectList()
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+
+            return await ListByStoredProcedure<SelectListResponse>("GetVisitorMobileNoListForSelectList", queryParameters);
+        }
     }
 }

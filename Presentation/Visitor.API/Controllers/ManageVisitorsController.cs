@@ -389,5 +389,13 @@ namespace Visitor.API.Controllers
             return _response;
         }
 
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> GetVisitorMobileNoListForSelectList()
+        {
+            IEnumerable<SelectListResponse> lstResponse = await _manageVisitorsRepository.GetVisitorMobileNoListForSelectList();
+            _response.Data = lstResponse.ToList();
+            return _response;
+        }
     }
 }
