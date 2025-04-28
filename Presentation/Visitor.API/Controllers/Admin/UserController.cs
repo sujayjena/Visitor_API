@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Text;
 using Visitor.API.Middlewares;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Visitor.API.Controllers.Admin
 {
@@ -20,15 +21,17 @@ namespace Visitor.API.Controllers.Admin
         private readonly ICompanyRepository _companyRepository;
         private readonly IBranchRepository _branchRepository;
         private readonly IBarcodeRepository _barcodeRepository;
+        private IEmailHelper _emailHelper;
         private IFileManager _fileManager;
 
-        public UserController(IUserRepository userRepository, ICompanyRepository companyRepository, IBranchRepository branchRepository, IFileManager fileManager, IBarcodeRepository barcodeRepository)
+        public UserController(IUserRepository userRepository, ICompanyRepository companyRepository, IBranchRepository branchRepository, IFileManager fileManager, IBarcodeRepository barcodeRepository, IEmailHelper emailHelper)
         {
             _userRepository = userRepository;
             _companyRepository = companyRepository;
             _branchRepository = branchRepository;
             _fileManager = fileManager;
             _barcodeRepository = barcodeRepository;
+            _emailHelper = emailHelper;
 
             _response = new ResponseModel();
             _response.IsSuccess = true;
@@ -157,6 +160,15 @@ namespace Visitor.API.Controllers.Admin
                 }
             }
 
+            //auto generated password
+            string autoGeneratePass = "";
+            var resultPass = await _userRepository.GetAutoGenPassword("");
+            if (!string.IsNullOrEmpty(resultPass))
+            {
+                autoGeneratePass = resultPass;
+                parameters.Password = resultPass;
+            }
+
             int result = await _userRepository.SaveUser(parameters);
 
             if (result == (int)SaveOperationEnums.NoRecordExists)
@@ -257,6 +269,12 @@ namespace Visitor.API.Controllers.Admin
                     }
                 }
                 #endregion
+
+                //Send Email
+                if (!string.IsNullOrEmpty(parameters.EmailId) && parameters.Id == 0)
+                {
+                    var vEmailEmp = await SendPassword_EmailToEmployee(parameters.EmailId, autoGeneratePass, result);
+                }
             }
             return _response;
         }
@@ -320,6 +338,88 @@ namespace Visitor.API.Controllers.Admin
                 }
                 _response.Data = vResultObj;
             }
+            return _response;
+        }
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> ChangePassword(ChangePassword_Request parameters)
+        {
+            int result = await _userRepository.ChangePassword(parameters);
+
+            if (result == (int)SaveOperationEnums.NoRecordExists)
+            {
+                _response.Message = "User data does not exist please enter correct details";
+                _response.IsSuccess = false;
+            }
+            else if (result == (int)SaveOperationEnums.ReocrdExists)
+            {
+                _response.Message = "Record is already exists";
+                _response.IsSuccess = false;
+            }
+            else if (result == (int)SaveOperationEnums.NoResult)
+            {
+                _response.Message = "Something went wrong, please try again";
+                _response.IsSuccess = false;
+            }
+            else
+            {
+                _response.Message = "Record details saved successfully";
+            }
+
+            return _response;
+        }
+
+        [AllowAnonymous]
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> ForgotPassword(ForgotPassword_Request parameters)
+        {
+            if (parameters.EmailId == "")
+            {
+                _response.IsSuccess = false;
+                _response.Message = "Email Id is required.";
+
+                return _response;
+            }
+
+            //auto generated password
+            string autoGeneratePass = "";
+            var resultPass = await _userRepository.GetAutoGenPassword("");
+            if (!string.IsNullOrEmpty(resultPass))
+            {
+                autoGeneratePass = resultPass;
+                parameters.Passwords = resultPass;
+            }
+
+            int result = await _userRepository.ForgotPassword(parameters);
+
+            if (result == (int)SaveOperationEnums.NoRecordExists)
+            {
+                _response.Message = "User data does not exist please enter correct details";
+                _response.IsSuccess = false;
+            }
+            else if (result == (int)SaveOperationEnums.ReocrdExists)
+            {
+                _response.Message = "Record is already exists";
+                _response.IsSuccess = false;
+            }
+            else if (result == (int)SaveOperationEnums.NoResult)
+            {
+                _response.Message = "Something went wrong, please try again";
+                _response.IsSuccess = false;
+            }
+            else
+            {
+                _response.Message = "Recovery Password sent to your email address.";
+
+                //Send Email
+                if (!string.IsNullOrEmpty(parameters.EmailId))
+                {
+                    var vEmailEmp = await SendPassword_EmailToEmployee(parameters.EmailId, autoGeneratePass, result);
+                }
+            }
+
             return _response;
         }
 
@@ -398,5 +498,29 @@ namespace Visitor.API.Controllers.Admin
         }
 
         #endregion
+
+        protected async Task<bool> SendPassword_EmailToEmployee(string EmailId, string passwords, int id)
+        {
+            bool result = false;
+            string emailTemplateContent = "", remarks = "", sSubjectDynamicContent = "";
+
+            try
+            {
+                string recipientEmail = EmailId;
+                remarks = id.ToString();
+
+                emailTemplateContent = "Hi, Your password is " + passwords;
+
+                sSubjectDynamicContent = "Forgot Password";
+                result = await _emailHelper.SendEmail(module: "Forgot Password", subject: sSubjectDynamicContent, sendTo: "Employee", content: emailTemplateContent, recipientEmail: recipientEmail, files: null, remarks: remarks);
+
+            }
+            catch (Exception ex)
+            {
+                result = false;
+            }
+
+            return result;
+        }
     }
 }

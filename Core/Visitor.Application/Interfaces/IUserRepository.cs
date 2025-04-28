@@ -18,6 +18,12 @@ namespace Visitor.Application.Interfaces
 
         Task<User_Response?> GetUserById(long Id);
 
+        Task<int> ChangePassword(ChangePassword_Request parameters);
+
+        Task<int> ForgotPassword(ForgotPassword_Request parameters);
+
+        Task<string?> GetAutoGenPassword(string AutoPassword);
+
         #endregion
 
         #region User Other Details

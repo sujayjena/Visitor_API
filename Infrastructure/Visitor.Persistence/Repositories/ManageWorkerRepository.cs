@@ -28,6 +28,7 @@ namespace Visitor.Persistence.Repositories
             queryParameters.Add("@ContractorId", parameters.ContractorId);
             queryParameters.Add("@WorkerTypeId", parameters.WorkerTypeId);
             queryParameters.Add("@ContractTypeId", parameters.ContractTypeId);
+            queryParameters.Add("@WorkerMobileNo", parameters.WorkerMobileNo);
             queryParameters.Add("@DocumentTypeId", parameters.DocumentTypeId);
             queryParameters.Add("@DocumentNumber", parameters.DocumentNumber);
             queryParameters.Add("@IsBlackList", parameters.IsBlackList);

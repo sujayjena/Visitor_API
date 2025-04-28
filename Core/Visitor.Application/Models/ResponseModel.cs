@@ -4,6 +4,8 @@ namespace Visitor.Application.Models
 {
     public class ResponseModel
     {
+        [DefaultValue(0)]
+        public long Id { get; set; }
         public bool IsSuccess { get; set; }
         public string Message { get; set; }
 

@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Collections;
 using Visitor.Persistence.Repositories;
+using System.Text.Json.Serialization;
 
 namespace Visitor.Application.Models
 {
@@ -303,5 +304,23 @@ namespace Visitor.Application.Models
         public string PastCompanyName { get; set; }
         public string TotalExp { get; set; }
         public string Remark { get; set; }
+    }
+
+    public class ChangePassword_Request
+    {
+        [DefaultValue("")]
+        public string? NewPassword { get; set; }
+
+        [DefaultValue("")]
+        public string? ConfirmPassword { get; set; }
+    }
+
+    public class ForgotPassword_Request
+    {
+        [DefaultValue("")]
+        public string? EmailId { get; set; }
+
+        [JsonIgnore]
+        public string? Passwords { get; set; }
     }
 }

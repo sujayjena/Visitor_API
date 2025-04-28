@@ -39,6 +39,8 @@ namespace Visitor.Persistence
             services.AddScoped<IManageSecurityRepository, ManageSecurityRepository>();
             services.AddScoped<IManageAttendanceRepository, ManageAttendanceRepository>();
             services.AddScoped<IBarcodeRepository, BarcodeRepository>();
+            services.AddScoped<IEmailConfigRepository, EmailConfigRepository>();
+            services.AddScoped<IEmailHelper, EmailHelper>();
         }
     }
 }

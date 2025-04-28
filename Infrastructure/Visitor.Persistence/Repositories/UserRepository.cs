@@ -126,6 +126,37 @@ namespace Visitor.Persistence.Repositories
             return (await ListByStoredProcedure<User_Response>("GetUserById", queryParameters)).FirstOrDefault();
         }
 
+        public async Task<int> ChangePassword(ChangePassword_Request parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@NewPassword", parameters.NewPassword);
+            queryParameters.Add("@ConfirmPassword", !string.IsNullOrWhiteSpace(parameters.ConfirmPassword) ? EncryptDecryptHelper.EncryptString(parameters.ConfirmPassword) : string.Empty);
+            queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
+
+            return await SaveByStoredProcedure<int>("ChangePassword", queryParameters);
+        }
+
+        public async Task<int> ForgotPassword(ForgotPassword_Request parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@EmailId", parameters.EmailId);
+            queryParameters.Add("@Passwords", !string.IsNullOrWhiteSpace(parameters.Passwords) ? EncryptDecryptHelper.EncryptString(parameters.Passwords) : string.Empty);
+            //queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
+
+            return await SaveByStoredProcedure<int>("ForgotPassword", queryParameters);
+        }
+
+        public async Task<string?> GetAutoGenPassword(string AutoPassword)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@AutoPassword", AutoPassword, null, System.Data.ParameterDirection.Output);
+
+            var result = await SaveByStoredProcedure<string>("sp_AutoGenPassword", queryParameters);
+            AutoPassword = queryParameters.Get<string>("AutoPassword");
+
+            return AutoPassword;
+        }
+
         #endregion
 
         #region User Other Details
