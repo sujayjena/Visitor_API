@@ -162,11 +162,14 @@ namespace Visitor.API.Controllers.Admin
 
             //auto generated password
             string autoGeneratePass = "";
-            var resultPass = await _userRepository.GetAutoGenPassword("");
-            if (!string.IsNullOrEmpty(resultPass))
+            if (string.IsNullOrEmpty(parameters.Password) && parameters.Id == 0)
             {
-                autoGeneratePass = resultPass;
-                parameters.Password = resultPass;
+                var resultPass = await _userRepository.GetAutoGenPassword("");
+                if (!string.IsNullOrEmpty(resultPass))
+                {
+                    autoGeneratePass = resultPass;
+                    parameters.Password = resultPass;
+                }
             }
 
             int result = await _userRepository.SaveUser(parameters);

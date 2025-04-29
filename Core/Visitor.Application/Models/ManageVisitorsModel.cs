@@ -111,6 +111,10 @@ namespace Visitor.Application.Models
         [DefaultValue(false)]
         public bool? IsInsurance { get; set; }
         public string? Remarks { get; set; }
+        public string? CompanyIdOriginalFileName { get; set; }
+        [JsonIgnore]
+        public string? CompanyIdFileName { get; set; }
+        public string? CompanyId_Base64 { get; set; }
         public bool? IsActive { get; set; }
         public List<VisitorGateNo_Request> GateNumberList { get; set; }
         public List<VisitorDocumentVerification_Request> DocumentVerificationList { get; set; }
@@ -190,6 +194,9 @@ namespace Visitor.Application.Models
         public bool? IsPUC { get; set; }
         public bool? IsInsurance { get; set; }
         public string? Remarks { get; set; }
+        public string? CompanyIdOriginalFileName { get; set; }
+        public string? CompanyIdFileName { get; set; }
+        public string? CompanyIdURL { get; set; }
         public bool? IsActive { get; set; }
 
         public List<VisitorGateNo_Response> GateNumberList { get; set; }

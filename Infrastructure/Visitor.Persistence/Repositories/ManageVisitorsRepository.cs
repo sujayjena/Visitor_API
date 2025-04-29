@@ -61,6 +61,14 @@ namespace Visitor.Persistence.Repositories
             queryParameters.Add("@VS_IsCheckedIn", parameters.VS_IsCheckedIn);
             queryParameters.Add("@VS_IsCheckedOut", parameters.VS_IsCheckedOut);
             queryParameters.Add("@StatusId", parameters.StatusId);
+            queryParameters.Add("@IsCompany", parameters.IsCompany);
+            queryParameters.Add("@BranchId", parameters.BranchId);
+            queryParameters.Add("@IsDrivingLicense", parameters.IsDrivingLicense);
+            queryParameters.Add("@IsPUC", parameters.IsPUC);
+            queryParameters.Add("@IsInsurance", parameters.IsInsurance);
+            queryParameters.Add("@Remarks", parameters.Remarks);
+            queryParameters.Add("@CompanyIdOriginalFileName", parameters.CompanyIdOriginalFileName);
+            queryParameters.Add("@CompanyIdFileName", parameters.CompanyIdFileName);
             queryParameters.Add("@IsActive", parameters.IsActive);
             queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
 

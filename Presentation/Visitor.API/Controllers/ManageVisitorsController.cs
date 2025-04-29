@@ -45,7 +45,7 @@ namespace Visitor.API.Controllers
             //    }
             //}
 
-            // Visitor Photo Upload
+            //Visitor Photo Upload
             if (parameters != null && !string.IsNullOrWhiteSpace(parameters.VisitorPhoto_Base64))
             {
                 var vUploadFile = _fileManager.UploadDocumentsBase64ToFile(parameters.VisitorPhoto_Base64, "\\Uploads\\Visitors\\", parameters.VisitorPhotoOriginalFileName);
@@ -53,6 +53,17 @@ namespace Visitor.API.Controllers
                 if (!string.IsNullOrWhiteSpace(vUploadFile))
                 {
                     parameters.VisitorPhoto = vUploadFile;
+                }
+            }
+
+            //Company Id Upload
+            if (parameters != null && !string.IsNullOrWhiteSpace(parameters.CompanyId_Base64))
+            {
+                var vUploadFile = _fileManager.UploadDocumentsBase64ToFile(parameters.CompanyId_Base64, "\\Uploads\\Visitors\\", parameters.CompanyIdOriginalFileName);
+
+                if (!string.IsNullOrWhiteSpace(vUploadFile))
+                {
+                    parameters.CompanyIdFileName = vUploadFile;
                 }
             }
 
