@@ -31,7 +31,7 @@ namespace Visitor.Persistence.Repositories
             queryParameters.Add("@MobileNumber", parameters.MobileNumber);
             queryParameters.Add("@EmailId", parameters.EmailId);
             queryParameters.Add("@Password", !string.IsNullOrWhiteSpace(parameters.Password) ? EncryptDecryptHelper.EncryptString(parameters.Password) : string.Empty);
-            queryParameters.Add("@UserType", parameters.UserType);
+            queryParameters.Add("@UserTypeId", parameters.UserTypeId);
             queryParameters.Add("@RoleId", parameters.RoleId);
             queryParameters.Add("@ReportingTo", parameters.ReportingTo);
             queryParameters.Add("@CompanyId", parameters.CompanyId);
@@ -93,6 +93,7 @@ namespace Visitor.Persistence.Repositories
             DynamicParameters queryParameters = new DynamicParameters();
             queryParameters.Add("@BranchId", parameters.BranchId);
             queryParameters.Add("@DepartmentId", parameters.DepartmentId);
+            queryParameters.Add("@UserTypeId", parameters.UserTypeId);
             queryParameters.Add("@SearchText", parameters.SearchText.SanitizeValue());
             queryParameters.Add("@IsActive", parameters.IsActive);
             queryParameters.Add("@PageNo", parameters.PageNo);

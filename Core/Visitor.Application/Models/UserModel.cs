@@ -18,6 +18,7 @@ namespace Visitor.Application.Models
     {
         public int BranchId { get; set; }
         public int DepartmentId { get; set; }
+        public int UserTypeId { get; set; }
     }
 
     public class User_Request : BaseEntity
@@ -37,7 +38,7 @@ namespace Visitor.Application.Models
 
         public string Password { get; set; }
 
-        public string UserType { get; set; }
+        public int UserTypeId { get; set; }
 
         public int? RoleId { get; set; }
 
@@ -161,6 +162,7 @@ namespace Visitor.Application.Models
 
         public string Password { get; set; }
 
+        public int UserTypeId { get; set; }
         public string UserType { get; set; }
 
         public int? RoleId { get; set; }
