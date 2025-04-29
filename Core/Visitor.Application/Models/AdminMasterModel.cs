@@ -1007,4 +1007,20 @@ namespace Visitor.Application.Models
     }
 
     #endregion
+
+    #region User Type
+    public class UserType_Request : BaseEntity
+    {
+
+        [DefaultValue("")]
+        public string? UserType { get; set; }
+        public bool? IsActive { get; set; }
+    }
+
+    public class UserType_Response : BaseResponseEntity
+    {
+        public string? UserType { get; set; }
+        public bool? IsActive { get; set; }
+    }
+    #endregion
 }

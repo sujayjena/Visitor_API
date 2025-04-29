@@ -352,5 +352,14 @@ namespace Visitor.Application.Interfaces
         Task<IEnumerable<MaterialDetails_Response>> GetMaterialDetailsList(MaterialDetails_Search parameters);
         Task<MaterialDetails_Response?> GetMaterialDetailsById(int Id);
         #endregion
+
+        #region User Type
+        Task<int> SaveUserType(UserType_Request parameters);
+
+        Task<IEnumerable<UserType_Response>> GetUserTypeList(BaseSearchEntity parameters);
+
+        Task<UserType_Response?> GetUserTypeById(int Id);
+
+        #endregion
     }
 }
