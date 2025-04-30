@@ -88,17 +88,17 @@ namespace Visitor.Persistence.Repositories
 
             var result = await ListByStoredProcedure<Role_Response>("GetRoleList", queryParameters);
 
-            //if (SessionManager.LoggedInUserId > 1)
-            //{
-            //    if (SessionManager.LoggedInUserId > 2)
-            //    {
-            //        result = result.Where(x => x.Id > 2).ToList();
-            //    }
-            //    else
-            //    {
-            //        result = result.Where(x => x.Id > 1).ToList();
-            //    }
-            //}
+            if (SessionManager.LoggedInUserId > 1)
+            {
+                if (SessionManager.LoggedInUserId > 2)
+                {
+                    result = result.Where(x => x.Id > 2).ToList();
+                }
+                else
+                {
+                    result = result.Where(x => x.Id > 1).ToList();
+                }
+            }
 
             parameters.Total = queryParameters.Get<int>("Total");
 
