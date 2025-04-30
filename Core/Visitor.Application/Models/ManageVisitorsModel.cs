@@ -223,6 +223,7 @@ namespace Visitor.Application.Models
     public class VisitorDocumentVerification_Response : BaseEntity
     {
         public int? VisitorId { get; set; }
+        public int? IDTypeId { get; set; }
         public string? IDType { get; set; }
         public string? DocumentOriginalFileName { get; set; }
         public string? DocumentFileName { get; set; }
@@ -352,7 +353,10 @@ namespace Visitor.Application.Models
 
     public class CheckedInOutLogHistory_Search : BaseSearchEntity
     {
+        [DefaultValue(null)]
         public DateTime? FromDate { get; set; }
+
+        [DefaultValue(null)]
         public DateTime? ToDate { get; set; }
         public int? RefId { get; set; }
 
