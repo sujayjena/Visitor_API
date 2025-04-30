@@ -25,6 +25,7 @@ namespace Visitor.Application.Interfaces
 
         Task<IEnumerable<VisitorPlanned_Response>> GetVisitorPlannedList(VisitorPlanned_Search parameters);
         Task<int> SaveVisitorCheckedInOut(VisitorCheckedInOut_Request parameters);
+        Task<IEnumerable<CheckedInOutLogHistory_Response>> GetCheckedInOutLogHistoryList(CheckedInOutLogHistory_Search parameters);
 
         Task<int> SaveVisitorDocumentVerification(VisitorDocumentVerification_Request parameters);
         Task<IEnumerable<VisitorDocumentVerification_Response>> GetVisitorDocumentVerificationList(VisitorDocumentVerification_Search parameters);

@@ -36,5 +36,10 @@ namespace Visitor.Application.Interfaces
         Task<int> DeleteUserOtherDetails(int Id);
 
         #endregion
+
+        #region Employee Gate Number
+        Task<int> SaveEmployeeGateNo(EmployeeGateNo_Request parameters);
+        Task<IEnumerable<EmployeeGateNo_Response>> GetEmployeeGateNoByEmployeeId(long EmployeeId, long GateDetailsId);
+        #endregion
     }
 }

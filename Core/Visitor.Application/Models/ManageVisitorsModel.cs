@@ -341,11 +341,34 @@ namespace Visitor.Application.Models
 
     public class VisitorCheckedInOut_Request : BaseEntity
     {
-        public int? VisitorId { get; set; }
+        public int? RefId { get; set; }
+        public string? RefType { get; set; }
         public int? GateDetailsId { get; set; }
         public int? IsCheckedIn_Out { get; set; }
 
         [DefaultValue(null)]
         public DateTime? CheckedInDate { get; set; }
+    }
+
+    public class CheckedInOutLogHistory_Search : BaseSearchEntity
+    {
+        public int? RefId { get; set; }
+
+        [DefaultValue("Employee")]
+        public string? RefType { get; set; }
+    }
+
+    public class CheckedInOutLogHistory_Response
+    {
+        public int Id { get; set; }
+        public int? RefId { get; set; }
+        public string? RefType { get; set; }
+        public int? GateDetailsId { get; set; }
+        public string? GateNumber { get; set; }
+        public string? CheckedStatus { get; set; }
+        public DateTime? CreatedDate { get; set; }
+        public long CreatedBy { get; set; }
+        public string? CreatorName { get; set; }
+
     }
 }

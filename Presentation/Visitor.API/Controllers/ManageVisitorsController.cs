@@ -436,6 +436,16 @@ namespace Visitor.API.Controllers
 
         [Route("[action]")]
         [HttpPost]
+        public async Task<ResponseModel> GetCheckedInOutLogHistoryList(CheckedInOutLogHistory_Search parameters)
+        {
+            IEnumerable<CheckedInOutLogHistory_Response> lstVisitorss = await _manageVisitorsRepository.GetCheckedInOutLogHistoryList(parameters);
+            _response.Data = lstVisitorss.ToList();
+            _response.Total = parameters.Total;
+            return _response;
+        }
+
+        [Route("[action]")]
+        [HttpPost]
         public async Task<ResponseModel> GetVisitorMobileNoListForSelectList()
         {
             IEnumerable<SelectListResponse> lstResponse = await _manageVisitorsRepository.GetVisitorMobileNoListForSelectList();

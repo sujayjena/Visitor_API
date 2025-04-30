@@ -8,7 +8,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Text;
 using Visitor.API.Middlewares;
-using Microsoft.AspNetCore.Authorization;
+using Visitor.API.CustomAttributes;
+using System.Runtime.Intrinsics.X86;
+using System.Security.Cryptography;
+using System.Xml.Linq;
 
 namespace Visitor.API.Controllers.Admin
 {
@@ -230,8 +233,9 @@ namespace Visitor.API.Controllers.Admin
 
                     int resultBranchMapping = await _branchRepository.SaveBranchMapping(vBracnMapObj);
                 }
+                #endregion
 
-                // Add new mapping of employee
+                #region User Other Details
                 if (result > 0)
                 {
                     foreach (var items in parameters.UserOtherDetailsList)
@@ -248,6 +252,33 @@ namespace Visitor.API.Controllers.Admin
                         int resultUserOtherDetails = await _userRepository.SaveUserOtherDetails(vUserOtherDetails);
                     }
 
+                }
+                #endregion
+
+                #region // Add/Update Gate Number
+
+                // Delete Old gate of employee
+
+                var vGateDELETEObj = new EmployeeGateNo_Request()
+                {
+                    Action = "DELETE",
+                    EmployeeId = result,
+                    GateDetailsId = 0
+                };
+                int resultGateDELETE = await _userRepository.SaveEmployeeGateNo(vGateDELETEObj);
+
+
+                // Add new gate number
+                foreach (var vGateitem in parameters.GateNumberList)
+                {
+                    var vGateObj = new EmployeeGateNo_Request()
+                    {
+                        Action = "INSERT",
+                        EmployeeId = result,
+                        GateDetailsId = vGateitem.GateDetailsId
+                    };
+
+                    int resultGate = await _userRepository.SaveEmployeeGateNo(vGateObj);
                 }
 
                 #endregion
@@ -276,7 +307,7 @@ namespace Visitor.API.Controllers.Admin
                 //Send Email
                 if (!string.IsNullOrEmpty(parameters.EmailId) && parameters.Id == 0)
                 {
-                    var vEmailEmp = await SendPassword_EmailToEmployee(parameters.EmailId, autoGeneratePass, result);
+                    var vEmailEmp = await SendPassword_EmailToEmployee(autoGeneratePass, result, "Login Credential");
                 }
             }
             return _response;
@@ -308,7 +339,6 @@ namespace Visitor.API.Controllers.Admin
                 if (vResultObj != null)
                 {
                     var vBranchMappingObj = await _branchRepository.GetBranchMappingByEmployeeId(vResultObj.Id, 0);
-
                     foreach (var item in vBranchMappingObj)
                     {
                         var vBranchObj = await _branchRepository.GetBranchById(Convert.ToInt32(item.BranchId));
@@ -338,6 +368,9 @@ namespace Visitor.API.Controllers.Admin
 
                         vResultObj.UserOtherDetailsList.Add(vUserOtherDetailsResObj);
                     }
+
+                    var gateNolistObj = await _userRepository.GetEmployeeGateNoByEmployeeId(vResultObj.Id, 0);
+                    vResultObj.GateNumberList = gateNolistObj.ToList();
                 }
                 _response.Data = vResultObj;
             }
@@ -419,7 +452,7 @@ namespace Visitor.API.Controllers.Admin
                 //Send Email
                 if (!string.IsNullOrEmpty(parameters.EmailId))
                 {
-                    var vEmailEmp = await SendPassword_EmailToEmployee(parameters.EmailId, autoGeneratePass, result);
+                    var vEmailEmp = await SendPassword_EmailToEmployee(autoGeneratePass, result, "Forgot Password");
                 }
             }
 
@@ -502,21 +535,37 @@ namespace Visitor.API.Controllers.Admin
 
         #endregion
 
-        protected async Task<bool> SendPassword_EmailToEmployee(string EmailId, string passwords, int id)
+        protected async Task<bool> SendPassword_EmailToEmployee(string passwords, int id, string emailType)
         {
             bool result = false;
             string emailTemplateContent = "", remarks = "", sSubjectDynamicContent = "";
 
             try
             {
-                string recipientEmail = EmailId;
+                string recipientEmail = "";
                 remarks = id.ToString();
 
-                emailTemplateContent = "Hi, Your password is " + passwords;
+                var vUserDetail = await _userRepository.GetUserById(Convert.ToInt32(id));
 
-                sSubjectDynamicContent = "Forgot Password";
-                result = await _emailHelper.SendEmail(module: "Forgot Password", subject: sSubjectDynamicContent, sendTo: "Employee", content: emailTemplateContent, recipientEmail: recipientEmail, files: null, remarks: remarks);
+                if (vUserDetail != null)
+                {
+                    recipientEmail = vUserDetail.EmailId;
 
+                    if(emailType == "Login Credential")
+                    {
+                        sSubjectDynamicContent = "Login Credential - " + vUserDetail.UserName;
+                        emailTemplateContent = string.Format(@"<html><body>Dear {0},<br/><br/>Your login credential below:<br/><br/> EmailId: {1}<br/>Password: {2}<br/><br/>If you did not initiate this request, you may safely disregard this email.</body></html>", vUserDetail.UserName, vUserDetail.EmailId, passwords);
+
+                        result = await _emailHelper.SendEmail(module: "Login Credential", subject: sSubjectDynamicContent, sendTo: "Employee", content: emailTemplateContent, recipientEmail: recipientEmail, files: null, remarks: remarks);
+                    }
+                    else if (emailType == "Forgot Password")
+                    {
+                        sSubjectDynamicContent = "Forgot Password - " + vUserDetail.UserName;
+                        emailTemplateContent = string.Format(@"<html><body>Dear {0},<br/><br/>A request was made to reset your password. To proceed, please use the new password provided below:<br/><br/> Password: {1}<br/><br/>If you did not initiate this request, you may safely disregard this email.</body></html>", vUserDetail.UserName, passwords);
+
+                        result = await _emailHelper.SendEmail(module: "Forgot Password", subject: sSubjectDynamicContent, sendTo: "Employee", content: emailTemplateContent, recipientEmail: recipientEmail, files: null, remarks: remarks);
+                    }
+                }
             }
             catch (Exception ex)
             {

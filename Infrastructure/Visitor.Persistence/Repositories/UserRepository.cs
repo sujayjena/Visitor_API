@@ -201,5 +201,30 @@ namespace Visitor.Persistence.Repositories
             return await SaveByStoredProcedure<int>("DeleteUserOtherDetails", queryParameters);
         }
         #endregion
+
+        #region Employee Gate Number
+        public async Task<int> SaveEmployeeGateNo(EmployeeGateNo_Request parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@Action", parameters.Action);
+            queryParameters.Add("@EmployeeId", parameters.EmployeeId);
+            queryParameters.Add("@GateDetailsId", parameters.GateDetailsId);
+            queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
+
+            return await SaveByStoredProcedure<int>("SaveEmployeeGateNo", queryParameters);
+        }
+
+        public async Task<IEnumerable<EmployeeGateNo_Response>> GetEmployeeGateNoByEmployeeId(long EmployeeId, long GateDetailsId)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@EmployeeId", EmployeeId);
+            queryParameters.Add("@GateDetailsId", GateDetailsId);
+            queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
+
+            var result = await ListByStoredProcedure<EmployeeGateNo_Response>("GetEmployeeGateNoByEmployeeId", queryParameters);
+
+            return result;
+        }
+        #endregion
     }
 }
