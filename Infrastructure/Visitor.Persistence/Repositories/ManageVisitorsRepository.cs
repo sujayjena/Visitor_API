@@ -213,6 +213,7 @@ namespace Visitor.Persistence.Repositories
             queryParameters.Add("@GateDetailsId", parameters.GateDetailsId);
             queryParameters.Add("@IsCheckedIn_Out", parameters.IsCheckedIn_Out);
             queryParameters.Add("@CheckedInDate", parameters.CheckedInDate);
+            queryParameters.Add("@CheckedRemark", parameters.CheckedRemark);
             queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
 
             return await SaveByStoredProcedure<int>("SaveVisitorCheckedInOut", queryParameters);

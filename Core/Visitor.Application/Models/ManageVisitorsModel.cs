@@ -349,6 +349,7 @@ namespace Visitor.Application.Models
 
         [DefaultValue(null)]
         public DateTime? CheckedInDate { get; set; }
+        public string? CheckedRemark { get; set; }
     }
 
     public class CheckedInOutLogHistory_Search : BaseSearchEntity
@@ -372,6 +373,7 @@ namespace Visitor.Application.Models
         public int? GateDetailsId { get; set; }
         public string? GateNumber { get; set; }
         public string? CheckedStatus { get; set; }
+        public string? CheckedRemark { get; set; }
         public DateTime? CreatedDate { get; set; }
         public long CreatedBy { get; set; }
         public string? CreatorName { get; set; }
