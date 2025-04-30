@@ -221,6 +221,8 @@ namespace Visitor.Persistence.Repositories
         public async Task<IEnumerable<CheckedInOutLogHistory_Response>> GetCheckedInOutLogHistoryList(CheckedInOutLogHistory_Search parameters)
         {
             DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@FromDate", parameters.FromDate);
+            queryParameters.Add("@ToDate", parameters.ToDate);
             queryParameters.Add("@RefId", parameters.RefId);
             queryParameters.Add("@RefType", parameters.RefType);
             queryParameters.Add("@SearchText", parameters.SearchText.SanitizeValue());

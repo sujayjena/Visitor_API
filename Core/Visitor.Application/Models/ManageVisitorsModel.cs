@@ -352,6 +352,8 @@ namespace Visitor.Application.Models
 
     public class CheckedInOutLogHistory_Search : BaseSearchEntity
     {
+        public DateTime? FromDate { get; set; }
+        public DateTime? ToDate { get; set; }
         public int? RefId { get; set; }
 
         [DefaultValue("Employee")]
