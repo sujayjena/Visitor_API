@@ -52,6 +52,7 @@ namespace Visitor.Persistence.Repositories
             queryParameters.Add("@EndDate", parameters.EndDate);
             queryParameters.Add("@Duration", parameters.Duration);
             queryParameters.Add("@MeetingStatusId", parameters.MeetingStatusId);
+            queryParameters.Add("@IsVehicle", parameters.IsVehicle);
             queryParameters.Add("@VehicleNumber", parameters.VehicleNumber);
             queryParameters.Add("@VehicleTypeId", parameters.VehicleTypeId);
             queryParameters.Add("@IsLaptop", parameters.IsLaptop);

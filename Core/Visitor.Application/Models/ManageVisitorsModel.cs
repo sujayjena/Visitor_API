@@ -79,6 +79,9 @@ namespace Visitor.Application.Models
         public DateTime? EndDate { get; set; }
         public string? Duration { get; set; }
         public int? MeetingStatusId { get; set; }
+
+        [DefaultValue(false)]
+        public bool? IsVehicle { get; set; }
         public string? VehicleNumber { get; set; }
         public int? VehicleTypeId { get; set; }
 
@@ -174,6 +177,7 @@ namespace Visitor.Application.Models
         public string? Duration { get; set; }
         public int? MeetingStatusId { get; set; }
         public string? MeetingStatus { get; set; }
+        public bool? IsVehicle { get; set; }
         public string? VehicleNumber { get; set; }
         public int? VehicleTypeId { get; set; }
         public string? VehicleType { get; set; }
