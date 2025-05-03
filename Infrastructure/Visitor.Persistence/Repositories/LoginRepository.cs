@@ -27,6 +27,7 @@ namespace Visitor.Persistence.Repositories
             queryParameters.Add("@Username", parameters.MobileNumber.SanitizeValue());
             queryParameters.Add("@Password", parameters.Password.SanitizeValue());
             queryParameters.Add("@MobileUniqueId", parameters.MobileUniqueId.SanitizeValue());
+            queryParameters.Add("@UserTypeId", parameters.UserTypeId);
 
             lstResponse = await ListByStoredProcedure<UsersLoginSessionData>("ValidateUserLoginByUsername", queryParameters);
             return lstResponse.FirstOrDefault();

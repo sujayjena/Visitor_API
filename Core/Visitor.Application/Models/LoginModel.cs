@@ -8,8 +8,8 @@ namespace Visitor.Application.Models
     public class LoginByMobileNumberRequestModel
     {
         [Required(ErrorMessage = ValidationConstants.MobileNumberRequied_Msg)]
-        [RegularExpression(ValidationConstants.MobileNumberRegExp, ErrorMessage = ValidationConstants.MobileNumberRegExp_Msg)]
-        [MaxLength(ValidationConstants.MobileNumber_MaxLength, ErrorMessage = ValidationConstants.MobileNumber_MaxLength_Msg)]
+        //[RegularExpression(ValidationConstants.MobileNumberRegExp, ErrorMessage = ValidationConstants.MobileNumberRegExp_Msg)]
+        //[MaxLength(ValidationConstants.MobileNumber_MaxLength, ErrorMessage = ValidationConstants.MobileNumber_MaxLength_Msg)]
         public string MobileNumber { get; set; }
 
         [Required(ErrorMessage = "Password is required")]
@@ -20,6 +20,8 @@ namespace Visitor.Application.Models
 
         [DefaultValue("W")]
         public string IsWebOrMobileUser { get; set; }
+
+        public int UserTypeId { get; set; }
 
         public bool Remember { get; set; }
     }
@@ -70,6 +72,7 @@ namespace Visitor.Application.Models
         public string UserName { get; set; }
         public string MobileNumber { get; set; }
         public string EmailId { get; set; }
+        public int UserTypeId { get; set; }
         public string UserType { get; set; }
         public int? RoleId { get; set; }
         public string RoleName { get; set; }

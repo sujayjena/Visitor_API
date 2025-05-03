@@ -135,6 +135,9 @@ namespace Visitor.Application.Models
         [DefaultValue(false)]
         public bool? IsApprover { get; set; }
 
+        [DefaultValue(null)]
+        public DateTime? LastWorkingDate { get; set; }
+
         public bool? IsMobileUser { get; set; }
 
         public bool? IsWebUser { get; set; }
@@ -284,6 +287,8 @@ namespace Visitor.Application.Models
         public bool? IsManager { get; set; }
 
         public bool? IsApprover { get; set; }
+
+        public DateTime? LastWorkingDate { get; set; }
 
         public bool? IsMobileUser { get; set; }
 
