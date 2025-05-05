@@ -90,11 +90,17 @@ namespace Visitor.API.Controllers
                             strBrnachIdList = string.Join(",", vUserBranchMappingDetail.ToList().OrderBy(x => x.BranchId).Select(x => x.BranchId));
                         }
 
-                        var vSecurityGateDetail = await _manageSecurityRepository.GetSecurityLoginGateDetailsById(SecurityLoginId: Convert.ToInt32(loginResponse.SecurityId), GateDetailsId: 0);
+                        var vSecurityGateDetail = await _userRepository.GetEmployeeGateNoByEmployeeId(EmployeeId: Convert.ToInt32(loginResponse.UserId), GateDetailsId: 0);
                         if (vSecurityGateDetail.ToList().Count > 0)
                         {
                             strGateDetailsIdList = string.Join(",", vSecurityGateDetail.ToList().OrderBy(x => x.GateDetailsId).Select(x => x.GateDetailsId));
                         }
+
+                        //var vSecurityGateDetail = await _manageSecurityRepository.GetSecurityLoginGateDetailsById(SecurityLoginId: Convert.ToInt32(loginResponse.SecurityId), GateDetailsId: 0);
+                        //if (vSecurityGateDetail.ToList().Count > 0)
+                        //{
+                        //    strGateDetailsIdList = string.Join(",", vSecurityGateDetail.ToList().OrderBy(x => x.GateDetailsId).Select(x => x.GateDetailsId));
+                        //}
 
                         employeeSessionData = new SessionDataEmployee
                         {
