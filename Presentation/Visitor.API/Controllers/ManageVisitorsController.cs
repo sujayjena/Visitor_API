@@ -344,6 +344,17 @@ namespace Visitor.API.Controllers
                     var gateNolistObj = await _manageVisitorsRepository.GetVisitorsGateNoByVisitorId(vResultObj.Id, 0);
 
                     vResultObj.GateNumberList = gateNolistObj.ToList();
+
+                    var vVisitorDocumentVerification = new VisitorDocumentVerification_Search()
+                    {
+                        VisitorId = vResultObj.Id
+                    };
+
+                    var visitorDocumentVerificationlistObj = await _manageVisitorsRepository.GetVisitorDocumentVerificationList(vVisitorDocumentVerification);
+                    vResultObj.DocumentVerificationList = visitorDocumentVerificationlistObj.ToList();
+
+                    var visitorAssetlistObj = await _manageVisitorsRepository.GetVisitorAssetList(vVisitorDocumentVerification);
+                    vResultObj.AssetList = visitorAssetlistObj.ToList();
                 }
                 _response.Data = vResultObj;
             }

@@ -367,6 +367,7 @@ namespace Visitor.Application.Models
 
         [DefaultValue("Employee")]
         public string? RefType { get; set; }
+        public int? GateDetailsId { get; set; }
     }
 
     public class CheckedInOutLogHistory_Response
