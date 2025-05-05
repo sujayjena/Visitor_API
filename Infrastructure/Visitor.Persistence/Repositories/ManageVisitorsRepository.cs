@@ -52,6 +52,7 @@ namespace Visitor.Persistence.Repositories
             queryParameters.Add("@EndDate", parameters.EndDate);
             queryParameters.Add("@Duration", parameters.Duration);
             queryParameters.Add("@MeetingStatusId", parameters.MeetingStatusId);
+            queryParameters.Add("@IsVehicle", parameters.IsVehicle);
             queryParameters.Add("@VehicleNumber", parameters.VehicleNumber);
             queryParameters.Add("@VehicleTypeId", parameters.VehicleTypeId);
             queryParameters.Add("@IsLaptop", parameters.IsLaptop);
@@ -213,6 +214,7 @@ namespace Visitor.Persistence.Repositories
             queryParameters.Add("@GateDetailsId", parameters.GateDetailsId);
             queryParameters.Add("@IsCheckedIn_Out", parameters.IsCheckedIn_Out);
             queryParameters.Add("@CheckedInDate", parameters.CheckedInDate);
+            queryParameters.Add("@CheckedRemark", parameters.CheckedRemark);
             queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
 
             return await SaveByStoredProcedure<int>("SaveVisitorCheckedInOut", queryParameters);
@@ -225,6 +227,7 @@ namespace Visitor.Persistence.Repositories
             queryParameters.Add("@ToDate", parameters.ToDate);
             queryParameters.Add("@RefId", parameters.RefId);
             queryParameters.Add("@RefType", parameters.RefType);
+            queryParameters.Add("@GateDetailsId", parameters.GateDetailsId);
             queryParameters.Add("@SearchText", parameters.SearchText.SanitizeValue());
             queryParameters.Add("@IsActive", parameters.IsActive);
             queryParameters.Add("@PageNo", parameters.PageNo);

@@ -79,6 +79,9 @@ namespace Visitor.Application.Models
         public DateTime? EndDate { get; set; }
         public string? Duration { get; set; }
         public int? MeetingStatusId { get; set; }
+
+        [DefaultValue(false)]
+        public bool? IsVehicle { get; set; }
         public string? VehicleNumber { get; set; }
         public int? VehicleTypeId { get; set; }
 
@@ -174,6 +177,7 @@ namespace Visitor.Application.Models
         public string? Duration { get; set; }
         public int? MeetingStatusId { get; set; }
         public string? MeetingStatus { get; set; }
+        public bool? IsVehicle { get; set; }
         public string? VehicleNumber { get; set; }
         public int? VehicleTypeId { get; set; }
         public string? VehicleType { get; set; }
@@ -223,6 +227,7 @@ namespace Visitor.Application.Models
     public class VisitorDocumentVerification_Response : BaseEntity
     {
         public int? VisitorId { get; set; }
+        public int? IDTypeId { get; set; }
         public string? IDType { get; set; }
         public string? DocumentOriginalFileName { get; set; }
         public string? DocumentFileName { get; set; }
@@ -348,16 +353,21 @@ namespace Visitor.Application.Models
 
         [DefaultValue(null)]
         public DateTime? CheckedInDate { get; set; }
+        public string? CheckedRemark { get; set; }
     }
 
     public class CheckedInOutLogHistory_Search : BaseSearchEntity
     {
+        [DefaultValue(null)]
         public DateTime? FromDate { get; set; }
+
+        [DefaultValue(null)]
         public DateTime? ToDate { get; set; }
         public int? RefId { get; set; }
 
         [DefaultValue("Employee")]
         public string? RefType { get; set; }
+        public int? GateDetailsId { get; set; }
     }
 
     public class CheckedInOutLogHistory_Response
@@ -368,6 +378,7 @@ namespace Visitor.Application.Models
         public int? GateDetailsId { get; set; }
         public string? GateNumber { get; set; }
         public string? CheckedStatus { get; set; }
+        public string? CheckedRemark { get; set; }
         public DateTime? CreatedDate { get; set; }
         public long CreatedBy { get; set; }
         public string? CreatorName { get; set; }
