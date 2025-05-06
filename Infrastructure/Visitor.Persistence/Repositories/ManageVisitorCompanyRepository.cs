@@ -32,9 +32,11 @@ namespace Visitor.Persistence.Repositories
             queryParameters.Add("@CityId", parameters.CityId);
             queryParameters.Add("@Pincode", parameters.Pincode);
             queryParameters.Add("@CompanyPhone", parameters.CompanyPhone);
+            queryParameters.Add("@IsGST", parameters.IsGST);
             queryParameters.Add("@GSTNo", parameters.GSTNo);
             queryParameters.Add("@GSTOriginalFileName", parameters.GSTOriginalFileName);
             queryParameters.Add("@GSTFileName", parameters.GSTFileName);
+            queryParameters.Add("@IsPan", parameters.IsPan);
             queryParameters.Add("@PanCardNumber", parameters.PanCardNumber);
             queryParameters.Add("@PanCardOriginalFileName", parameters.PanCardOriginalFileName);
             queryParameters.Add("@PanCardFileName", parameters.PanCardFileName);

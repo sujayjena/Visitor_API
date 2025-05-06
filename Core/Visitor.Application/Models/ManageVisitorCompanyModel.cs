@@ -25,12 +25,16 @@ namespace Visitor.Application.Models
         public int? Pincode { get; set; }
         public string? CompanyPhone { get; set; }
 
+        [DefaultValue(false)]
+        public bool? IsGST { get; set; }
         public string? GSTNo { get; set; }
         public string? GSTOriginalFileName { get; set; }
         [JsonIgnore]
         public string? GSTFileName { get; set; }
         public string? GSTFile_Base64 { get; set; }
 
+        [DefaultValue(false)]
+        public bool? IsPan { get; set; }
         public string? PanCardNumber { get; set; }
         public string? PanCardOriginalFileName { get; set; }
         [JsonIgnore]
@@ -53,11 +57,13 @@ namespace Visitor.Application.Models
         public string? CityName { get; set; }
         public int? Pincode { get; set; }
         public string? CompanyPhone { get; set; }
+        public bool? IsGST { get; set; }
         public string? GSTNo { get; set; }
         public string? GSTOriginalFileName { get; set; }
         public string? GSTFileName { get; set; }
         public string? GSTURL { get; set; }
 
+        public bool? IsPan { get; set; }
         public string? PanCardNumber { get; set; }
         public string? PanCardOriginalFileName { get; set; }
         [JsonIgnore]
