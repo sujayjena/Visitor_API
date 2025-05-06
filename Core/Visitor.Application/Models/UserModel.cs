@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 using System.Collections;
 using Visitor.Persistence.Repositories;
 using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Http;
+using System.Net;
+using System.Reflection;
 
 namespace Visitor.Application.Models
 {
@@ -354,4 +357,111 @@ namespace Visitor.Application.Models
         public int? GateDetailsId { get; set; }
         public string? GateNumber { get; set; }
     }
+
+    public class ImportRequest
+    {
+        public IFormFile FileUpload { get; set; }
+    }
+
+    #region Import and Download
+
+    public class User_ImportRequest
+    {
+        public IFormFile FileUpload { get; set; }
+    }
+
+    public class User_ImportData
+    {
+        public string? UserCode { get; set; }
+        public string? UserName { get; set; }
+        public string? UserType { get; set; }
+        public string? MobileNumber { get; set; }
+        public string? EmailId { get; set; }
+        public string? Password { get; set; }
+        public string? GateNumber { get; set; }
+        public string? Role { get; set; }
+        public string? ReportingTo { get; set; }
+        public string? Department { get; set; }
+        public string? Company { get; set; }
+        public DateTime? DateOfBirth { get; set; }
+        public DateTime? DateOfJoining { get; set; }
+        public string? BloodGroup { get; set; }
+        public string? Gender { get; set; }
+        public string? MeritalStatus { get; set; }
+        public string? EmergencyName { get; set; }
+        public string? EmergencyContactNumber { get; set; }
+        public string? EmergencyRelation { get; set; }
+        public string? PastCompanyName { get; set; }
+        public string? TotalExp { get; set; }
+        public string? Remark { get; set; }
+        public string? Address { get; set; }
+        public string? Country { get; set; }
+        public string? State { get; set; }
+        public string? Province { get; set; }
+        public string? Pincode { get; set; }
+        public string? IsSameAsPermanent { get; set; }
+        public string? Temporary_Address { get; set; }
+        public string? Temporary_Country { get; set; }
+        public string? Temporary_State { get; set; }
+        public string? Temporary_Province { get; set; }
+        public string? Temporary_Pincode { get; set; }
+        public string? AadharNumber { get; set; }
+        public string? PanNumber { get; set; }
+        public string? OtherProof { get; set; }
+        public string? IsHOD { get; set; }
+        public string? IsManager { get; set; }
+        public string? IsApprover { get; set; }
+        public string? IsMobileUser { get; set; }
+        public string? IsWebUser { get; set; }
+        public string? IsActive { get; set; }
+    }
+
+    public class User_ImportDataValidation
+    {
+        public string? UserCode { get; set; }
+        public string? UserName { get; set; }
+        public string? UserType { get; set; }
+        public string? MobileNumber { get; set; }
+        public string? EmailId { get; set; }
+        public string? Password { get; set; }
+        public string? GateNumber { get; set; }
+        public string? Role { get; set; }
+        public string? ReportingTo { get; set; }
+        public string? Department { get; set; }
+        public string? Company { get; set; }
+        public string? DateOfBirth { get; set; }
+        public string? DateOfJoining { get; set; }
+        public string? BloodGroup { get; set; }
+        public string? Gender { get; set; }
+        public string? MeritalStatus { get; set; }
+        public string? EmergencyName { get; set; }
+        public string? EmergencyContactNumber { get; set; }
+        public string? EmergencyRelation { get; set; }
+        public string? PastCompanyName { get; set; }
+        public string? TotalExp { get; set; }
+        public string? Remark { get; set; }
+        public string? Address { get; set; }
+        public string? Country { get; set; }
+        public string? State { get; set; }
+        public string? Province { get; set; }
+        public string? Pincode { get; set; }
+        public string? IsSameAsPermanent { get; set; }
+        public string? Temporary_Address { get; set; }
+        public string? Temporary_Country { get; set; }
+        public string? Temporary_State { get; set; }
+        public string? Temporary_Province { get; set; }
+        public string? Temporary_Pincode { get; set; }
+        public string? AadharNumber { get; set; }
+        public string? PanNumber { get; set; }
+        public string? OtherProof { get; set; }
+        public string? IsHOD { get; set; }
+        public string? IsManager { get; set; }
+        public string? IsApprover { get; set; }
+        public string? IsMobileUser { get; set; }
+        public string? IsWebUser { get; set; }
+        public string? IsActive { get; set; }
+        public string ValidationMessage { get; set; }
+    }
+
+    #endregion
 }

@@ -9,9 +9,8 @@ using Microsoft.AspNetCore.Mvc;
 using System.Text;
 using Visitor.API.Middlewares;
 using Visitor.API.CustomAttributes;
-using System.Runtime.Intrinsics.X86;
-using System.Security.Cryptography;
-using System.Xml.Linq;
+using OfficeOpenXml.Style;
+using OfficeOpenXml;
 
 namespace Visitor.API.Controllers.Admin
 {
@@ -551,7 +550,7 @@ namespace Visitor.API.Controllers.Admin
                 {
                     recipientEmail = vUserDetail.EmailId;
 
-                    if(emailType == "Login Credential")
+                    if (emailType == "Login Credential")
                     {
                         sSubjectDynamicContent = "Login Credential - " + vUserDetail.UserName;
                         emailTemplateContent = string.Format(@"<html><body>Dear {0},<br/><br/>Your login credential below:<br/><br/> EmailId: {1}<br/>Password: {2}<br/><br/>If you did not initiate this request, you may safely disregard this email.</body></html>", vUserDetail.UserName, vUserDetail.EmailId, passwords);
@@ -570,6 +569,481 @@ namespace Visitor.API.Controllers.Admin
             catch (Exception ex)
             {
                 result = false;
+            }
+
+            return result;
+        }
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> DownloadUserTemplate()
+        {
+            byte[]? formatFile = await Task.Run(() => _fileManager.GetFormatFileFromPath("Template_User.xlsx"));
+
+            if (formatFile != null)
+            {
+                _response.Data = formatFile;
+            }
+
+            return _response;
+        }
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> ImportUser([FromQuery] ImportRequest request)
+        {
+            _response.IsSuccess = false;
+
+            ExcelWorksheets currentSheet;
+            ExcelWorksheet workSheet;
+            ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
+            int noOfCol, noOfRow;
+
+            List<string[]> data = new List<string[]>();
+            List<User_ImportData> lstUser_ImportData = new List<User_ImportData>();
+            IEnumerable<User_ImportDataValidation> lstUser_ImportDataValidation;
+
+            if (request.FileUpload == null || request.FileUpload.Length == 0)
+            {
+                _response.Message = "Please upload an excel file";
+                return _response;
+            }
+
+            using (MemoryStream stream = new MemoryStream())
+            {
+                request.FileUpload.CopyTo(stream);
+                using ExcelPackage package = new ExcelPackage(stream);
+                currentSheet = package.Workbook.Worksheets;
+                workSheet = currentSheet.First();
+                noOfCol = workSheet.Dimension.End.Column;
+                noOfRow = workSheet.Dimension.End.Row;
+
+                if (!string.Equals(workSheet.Cells[1, 1].Value.ToString(), "UserCode", StringComparison.OrdinalIgnoreCase) ||
+                    !string.Equals(workSheet.Cells[1, 2].Value.ToString(), "UserName", StringComparison.OrdinalIgnoreCase) ||
+                    !string.Equals(workSheet.Cells[1, 3].Value.ToString(), "UserType", StringComparison.OrdinalIgnoreCase) ||
+                    !string.Equals(workSheet.Cells[1, 4].Value.ToString(), "MobileNumber", StringComparison.OrdinalIgnoreCase) ||
+                    !string.Equals(workSheet.Cells[1, 5].Value.ToString(), "EmailId", StringComparison.OrdinalIgnoreCase) ||
+                    !string.Equals(workSheet.Cells[1, 6].Value.ToString(), "Password", StringComparison.OrdinalIgnoreCase) ||
+                    !string.Equals(workSheet.Cells[1, 7].Value.ToString(), "GateNumber", StringComparison.OrdinalIgnoreCase) ||
+                    !string.Equals(workSheet.Cells[1, 8].Value.ToString(), "Role", StringComparison.OrdinalIgnoreCase) ||
+                    !string.Equals(workSheet.Cells[1, 9].Value.ToString(), "ReportingTo", StringComparison.OrdinalIgnoreCase) ||
+                    !string.Equals(workSheet.Cells[1, 10].Value.ToString(), "Department", StringComparison.OrdinalIgnoreCase) ||
+                    !string.Equals(workSheet.Cells[1, 11].Value.ToString(), "Company", StringComparison.OrdinalIgnoreCase) ||
+                    !string.Equals(workSheet.Cells[1, 12].Value.ToString(), "DateOfBirth", StringComparison.OrdinalIgnoreCase) ||
+                    !string.Equals(workSheet.Cells[1, 13].Value.ToString(), "DateOfJoining", StringComparison.OrdinalIgnoreCase) ||
+                    !string.Equals(workSheet.Cells[1, 14].Value.ToString(), "BloodGroup", StringComparison.OrdinalIgnoreCase) ||
+                    !string.Equals(workSheet.Cells[1, 15].Value.ToString(), "Gender", StringComparison.OrdinalIgnoreCase) ||
+                    !string.Equals(workSheet.Cells[1, 16].Value.ToString(), "MeritalStatus", StringComparison.OrdinalIgnoreCase) ||
+                    !string.Equals(workSheet.Cells[1, 17].Value.ToString(), "EmergencyName", StringComparison.OrdinalIgnoreCase) ||
+                    !string.Equals(workSheet.Cells[1, 18].Value.ToString(), "EmergencyContactNumber", StringComparison.OrdinalIgnoreCase) ||
+                    !string.Equals(workSheet.Cells[1, 19].Value.ToString(), "EmergencyRelation", StringComparison.OrdinalIgnoreCase) ||
+                    !string.Equals(workSheet.Cells[1, 20].Value.ToString(), "PastCompanyName", StringComparison.OrdinalIgnoreCase) ||
+                    !string.Equals(workSheet.Cells[1, 21].Value.ToString(), "TotalExp", StringComparison.OrdinalIgnoreCase) ||
+                    !string.Equals(workSheet.Cells[1, 22].Value.ToString(), "Remark", StringComparison.OrdinalIgnoreCase) ||
+                    !string.Equals(workSheet.Cells[1, 23].Value.ToString(), "Address", StringComparison.OrdinalIgnoreCase) ||
+                    !string.Equals(workSheet.Cells[1, 24].Value.ToString(), "Country", StringComparison.OrdinalIgnoreCase) ||
+                    !string.Equals(workSheet.Cells[1, 25].Value.ToString(), "State", StringComparison.OrdinalIgnoreCase) ||
+                    !string.Equals(workSheet.Cells[1, 26].Value.ToString(), "Province", StringComparison.OrdinalIgnoreCase) ||
+                    !string.Equals(workSheet.Cells[1, 27].Value.ToString(), "Pincode", StringComparison.OrdinalIgnoreCase) ||
+                    !string.Equals(workSheet.Cells[1, 28].Value.ToString(), "IsSameAsPermanent", StringComparison.OrdinalIgnoreCase) ||
+                    !string.Equals(workSheet.Cells[1, 29].Value.ToString(), "Temporary_Address", StringComparison.OrdinalIgnoreCase) ||
+                    !string.Equals(workSheet.Cells[1, 30].Value.ToString(), "Temporary_Country", StringComparison.OrdinalIgnoreCase) ||
+                    !string.Equals(workSheet.Cells[1, 31].Value.ToString(), "Temporary_State", StringComparison.OrdinalIgnoreCase) ||
+                    !string.Equals(workSheet.Cells[1, 32].Value.ToString(), "Temporary_Province", StringComparison.OrdinalIgnoreCase) ||
+                    !string.Equals(workSheet.Cells[1, 33].Value.ToString(), "Temporary_Pincode", StringComparison.OrdinalIgnoreCase) ||
+                    !string.Equals(workSheet.Cells[1, 34].Value.ToString(), "AadharNumber", StringComparison.OrdinalIgnoreCase) ||
+                    !string.Equals(workSheet.Cells[1, 35].Value.ToString(), "PanNumber", StringComparison.OrdinalIgnoreCase) ||
+                    !string.Equals(workSheet.Cells[1, 36].Value.ToString(), "OtherProof", StringComparison.OrdinalIgnoreCase) ||
+                    !string.Equals(workSheet.Cells[1, 37].Value.ToString(), "IsHOD", StringComparison.OrdinalIgnoreCase) ||
+                    !string.Equals(workSheet.Cells[1, 38].Value.ToString(), "IsManager", StringComparison.OrdinalIgnoreCase) ||
+                    !string.Equals(workSheet.Cells[1, 39].Value.ToString(), "IsApprover", StringComparison.OrdinalIgnoreCase) ||
+                    !string.Equals(workSheet.Cells[1, 40].Value.ToString(), "IsMobileUser", StringComparison.OrdinalIgnoreCase) ||
+                    !string.Equals(workSheet.Cells[1, 41].Value.ToString(), "IsWebUser", StringComparison.OrdinalIgnoreCase) ||
+                    !string.Equals(workSheet.Cells[1, 42].Value.ToString(), "IsActive", StringComparison.OrdinalIgnoreCase))
+                {
+                    _response.IsSuccess = false;
+                    _response.Message = "Please upload a valid excel file";
+                    return _response;
+                }
+
+                for (int rowIterator = 2; rowIterator <= noOfRow; rowIterator++)
+                {
+                    if (!string.IsNullOrWhiteSpace(workSheet.Cells[rowIterator, 2].Value?.ToString()) && !string.IsNullOrWhiteSpace(workSheet.Cells[rowIterator, 3].Value?.ToString()))
+                    {
+                        lstUser_ImportData.Add(new User_ImportData()
+                        {
+                            UserCode = workSheet.Cells[rowIterator, 1].Value?.ToString(),
+                            UserName = workSheet.Cells[rowIterator, 2].Value?.ToString(),
+                            UserType = workSheet.Cells[rowIterator, 3].Value?.ToString(),
+
+                            MobileNumber = workSheet.Cells[rowIterator, 4].Value?.ToString(),
+                            EmailId = workSheet.Cells[rowIterator, 5].Value?.ToString(),
+                            Password = !string.IsNullOrWhiteSpace(workSheet.Cells[rowIterator, 6].Value?.ToString()) ? EncryptDecryptHelper.EncryptString(workSheet.Cells[rowIterator, 6].Value?.ToString()) : string.Empty,
+                            GateNumber = workSheet.Cells[rowIterator, 7].Value?.ToString(),
+                            Role = workSheet.Cells[rowIterator, 8].Value?.ToString(),
+                            ReportingTo = workSheet.Cells[rowIterator, 9].Value?.ToString(),
+                            Department = workSheet.Cells[rowIterator, 10].Value?.ToString(),
+                            Company = workSheet.Cells[rowIterator, 11].Value?.ToString(),
+                            DateOfBirth = !string.IsNullOrWhiteSpace(workSheet.Cells[rowIterator, 12].Value?.ToString()) ? DateTime.ParseExact(workSheet.Cells[rowIterator, 12].Value?.ToString(), "dd/MM/yyyy", System.Globalization.CultureInfo.CurrentUICulture.DateTimeFormat) : null,
+                            DateOfJoining = !string.IsNullOrWhiteSpace(workSheet.Cells[rowIterator, 13].Value?.ToString()) ? DateTime.ParseExact(workSheet.Cells[rowIterator, 13].Value?.ToString(), "dd/MM/yyyy", System.Globalization.CultureInfo.CurrentUICulture.DateTimeFormat) : null,
+                            BloodGroup = workSheet.Cells[rowIterator, 14].Value?.ToString(),
+                            Gender = workSheet.Cells[rowIterator, 15].Value?.ToString(),
+                            MeritalStatus = workSheet.Cells[rowIterator, 16].Value?.ToString(),
+                            EmergencyName = workSheet.Cells[rowIterator, 17].Value?.ToString(),
+                            EmergencyContactNumber = workSheet.Cells[rowIterator, 18].Value?.ToString(),
+                            EmergencyRelation = workSheet.Cells[rowIterator, 19].Value?.ToString(),
+                            PastCompanyName = workSheet.Cells[rowIterator, 20].Value?.ToString(),
+                            TotalExp = workSheet.Cells[rowIterator, 21].Value?.ToString(),
+                            Remark = workSheet.Cells[rowIterator, 22].Value?.ToString(),
+
+                            Address = workSheet.Cells[rowIterator, 23].Value?.ToString(),
+                            Country = workSheet.Cells[rowIterator, 24].Value?.ToString(),
+                            State = workSheet.Cells[rowIterator, 25].Value?.ToString(),
+                            Province = workSheet.Cells[rowIterator, 26].Value?.ToString(),
+                            Pincode = workSheet.Cells[rowIterator, 27].Value?.ToString(),
+
+                            IsSameAsPermanent = workSheet.Cells[rowIterator, 28].Value?.ToString(),
+
+                            Temporary_Address = workSheet.Cells[rowIterator, 29].Value?.ToString(),
+                            Temporary_Country = workSheet.Cells[rowIterator, 30].Value?.ToString(),
+                            Temporary_State = workSheet.Cells[rowIterator, 31].Value?.ToString(),
+                            Temporary_Province = workSheet.Cells[rowIterator, 32].Value?.ToString(),
+                            Temporary_Pincode = workSheet.Cells[rowIterator, 33].Value?.ToString(),
+
+                            AadharNumber = workSheet.Cells[rowIterator, 34].Value?.ToString(),
+                            PanNumber = workSheet.Cells[rowIterator, 35].Value?.ToString(),
+                            OtherProof = workSheet.Cells[rowIterator, 36].Value?.ToString(),
+                            IsHOD = workSheet.Cells[rowIterator, 37].Value?.ToString(),
+                            IsManager = workSheet.Cells[rowIterator, 38].Value?.ToString(),
+                            IsApprover = workSheet.Cells[rowIterator, 39].Value?.ToString(),
+
+                            IsMobileUser = workSheet.Cells[rowIterator, 40].Value?.ToString(),
+                            IsWebUser = workSheet.Cells[rowIterator, 41].Value?.ToString(),
+                            IsActive = workSheet.Cells[rowIterator, 42].Value?.ToString()
+                        });
+                    }
+                }
+            }
+
+            if (lstUser_ImportData.Count == 0)
+            {
+                _response.Message = "File does not contains any record(s)";
+                return _response;
+            }
+
+            lstUser_ImportDataValidation = await _userRepository.ImportUser(lstUser_ImportData);
+
+            _response.IsSuccess = true;
+            _response.Message = "Record imported successfully";
+
+            #region Generate Excel file for Invalid Data
+
+            if (lstUser_ImportDataValidation.ToList().Count > 0)
+            {
+                _response.Message = "Uploaded file contains invalid records, please check downloaded file for more details";
+                _response.Data = GenerateInvalidImportDataFile(lstUser_ImportDataValidation);
+
+            }
+
+            #endregion
+
+            return _response;
+        }
+
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> ExportUserData(bool IsActive = true)
+        {
+            _response.IsSuccess = false;
+            byte[] result;
+            int recordIndex;
+            ExcelWorksheet WorkSheet1;
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+
+            var request = new User_Search();
+            request.IsActive = IsActive;
+
+            IEnumerable<User_Response> lstSizeObj = await _userRepository.GetUserList(request);
+
+            using (MemoryStream msExportDataFile = new MemoryStream())
+            {
+                using (ExcelPackage excelExportData = new ExcelPackage())
+                {
+                    WorkSheet1 = excelExportData.Workbook.Worksheets.Add("Employee");
+                    WorkSheet1.TabColor = System.Drawing.Color.Black;
+                    WorkSheet1.DefaultRowHeight = 12;
+
+                    //Header of table
+                    WorkSheet1.Row(1).Height = 20;
+                    WorkSheet1.Row(1).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    WorkSheet1.Row(1).Style.Font.Bold = true;
+
+                    WorkSheet1.Cells[1, 1].Value = "User Code";
+                    WorkSheet1.Cells[1, 2].Value = "User Name";
+                    WorkSheet1.Cells[1, 3].Value = "User Type";
+                    WorkSheet1.Cells[1, 4].Value = "Mobile";
+                    WorkSheet1.Cells[1, 5].Value = "EmailId";
+                    WorkSheet1.Cells[1, 6].Value = "Gate Number";
+                    WorkSheet1.Cells[1, 7].Value = "Role";
+                    WorkSheet1.Cells[1, 8].Value = "ReportingTo";
+                    WorkSheet1.Cells[1, 9].Value = "Department";
+                    WorkSheet1.Cells[1, 10].Value = "Company";
+                    WorkSheet1.Cells[1, 11].Value = "DateOfBirth";
+                    WorkSheet1.Cells[1, 12].Value = "Date Of Joining";
+                    WorkSheet1.Cells[1, 13].Value = "Blood Group";
+                    WorkSheet1.Cells[1, 14].Value = "Gender";
+                    WorkSheet1.Cells[1, 15].Value = "Merital Status";
+
+                    WorkSheet1.Cells[1, 16].Value = "Emergency Name";
+                    WorkSheet1.Cells[1, 17].Value = "Emergency Contact Number";
+                    WorkSheet1.Cells[1, 18].Value = "Emergency Relation";
+                    //WorkSheet1.Cells[1, 19].Value = "Past Company Name";
+                    //WorkSheet1.Cells[1, 20].Value = "Total Exp";
+                    //WorkSheet1.Cells[1, 21].Value = "Remark";
+
+                    WorkSheet1.Cells[1, 19].Value = "Address";
+                    WorkSheet1.Cells[1, 20].Value = "Country";
+                    WorkSheet1.Cells[1, 21].Value = "State";
+                    WorkSheet1.Cells[1, 22].Value = "Province";
+                    WorkSheet1.Cells[1, 23].Value = "Pincode";
+
+                    WorkSheet1.Cells[1, 24].Value = "IsSameAsPermanent";
+                    WorkSheet1.Cells[1, 25].Value = "Temporary_Address";
+                    WorkSheet1.Cells[1, 26].Value = "Temporary_Country";
+                    WorkSheet1.Cells[1, 27].Value = "Temporary_State";
+                    WorkSheet1.Cells[1, 28].Value = "Temporary_Province";
+                    WorkSheet1.Cells[1, 29].Value = "Temporary_Pincode";
+
+                    WorkSheet1.Cells[1, 30].Value = "Aadhar Number";
+                    WorkSheet1.Cells[1, 31].Value = "Pan Number";
+
+                    WorkSheet1.Cells[1, 32].Value = "OtherProof";
+                    WorkSheet1.Cells[1, 33].Value = "IsHOD";
+                    WorkSheet1.Cells[1, 34].Value = "IsManager";
+                    WorkSheet1.Cells[1, 35].Value = "IsApprover";
+
+                    WorkSheet1.Cells[1, 36].Value = "IsMobileUser";
+                    WorkSheet1.Cells[1, 37].Value = "IsWebUser";
+                    WorkSheet1.Cells[1, 38].Value = "IsActive";
+
+                    recordIndex = 2;
+
+                    foreach (var items in lstSizeObj)
+                    {
+                        var vResultObj = await _userRepository.GetUserById(items.Id);
+
+                        string strGateNumberList = string.Empty;
+                        var vSecurityGateDetail = await _userRepository.GetEmployeeGateNoByEmployeeId(EmployeeId: Convert.ToInt32(items.Id), GateDetailsId: 0);
+                        if (vSecurityGateDetail.ToList().Count > 0)
+                        {
+                            strGateNumberList = string.Join(",", vSecurityGateDetail.ToList().OrderBy(x => x.GateDetailsId).Select(x => x.GateDetailsId));
+                        }
+
+                        WorkSheet1.Cells[recordIndex, 1].Value = items.UserCode;
+                        WorkSheet1.Cells[recordIndex, 2].Value = items.UserName;
+                        WorkSheet1.Cells[recordIndex, 3].Value = items.UserType;
+                        WorkSheet1.Cells[recordIndex, 4].Value = items.MobileNumber;
+                        WorkSheet1.Cells[recordIndex, 5].Value = items.EmailId;
+                        WorkSheet1.Cells[recordIndex, 6].Value = strGateNumberList;
+                        WorkSheet1.Cells[recordIndex, 7].Value = items.RoleName;
+                        WorkSheet1.Cells[recordIndex, 8].Value = items.ReportingToName;
+                        WorkSheet1.Cells[recordIndex, 9].Value = items.DepartmentName;
+                        WorkSheet1.Cells[recordIndex, 10].Value = items.CompanyName;
+
+                        WorkSheet1.Cells[recordIndex, 11].Value = items.DateOfBirth.HasValue ? items.DateOfBirth.Value.ToString("dd/MM/yyyy") : string.Empty;
+                        WorkSheet1.Cells[recordIndex, 12].Value = items.DateOfJoining.HasValue ? items.DateOfJoining.Value.ToString("dd/MM/yyyy") : string.Empty;
+
+                        WorkSheet1.Cells[recordIndex, 13].Value = items.BloodGroup;
+
+                        WorkSheet1.Cells[recordIndex, 14].Value = items.GenderName;
+                        WorkSheet1.Cells[recordIndex, 15].Value = vResultObj != null ? vResultObj.MaritalStatus : string.Empty;
+                        WorkSheet1.Cells[recordIndex, 16].Value = items.EmergencyName;
+                        WorkSheet1.Cells[recordIndex, 17].Value = items.EmergencyContactNumber;
+                        WorkSheet1.Cells[recordIndex, 18].Value = items.EmergencyRelation;
+                        //WorkSheet1.Cells[recordIndex, 16].Value = items.PastCompanyName;
+                        //WorkSheet1.Cells[recordIndex, 16].Value = items.TotalExp;
+                        //WorkSheet1.Cells[recordIndex, 16].Value = items.Remark;
+
+                        WorkSheet1.Cells[recordIndex, 19].Value = items.AddressLine;
+                        WorkSheet1.Cells[recordIndex, 20].Value = items.CountryName;
+                        WorkSheet1.Cells[recordIndex, 21].Value = items.StateName;
+                        WorkSheet1.Cells[recordIndex, 22].Value = items.DistrictName;
+                        WorkSheet1.Cells[recordIndex, 23].Value = items.Pincode;
+
+                        WorkSheet1.Cells[recordIndex, 24].Value = items.IsSameAsPermanent;
+                        WorkSheet1.Cells[recordIndex, 25].Value = items.TemporaryAddress;
+                        WorkSheet1.Cells[recordIndex, 26].Value = items.Temporary_CountryName;
+                        WorkSheet1.Cells[recordIndex, 27].Value = items.Temporary_StateName;
+                        WorkSheet1.Cells[recordIndex, 28].Value = items.Temporary_DistrictName;
+                        WorkSheet1.Cells[recordIndex, 29].Value = items.Temporary_Pincode;
+
+                        WorkSheet1.Cells[recordIndex, 30].Value = items.AadharNumber;
+                        WorkSheet1.Cells[recordIndex, 31].Value = items.PanNumber;
+
+                        WorkSheet1.Cells[recordIndex, 32].Value = items.OtherProof;
+                        WorkSheet1.Cells[recordIndex, 33].Value = items.IsHOD;
+                        WorkSheet1.Cells[recordIndex, 34].Value = items.IsManager;
+                        WorkSheet1.Cells[recordIndex, 35].Value = items.IsApprover;
+
+                        WorkSheet1.Cells[recordIndex, 36].Value = items.IsMobileUser;
+                        WorkSheet1.Cells[recordIndex, 37].Value = items.IsWebUser;
+                        WorkSheet1.Cells[recordIndex, 38].Value = items.IsActive == true ? "Active" : "Inactive";
+
+                        recordIndex += 1;
+                    }
+
+                    WorkSheet1.Columns.AutoFit();
+
+                    excelExportData.SaveAs(msExportDataFile);
+                    msExportDataFile.Position = 0;
+                    result = msExportDataFile.ToArray();
+                }
+            }
+
+            if (result != null)
+            {
+                _response.Data = result;
+                _response.IsSuccess = true;
+                _response.Message = "Exported successfully";
+            }
+
+            return _response;
+        }
+
+        private byte[] GenerateInvalidImportDataFile(IEnumerable<User_ImportDataValidation> lstUser_ImportDataValidation)
+        {
+            byte[] result;
+            int recordIndex;
+            ExcelWorksheet WorkSheet1;
+
+            using (MemoryStream msInvalidDataFile = new MemoryStream())
+            {
+                using (ExcelPackage excelInvalidData = new ExcelPackage())
+                {
+                    WorkSheet1 = excelInvalidData.Workbook.Worksheets.Add("Invalid_Records");
+                    WorkSheet1.TabColor = System.Drawing.Color.Black;
+                    WorkSheet1.DefaultRowHeight = 12;
+
+                    //Header of table
+                    WorkSheet1.Row(1).Height = 20;
+                    WorkSheet1.Row(1).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    WorkSheet1.Row(1).Style.Font.Bold = true;
+
+                    WorkSheet1.Cells[1, 1].Value = "UserCode";
+                    WorkSheet1.Cells[1, 2].Value = "UserName";
+                    WorkSheet1.Cells[1, 3].Value = "UserType";
+                    WorkSheet1.Cells[1, 4].Value = "MobileNumber";
+                    WorkSheet1.Cells[1, 5].Value = "EmailId";
+                    WorkSheet1.Cells[1, 6].Value = "Password";
+                    WorkSheet1.Cells[1, 7].Value = "GateNumber";
+
+                    WorkSheet1.Cells[1, 8].Value = "Role";
+                    WorkSheet1.Cells[1, 9].Value = "ReportingTo";
+                    WorkSheet1.Cells[1, 10].Value = "Department";
+                    WorkSheet1.Cells[1, 11].Value = "Company";
+                    WorkSheet1.Cells[1, 12].Value = "DateOfBirth";
+                    WorkSheet1.Cells[1, 13].Value = "DateOfJoining";
+                    WorkSheet1.Cells[1, 14].Value = "BloodGroup";
+
+                    WorkSheet1.Cells[1, 15].Value = "Gender";
+                    WorkSheet1.Cells[1, 16].Value = "MeritalStatus";
+                    WorkSheet1.Cells[1, 17].Value = "EmergencyName";
+                    WorkSheet1.Cells[1, 18].Value = "EmergencyContactNumber";
+                    WorkSheet1.Cells[1, 19].Value = "EmergencyRelation";
+
+                    WorkSheet1.Cells[1, 20].Value = "PastCompanyName";
+                    WorkSheet1.Cells[1, 21].Value = "TotalExp";
+                    WorkSheet1.Cells[1, 22].Value = "Remark";
+
+                    WorkSheet1.Cells[1, 23].Value = "Address";
+                    WorkSheet1.Cells[1, 24].Value = "Country";
+                    WorkSheet1.Cells[1, 25].Value = "State";
+                    WorkSheet1.Cells[1, 26].Value = "Province";
+                    WorkSheet1.Cells[1, 27].Value = "Pincode";
+
+                    WorkSheet1.Cells[1, 28].Value = "IsSameAsPermanent";
+                    WorkSheet1.Cells[1, 29].Value = "Temporary_Address";
+                    WorkSheet1.Cells[1, 30].Value = "Temporary_Country";
+                    WorkSheet1.Cells[1, 31].Value = "Temporary_State";
+                    WorkSheet1.Cells[1, 32].Value = "Temporary_Province";
+                    WorkSheet1.Cells[1, 33].Value = "Temporary_Pincode";
+
+                    WorkSheet1.Cells[1, 34].Value = "AadharNumber";
+                    WorkSheet1.Cells[1, 35].Value = "PanNumber";
+                    WorkSheet1.Cells[1, 36].Value = "OtherProof";
+                    WorkSheet1.Cells[1, 37].Value = "IsHOD";
+                    WorkSheet1.Cells[1, 38].Value = "IsManager";
+                    WorkSheet1.Cells[1, 39].Value = "IsApprover";
+
+                    WorkSheet1.Cells[1, 40].Value = "IsMobileUser";
+                    WorkSheet1.Cells[1, 41].Value = "IsWebUser";
+                    WorkSheet1.Cells[1, 42].Value = "ErrorMessage";
+
+                    recordIndex = 2;
+
+                    foreach (User_ImportDataValidation record in lstUser_ImportDataValidation)
+                    {
+                        WorkSheet1.Cells[recordIndex, 1].Value = record.UserCode;
+                        WorkSheet1.Cells[recordIndex, 2].Value = record.UserName;
+                        WorkSheet1.Cells[recordIndex, 3].Value = record.UserType;
+                        WorkSheet1.Cells[recordIndex, 4].Value = record.MobileNumber;
+                        WorkSheet1.Cells[recordIndex, 5].Value = record.EmailId;
+                        WorkSheet1.Cells[recordIndex, 6].Value = record.Password;
+                        WorkSheet1.Cells[recordIndex, 7].Value = record.GateNumber;
+
+                        WorkSheet1.Cells[recordIndex, 8].Value = record.Role;
+                        WorkSheet1.Cells[recordIndex, 9].Value = record.ReportingTo;
+                        WorkSheet1.Cells[recordIndex, 10].Value = record.Department;
+                        WorkSheet1.Cells[recordIndex, 11].Value = record.Company;
+
+                        WorkSheet1.Cells[recordIndex, 12].Value = record.DateOfBirth;
+                        WorkSheet1.Cells[recordIndex, 13].Value = record.DateOfJoining;
+                        WorkSheet1.Cells[recordIndex, 14].Value = record.BloodGroup;
+
+                        WorkSheet1.Cells[recordIndex, 15].Value = record.Gender;
+                        WorkSheet1.Cells[recordIndex, 16].Value = record.MeritalStatus;
+                        WorkSheet1.Cells[recordIndex, 17].Value = record.EmergencyName;
+                        WorkSheet1.Cells[recordIndex, 18].Value = record.EmergencyContactNumber;
+                        WorkSheet1.Cells[recordIndex, 19].Value = record.EmergencyRelation;
+
+                        WorkSheet1.Cells[recordIndex, 20].Value = record.PastCompanyName;
+                        WorkSheet1.Cells[recordIndex, 21].Value = record.TotalExp;
+                        WorkSheet1.Cells[recordIndex, 22].Value = record.Remark;
+
+                        WorkSheet1.Cells[recordIndex, 23].Value = record.Address;
+                        WorkSheet1.Cells[recordIndex, 24].Value = record.Country;
+                        WorkSheet1.Cells[recordIndex, 25].Value = record.State;
+                        WorkSheet1.Cells[recordIndex, 26].Value = record.Province;
+                        WorkSheet1.Cells[recordIndex, 27].Value = record.Pincode;
+
+                        WorkSheet1.Cells[recordIndex, 28].Value = record.IsSameAsPermanent;
+                        WorkSheet1.Cells[recordIndex, 29].Value = record.Temporary_Address;
+                        WorkSheet1.Cells[recordIndex, 30].Value = record.Temporary_Country;
+                        WorkSheet1.Cells[recordIndex, 31].Value = record.Temporary_State;
+                        WorkSheet1.Cells[recordIndex, 32].Value = record.Temporary_Province;
+                        WorkSheet1.Cells[recordIndex, 33].Value = record.Temporary_Pincode;
+
+                        WorkSheet1.Cells[recordIndex, 34].Value = record.AadharNumber;
+                        WorkSheet1.Cells[recordIndex, 35].Value = record.PanNumber;
+                        WorkSheet1.Cells[recordIndex, 36].Value = record.OtherProof;
+                        WorkSheet1.Cells[recordIndex, 37].Value = record.IsHOD;
+                        WorkSheet1.Cells[recordIndex, 38].Value = record.IsManager;
+                        WorkSheet1.Cells[recordIndex, 39].Value = record.IsApprover;
+
+                        WorkSheet1.Cells[recordIndex, 40].Value = record.IsMobileUser;
+                        WorkSheet1.Cells[recordIndex, 41].Value = record.IsWebUser;
+                        WorkSheet1.Cells[recordIndex, 42].Value = record.ValidationMessage;
+
+                        recordIndex += 1;
+                    }
+
+                    WorkSheet1.Columns.AutoFit();
+
+                    excelInvalidData.SaveAs(msInvalidDataFile);
+                    msInvalidDataFile.Position = 0;
+                    result = msInvalidDataFile.ToArray();
+                }
             }
 
             return result;

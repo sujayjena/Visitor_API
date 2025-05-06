@@ -24,6 +24,8 @@ namespace Visitor.Application.Interfaces
 
         Task<string?> GetAutoGenPassword(string AutoPassword);
 
+        Task<IEnumerable<User_ImportDataValidation>> ImportUser(List<User_ImportData> parameters);
+
         #endregion
 
         #region User Other Details

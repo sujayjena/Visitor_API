@@ -16,6 +16,7 @@ namespace Visitor.Application.Helpers
         string UploadDocuments(IFormFile file, string folderPath);
         string? GetDocumentsFile(string fileName, string folderPath);
         byte[]? GetDocumentsInByte(string fileName, string folderPath);
+        byte[]? GetFormatFileFromPath(string fileName);
 
         string UploadDocumentsBase64ToFile(string base64String, string folderPath, string? fileName);
     }
