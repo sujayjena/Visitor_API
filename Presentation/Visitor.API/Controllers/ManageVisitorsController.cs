@@ -409,24 +409,24 @@ namespace Visitor.API.Controllers
             }
             else if (result == -3)
             {
-                _response.Message = "Already Checked In for this gate.";
+                _response.Message = "Permission from previous gate is required.";
             }
-            else if (result == -4)
-            {
-                _response.Message = "Not Allowed checked In for this gate again.";
-            }
-            else if (result == -5)
-            {
-                _response.Message = "Already Checked Out for this gate.";
-            }
-            else if (result == -6)
-            {
-                _response.Message = "Not Allowed Checked Out this gate again.";
-            }
-            else if (result == -7)
-            {
-                _response.Message = "Not Allow to Checked Out from this gate";
-            }
+            //else if (result == -4)
+            //{
+            //    _response.Message = "Not Allowed checked In for this gate again.";
+            //}
+            //else if (result == -5)
+            //{
+            //    _response.Message = "Already Checked Out for this gate.";
+            //}
+            //else if (result == -6)
+            //{
+            //    _response.Message = "Not Allowed Checked Out this gate again.";
+            //}
+            //else if (result == -7)
+            //{
+            //    _response.Message = "Not Allow to Checked Out from this gate";
+            //}
             else if (result == (int)SaveOperationEnums.NoResult)
             {
                 _response.Message = "Something went wrong, please try again";
