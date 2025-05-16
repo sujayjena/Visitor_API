@@ -5,6 +5,7 @@ using Visitor.Application.Models;
 using Visitor.Persistence.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Visitor.API.CustomAttributes;
 
 namespace Visitor.API.Controllers.Admin
 {
@@ -398,6 +399,7 @@ namespace Visitor.API.Controllers.Admin
             return _response;
         }
 
+        [AllowAnonymous]
         [Route("[action]")]
         [HttpPost]
         public async Task<ResponseModel> GetTerritories_Country_State_Dist_City_List_ById(Territories_Country_State_Dist_City_Search parameters)

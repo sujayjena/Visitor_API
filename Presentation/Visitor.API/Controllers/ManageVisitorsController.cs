@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Net;
 using System.Text;
+using Visitor.API.CustomAttributes;
 using Visitor.Application.Enums;
 using Visitor.Application.Helpers;
 using Visitor.Application.Interfaces;
@@ -32,6 +33,7 @@ namespace Visitor.API.Controllers
             _response.IsSuccess = true;
         }
 
+        [AllowAnonymous]
         [Route("[action]")]
         [HttpPost]
         public async Task<ResponseModel> SaveVisitors(Visitors_Request parameters)
@@ -328,6 +330,7 @@ namespace Visitor.API.Controllers
             return _response;
         }
 
+        [AllowAnonymous]
         [Route("[action]")]
         [HttpPost]
         public async Task<ResponseModel> GetVisitorDetailByMobileNumber(string MobileNumber)
@@ -401,14 +404,17 @@ namespace Visitor.API.Controllers
 
             if (result == (int)SaveOperationEnums.NoRecordExists)
             {
+                _response.IsSuccess = false;
                 _response.Message = "No record exists";
             }
             else if (result == (int)SaveOperationEnums.ReocrdExists)
             {
+                _response.IsSuccess = false;
                 _response.Message = "Record is already exists";
             }
             else if (result == -3)
             {
+                _response.IsSuccess = false;
                 _response.Message = "Permission from previous gate is required.";
             }
             //else if (result == -4)
@@ -429,6 +435,7 @@ namespace Visitor.API.Controllers
             //}
             else if (result == (int)SaveOperationEnums.NoResult)
             {
+                _response.IsSuccess = false;
                 _response.Message = "Something went wrong, please try again";
             }
             else

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Visitor.API.CustomAttributes;
 using Visitor.Application.Enums;
 using Visitor.Application.Helpers;
 using Visitor.Application.Interfaces;
@@ -80,7 +81,7 @@ namespace Visitor.API.Controllers
             return _response;
         }
 
-
+        [AllowAnonymous]
         [Route("[action]")]
         [HttpPost]
         public async Task<ResponseModel> GetVisitorCompanyList(BaseSearchEntity parameters)

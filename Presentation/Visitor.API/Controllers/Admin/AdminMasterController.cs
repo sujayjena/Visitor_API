@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Visitor.API.CustomAttributes;
 using Visitor.Application.Enums;
 using Visitor.Application.Helpers;
 using Visitor.Application.Interfaces;
@@ -59,7 +60,7 @@ namespace Visitor.API.Controllers.Admin
             return _response;
         }
 
-
+        [AllowAnonymous]
         [Route("[action]")]
         [HttpPost]
         public async Task<ResponseModel> GetGenderList(BaseSearchEntity parameters)
@@ -178,7 +179,7 @@ namespace Visitor.API.Controllers.Admin
             return _response;
         }
 
-
+        [AllowAnonymous]
         [Route("[action]")]
         [HttpPost]
         public async Task<ResponseModel> GetVisitTypeList(BaseSearchEntity parameters)
@@ -241,7 +242,7 @@ namespace Visitor.API.Controllers.Admin
             return _response;
         }
 
-
+        [AllowAnonymous]
         [Route("[action]")]
         [HttpPost]
         public async Task<ResponseModel> GetVehicleTypeList(BaseSearchEntity parameters)
