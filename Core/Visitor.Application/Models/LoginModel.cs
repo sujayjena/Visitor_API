@@ -106,7 +106,9 @@ namespace Visitor.Application.Models
         public int CompanyId { get; set; }
         public string CompanyName { get; set; }
         public string BranchId { get; set; }
-        public string GateDetailsId { get; set; }
+        public string AssignedGateDetailsId { get; set; }
+        public int CurrentCheckedInGateDetailsId { get; set; }
+        
         public bool IsWebUser { get; set; }
         public bool IsMobileUser { get; set; }
         public bool IsActive { get; set; }

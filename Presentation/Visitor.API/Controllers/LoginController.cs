@@ -19,13 +19,15 @@ namespace Visitor.API.Controllers
         private readonly IUserRepository _userRepository;
         private readonly IBranchRepository _branchRepository;
         private readonly IManageSecurityRepository _manageSecurityRepository;
+        private readonly IManageVisitorsRepository _manageVisitorsRepository;
 
         public LoginController(ILoginRepository loginRepository,
             IJwtUtilsRepository jwt,
             IRolePermissionRepository rolePermissionRepository,
             IUserRepository userRepository,
             IBranchRepository branchRepository,
-            IManageSecurityRepository manageSecurityRepository)
+            IManageSecurityRepository manageSecurityRepository,
+            IManageVisitorsRepository manageVisitorsRepository)
         {
             _loginRepository = loginRepository;
             _jwt = jwt;
@@ -33,6 +35,7 @@ namespace Visitor.API.Controllers
             _rolePermissionRepository = rolePermissionRepository;
             _branchRepository = branchRepository;
             _manageSecurityRepository = manageSecurityRepository;
+            _manageVisitorsRepository = manageVisitorsRepository;
 
             _response = new ResponseModel();
             _response.IsSuccess = true;
@@ -79,6 +82,7 @@ namespace Visitor.API.Controllers
                     {
                         string strBrnachIdList = string.Empty;
                         string strGateDetailsIdList = string.Empty;
+                        int intCurrentCheckedInGateDetailsId = 0;
 
                         var vRoleList = await _rolePermissionRepository.GetRoleMasterEmployeePermissionById(Convert.ToInt64(loginResponse.UserId));
                         //var vUserNotificationList = await _notificationService.GetNotificationListById(Convert.ToInt64(loginResponse.EmployeeId));
@@ -95,6 +99,25 @@ namespace Visitor.API.Controllers
                         {
                             strGateDetailsIdList = string.Join(",", vSecurityGateDetail.ToList().OrderBy(x => x.GateDetailsId).Select(x => x.GateDetailsId));
                         }
+
+                        #region Checked In Out
+
+                        var CheckedInOutLogHistoryparameters = new CheckedInOutLogHistory_Search()
+                        {
+                            RefId = Convert.ToInt32(loginResponse.UserId),
+                            RefType = "SECURITY",
+                            GateDetailsId = 0,
+                            SearchText = "",
+                            IsActive = true
+                        };
+
+                        var vCheckedInOutObj = _manageVisitorsRepository.GetCheckedInOutLogHistoryList(CheckedInOutLogHistoryparameters).Result.ToList().OrderByDescending(x => x.Id).ToList().FirstOrDefault();
+                        if (vCheckedInOutObj != null)
+                        {
+                            intCurrentCheckedInGateDetailsId = vCheckedInOutObj.CheckedStatus == "IN" ? Convert.ToInt32(vCheckedInOutObj.GateDetailsId) : 0;
+                        }
+
+                        #endregion
 
                         //var vSecurityGateDetail = await _manageSecurityRepository.GetSecurityLoginGateDetailsById(SecurityLoginId: Convert.ToInt32(loginResponse.SecurityId), GateDetailsId: 0);
                         //if (vSecurityGateDetail.ToList().Count > 0)
@@ -123,7 +146,8 @@ namespace Visitor.API.Controllers
                             DepartmentId = vUserDetail != null ? Convert.ToInt32(vUserDetail.DepartmentId) : 0,
                             DepartmentName = vUserDetail != null ? vUserDetail.DepartmentName : String.Empty,
                             BranchId = strBrnachIdList,
-                            GateDetailsId = strGateDetailsIdList,
+                            AssignedGateDetailsId = strGateDetailsIdList,
+                            CurrentCheckedInGateDetailsId = intCurrentCheckedInGateDetailsId,
 
                             ProfileImage = vUserDetail != null ? vUserDetail.ProfileImage : String.Empty,
                             ProfileOriginalFileName = vUserDetail != null ? vUserDetail.ProfileOriginalFileName : String.Empty,

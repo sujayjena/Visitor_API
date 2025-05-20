@@ -70,6 +70,7 @@ namespace Visitor.Persistence.Repositories
             queryParameters.Add("@Remarks", parameters.Remarks);
             queryParameters.Add("@CompanyIdOriginalFileName", parameters.CompanyIdOriginalFileName);
             queryParameters.Add("@CompanyIdFileName", parameters.CompanyIdFileName);
+            queryParameters.Add("@IsPlanned", parameters.IsPlanned);
             queryParameters.Add("@IsActive", parameters.IsActive);
             queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
 
@@ -89,6 +90,7 @@ namespace Visitor.Persistence.Repositories
             queryParameters.Add("@GateDetailsId_Filter", parameters.GateDetailsId_Filter);
             queryParameters.Add("@BranchId", parameters.BranchId);
             queryParameters.Add("@SearchText", parameters.SearchText.SanitizeValue());
+            queryParameters.Add("@IsPlanned", parameters.IsPlanned);
             queryParameters.Add("@IsActive", parameters.IsActive);
             queryParameters.Add("@PageNo", parameters.PageNo);
             queryParameters.Add("@PageSize", parameters.PageSize);
