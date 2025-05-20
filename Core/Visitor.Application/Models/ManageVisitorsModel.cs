@@ -30,6 +30,7 @@ namespace Visitor.Application.Models
 
         [DefaultValue("")]
         public string? GateDetailsId_Filter { get; set; }
+        public int? BranchId { get; set; }
     }
 
     public class Visitors_Request : BaseEntity

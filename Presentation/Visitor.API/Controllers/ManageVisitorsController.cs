@@ -417,14 +417,14 @@ namespace Visitor.API.Controllers
                 _response.IsSuccess = false;
                 _response.Message = "Permission from previous gate is required.";
             }
-            //else if (result == -4)
-            //{
-            //    _response.Message = "Not Allowed checked In for this gate again.";
-            //}
-            //else if (result == -5)
-            //{
-            //    _response.Message = "Already Checked Out for this gate.";
-            //}
+            else if (result == -4)
+            {
+                _response.Message = "Already checked In for this gate.";
+            }
+            else if (result == -5)
+            {
+                _response.Message = "Already Checked Out for this gate.";
+            }
             //else if (result == -6)
             //{
             //    _response.Message = "Not Allowed Checked Out this gate again.";

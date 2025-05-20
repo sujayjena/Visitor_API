@@ -384,6 +384,7 @@ namespace Visitor.Application.Models
         public string? ReportingTo { get; set; }
         public string? Department { get; set; }
         public string? Company { get; set; }
+        public string? Branch { get; set; }
         public DateTime? DateOfBirth { get; set; }
         public DateTime? DateOfJoining { get; set; }
         public string? BloodGroup { get; set; }
@@ -430,6 +431,7 @@ namespace Visitor.Application.Models
         public string? ReportingTo { get; set; }
         public string? Department { get; set; }
         public string? Company { get; set; }
+        public string? Branch { get; set; }
         public string? DateOfBirth { get; set; }
         public string? DateOfJoining { get; set; }
         public string? BloodGroup { get; set; }

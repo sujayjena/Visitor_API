@@ -87,6 +87,7 @@ namespace Visitor.Persistence.Repositories
             queryParameters.Add("@ToDate", parameters.ToDate);
             queryParameters.Add("@StatusId", parameters.StatusId);
             queryParameters.Add("@GateDetailsId_Filter", parameters.GateDetailsId_Filter);
+            queryParameters.Add("@BranchId", parameters.BranchId);
             queryParameters.Add("@SearchText", parameters.SearchText.SanitizeValue());
             queryParameters.Add("@IsActive", parameters.IsActive);
             queryParameters.Add("@PageNo", parameters.PageNo);
