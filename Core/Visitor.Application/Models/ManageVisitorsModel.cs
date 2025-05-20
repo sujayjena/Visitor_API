@@ -331,13 +331,18 @@ namespace Visitor.Application.Models
         public string? VisitorEmailId { get; set; }
         public int? GateDetailsId { get; set; }
         public string? GateNumber { get; set; }
+        public string? AssignGateNumber { get; set; }
         public int? PassTypeId { get; set; }
         public string? PassType { get; set; }
         public int? VisitTypeId { get; set; }
         public string? VisitType { get; set; }
+        public string? BarcodeOriginalFileName { get; set; }
+        public string? BarcodeFileName { get; set; }
+        public string? BarcodeURL { get; set; }
         public string? VisitorPhotoOriginalFileName { get; set; }
         public string? VisitorPhoto { get; set; }
         public string? VisitorPhotoURL { get; set; }
+      
         public int? StatusId { get; set; }
         public string? StatusName { get; set; }
         public DateTime? CheckedInDate { get; set; }

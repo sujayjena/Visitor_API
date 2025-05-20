@@ -95,6 +95,7 @@ namespace Visitor.Persistence.Repositories
             queryParameters.Add("@BranchId", parameters.BranchId);
             queryParameters.Add("@DepartmentId", parameters.DepartmentId);
             queryParameters.Add("@UserTypeId", parameters.UserTypeId);
+            queryParameters.Add("@IsFilterType", parameters.IsFilterType);
             queryParameters.Add("@SearchText", parameters.SearchText.SanitizeValue());
             queryParameters.Add("@IsActive", parameters.IsActive);
             queryParameters.Add("@PageNo", parameters.PageNo);
