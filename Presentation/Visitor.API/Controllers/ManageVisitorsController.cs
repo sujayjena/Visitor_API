@@ -21,13 +21,17 @@ namespace Visitor.API.Controllers
         private readonly IBarcodeRepository _barcodeRepository;
         private readonly IUserRepository _userRepository;
         private IFileManager _fileManager;
+        private readonly IWebHostEnvironment _environment;
+        private IEmailHelper _emailHelper;
 
-        public ManageVisitorsController(IManageVisitorsRepository manageVisitorsRepository, IFileManager fileManager, IBarcodeRepository barcodeRepository, IUserRepository userRepository)
+        public ManageVisitorsController(IManageVisitorsRepository manageVisitorsRepository, IFileManager fileManager, IBarcodeRepository barcodeRepository, IUserRepository userRepository, IWebHostEnvironment environment, IEmailHelper emailHelper)
         {
             _manageVisitorsRepository = manageVisitorsRepository;
             _fileManager = fileManager;
             _barcodeRepository = barcodeRepository;
             _userRepository = userRepository;
+            _environment = environment;
+            _emailHelper = emailHelper;
 
             _response = new ResponseModel();
             _response.IsSuccess = true;
@@ -316,18 +320,124 @@ namespace Visitor.API.Controllers
                 }
                 else
                 {
+                     _response.Message = "Visitor Approved successfully";
+
+                    //Send Email
                     if (parameters.Id > 0)
                     {
-                        _response.Message = "Record updated successfully";
-                    }
-                    else
-                    {
-                        _response.Message = "Record details saved successfully";
+                        var vEmailEmp = await SendVisitorApproved_EmailToSecurity(Convert.ToInt32(parameters.Id));
                     }
                 }
             }
 
             return _response;
+        }
+
+        protected async Task<bool> SendVisitorApproved_EmailToSecurity(int id)
+        {
+            bool result = false;
+            string templateFilePath = "", emailTemplateContent = "", remarks = "", sSubjectDynamicContent = "";
+
+            try
+            {
+                string recipientEmail = "";
+                string visitorGate = string.Empty;
+
+                remarks = id.ToString();
+
+                var vVisitor = await _manageVisitorsRepository.GetVisitorsById(Convert.ToInt32(id));
+
+                if (vVisitor != null)
+                {
+                    var vGateNolistObj = await _manageVisitorsRepository.GetVisitorsGateNoByVisitorId(vVisitor.Id, 0);
+                    visitorGate = string.Join(",", vGateNolistObj.Select(x => x.GateNumber).ToList());
+
+                    var vSearch = new User_Search()
+                    {
+                        UserTypeId = 2,
+                        BranchId = Convert.ToInt32(vVisitor.BranchId == null ? 0 : vVisitor.BranchId)
+                    };
+
+                    var vSecurityList = await _userRepository.GetUserList(vSearch); //get branch wise security list
+
+                    var vGateNumberList = await _userRepository.GetEmployeeGateNoByEmployeeId(0, 0); //get gate list of security
+                    var vGateNumberList_1 = vGateNumberList.Where(x => x.GateNumber == "1").ToList();
+
+                    var vSecurityGate_1 = vSecurityList.Where(x => vGateNumberList_1.Select(x => x.EmployeeId).Contains(x.Id)).ToList();
+                    if (vSecurityGate_1.Count > 0)
+                    {
+                        recipientEmail = string.Join(",", vSecurityGate_1.Select(x => x.EmailId).ToList());
+                    }
+
+                    templateFilePath = _environment.ContentRootPath + "\\EmailTemplates\\Visitor_Approved_Template.html";
+                    emailTemplateContent = System.IO.File.ReadAllText(templateFilePath);
+
+                    if (emailTemplateContent.IndexOf("[VisitID]", StringComparison.OrdinalIgnoreCase) > 0)
+                    {
+                        emailTemplateContent = emailTemplateContent.Replace("[VisitID]", vVisitor.VisitNumber);
+                    }
+
+                    if (emailTemplateContent.IndexOf("[PassType]", StringComparison.OrdinalIgnoreCase) > 0)
+                    {
+                        emailTemplateContent = emailTemplateContent.Replace("[PassType]", vVisitor.PassType);
+                    }
+
+                    if (emailTemplateContent.IndexOf("[VisitorName]", StringComparison.OrdinalIgnoreCase) > 0)
+                    {
+                        emailTemplateContent = emailTemplateContent.Replace("[VisitorName]", vVisitor.VisitorName);
+                    }
+
+                    if (emailTemplateContent.IndexOf("[MobileNo]", StringComparison.OrdinalIgnoreCase) > 0)
+                    {
+                        emailTemplateContent = emailTemplateContent.Replace("[MobileNo]", vVisitor.VisitorMobileNo);
+                    }
+
+                    if (emailTemplateContent.IndexOf("[Validity]", StringComparison.OrdinalIgnoreCase) > 0)
+                    {
+                        emailTemplateContent = emailTemplateContent.Replace("[Validity]", vVisitor.VisitEndDate.ToString());
+                    }
+
+                    if (emailTemplateContent.IndexOf("[GateNo]", StringComparison.OrdinalIgnoreCase) > 0)
+                    {
+                        emailTemplateContent = emailTemplateContent.Replace("[GateNo]", visitorGate);
+                    }
+
+                    if (emailTemplateContent.IndexOf("[Company]", StringComparison.OrdinalIgnoreCase) > 0)
+                    {
+                        emailTemplateContent = emailTemplateContent.Replace("[Company]", vVisitor.CompanyName);
+                    }
+
+                    if (emailTemplateContent.IndexOf("[Department]", StringComparison.OrdinalIgnoreCase) > 0)
+                    {
+                        emailTemplateContent = emailTemplateContent.Replace("[Department]", vVisitor.DepartmentName);
+                    }
+
+                    if (emailTemplateContent.IndexOf("[Host]", StringComparison.OrdinalIgnoreCase) > 0)
+                    {
+                        emailTemplateContent = emailTemplateContent.Replace("[Host]", vVisitor.EmployeeName);
+                    }
+
+                    if (emailTemplateContent.IndexOf("[VehicleNumber]", StringComparison.OrdinalIgnoreCase) > 0)
+                    {
+                        emailTemplateContent = emailTemplateContent.Replace("[VehicleNumber]", vVisitor.VehicleNumber);
+                    }
+
+                    if (emailTemplateContent.IndexOf("[VisitPurpose]", StringComparison.OrdinalIgnoreCase) > 0)
+                    {
+                        emailTemplateContent = emailTemplateContent.Replace("[VisitPurpose]", vVisitor.Purpose);
+                    }
+
+                    sSubjectDynamicContent = "Visitor Approved - " + vVisitor.VisitorName;
+                    result = await _emailHelper.SendEmail(module: "Visitor Approved", subject: sSubjectDynamicContent, sendTo: "Security", content: emailTemplateContent, recipientEmail: recipientEmail, files: null, remarks: remarks);
+                }
+            }
+            catch (Exception ex)
+            {
+                result = false;
+            }
+
+            return result;
+
         }
 
         [AllowAnonymous]
