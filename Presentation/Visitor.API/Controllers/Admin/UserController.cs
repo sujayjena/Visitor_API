@@ -25,8 +25,10 @@ namespace Visitor.API.Controllers.Admin
         private readonly IBarcodeRepository _barcodeRepository;
         private IEmailHelper _emailHelper;
         private IFileManager _fileManager;
+        private readonly IWebHostEnvironment _environment;
+        private readonly IConfigRefRepository _configRefRepository;
 
-        public UserController(IUserRepository userRepository, ICompanyRepository companyRepository, IBranchRepository branchRepository, IFileManager fileManager, IBarcodeRepository barcodeRepository, IEmailHelper emailHelper)
+        public UserController(IUserRepository userRepository, ICompanyRepository companyRepository, IBranchRepository branchRepository, IFileManager fileManager, IBarcodeRepository barcodeRepository, IEmailHelper emailHelper, IWebHostEnvironment environment, IConfigRefRepository configRefRepository)
         {
             _userRepository = userRepository;
             _companyRepository = companyRepository;
@@ -34,6 +36,8 @@ namespace Visitor.API.Controllers.Admin
             _fileManager = fileManager;
             _barcodeRepository = barcodeRepository;
             _emailHelper = emailHelper;
+            _environment = environment;
+            _configRefRepository = configRefRepository;
 
             _response = new ResponseModel();
             _response.IsSuccess = true;
@@ -537,7 +541,7 @@ namespace Visitor.API.Controllers.Admin
         protected async Task<bool> SendPassword_EmailToEmployee(string passwords, int id, string emailType)
         {
             bool result = false;
-            string emailTemplateContent = "", remarks = "", sSubjectDynamicContent = "";
+            string templateFilePath = "", emailTemplateContent = "", remarks = "", sSubjectDynamicContent = "";
 
             try
             {
@@ -550,18 +554,89 @@ namespace Visitor.API.Controllers.Admin
                 {
                     recipientEmail = vUserDetail.EmailId;
 
+                    //if (emailType == "Login Credential")
+                    //{
+                    //    sSubjectDynamicContent = "Login Credential - " + vUserDetail.UserName;
+                    //    emailTemplateContent = string.Format(@"<html><body>Dear {0},<br/><br/>Your login credential below:<br/><br/> EmailId: {1}<br/>Password: {2}<br/><br/>If you did not initiate this request, you may safely disregard this email.</body></html>", vUserDetail.UserName, vUserDetail.EmailId, passwords);
+
+                    //    result = await _emailHelper.SendEmail(module: "Login Credential", subject: sSubjectDynamicContent, sendTo: "Employee", content: emailTemplateContent, recipientEmail: recipientEmail, files: null, remarks: remarks);
+                    //}
+                    //else if (emailType == "Forgot Password")
+                    //{
+                    //    sSubjectDynamicContent = "Forgot Password - " + vUserDetail.UserName;
+                    //    emailTemplateContent = string.Format(@"<html><body>Dear {0},<br/><br/>A request was made to reset your password. To proceed, please use the new password provided below:<br/><br/> Password: {1}<br/><br/>If you did not initiate this request, you may safely disregard this email.</body></html>", vUserDetail.UserName, passwords);
+
+                    //    result = await _emailHelper.SendEmail(module: "Forgot Password", subject: sSubjectDynamicContent, sendTo: "Employee", content: emailTemplateContent, recipientEmail: recipientEmail, files: null, remarks: remarks);
+                    //}
+
+                    var vConfigRef_Search = new ConfigRef_Search()
+                    {
+                        Ref_Type = "Email",
+                        Ref_Param = "Portal_URL"
+                    };
+
+                    string sTemplateName_CRM = string.Empty;
+                    string sTemplateName_Security = string.Empty;
+                    var vConfigRefObj = _configRefRepository.GetConfigRefList(vConfigRef_Search).Result.ToList().FirstOrDefault();
+                    if (vConfigRefObj != null)
+                    {
+                        sTemplateName_CRM = vConfigRefObj.Ref_Value1;
+                        sTemplateName_Security = vConfigRefObj.Ref_Value2;
+                    }
+
+                    templateFilePath = _environment.ContentRootPath + "\\EmailTemplates\\Login_Credential_Template.html";
+                    emailTemplateContent = System.IO.File.ReadAllText(templateFilePath);
+
+                    if (emailTemplateContent.IndexOf("[EmployeeCode]", StringComparison.OrdinalIgnoreCase) > 0)
+                    {
+                        emailTemplateContent = emailTemplateContent.Replace("[EmployeeCode]", vUserDetail.UserCode);
+                    }
+
+                    if (emailTemplateContent.IndexOf("[EmployeeName]", StringComparison.OrdinalIgnoreCase) > 0)
+                    {
+                        emailTemplateContent = emailTemplateContent.Replace("[EmployeeName]", vUserDetail.UserName);
+                    }
+
+                    if (emailTemplateContent.IndexOf("[EmailId]", StringComparison.OrdinalIgnoreCase) > 0)
+                    {
+                        emailTemplateContent = emailTemplateContent.Replace("[EmailId]", vUserDetail.EmailId);
+                    }
+
+                    if (emailTemplateContent.IndexOf("[Passwords]", StringComparison.OrdinalIgnoreCase) > 0)
+                    {
+                        emailTemplateContent = emailTemplateContent.Replace("[Passwords]", passwords);
+                    }
+
+                    if (emailTemplateContent.IndexOf("[ClickHere]", StringComparison.OrdinalIgnoreCase) > 0)
+                    {
+                        if (vUserDetail.UserType.ToUpper() == "SECURITY")
+                        {
+                            emailTemplateContent = emailTemplateContent.Replace("[ClickHere]", sTemplateName_Security);
+                        }
+                        else
+                        {
+                            emailTemplateContent = emailTemplateContent.Replace("[ClickHere]", sTemplateName_CRM);
+                        }
+                    }
+
                     if (emailType == "Login Credential")
                     {
-                        sSubjectDynamicContent = "Login Credential - " + vUserDetail.UserName;
-                        emailTemplateContent = string.Format(@"<html><body>Dear {0},<br/><br/>Your login credential below:<br/><br/> EmailId: {1}<br/>Password: {2}<br/><br/>If you did not initiate this request, you may safely disregard this email.</body></html>", vUserDetail.UserName, vUserDetail.EmailId, passwords);
+                        if (emailTemplateContent.IndexOf("[ForgetPasswordMsg]", StringComparison.OrdinalIgnoreCase) > 0)
+                        {
+                            emailTemplateContent = emailTemplateContent.Replace("<p>[ForgetPasswordMsg]</p>","");
+                        }
 
+                        sSubjectDynamicContent = "Login Credential - " + vUserDetail.UserName;
                         result = await _emailHelper.SendEmail(module: "Login Credential", subject: sSubjectDynamicContent, sendTo: "Employee", content: emailTemplateContent, recipientEmail: recipientEmail, files: null, remarks: remarks);
                     }
                     else if (emailType == "Forgot Password")
                     {
-                        sSubjectDynamicContent = "Forgot Password - " + vUserDetail.UserName;
-                        emailTemplateContent = string.Format(@"<html><body>Dear {0},<br/><br/>A request was made to reset your password. To proceed, please use the new password provided below:<br/><br/> Password: {1}<br/><br/>If you did not initiate this request, you may safely disregard this email.</body></html>", vUserDetail.UserName, passwords);
+                        if (emailTemplateContent.IndexOf("[ForgetPasswordMsg]", StringComparison.OrdinalIgnoreCase) > 0)
+                        {
+                            emailTemplateContent = emailTemplateContent.Replace("[ForgetPasswordMsg]", "Your password was changed !!!");
+                        }
 
+                        sSubjectDynamicContent = "Forgot Password - " + vUserDetail.UserName;
                         result = await _emailHelper.SendEmail(module: "Forgot Password", subject: sSubjectDynamicContent, sendTo: "Employee", content: emailTemplateContent, recipientEmail: recipientEmail, files: null, remarks: remarks);
                     }
                 }
@@ -572,6 +647,7 @@ namespace Visitor.API.Controllers.Admin
             }
 
             return result;
+
         }
 
         [Route("[action]")]
