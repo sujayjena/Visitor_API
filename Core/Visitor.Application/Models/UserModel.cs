@@ -220,6 +220,8 @@ namespace Visitor.Application.Models
 
         public DateTime? DateOfJoining { get; set; }
 
+        public DateTime? Validity { get; set; }
+
         public int BloodGroupId { get; set; }
 
         public string BloodGroup { get; set; }
@@ -379,7 +381,7 @@ namespace Visitor.Application.Models
         public string? UserType { get; set; }
         public string? MobileNumber { get; set; }
         public string? EmailId { get; set; }
-        public string? Password { get; set; }
+        //public string? Password { get; set; }
         public string? GateNumber { get; set; }
         public string? Role { get; set; }
         public string? ReportingTo { get; set; }
@@ -426,7 +428,7 @@ namespace Visitor.Application.Models
         public string? UserType { get; set; }
         public string? MobileNumber { get; set; }
         public string? EmailId { get; set; }
-        public string? Password { get; set; }
+        //public string? Password { get; set; }
         public string? GateNumber { get; set; }
         public string? Role { get; set; }
         public string? ReportingTo { get; set; }
