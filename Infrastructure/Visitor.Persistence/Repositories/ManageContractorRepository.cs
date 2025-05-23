@@ -28,6 +28,7 @@ namespace Visitor.Persistence.Repositories
             queryParameters.Add("@ContractorTypeId", parameters.ContractorTypeId);
             queryParameters.Add("@ContractorName", parameters.ContractorName);
             queryParameters.Add("@ContractorPerson", parameters.ContractorPerson);
+            queryParameters.Add("@NoofContractedWorkers", parameters.NoofContractedWorkers);
             queryParameters.Add("@MobileNo", parameters.MobileNo);
             queryParameters.Add("@ValidFromDate", parameters.ValidFromDate);
             queryParameters.Add("@ValidToDate", parameters.ValidToDate);

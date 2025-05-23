@@ -355,7 +355,7 @@ namespace Visitor.API.Controllers
                     var vSearch = new User_Search()
                     {
                         UserTypeId = 2,
-                        BranchId = Convert.ToInt32(vVisitor.BranchId == null ? 0 : vVisitor.BranchId)
+                        BranchId = 0
                     };
 
                     var vSecurityList = await _userRepository.GetUserList(vSearch); //get branch wise security list
