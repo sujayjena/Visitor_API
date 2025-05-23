@@ -13,27 +13,27 @@ using Visitor.Application.Models;
 
 namespace Visitor.Persistence.Repositories
 {
-    public class BarcodeRepository : GenericRepository, IBarcodeRepository
+    public class QRCodeRepository : GenericRepository, IQRCodeRepository
     {
         private IConfiguration _configuration;
         private IFileManager _fileManager;
 
-        public BarcodeRepository(IConfiguration configuration, IFileManager fileManager) : base(configuration)
+        public QRCodeRepository(IConfiguration configuration, IFileManager fileManager) : base(configuration)
         {
             _configuration = configuration;
             _fileManager = fileManager;
         }
 
-        public BarcodeGenerate_Response GenerateBarcode(string value)
+        public QRCodeGenerate_Response GenerateQRCode(string value)
         {
             //Prepare you post parameters  
-            var postData = new BarcodeGenerate_Request()
+            var postData = new QRCodeGenerate_Request()
             {
                 value = value
             };
 
             //Call API
-            string sendUri = "https://barcode-final-new.onrender.com/generate_barcode_v2";
+            string sendUri = "https://barcode-final-new.onrender.com/generate_qrcode_v2";
 
             //Create HTTPWebrequest  
             HttpWebRequest httpWReq = (HttpWebRequest)WebRequest.Create(sendUri);
@@ -66,54 +66,52 @@ namespace Visitor.Persistence.Repositories
             dynamic jsonResults = JsonConvert.DeserializeObject<dynamic>(responseString);
             var status = jsonResults.ContainsKey("isSuccess") ? jsonResults.isSuccess : false;
 
-            var vBarcodeGenerate = new BarcodeGenerate_Response();
+            var vQRCodeGenerate = new QRCodeGenerate_Response();
 
             if (status == true)
             {
-                var barcode = jsonResults["barcode"];
+                var qr_code = jsonResults["qr_code"];
 
-                var barcode_image_base64 = barcode.ContainsKey("barcode_image_base64") ? barcode.barcode_image_base64 : string.Empty;
-                var vbarcode_image_base64 = Convert.ToString(barcode_image_base64);
+                var qrcode_image_base64 = qr_code.ContainsKey("qr_code_image_base64") ? qr_code.qr_code_image_base64 : string.Empty;
+                var vQRCode_image_base64 = Convert.ToString(qrcode_image_base64);
 
-                var unique_id = barcode.ContainsKey("unique_id") ? barcode.unique_id : string.Empty;
+                var unique_id = qr_code.ContainsKey("unique_id") ? qr_code.unique_id : string.Empty;
                 var vUniqueId = Convert.ToString(unique_id);
 
-                if (!string.IsNullOrWhiteSpace(vbarcode_image_base64))
+                if (!string.IsNullOrWhiteSpace(vQRCode_image_base64))
                 {
-                    var vUploadFile = _fileManager.UploadDocumentsBase64ToFile(vbarcode_image_base64, "\\Uploads\\Barcode\\", vUniqueId + ".png");
+                    var vUploadFile = _fileManager.UploadDocumentsBase64ToFile(vQRCode_image_base64, "\\Uploads\\QRCode\\", vUniqueId + ".png");
                     if (!string.IsNullOrWhiteSpace(vUploadFile))
                     {
-                        vBarcodeGenerate.Barcode_Unique_Id = vUniqueId;
-                        vBarcodeGenerate.BarcodeOriginalFileName = vUniqueId + ".png";
-                        vBarcodeGenerate.BarcodeFileName = vUploadFile;
+                        vQRCodeGenerate.QRCode_Unique_Id = vUniqueId;
+                        vQRCodeGenerate.QRCodeOriginalFileName = vUniqueId + ".png";
+                        vQRCodeGenerate.QRCodeFileName = vUploadFile;
 
                     }
                 }
             }
 
-            return vBarcodeGenerate;
+            return vQRCodeGenerate;
         }
 
-        public async Task<int> SaveBarcode(Barcode_Request parameters)
+        public async Task<int> SaveQRCode(QRCode_Request parameters)
         {
             DynamicParameters queryParameters = new DynamicParameters();
             queryParameters.Add("@Id", parameters.Id);
-            queryParameters.Add("@BarcodeNo", parameters.BarcodeNo);
-            queryParameters.Add("@BarcodeType", parameters.BarcodeType);
-            queryParameters.Add("@Barcode_Unique_Id", parameters.Barcode_Unique_Id);
-            queryParameters.Add("@BarcodeOriginalFileName", parameters.BarcodeOriginalFileName);
-            queryParameters.Add("@BarcodeFileName", parameters.BarcodeFileName);
-            queryParameters.Add("@RefId", parameters.RefId);
+            queryParameters.Add("@QRCodeNo", parameters.QRCodeNo);
+            queryParameters.Add("@QRCode_Unique_Id", parameters.QRCode_Unique_Id);
+            queryParameters.Add("@QRCodeOriginalFileName", parameters.QRCodeOriginalFileName);
+            queryParameters.Add("@QRCodeFileName", parameters.QRCodeFileName);
 
-            return await SaveByStoredProcedure<int>("SaveBarcode", queryParameters);
+            return await SaveByStoredProcedure<int>("SaveQRCode", queryParameters);
         }
 
-        public async Task<Barcode_Response?> GetBarcodeById(string BarcodeNo)
+        public async Task<QRCode_Response?> GetQRCodeById(string QRCodeNo)
         {
             DynamicParameters queryParameters = new DynamicParameters();
-            queryParameters.Add("@BarcodeNo", BarcodeNo);
+            queryParameters.Add("@QRCodeNo", QRCodeNo);
 
-            return (await ListByStoredProcedure<Barcode_Response>("GetBarcodeById", queryParameters)).FirstOrDefault();
+            return (await ListByStoredProcedure<QRCode_Response>("GetQRCodeById", queryParameters)).FirstOrDefault();
         }
     }
 }
