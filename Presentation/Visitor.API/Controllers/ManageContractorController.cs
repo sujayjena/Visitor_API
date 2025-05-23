@@ -52,6 +52,28 @@ namespace Visitor.API.Controllers
                 }
             }
 
+            // Aadhar Card Upload
+            if (parameters != null && !string.IsNullOrWhiteSpace(parameters.AadharCard_Base64))
+            {
+                var vUploadFile = _fileManager.UploadDocumentsBase64ToFile(parameters.AadharCard_Base64, "\\Uploads\\Contractor\\", parameters.AadharCardOriginalFileName);
+
+                if (!string.IsNullOrWhiteSpace(vUploadFile))
+                {
+                    parameters.AadharCardFileName = vUploadFile;
+                }
+            }
+
+            // Pan Card Upload
+            if (parameters != null && !string.IsNullOrWhiteSpace(parameters.PanCard_Base64))
+            {
+                var vUploadFile = _fileManager.UploadDocumentsBase64ToFile(parameters.PanCard_Base64, "\\Uploads\\Contractor\\", parameters.PanCardOriginalFileName);
+
+                if (!string.IsNullOrWhiteSpace(vUploadFile))
+                {
+                    parameters.PanCardFileName = vUploadFile;
+                }
+            }
+
             int result = await _manageContractorRepository.SaveContractor(parameters);
 
             if (result == (int)SaveOperationEnums.NoRecordExists)

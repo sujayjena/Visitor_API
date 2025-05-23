@@ -24,6 +24,9 @@ namespace Visitor.Application.Models
         public int? DocumentTypeId { get; set; }
         public string? DocumentNumber { get; set; }
 
+        public DateTime? ValidFromDate { get; set; }
+        public DateTime? ValidToDate { get; set; }
+
         [DefaultValue(false)]
         public bool? IsBlackList { get; set; }
         public bool? IsActive { get; set; }
@@ -49,6 +52,9 @@ namespace Visitor.Application.Models
         public int? DocumentTypeId { get; set; }
         public string? DocumentType { get; set; }
         public string? DocumentNumber { get; set; }
+        public DateTime? ValidFromDate { get; set; }
+        public DateTime? ValidToDate { get; set; }
+        public DateTime? ContractorValidity { get; set; }
 
         [DefaultValue(false)]
         public bool? IsBlackList { get; set; }

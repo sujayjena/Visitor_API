@@ -43,6 +43,13 @@ namespace Visitor.Persistence.Repositories
             queryParameters.Add("@DocumentImage", parameters.DocumentImage);
             queryParameters.Add("@ContractorPhotoOriginalFileName", parameters.ContractorPhotoOriginalFileName);
             queryParameters.Add("@ContractorPhoto", parameters.ContractorPhoto);
+            queryParameters.Add("@AadharCardNumber", parameters.AadharCardNumber);
+            queryParameters.Add("@AadharCardOriginalFileName", parameters.AadharCardOriginalFileName);
+            queryParameters.Add("@AadharCardFileName", parameters.AadharCardFileName);
+            queryParameters.Add("@PanCardNumber", parameters.PanCardNumber);
+            queryParameters.Add("@PanCardOriginalFileName", parameters.PanCardOriginalFileName);
+            queryParameters.Add("@PanCardFileName", parameters.PanCardFileName);
+
             queryParameters.Add("@IsActive", parameters.IsActive);
             queryParameters.Add("@IsBlackList", parameters.IsBlackList);
             queryParameters.Add("@UserId", SessionManager.LoggedInUserId);

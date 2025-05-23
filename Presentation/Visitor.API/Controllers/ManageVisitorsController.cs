@@ -424,7 +424,7 @@ namespace Visitor.API.Controllers
 
                     if (emailTemplateContent.IndexOf("[VisitPurpose]", StringComparison.OrdinalIgnoreCase) > 0)
                     {
-                        emailTemplateContent = emailTemplateContent.Replace("[VisitPurpose]", vVisitor.Purpose);
+                        emailTemplateContent = emailTemplateContent.Replace("[VisitPurpose]", vVisitor.VisitType);
                     }
 
                     sSubjectDynamicContent = "Visitor Approved - " + vVisitor.VisitorName;

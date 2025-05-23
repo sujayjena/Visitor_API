@@ -42,6 +42,18 @@ namespace Visitor.Application.Models
         public string? ContractorPhoto { get; set; }
         public string? ContractorPhoto_Base64 { get; set; }
 
+        public string? AadharCardNumber { get; set; }
+        public string? AadharCardOriginalFileName { get; set; }
+        [JsonIgnore]
+        public string? AadharCardFileName { get; set; }
+        public string? AadharCard_Base64 { get; set; }
+
+        public string? PanCardNumber { get; set; }
+        public string? PanCardOriginalFileName { get; set; }
+        [JsonIgnore]
+        public string? PanCardFileName { get; set; }
+        public string? PanCard_Base64 { get; set; }
+
         public bool? IsActive { get; set; }
 
         [DefaultValue(false)]
@@ -84,6 +96,14 @@ namespace Visitor.Application.Models
         public string? ContractorPhotoOriginalFileName { get; set; }
         public string? ContractorPhoto { get; set; }
         public string? ContractorPhotoURL { get; set; }
+        public string? AadharCardNumber { get; set; }
+        public string? AadharCardOriginalFileName { get; set; }
+        public string? AadharCardFileName { get; set; }
+        public string? AadharCardURL { get; set; }
+        public string? PanCardNumber { get; set; }
+        public string? PanCardOriginalFileName { get; set; }
+        public string? PanCardFileName { get; set; }
+        public string? PanCardURL { get; set; }
         public bool? IsActive { get; set; }
         public bool? IsBlackList { get; set; }
     }

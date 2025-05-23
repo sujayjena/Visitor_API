@@ -31,6 +31,8 @@ namespace Visitor.Persistence.Repositories
             queryParameters.Add("@WorkerMobileNo", parameters.WorkerMobileNo);
             queryParameters.Add("@DocumentTypeId", parameters.DocumentTypeId);
             queryParameters.Add("@DocumentNumber", parameters.DocumentNumber);
+            queryParameters.Add("@ValidFromDate", parameters.ValidFromDate);
+            queryParameters.Add("@ValidToDate", parameters.ValidToDate);
             queryParameters.Add("@IsBlackList", parameters.IsBlackList);
             queryParameters.Add("@IsActive", parameters.IsActive);
             queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
