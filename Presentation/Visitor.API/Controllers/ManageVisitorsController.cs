@@ -510,6 +510,14 @@ namespace Visitor.API.Controllers
         [HttpPost]
         public async Task<ResponseModel> SaveVisitorCheckedInOut(VisitorCheckedInOut_Request parameters)
         {
+            if(parameters.GateDetailsId == 0)
+            {
+                _response.IsSuccess = false;
+                _response.Message = "Gate Details is required.";
+
+                return _response;
+            }
+
             int result = await _manageVisitorsRepository.SaveVisitorCheckedInOut(parameters);
 
             if (result == (int)SaveOperationEnums.NoRecordExists)

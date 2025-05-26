@@ -30,20 +30,21 @@ namespace Visitor.Application.Models
         public User_Request()
         {
             BranchList = new List<BranchMapping_Request>();
+            UserOtherDetailsList = new List<UserOtherDetails_Request>();
             GateNumberList = new List<EmployeeGateNo_Request>();
         }
 
-        public string UserCode { get; set; }
+        public string? UserCode { get; set; }
 
-        public string UserName { get; set; }
+        public string? UserName { get; set; }
 
-        public string MobileNumber { get; set; }
+        public string? MobileNumber { get; set; }
 
-        public string EmailId { get; set; }
+        public string? EmailId { get; set; }
 
-        public string Password { get; set; }
+        public string? Password { get; set; }
 
-        public int UserTypeId { get; set; }
+        public int? UserTypeId { get; set; }
 
         public int? RoleId { get; set; }
 
@@ -53,21 +54,21 @@ namespace Visitor.Application.Models
         public int CompanyId { get; set; }
 
         [DefaultValue(1)]
-        public int? DepartmentId { get; set; }
+        public int DepartmentId { get; set; }
 
         public DateTime? DateOfBirth { get; set; }
 
         public DateTime? DateOfJoining { get; set; }
 
-        public string MobileUniqId { get; set; }
+        public string? MobileUniqId { get; set; }
 
-        public int BloodGroupId { get; set; }
+        public int? BloodGroupId { get; set; }
 
-        public int GenderId { get; set; }
+        public int? GenderId { get; set; }
 
-        public int MaritalStatusId { get; set; }
+        public int? MaritalStatusId { get; set; }
 
-        public string AddressLine { get; set; }
+        public string? AddressLine { get; set; }
 
         public int? CountryId { get; set; }
 
@@ -81,8 +82,8 @@ namespace Visitor.Application.Models
 
         public string? Pincode { get; set; }
 
-        public bool IsSameAsPermanent { get; set; }
-        public string TemporaryAddress { get; set; }
+        public bool? IsSameAsPermanent { get; set; }
+        public string? TemporaryAddress { get; set; }
 
         public int? Temporary_CountryId { get; set; }
 
@@ -94,37 +95,37 @@ namespace Visitor.Application.Models
 
         public string? Temporary_Pincode { get; set; }
 
-        public string EmergencyName { get; set; }
-        public string EmergencyContactNumber { get; set; }
-        public string EmergencyRelation { get; set; }
+        public string? EmergencyName { get; set; }
+        public string? EmergencyContactNumber { get; set; }
+        public string? EmergencyRelation { get; set; }
 
-        public string AadharNumber { get; set; }
+        public string? AadharNumber { get; set; }
 
-        public string AadharImage { get; set; }
+        public string? AadharImage { get; set; }
 
-        public string AadharImage_Base64 { get; set; }
+        public string? AadharImage_Base64 { get; set; }
 
         public string? AadharOriginalFileName { get; set; }
 
-        public string PanNumber { get; set; }
+        public string? PanNumber { get; set; }
 
-        public string PanCardImage { get; set; }
+        public string? PanCardImage { get; set; }
 
-        public string PanCardImage_Base64 { get; set; }
+        public string? PanCardImage_Base64 { get; set; }
 
         public string? PanCardOriginalFileName { get; set; }
 
-        public string ProfileImage { get; set; }
+        public string? ProfileImage { get; set; }
 
-        public string ProfileImage_Base64 { get; set; }
+        public string? ProfileImage_Base64 { get; set; }
 
         public string? ProfileOriginalFileName { get; set; }
 
-        public string OtherProof { get; set; }
+        public string? OtherProof { get; set; }
 
-        public string OtherProofImage { get; set; }
+        public string? OtherProofImage { get; set; }
 
-        public string OtherProofImage_Base64 { get; set; }
+        public string? OtherProofImage_Base64 { get; set; }
 
         public string? OtherProofOriginalFileName { get; set; }
 
@@ -162,58 +163,58 @@ namespace Visitor.Application.Models
             GateNumberList = new List<EmployeeGateNo_Response>();
         }
 
-        public string UserCode { get; set; }
+        public string? UserCode { get; set; }
 
-        public string UserName { get; set; }
+        public string? UserName { get; set; }
 
-        public string MobileNumber { get; set; }
+        public string? MobileNumber { get; set; }
 
-        public string EmailId { get; set; }
+        public string? EmailId { get; set; }
 
-        public string Password { get; set; }
+        public string? Password { get; set; }
 
-        public int UserTypeId { get; set; }
-        public string UserType { get; set; }
+        public int? UserTypeId { get; set; }
+        public string? UserType { get; set; }
 
         public int? RoleId { get; set; }
 
-        public string RoleName { get; set; }
+        public string? RoleName { get; set; }
 
         public int? ReportingTo { get; set; }
 
-        public string ReportingToName { get; set; }
+        public string? ReportingToName { get; set; }
 
-        public string ReportingToMobileNo { get; set; }
+        public string? ReportingToMobileNo { get; set; }
 
         [DefaultValue(1)]
         public int? DepartmentId { get; set; }
-        public string DepartmentName { get; set; }
+        public string? DepartmentName { get; set; }
 
         [DefaultValue(1)]
         public int? CompanyId { get; set; }
-        public string CompanyName { get; set; }
+        public string? CompanyName { get; set; }
 
-        public string AddressLine { get; set; }
+        public string? AddressLine { get; set; }
 
         public int? CountryId { get; set; }
 
-        public string CountryName { get; set; }
+        public string? CountryName { get; set; }
 
         public int? StateId { get; set; }
 
-        public string StateName { get; set; }
+        public string? StateName { get; set; }
 
         public int? DistrictId { get; set; }
 
-        public string DistrictName { get; set; }
+        public string? DistrictName { get; set; }
 
         public int? CityId { get; set; }
 
-        public string CityName { get; set; }
+        public string? CityName { get; set; }
 
         public int? AreaId { get; set; }
 
-        public string AreaName { get; set; }
+        public string? AreaName { get; set; }
         public string? Pincode { get; set; }
 
         public DateTime? DateOfBirth { get; set; }
@@ -222,69 +223,69 @@ namespace Visitor.Application.Models
 
         public DateTime? Validity { get; set; }
 
-        public int BloodGroupId { get; set; }
+        public int? BloodGroupId { get; set; }
 
-        public string BloodGroup { get; set; }
+        public string? BloodGroup { get; set; }
 
-        public int GenderId { get; set; }
+        public int? GenderId { get; set; }
 
-        public string GenderName { get; set; }
+        public string? GenderName { get; set; }
 
-        public int MaritalStatusId { get; set; }
+        public int? MaritalStatusId { get; set; }
 
-        public string MaritalStatus { get; set; }
+        public string? MaritalStatus { get; set; }
 
-        public bool IsSameAsPermanent { get; set; }
+        public bool? IsSameAsPermanent { get; set; }
 
-        public string TemporaryAddress { get; set; }
-        public int Temporary_CountryId { get; set; }
-        public string Temporary_CountryName { get; set; }
-        public int Temporary_StateId { get; set; }
-        public string Temporary_StateName { get; set; }
-        public int Temporary_DistrictId { get; set; }
-        public string Temporary_DistrictName { get; set; }
-        public int Temporary_CityId { get; set; }
-        public string Temporary_CityName { get; set; }
-        public string Temporary_Pincode { get; set; }
-        public string EmergencyName { get; set; }
-        public string EmergencyContactNumber { get; set; }
-        public string EmergencyRelation { get; set; }
+        public string? TemporaryAddress { get; set; }
+        public int? Temporary_CountryId { get; set; }
+        public string? Temporary_CountryName { get; set; }
+        public int? Temporary_StateId { get; set; }
+        public string? Temporary_StateName { get; set; }
+        public int? Temporary_DistrictId { get; set; }
+        public string? Temporary_DistrictName { get; set; }
+        public int? Temporary_CityId { get; set; }
+        public string? Temporary_CityName { get; set; }
+        public string? Temporary_Pincode { get; set; }
+        public string? EmergencyName { get; set; }
+        public string? EmergencyContactNumber { get; set; }
+        public string? EmergencyRelation { get; set; }
 
-        public string MobileUniqueId { get; set; }
+        public string? MobileUniqueId { get; set; }
 
         public string? BarcodeOriginalFileName { get; set; }
         public string? BarcodeFileName { get; set; }
         public string? BarcodeURL { get; set; }
 
-        public string AadharNumber { get; set; }
+        public string? AadharNumber { get; set; }
 
-        public string AadharImage { get; set; }
+        public string? AadharImage { get; set; }
 
         public string? AadharOriginalFileName { get; set; }
 
-        public string AadharImageURL { get; set; }
+        public string? AadharImageURL { get; set; }
 
-        public string PanNumber { get; set; }
+        public string? PanNumber { get; set; }
 
-        public string PanCardImage { get; set; }
+        public string? PanCardImage { get; set; }
 
         public string? PanCardOriginalFileName { get; set; }
 
-        public string PanCardImageURL { get; set; }
+        public string? PanCardImageURL { get; set; }
 
-        public string ProfileImage { get; set; }
+        public string? ProfileImage { get; set; }
 
         public string? ProfileOriginalFileName { get; set; }
 
-        public string ProfileImageURL { get; set; }
+        public string? ProfileImageURL { get; set; }
 
-        public string OtherProof { get; set; }
+        public string? OtherProof { get; set; }
 
-        public string OtherProofImage { get; set; }
+        public string? OtherProofImage { get; set; }
 
         public string? OtherProofOriginalFileName { get; set; }
 
-        public string OtherProofImageURL { get; set; }
+        public string? OtherProofImageURL { get; set; }
 
         public int? BranchId { get; set; }
         public string? BranchName { get; set; }
@@ -311,17 +312,17 @@ namespace Visitor.Application.Models
     public class UserOtherDetails_Request : BaseEntity
     {
         public int? EmployeeId { get; set; }
-        public string PastCompanyName { get; set; }
-        public string TotalExp { get; set; }
-        public string Remark { get; set; }
+        public string? PastCompanyName { get; set; }
+        public string? TotalExp { get; set; }
+        public string? Remark { get; set; }
     }
 
     public class UserOtherDetails_Response : BaseEntity
     {
         public int? EmployeeId { get; set; }
-        public string PastCompanyName { get; set; }
-        public string TotalExp { get; set; }
-        public string Remark { get; set; }
+        public string? PastCompanyName { get; set; }
+        public string? TotalExp { get; set; }
+        public string? Remark { get; set; }
     }
 
     public class ChangePassword_Request
