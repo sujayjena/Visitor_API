@@ -195,6 +195,7 @@ namespace Visitor.Persistence.Repositories
             queryParameters.Add("@VisitDate", parameters.VisitDate);
             queryParameters.Add("@GateDetailsId", parameters.GateDetailsId);
             queryParameters.Add("@IsPlanned_CheckIn_CheckOut", parameters.IsPlanned_CheckIn_CheckOut);
+            queryParameters.Add("@IsPlanned", parameters.IsPlanned);
             queryParameters.Add("@SearchText", parameters.SearchText.SanitizeValue());
             queryParameters.Add("@IsActive", parameters.IsActive);
             queryParameters.Add("@PageNo", parameters.PageNo);

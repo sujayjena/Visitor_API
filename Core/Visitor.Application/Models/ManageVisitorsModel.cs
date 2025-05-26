@@ -322,7 +322,10 @@ namespace Visitor.Application.Models
 
         [DefaultValue("")]
         public string? GateDetailsId { get; set; }
-        public int? IsPlanned_CheckIn_CheckOut { get; set; }  
+        public int? IsPlanned_CheckIn_CheckOut { get; set; }
+
+        [DefaultValue(null)]
+        public bool? IsPlanned { get; set; }
     }
 
     public class VisitorPlanned_Response : BaseResponseEntity
