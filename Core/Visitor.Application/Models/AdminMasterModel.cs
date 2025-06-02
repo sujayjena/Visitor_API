@@ -1023,4 +1023,23 @@ namespace Visitor.Application.Models
         public bool? IsActive { get; set; }
     }
     #endregion
+
+    #region Work Place
+    public class WorkPlace_Request : BaseEntity
+    {
+        public int? BranchId { get; set; }
+
+        [DefaultValue("")]
+        public string? WorkPlace { get; set; }
+        public bool? IsActive { get; set; }
+    }
+
+    public class WorkPlace_Response : BaseResponseEntity
+    {
+        public int? BranchId { get; set; }
+        public string? BranchName { get; set; }
+        public string? WorkPlace { get; set; }
+        public bool? IsActive { get; set; }
+    }
+    #endregion
 }

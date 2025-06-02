@@ -404,7 +404,7 @@ namespace Visitor.API.Controllers
 
                     if (emailTemplateContent.IndexOf("[Company]", StringComparison.OrdinalIgnoreCase) > 0)
                     {
-                        emailTemplateContent = emailTemplateContent.Replace("[Company]", vVisitor.CompanyName);
+                        emailTemplateContent = emailTemplateContent.Replace("[Company]", string.IsNullOrEmpty(vVisitor.CompanyName) ? "NA" : vVisitor.CompanyName);
                     }
 
                     if (emailTemplateContent.IndexOf("[Department]", StringComparison.OrdinalIgnoreCase) > 0)

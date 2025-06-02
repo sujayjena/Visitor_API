@@ -63,7 +63,7 @@ namespace Visitor.API.Controllers
                 // Total Contractor check with register worker
                 if (totalWorkderRegistered >= vNoofContractedWorker)
                 {
-                    _response.Message = "You are not allowed to create worker more then " + vNoofContractedWorker + ", Please contact your administrator to access this feature!";
+                    _response.Message = "You are not allowed to create worker more than " + vNoofContractedWorker + ", Please contact your administrator to access this feature!";
                     return _response;
                 }
 

@@ -361,5 +361,14 @@ namespace Visitor.Application.Interfaces
         Task<UserType_Response?> GetUserTypeById(int Id);
 
         #endregion
+
+        #region Work Place
+        Task<int> SaveWorkPlace(WorkPlace_Request parameters);
+
+        Task<IEnumerable<WorkPlace_Response>> GetWorkPlaceList(BaseSearchEntity parameters);
+
+        Task<WorkPlace_Response?> GetWorkPlaceById(int Id);
+
+        #endregion
     }
 }
