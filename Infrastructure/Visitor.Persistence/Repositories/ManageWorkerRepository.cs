@@ -33,6 +33,18 @@ namespace Visitor.Persistence.Repositories
             queryParameters.Add("@DocumentNumber", parameters.DocumentNumber);
             queryParameters.Add("@ValidFromDate", parameters.ValidFromDate);
             queryParameters.Add("@ValidToDate", parameters.ValidToDate);
+            queryParameters.Add("@WorkerId", parameters.WorkerId);
+            queryParameters.Add("@DOB", parameters.DOB);
+            queryParameters.Add("@BloodGroupId", parameters.BloodGroupId);
+            queryParameters.Add("@IdentificationMark", parameters.IdentificationMark);
+            queryParameters.Add("@BranchId", parameters.BranchId);
+            queryParameters.Add("@WorkPlaceId", parameters.WorkPlaceId);
+            queryParameters.Add("@Address", parameters.Address);
+            queryParameters.Add("@CountryId", parameters.CountryId);
+            queryParameters.Add("@StateId", parameters.StateId);
+            queryParameters.Add("@DistrictId", parameters.DistrictId);
+            queryParameters.Add("@Pincode", parameters.Pincode);
+
             queryParameters.Add("@IsBlackList", parameters.IsBlackList);
             queryParameters.Add("@IsActive", parameters.IsActive);
             queryParameters.Add("@UserId", SessionManager.LoggedInUserId);

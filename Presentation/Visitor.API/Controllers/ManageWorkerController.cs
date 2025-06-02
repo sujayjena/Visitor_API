@@ -15,13 +15,15 @@ namespace Visitor.API.Controllers
         private ResponseModel _response;
         private readonly IManageWorkerRepository _manageWorkerRepository;
         private readonly IManageContractorRepository _manageContractorRepository;
+        private readonly IAssignGateNoRepository _assignGateNoRepository;
         private IFileManager _fileManager;
 
-        public ManageWorkerController(IManageWorkerRepository manageWorkerRepository, IFileManager fileManager, IManageContractorRepository manageContractorRepository)
+        public ManageWorkerController(IManageWorkerRepository manageWorkerRepository, IFileManager fileManager, IManageContractorRepository manageContractorRepository, IAssignGateNoRepository assignGateNoRepository)
         {
             _manageWorkerRepository = manageWorkerRepository;
             _fileManager = fileManager;
             _manageContractorRepository = manageContractorRepository;
+            _assignGateNoRepository = assignGateNoRepository;
 
             _response = new ResponseModel();
             _response.IsSuccess = true;
@@ -97,6 +99,35 @@ namespace Visitor.API.Controllers
                 {
                     _response.Message = "Record details saved successfully";
                 }
+
+                #region // Add/Update Assign GateNo
+
+                // Delete Assign
+                var vGateNoDELETEObj = new AssignGateNo_Request()
+                {
+                    Action = "DELETE",
+                    RefId = result,
+                    RefType = "Worker",
+                    GateDetailsId = 0
+                };
+                int resultGateNoDELETE = await _assignGateNoRepository.SaveAssignGateNo(vGateNoDELETEObj);
+
+
+                // add new Visitor field
+                foreach (var vGateitem in parameters.GateNumberList)
+                {
+                    var vGateNoMapObj = new AssignGateNo_Request()
+                    {
+                        Action = "INSERT",
+                        RefId = result,
+                        RefType = "Worker",
+                        GateDetailsId = vGateitem.GateDetailsId
+                    };
+
+                    int resultGateNo = await _assignGateNoRepository.SaveAssignGateNo(vGateNoMapObj);
+                }
+
+                #endregion
             }
             return _response;
         }
@@ -123,6 +154,11 @@ namespace Visitor.API.Controllers
             else
             {
                 var vResultObj = await _manageWorkerRepository.GetWorkerById(Id);
+                if(vResultObj != null)
+                {
+                    var gateNolistObj = await _assignGateNoRepository.GetAssignGateNoById(vResultObj.Id, "Worker", 0);
+                    vResultObj.GateNumberList = gateNolistObj.ToList();
+                }
                 _response.Data = vResultObj;
             }
             return _response;

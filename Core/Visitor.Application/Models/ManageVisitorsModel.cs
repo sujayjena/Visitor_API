@@ -318,7 +318,10 @@ namespace Visitor.Application.Models
     public class VisitorPlanned_Search : BaseSearchEntity
     {
         [DefaultValue(null)]
-        public DateTime? VisitDate { get; set; }
+        public DateTime? FromDate { get; set; }
+
+        [DefaultValue(null)]
+        public DateTime? ToDate { get; set; }
 
         [DefaultValue("")]
         public string? GateDetailsId { get; set; }

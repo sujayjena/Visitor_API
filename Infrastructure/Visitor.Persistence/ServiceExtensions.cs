@@ -43,6 +43,7 @@ namespace Visitor.Persistence
             services.AddScoped<IEmailHelper, EmailHelper>();
             services.AddScoped<IConfigRefRepository, ConfigRefRepository>();
             services.AddScoped<IQRCodeRepository, QRCodeRepository>();
+            services.AddScoped<IAssignGateNoRepository, AssignGateNoRepository>();
         }
     }
 }
