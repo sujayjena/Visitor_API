@@ -74,6 +74,16 @@ namespace Visitor.API.Controllers
 
             #endregion
 
+            //Document Upload
+            if (parameters != null && !string.IsNullOrWhiteSpace(parameters.Document_Base64))
+            {
+                var vUploadFile = _fileManager.UploadDocumentsBase64ToFile(parameters.Document_Base64, "\\Uploads\\Visitors\\", parameters.DocumentOriginalFileName);
+
+                if (!string.IsNullOrWhiteSpace(vUploadFile))
+                {
+                    parameters.DocumentFileName = vUploadFile;
+                }
+            }
 
             int result = await _manageWorkerRepository.SaveWorker(parameters);
 

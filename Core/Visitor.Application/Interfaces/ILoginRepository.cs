@@ -14,5 +14,11 @@ namespace Visitor.Application.Interfaces
         Task SaveUserLoginHistory(UserLoginHistorySaveParameters parameters);
 
         Task<UsersLoginSessionData?> GetProfileDetailsByToken(string token);
+
+        Task<int> ValidateUserMobile(OTPRequestModel parameters);
+
+        Task<int> SaveOTP(OTPRequestModel parameters);
+
+        Task<int> VerifyOTP(OTPVerifyModel parameters);
     }
 }

@@ -44,6 +44,8 @@ namespace Visitor.Persistence.Repositories
             queryParameters.Add("@StateId", parameters.StateId);
             queryParameters.Add("@DistrictId", parameters.DistrictId);
             queryParameters.Add("@Pincode", parameters.Pincode);
+            queryParameters.Add("@DocumentOriginalFileName", parameters.DocumentOriginalFileName);
+            queryParameters.Add("@DocumentFileName", parameters.DocumentFileName);
 
             queryParameters.Add("@IsBlackList", parameters.IsBlackList);
             queryParameters.Add("@IsActive", parameters.IsActive);

@@ -30,6 +30,7 @@ namespace Visitor.Persistence.Repositories
             queryParameters.Add("@VisitTypeId", parameters.VisitTypeId);
             queryParameters.Add("@VisitorName", parameters.VisitorName);
             queryParameters.Add("@VisitorMobileNo", parameters.VisitorMobileNo);
+            queryParameters.Add("@VerifyOTP", parameters.VerifyOTP);
             queryParameters.Add("@VisitorEmailId", parameters.VisitorEmailId);
             queryParameters.Add("@GenderId", parameters.GenderId);
             queryParameters.Add("@VisitorCompanyId", parameters.VisitorCompanyId);
@@ -192,8 +193,8 @@ namespace Visitor.Persistence.Repositories
         public async Task<IEnumerable<VisitorPlanned_Response>> GetVisitorPlannedList(VisitorPlanned_Search parameters)
         {
             DynamicParameters queryParameters = new DynamicParameters();
-            queryParameters.Add("@FromDate", parameters.FromDate);
-            queryParameters.Add("@ToDate", parameters.ToDate);
+            queryParameters.Add("@VisitDate", parameters.VisitDate);
+            //queryParameters.Add("@ToDate", parameters.ToDate);
             queryParameters.Add("@GateDetailsId", parameters.GateDetailsId);
             queryParameters.Add("@IsPlanned_CheckIn_CheckOut", parameters.IsPlanned_CheckIn_CheckOut);
             queryParameters.Add("@IsPlanned", parameters.IsPlanned);

@@ -56,5 +56,35 @@ namespace Visitor.Persistence.Repositories
 
             return lstResponse.FirstOrDefault();
         }
+
+        public async Task<int> ValidateUserMobile(OTPRequestModel parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@MobileNumber", parameters.MobileNumber.SanitizeValue());
+
+            return await SaveByStoredProcedure<int>("ValidateUserMobile", queryParameters);
+        }
+
+        public async Task<int> SaveOTP(OTPRequestModel parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@Id", 0);
+            queryParameters.Add("@TemplateName", parameters.TemplateName.SanitizeValue());
+            queryParameters.Add("@Mobile", parameters.MobileNumber.SanitizeValue());
+            queryParameters.Add("@OTP", parameters.OTP.SanitizeValue());
+
+            queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
+
+            return await SaveByStoredProcedure<int>("SaveOTP", queryParameters);
+        }
+
+        public async Task<int> VerifyOTP(OTPVerifyModel parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@Mobile", parameters.MobileNumber.SanitizeValue());
+            queryParameters.Add("@OTP", parameters.OTP.SanitizeValue());
+
+            return await SaveByStoredProcedure<int>("VerifyOTP", queryParameters);
+        }
     }
 }

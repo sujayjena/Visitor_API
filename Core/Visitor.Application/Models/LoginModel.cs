@@ -118,4 +118,33 @@ namespace Visitor.Application.Models
         public string ProfileImageURL { get; set; }
         public List<RoleMaster_Employee_Permission_Response> UserRoleList { get; set; }
     }
+
+    public class OTPRequestModel
+    {
+        [Required(ErrorMessage = "Template Name is required")]
+        public string TemplateName { get; set; }
+
+        [Required(ErrorMessage = ValidationConstants.MobileNumberRequied_Msg)]
+        [RegularExpression(ValidationConstants.MobileNumberRegExp, ErrorMessage = ValidationConstants.MobileNumberRegExp_Msg)]
+        [MaxLength(ValidationConstants.MobileNumber_MaxLength, ErrorMessage = ValidationConstants.MobileNumber_MaxLength_Msg)]
+        public string MobileNumber { get; set; }
+
+        [DefaultValue("")]
+        [JsonIgnore]
+        public string? OTP { get; set; }
+    }
+
+    public class OTPVerifyModel
+    {
+        [Required(ErrorMessage = ValidationConstants.MobileNumberRequied_Msg)]
+        [RegularExpression(ValidationConstants.MobileNumberRegExp, ErrorMessage = ValidationConstants.MobileNumberRegExp_Msg)]
+        [MaxLength(ValidationConstants.MobileNumber_MaxLength, ErrorMessage = ValidationConstants.MobileNumber_MaxLength_Msg)]
+        public string MobileNumber { get; set; }
+
+        [Required(ErrorMessage = ValidationConstants.OTP_Required_Msg)]
+        [RegularExpression(ValidationConstants.OTP_RegExp, ErrorMessage = ValidationConstants.OTP_RegExp_Msg)]
+        [MinLength(ValidationConstants.OTP_MinLength, ErrorMessage = ValidationConstants.OTP_Range_Msg)]
+        [MaxLength(ValidationConstants.OTP_MaxLength, ErrorMessage = ValidationConstants.OTP_Range_Msg)]
+        public string OTP { get; set; }
+    }
 }

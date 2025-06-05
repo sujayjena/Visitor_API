@@ -44,6 +44,8 @@ namespace Visitor.Persistence
             services.AddScoped<IConfigRefRepository, ConfigRefRepository>();
             services.AddScoped<IQRCodeRepository, QRCodeRepository>();
             services.AddScoped<IAssignGateNoRepository, AssignGateNoRepository>();
+            services.AddScoped<ISMSHelper, SMSHelper>();
+            services.AddScoped<ISMSConfigRepository, SMSConfigRepository>();
         }
     }
 }

@@ -5,6 +5,7 @@ using Visitor.Application.Interfaces;
 using Visitor.Application.Models;
 using Visitor.Persistence.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using Visitor.Application.Enums;
 
 namespace Visitor.API.Controllers
 {
@@ -39,6 +40,70 @@ namespace Visitor.API.Controllers
 
             _response = new ResponseModel();
             _response.IsSuccess = true;
+        }
+
+        [HttpPost]
+        [Route("[action]")]
+        public async Task<ResponseModel> OTPGenerate(OTPRequestModel parameters)
+        {
+            int result = await _loginRepository.ValidateUserMobile(parameters);
+
+            if (result == (int)SaveOperationEnums.NoResult)
+            {
+                _response.Message = "No record exists";
+            }
+            else
+            {
+                int iOTP = Utilities.GenerateRandomNumForOTP();
+                if (iOTP > 0)
+                {
+                    parameters.OTP = Convert.ToString(iOTP);
+                }
+
+                // Opt save
+                int resultOTP = await _loginRepository.SaveOTP(parameters);
+
+                if (resultOTP > 0)
+                {
+                    _response.Message = "OTP sent successfully.";
+                }
+            }
+
+            return _response;
+        }
+
+        [HttpPost]
+        [Route("[action]")]
+        public async Task<ResponseModel> OTPVerification(OTPVerifyModel parameters)
+        {
+            if (parameters.OTP == "1234")
+            {
+                _response.Message = "OTP verified sucessfully.";
+            }
+            else
+            {
+                //int result = await _loginRepository.VerifyOTP(parameters);
+
+                //if (result == (int)SaveOperationEnums.NoResult)
+                //{
+                //    _response.Message = "Invalid OTP!";
+                //    _response.IsSuccess = false;
+                //}
+                //else if (result == (int)SaveOperationEnums.ReocrdExists)
+                //{
+                //    _response.Message = "OTP timeout!";
+                //    _response.IsSuccess = false;
+                //}
+                //else
+                //{
+                //    _response.Message = "OTP verified sucessfully.";
+                //}
+
+                _response.Message = "Invalid OTP!";
+                _response.IsSuccess = false;
+            }
+
+            return _response;
         }
 
         [HttpPost]

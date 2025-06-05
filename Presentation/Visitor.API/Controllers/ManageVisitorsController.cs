@@ -20,11 +20,13 @@ namespace Visitor.API.Controllers
         private readonly IManageVisitorsRepository _manageVisitorsRepository;
         private readonly IBarcodeRepository _barcodeRepository;
         private readonly IUserRepository _userRepository;
+        private ILoginRepository _loginRepository;
+        private IConfigRefRepository _configRefRepository;
         private IFileManager _fileManager;
         private readonly IWebHostEnvironment _environment;
         private IEmailHelper _emailHelper;
 
-        public ManageVisitorsController(IManageVisitorsRepository manageVisitorsRepository, IFileManager fileManager, IBarcodeRepository barcodeRepository, IUserRepository userRepository, IWebHostEnvironment environment, IEmailHelper emailHelper)
+        public ManageVisitorsController(IManageVisitorsRepository manageVisitorsRepository, IFileManager fileManager, IBarcodeRepository barcodeRepository, IUserRepository userRepository, IWebHostEnvironment environment, IEmailHelper emailHelper, ILoginRepository loginRepository, IConfigRefRepository configRefRepository)
         {
             _manageVisitorsRepository = manageVisitorsRepository;
             _fileManager = fileManager;
@@ -32,6 +34,8 @@ namespace Visitor.API.Controllers
             _userRepository = userRepository;
             _environment = environment;
             _emailHelper = emailHelper;
+            _loginRepository = loginRepository;
+            _configRefRepository = configRefRepository;
 
             _response = new ResponseModel();
             _response.IsSuccess = true;
@@ -419,7 +423,7 @@ namespace Visitor.API.Controllers
 
                     if (emailTemplateContent.IndexOf("[VehicleNumber]", StringComparison.OrdinalIgnoreCase) > 0)
                     {
-                        emailTemplateContent = emailTemplateContent.Replace("[VehicleNumber]", vVisitor.VehicleNumber);
+                        emailTemplateContent = emailTemplateContent.Replace("[VehicleNumber]", string.IsNullOrEmpty(vVisitor.VehicleNumber) ? "NA" : vVisitor.VehicleNumber);
                     }
 
                     if (emailTemplateContent.IndexOf("[VisitPurpose]", StringComparison.OrdinalIgnoreCase) > 0)
@@ -474,7 +478,6 @@ namespace Visitor.API.Controllers
             return _response;
         }
 
-
         [Route("[action]")]
         [HttpPost]
         public async Task<ResponseModel> GetVisitorApproveNRejectHistoryListById(VisitorApproveNRejectHistory_Search parameters)
@@ -504,7 +507,6 @@ namespace Visitor.API.Controllers
             _response.Total = parameters.Total;
             return _response;
         }
-
 
         [Route("[action]")]
         [HttpPost]
@@ -586,6 +588,78 @@ namespace Visitor.API.Controllers
         {
             IEnumerable<SelectListResponse> lstResponse = await _manageVisitorsRepository.GetVisitorMobileNoListForSelectList();
             _response.Data = lstResponse.ToList();
+            return _response;
+        }
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> VisitorOTPGenerate(VisitorOTPVerify parameters)
+        {
+            var vOTPRequestModelObj = new OTPRequestModel()
+            {
+                MobileNumber = parameters.MobileNo
+            };
+
+            int iOTP = Utilities.GenerateRandomNumForOTP();
+            if (iOTP > 0)
+            {
+                vOTPRequestModelObj.OTP = Convert.ToString(iOTP);
+            }
+
+            // Opt save
+            int resultOTP = await _loginRepository.SaveOTP(vOTPRequestModelObj);
+
+            if (resultOTP > 0)
+            {
+                _response.Message = "OTP sent successfully.";
+
+                //#region SMS Send
+
+                //var vConfigRef_Search = new ConfigRef_Search()
+                //{
+                //    Ref_Type = "SMS",
+                //    Ref_Param = "OTPForTicketClosure"
+                //};
+
+                //string sSMSTemplateName = string.Empty;
+                //string sSMSTemplateContent = string.Empty;
+                //var vConfigRefObj = _configRefRepository.GetConfigRefList(vConfigRef_Search).Result.ToList().FirstOrDefault();
+                //if (vConfigRefObj != null)
+                //{
+                //    sSMSTemplateName = vConfigRefObj.Ref_Value1;
+                //    sSMSTemplateContent = vConfigRefObj.Ref_Value2;
+
+                //    if (!string.IsNullOrWhiteSpace(sSMSTemplateContent))
+                //    {
+                //        //Replace parameter 
+                //        //sSMSTemplateContent = sSMSTemplateContent.Replace("{#var#}", iOTP.ToString());
+                //        //sSMSTemplateContent = sSMSTemplateContent.Replace("{#var1#}", parameters.VisitNumber);
+
+                //        StringBuilder sb = new StringBuilder();
+                //        sb.AppendFormat(sSMSTemplateContent, iOTP.ToString(), parameters.VisitNumber);
+
+                //        sSMSTemplateContent = sb.ToString();
+                //    }
+                //}
+
+                //if (resultTicketSMSObj != null)
+                //{
+                //    // Send SMS
+                //    var vsmsRequest = new SMS_Request()
+                //    {
+                //        Ref1_OTPId = resultOTP,
+                //        TemplateName = sSMSTemplateName,
+                //        TemplateContent = sSMSTemplateContent,
+                //        Mobile = parameters.Mobile,
+                //    };
+                //    bool bSMSResult = await _smsHelper.SMSSend(vsmsRequest);
+
+                //}
+                //_response.Id = resultOTP;
+
+                //#endregion
+            }
+
             return _response;
         }
     }

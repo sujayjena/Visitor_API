@@ -50,6 +50,7 @@ namespace Visitor.Application.Models
        
         public string? VisitorName { get; set; }
         public string? VisitorMobileNo { get; set; }
+        public string? VerifyOTP { get; set; }
         public string? VisitorEmailId { get; set; }
         public int? GenderId { get; set; }
         
@@ -139,6 +140,7 @@ namespace Visitor.Application.Models
 
         public string? VisitorName { get; set; }
         public string? VisitorMobileNo { get; set; }
+        public string? VerifyOTP { get; set; }
         public string? VisitorEmailId { get; set; }
         public int? GenderId { get; set; }
         public string? GenderName { get; set; }
@@ -318,13 +320,13 @@ namespace Visitor.Application.Models
     public class VisitorPlanned_Search : BaseSearchEntity
     {
         [DefaultValue(null)]
-        public DateTime? FromDate { get; set; }
+        public DateTime? VisitDate { get; set; }
 
-        [DefaultValue(null)]
-        public DateTime? ToDate { get; set; }
+        //[DefaultValue(null)]
+        //public DateTime? ToDate { get; set; }
 
-        [DefaultValue("")]
-        public string? GateDetailsId { get; set; }
+        [DefaultValue(0)]
+        public int? GateDetailsId { get; set; }
         public int? IsPlanned_CheckIn_CheckOut { get; set; }
 
         [DefaultValue(null)]
@@ -398,5 +400,11 @@ namespace Visitor.Application.Models
         public long CreatedBy { get; set; }
         public string? CreatorName { get; set; }
 
+    }
+
+    public class VisitorOTPVerify
+    {
+        public string? VisitNumber { get; set; }
+        public string? MobileNo { get; set; }
     }
 }
