@@ -68,6 +68,8 @@ namespace Visitor.Application.Models
         public string? WorkerName { get; set; }
         public int? ContractorId { get; set; }
         public string? ContractorName { get; set; }
+        public int? ContractorTypeId { get; set; }
+        public string? ContractorType { get; set; }
         public int? WorkerTypeId { get; set; }
         public string? WorkerType { get; set; }
         public int? ContractTypeId { get; set; }
@@ -98,6 +100,9 @@ namespace Visitor.Application.Models
         public string? DocumentOriginalFileName { get; set; }
         public string? DocumentFileName { get; set; }
         public string? DocumentURL { get; set; }
+        public string? BarcodeOriginalFileName { get; set; }
+        public string? BarcodeFileName { get; set; }
+        public string? BarcodeURL { get; set; }
         public DateTime? ContractorValidity { get; set; }
 
         [DefaultValue(false)]

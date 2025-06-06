@@ -1728,9 +1728,10 @@ namespace Visitor.Persistence.Repositories
             return await SaveByStoredProcedure<int>("SaveWorkPlace", queryParameters);
         }
 
-        public async Task<IEnumerable<WorkPlace_Response>> GetWorkPlaceList(BaseSearchEntity parameters)
+        public async Task<IEnumerable<WorkPlace_Response>> GetWorkPlaceList(WorkPlace_Search parameters)
         {
             DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@BranchId", parameters.BranchId);
             queryParameters.Add("@SearchText", parameters.SearchText.SanitizeValue());
             queryParameters.Add("@IsActive", parameters.IsActive);
             queryParameters.Add("@PageNo", parameters.PageNo);

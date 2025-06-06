@@ -16,14 +16,16 @@ namespace Visitor.API.Controllers
         private readonly IManageWorkerRepository _manageWorkerRepository;
         private readonly IManageContractorRepository _manageContractorRepository;
         private readonly IAssignGateNoRepository _assignGateNoRepository;
+        private readonly IBarcodeRepository _barcodeRepository;
         private IFileManager _fileManager;
 
-        public ManageWorkerController(IManageWorkerRepository manageWorkerRepository, IFileManager fileManager, IManageContractorRepository manageContractorRepository, IAssignGateNoRepository assignGateNoRepository)
+        public ManageWorkerController(IManageWorkerRepository manageWorkerRepository, IFileManager fileManager, IManageContractorRepository manageContractorRepository, IAssignGateNoRepository assignGateNoRepository, IBarcodeRepository barcodeRepository)
         {
             _manageWorkerRepository = manageWorkerRepository;
             _fileManager = fileManager;
             _manageContractorRepository = manageContractorRepository;
             _assignGateNoRepository = assignGateNoRepository;
+            _barcodeRepository = barcodeRepository;
 
             _response = new ResponseModel();
             _response.IsSuccess = true;
@@ -77,7 +79,7 @@ namespace Visitor.API.Controllers
             //Document Upload
             if (parameters != null && !string.IsNullOrWhiteSpace(parameters.Document_Base64))
             {
-                var vUploadFile = _fileManager.UploadDocumentsBase64ToFile(parameters.Document_Base64, "\\Uploads\\Visitors\\", parameters.DocumentOriginalFileName);
+                var vUploadFile = _fileManager.UploadDocumentsBase64ToFile(parameters.Document_Base64, "\\Uploads\\Worker\\", parameters.DocumentOriginalFileName);
 
                 if (!string.IsNullOrWhiteSpace(vUploadFile))
                 {
@@ -137,6 +139,31 @@ namespace Visitor.API.Controllers
                     int resultGateNo = await _assignGateNoRepository.SaveAssignGateNo(vGateNoMapObj);
                 }
 
+                #endregion
+
+                #region Generate Barcode
+                if (parameters.Id == 0)
+                {
+                    var vWorker = await _manageWorkerRepository.GetWorkerById(result);
+                    if (vWorker != null)
+                    {
+                        var vGenerateBarcode = _barcodeRepository.GenerateBarcode(vWorker.WorkerId);
+                        if (vGenerateBarcode.Barcode_Unique_Id != "")
+                        {
+                            var vBarcode_Request = new Barcode_Request()
+                            {
+                                Id = 0,
+                                BarcodeNo = vWorker.WorkerId,
+                                BarcodeType = "Worker",
+                                Barcode_Unique_Id = vGenerateBarcode.Barcode_Unique_Id,
+                                BarcodeOriginalFileName = vGenerateBarcode.BarcodeOriginalFileName,
+                                BarcodeFileName = vGenerateBarcode.BarcodeFileName,
+                                RefId = result
+                            };
+                            var resultBarcode = _barcodeRepository.SaveBarcode(vBarcode_Request);
+                        }
+                    }
+                }
                 #endregion
             }
             return _response;

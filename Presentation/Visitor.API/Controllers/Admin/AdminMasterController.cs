@@ -2829,7 +2829,7 @@ namespace Visitor.API.Controllers.Admin
 
         [Route("[action]")]
         [HttpPost]
-        public async Task<ResponseModel> GetWorkPlaceList(BaseSearchEntity parameters)
+        public async Task<ResponseModel> GetWorkPlaceList(WorkPlace_Search parameters)
         {
             IEnumerable<WorkPlace_Response> lstRoles = await _adminMasterRepository.GetWorkPlaceList(parameters);
 

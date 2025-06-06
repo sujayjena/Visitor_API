@@ -1025,6 +1025,11 @@ namespace Visitor.Application.Models
     #endregion
 
     #region Work Place
+    public class WorkPlace_Search : BaseSearchEntity
+    {
+        public int? BranchId { get; set; }
+    }
+
     public class WorkPlace_Request : BaseEntity
     {
         public int? BranchId { get; set; }

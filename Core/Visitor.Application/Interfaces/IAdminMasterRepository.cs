@@ -365,7 +365,7 @@ namespace Visitor.Application.Interfaces
         #region Work Place
         Task<int> SaveWorkPlace(WorkPlace_Request parameters);
 
-        Task<IEnumerable<WorkPlace_Response>> GetWorkPlaceList(BaseSearchEntity parameters);
+        Task<IEnumerable<WorkPlace_Response>> GetWorkPlaceList(WorkPlace_Search parameters);
 
         Task<WorkPlace_Response?> GetWorkPlaceById(int Id);
 
