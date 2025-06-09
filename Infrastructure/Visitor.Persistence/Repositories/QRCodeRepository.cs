@@ -33,7 +33,7 @@ namespace Visitor.Persistence.Repositories
             };
 
             //Call API
-            string sendUri = "https://barcode-final-new.onrender.com/generate_qrcode_v2";
+            string sendUri = "http://164.52.213.175:5050/generate_qrcode_v2";
 
             //Create HTTPWebrequest  
             HttpWebRequest httpWReq = (HttpWebRequest)WebRequest.Create(sendUri);

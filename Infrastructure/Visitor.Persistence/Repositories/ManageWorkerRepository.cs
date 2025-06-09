@@ -46,6 +46,8 @@ namespace Visitor.Persistence.Repositories
             queryParameters.Add("@Pincode", parameters.Pincode);
             queryParameters.Add("@DocumentOriginalFileName", parameters.DocumentOriginalFileName);
             queryParameters.Add("@DocumentFileName", parameters.DocumentFileName);
+            queryParameters.Add("@WorkerPhotoOriginalFileName", parameters.WorkerPhotoOriginalFileName);
+            queryParameters.Add("@WorkerPhotoFileName", parameters.WorkerPhotoFileName);
 
             queryParameters.Add("@IsBlackList", parameters.IsBlackList);
             queryParameters.Add("@IsActive", parameters.IsActive);

@@ -46,6 +46,12 @@ namespace Visitor.Application.Models
         public string? DocumentFileName { get; set; }
         public string? Document_Base64 { get; set; }
 
+        public string? WorkerPhotoOriginalFileName { get; set; }
+
+        [JsonIgnore]
+        public string? WorkerPhotoFileName { get; set; }
+        public string? WorkerPhoto_Base64 { get; set; }
+
         [DefaultValue(false)]
         public bool? IsBlackList { get; set; }
         public bool? IsActive { get; set; }
@@ -100,6 +106,9 @@ namespace Visitor.Application.Models
         public string? DocumentOriginalFileName { get; set; }
         public string? DocumentFileName { get; set; }
         public string? DocumentURL { get; set; }
+        public string? WorkerPhotoOriginalFileName { get; set; }
+        public string? WorkerPhotoFileName { get; set; }
+        public string? WorkerPhotoURL { get; set; }
         public string? BarcodeOriginalFileName { get; set; }
         public string? BarcodeFileName { get; set; }
         public string? BarcodeURL { get; set; }

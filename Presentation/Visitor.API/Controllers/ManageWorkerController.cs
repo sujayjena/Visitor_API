@@ -87,6 +87,17 @@ namespace Visitor.API.Controllers
                 }
             }
 
+            //photo Upload
+            if (parameters != null && !string.IsNullOrWhiteSpace(parameters.WorkerPhoto_Base64))
+            {
+                var vUploadFile = _fileManager.UploadDocumentsBase64ToFile(parameters.WorkerPhoto_Base64, "\\Uploads\\Worker\\", parameters.WorkerPhotoOriginalFileName);
+
+                if (!string.IsNullOrWhiteSpace(vUploadFile))
+                {
+                    parameters.WorkerPhotoFileName = vUploadFile;
+                }
+            }
+
             int result = await _manageWorkerRepository.SaveWorker(parameters);
 
             if (result == (int)SaveOperationEnums.NoRecordExists)
