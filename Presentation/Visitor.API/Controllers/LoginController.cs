@@ -139,6 +139,13 @@ namespace Visitor.API.Controllers
 
             if (loginResponse != null)
             {
+                if(loginResponse.RoleId == 0 || loginResponse.RoleId == null)
+                {
+                    _response.IsSuccess = false;
+                    _response.Message = ErrorConstants.RoleNotAssigned;
+                    return _response;
+                }
+
                 if (loginResponse.IsActive == true && (loginResponse.IsWebUser == true && parameters.IsWebOrMobileUser == "W" || loginResponse.IsMobileUser == true && parameters.IsWebOrMobileUser == "M"))
                 {
                     tokenResponse = _jwt.GenerateJwtToken(loginResponse);

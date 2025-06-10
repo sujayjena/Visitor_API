@@ -10,5 +10,6 @@
         public const string LockedProfileError = "Your profile is locked, please contact to administrator";
         public const string ExpiredSessionError = "Your session has been expired, please re-login to continue";
         public const string FileNotExistsToDownload = "File does not exists for Download";
+        public const string RoleNotAssigned = "Role is not assigned, contact system admin";
     }
 }
