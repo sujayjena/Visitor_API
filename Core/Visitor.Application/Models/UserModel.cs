@@ -24,6 +24,7 @@ namespace Visitor.Application.Models
         public int UserTypeId { get; set; }
         public int IsFilterType { get; set; }
         public int RoleId { get; set; }
+        public int EmployeeId { get; set; }
     }
 
     public class User_Request : BaseEntity
@@ -394,7 +395,7 @@ namespace Visitor.Application.Models
         public DateTime? DateOfJoining { get; set; }
         public string? BloodGroup { get; set; }
         public string? Gender { get; set; }
-        public string? MeritalStatus { get; set; }
+        public string? MaritalStatus { get; set; }
         public string? EmergencyName { get; set; }
         public string? EmergencyContactNumber { get; set; }
         public string? EmergencyRelation { get; set; }
@@ -441,7 +442,7 @@ namespace Visitor.Application.Models
         public string? DateOfJoining { get; set; }
         public string? BloodGroup { get; set; }
         public string? Gender { get; set; }
-        public string? MeritalStatus { get; set; }
+        public string? MaritalStatus { get; set; }
         public string? EmergencyName { get; set; }
         public string? EmergencyContactNumber { get; set; }
         public string? EmergencyRelation { get; set; }

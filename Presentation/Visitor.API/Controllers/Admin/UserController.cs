@@ -710,7 +710,7 @@ namespace Visitor.API.Controllers.Admin
                     !string.Equals(workSheet.Cells[1, 13].Value.ToString(), "DateOfJoining", StringComparison.OrdinalIgnoreCase) ||
                     !string.Equals(workSheet.Cells[1, 14].Value.ToString(), "BloodGroup", StringComparison.OrdinalIgnoreCase) ||
                     !string.Equals(workSheet.Cells[1, 15].Value.ToString(), "Gender", StringComparison.OrdinalIgnoreCase) ||
-                    !string.Equals(workSheet.Cells[1, 16].Value.ToString(), "MeritalStatus", StringComparison.OrdinalIgnoreCase) ||
+                    !string.Equals(workSheet.Cells[1, 16].Value.ToString(), "MaritalStatus", StringComparison.OrdinalIgnoreCase) ||
                     !string.Equals(workSheet.Cells[1, 17].Value.ToString(), "EmergencyName", StringComparison.OrdinalIgnoreCase) ||
                     !string.Equals(workSheet.Cells[1, 18].Value.ToString(), "EmergencyContactNumber", StringComparison.OrdinalIgnoreCase) ||
                     !string.Equals(workSheet.Cells[1, 19].Value.ToString(), "EmergencyRelation", StringComparison.OrdinalIgnoreCase) ||
@@ -766,7 +766,7 @@ namespace Visitor.API.Controllers.Admin
                             DateOfJoining = !string.IsNullOrWhiteSpace(workSheet.Cells[rowIterator, 13].Value?.ToString()) ? DateTime.ParseExact(workSheet.Cells[rowIterator, 13].Value?.ToString(), "dd/MM/yyyy", System.Globalization.CultureInfo.CurrentUICulture.DateTimeFormat) : null,
                             BloodGroup = workSheet.Cells[rowIterator, 14].Value?.ToString(),
                             Gender = workSheet.Cells[rowIterator, 15].Value?.ToString(),
-                            MeritalStatus = workSheet.Cells[rowIterator, 16].Value?.ToString(),
+                            MaritalStatus = workSheet.Cells[rowIterator, 16].Value?.ToString(),
                             EmergencyName = workSheet.Cells[rowIterator, 17].Value?.ToString(),
                             EmergencyContactNumber = workSheet.Cells[rowIterator, 18].Value?.ToString(),
                             EmergencyRelation = workSheet.Cells[rowIterator, 19].Value?.ToString(),
@@ -1050,7 +1050,7 @@ namespace Visitor.API.Controllers.Admin
                     WorkSheet1.Cells[1, 14].Value = "BloodGroup";
 
                     WorkSheet1.Cells[1, 15].Value = "Gender";
-                    WorkSheet1.Cells[1, 16].Value = "MeritalStatus";
+                    WorkSheet1.Cells[1, 16].Value = "MaritalStatus";
                     WorkSheet1.Cells[1, 17].Value = "EmergencyName";
                     WorkSheet1.Cells[1, 18].Value = "EmergencyContactNumber";
                     WorkSheet1.Cells[1, 19].Value = "EmergencyRelation";
@@ -1106,7 +1106,7 @@ namespace Visitor.API.Controllers.Admin
                         WorkSheet1.Cells[recordIndex, 14].Value = record.BloodGroup;
 
                         WorkSheet1.Cells[recordIndex, 15].Value = record.Gender;
-                        WorkSheet1.Cells[recordIndex, 16].Value = record.MeritalStatus;
+                        WorkSheet1.Cells[recordIndex, 16].Value = record.MaritalStatus;
                         WorkSheet1.Cells[recordIndex, 17].Value = record.EmergencyName;
                         WorkSheet1.Cells[recordIndex, 18].Value = record.EmergencyContactNumber;
                         WorkSheet1.Cells[recordIndex, 19].Value = record.EmergencyRelation;
