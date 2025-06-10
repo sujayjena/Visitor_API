@@ -80,5 +80,36 @@ namespace Visitor.Persistence.Repositories
             queryParameters.Add("@Id", Id);
             return (await ListByStoredProcedure<Worker_Response>("GetWorkerById", queryParameters)).FirstOrDefault();
         }
+
+        public async Task<int> SaveWorkerPass(WorkerPass_Request parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@Id", parameters.Id);
+            queryParameters.Add("@WorkerId", parameters.WorkerId);
+            queryParameters.Add("@PassNumber", parameters.PassNumber);
+            queryParameters.Add("@ValidFromDate", parameters.ValidFromDate);
+            queryParameters.Add("@ValidToDate", parameters.ValidToDate);
+            queryParameters.Add("@IsActive", parameters.IsActive);
+            queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
+
+            return await SaveByStoredProcedure<int>("SaveWorkerPass", queryParameters);
+        }
+
+        public async Task<IEnumerable<WorkerPass_Response>> GetWorkerPassList(WorkerPassSearch_Request parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@WorkerId", parameters.WorkerId);
+            queryParameters.Add("@SearchText", parameters.SearchText.SanitizeValue());
+            queryParameters.Add("@IsActive", parameters.IsActive);
+            queryParameters.Add("@PageNo", parameters.PageNo);
+            queryParameters.Add("@PageSize", parameters.PageSize);
+            queryParameters.Add("@Total", parameters.Total, null, System.Data.ParameterDirection.Output);
+            queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
+
+            var result = await ListByStoredProcedure<WorkerPass_Response>("GetWorkerPassList", queryParameters);
+            parameters.Total = queryParameters.Get<int>("Total");
+
+            return result;
+        }
     }
 }

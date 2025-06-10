@@ -113,10 +113,38 @@ namespace Visitor.Application.Models
         public string? BarcodeFileName { get; set; }
         public string? BarcodeURL { get; set; }
         public DateTime? ContractorValidity { get; set; }
+        public string? PassNumber { get; set; }
+        public bool? IsExpire { get; set; }
 
         [DefaultValue(false)]
         public bool? IsBlackList { get; set; }
         public bool? IsActive { get; set; }
         public List<AssignGateNo_Response> GateNumberList { get; set; }
+    }
+
+    public class WorkerPass_Request : BaseEntity
+    {
+        public int? WorkerId { get; set; }
+
+        [JsonIgnore]
+        public string? PassNumber { get; set; }
+        public DateTime? ValidFromDate { get; set; }
+        public DateTime? ValidToDate { get; set; }
+        public bool? IsActive { get; set; }
+    }
+    public class WorkerPassSearch_Request : BaseSearchEntity
+    {
+        public int? WorkerId { get; set; }
+    }
+    public class WorkerPass_Response
+    {
+        public int? WorkerId { get; set; }
+        public string? PassNumber { get; set; }
+        public DateTime? ValidFromDate { get; set; }
+        public DateTime? ValidToDate { get; set; }
+        public bool? IsActive { get; set; }
+        public string? CreatorName { get; set; }
+        public long? CreatedBy { get; set; }
+        public DateTime? CreatedDate { get; set; }
     }
 }

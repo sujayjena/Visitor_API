@@ -152,19 +152,38 @@ namespace Visitor.API.Controllers
 
                 #endregion
 
+                #region Worker Pass
+
+                if (parameters.Id == 0)
+                {
+                    var vWorkerPass = new WorkerPass_Request()
+                    {
+                        Id = 0,
+                        WorkerId = result,
+                        PassNumber = "",
+                        ValidFromDate = parameters.ValidFromDate,
+                        ValidToDate = parameters.ValidToDate,
+                        IsActive = parameters.IsActive
+                    };
+
+                    int resultWorkerPass = await _manageWorkerRepository.SaveWorkerPass(vWorkerPass);
+                }
+                
+                #endregion
+
                 #region Generate Barcode
                 if (parameters.Id == 0)
                 {
                     var vWorker = await _manageWorkerRepository.GetWorkerById(result);
                     if (vWorker != null)
                     {
-                        var vGenerateBarcode = _barcodeRepository.GenerateBarcode(vWorker.WorkerId);
+                        var vGenerateBarcode = _barcodeRepository.GenerateBarcode(vWorker.PassNumber);
                         if (vGenerateBarcode.Barcode_Unique_Id != "")
                         {
                             var vBarcode_Request = new Barcode_Request()
                             {
                                 Id = 0,
-                                BarcodeNo = vWorker.WorkerId,
+                                BarcodeNo = vWorker.PassNumber,
                                 BarcodeType = "Worker",
                                 Barcode_Unique_Id = vGenerateBarcode.Barcode_Unique_Id,
                                 BarcodeOriginalFileName = vGenerateBarcode.BarcodeOriginalFileName,
@@ -208,6 +227,63 @@ namespace Visitor.API.Controllers
                     vResultObj.GateNumberList = gateNolistObj.ToList();
                 }
                 _response.Data = vResultObj;
+            }
+            return _response;
+        }
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> SaveWorkerPass(WorkerPass_Request parameters)
+        {
+            int result = await _manageWorkerRepository.SaveWorkerPass(parameters);
+
+            if (result == (int)SaveOperationEnums.NoRecordExists)
+            {
+                _response.Message = "No record exists";
+            }
+            else if (result == (int)SaveOperationEnums.ReocrdExists)
+            {
+                _response.Message = "Record is already exists";
+            }
+            else if (result == (int)SaveOperationEnums.NoResult)
+            {
+                _response.Message = "Something went wrong, please try again";
+            }
+            else
+            {
+                if (parameters.Id > 0)
+                {
+                    _response.Message = "Record updated successfully";
+                }
+                else
+                {
+                    _response.Message = "Record details saved successfully";
+                }
+
+                #region Generate Barcode
+                if (parameters.Id == 0)
+                {
+                    var vWorker = await _manageWorkerRepository.GetWorkerById(Convert.ToInt32(parameters.WorkerId));
+                    if (vWorker != null)
+                    {
+                        var vGenerateBarcode = _barcodeRepository.GenerateBarcode(vWorker.PassNumber);
+                        if (vGenerateBarcode.Barcode_Unique_Id != "")
+                        {
+                            var vBarcode_Request = new Barcode_Request()
+                            {
+                                Id = 0,
+                                BarcodeNo = vWorker.PassNumber,
+                                BarcodeType = "Worker",
+                                Barcode_Unique_Id = vGenerateBarcode.Barcode_Unique_Id,
+                                BarcodeOriginalFileName = vGenerateBarcode.BarcodeOriginalFileName,
+                                BarcodeFileName = vGenerateBarcode.BarcodeFileName,
+                                RefId = result
+                            };
+                            var resultBarcode = _barcodeRepository.SaveBarcode(vBarcode_Request);
+                        }
+                    }
+                }
+                #endregion
             }
             return _response;
         }
