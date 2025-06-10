@@ -72,6 +72,8 @@ namespace Visitor.Persistence.Repositories
             queryParameters.Add("@CompanyIdOriginalFileName", parameters.CompanyIdOriginalFileName);
             queryParameters.Add("@CompanyIdFileName", parameters.CompanyIdFileName);
             queryParameters.Add("@IsPlanned", parameters.IsPlanned);
+            queryParameters.Add("@VehiclePhotoOriginalFileName", parameters.VehiclePhotoOriginalFileName);
+            queryParameters.Add("@VehiclePhotoFileName", parameters.VehiclePhotoFileName);
             queryParameters.Add("@IsActive", parameters.IsActive);
             queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
 
@@ -311,6 +313,26 @@ namespace Visitor.Persistence.Repositories
             DynamicParameters queryParameters = new DynamicParameters();
 
             return await ListByStoredProcedure<SelectListResponse>("GetVisitorMobileNoListForSelectList", queryParameters);
+        }
+
+        public async Task<IEnumerable<PreviousVisitor_Response>> GetPreviousVisitorList(PreviousVisitor_Search parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@FromDate", parameters.FromDate);
+            queryParameters.Add("@ToDate", parameters.ToDate);
+            queryParameters.Add("@GateDetailsId", parameters.GateDetailsId);
+            queryParameters.Add("@IsPlanned_CheckIn_CheckOut", parameters.IsPlanned_CheckIn_CheckOut);
+            queryParameters.Add("@SearchText", parameters.SearchText.SanitizeValue());
+            queryParameters.Add("@IsActive", parameters.IsActive);
+            queryParameters.Add("@PageNo", parameters.PageNo);
+            queryParameters.Add("@PageSize", parameters.PageSize);
+            queryParameters.Add("@Total", parameters.Total, null, System.Data.ParameterDirection.Output);
+            queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
+
+            var result = await ListByStoredProcedure<PreviousVisitor_Response>("GetPreviousVisitorList", queryParameters);
+            parameters.Total = queryParameters.Get<int>("Total");
+
+            return result;
         }
     }
 }

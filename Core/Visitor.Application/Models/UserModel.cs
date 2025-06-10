@@ -23,6 +23,7 @@ namespace Visitor.Application.Models
         public int DepartmentId { get; set; }
         public int UserTypeId { get; set; }
         public int IsFilterType { get; set; }
+        public int RoleId { get; set; }
     }
 
     public class User_Request : BaseEntity

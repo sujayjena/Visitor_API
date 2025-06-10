@@ -122,6 +122,10 @@ namespace Visitor.Application.Models
         public string? CompanyIdFileName { get; set; }
         public string? CompanyId_Base64 { get; set; }
         public bool? IsPlanned { get; set; }
+        public string? VehiclePhotoOriginalFileName { get; set; }
+        [JsonIgnore]
+        public string? VehiclePhotoFileName { get; set; }
+        public string? VehiclePhoto_Base64 { get; set; }
         public bool? IsActive { get; set; }
         public List<VisitorGateNo_Request> GateNumberList { get; set; }
         public List<VisitorDocumentVerification_Request> DocumentVerificationList { get; set; }
@@ -207,6 +211,9 @@ namespace Visitor.Application.Models
         public string? CompanyIdFileName { get; set; }
         public string? CompanyIdURL { get; set; }
         public bool? IsPlanned { get; set; }
+        public string? VehiclePhotoOriginalFileName { get; set; }
+        public string? VehiclePhotoFileName { get; set; }
+        public string? VehiclePhotoURL { get; set; }
         public bool? IsActive { get; set; }
 
         public List<VisitorGateNo_Response> GateNumberList { get; set; }
@@ -406,5 +413,46 @@ namespace Visitor.Application.Models
     {
         public string? VisitNumber { get; set; }
         public string? MobileNo { get; set; }
+    }
+
+    public class PreviousVisitor_Search : BaseSearchEntity
+    {
+        [DefaultValue(null)]
+        public DateTime? FromDate { get; set; }
+
+        [DefaultValue(null)]
+        public DateTime? ToDate { get; set; }
+
+        [DefaultValue(0)]
+        public int? GateDetailsId { get; set; }
+        public int? IsPlanned_CheckIn_CheckOut { get; set; }
+    }
+
+    public class PreviousVisitor_Response : BaseResponseEntity
+    {
+        public int? VisitorId { get; set; }
+        public string? VisitNumber { get; set; }
+        public string? VisitorName { get; set; }
+        public string? VisitorMobileNo { get; set; }
+        public string? VisitorEmailId { get; set; }
+        public int? GateDetailsId { get; set; }
+        public string? GateNumber { get; set; }
+        public string? AssignGateNumber { get; set; }
+        public int? PassTypeId { get; set; }
+        public string? PassType { get; set; }
+        public int? VisitTypeId { get; set; }
+        public string? VisitType { get; set; }
+        public string? BarcodeOriginalFileName { get; set; }
+        public string? BarcodeFileName { get; set; }
+        public string? BarcodeURL { get; set; }
+        public string? VisitorPhotoOriginalFileName { get; set; }
+        public string? VisitorPhoto { get; set; }
+        public string? VisitorPhotoURL { get; set; }
+
+        public int? StatusId { get; set; }
+        public string? StatusName { get; set; }
+        public DateTime? CheckedInDate { get; set; }
+
+        public bool? IsActive { get; set; }
     }
 }

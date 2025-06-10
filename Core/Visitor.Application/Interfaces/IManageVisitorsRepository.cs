@@ -34,5 +34,7 @@ namespace Visitor.Application.Interfaces
         Task<IEnumerable<VisitorAsset_Response>> GetVisitorAssetList(VisitorDocumentVerification_Search parameters);
 
         Task<IEnumerable<SelectListResponse>> GetVisitorMobileNoListForSelectList();
+
+        Task<IEnumerable<PreviousVisitor_Response>> GetPreviousVisitorList(PreviousVisitor_Search parameters);
     }
 }

@@ -79,6 +79,17 @@ namespace Visitor.API.Controllers
                 }
             }
 
+            //Vehicle Photo Upload
+            if (parameters != null && !string.IsNullOrWhiteSpace(parameters.VehiclePhoto_Base64))
+            {
+                var vUploadFile = _fileManager.UploadDocumentsBase64ToFile(parameters.VehiclePhoto_Base64, "\\Uploads\\Visitors\\", parameters.VehiclePhotoOriginalFileName);
+
+                if (!string.IsNullOrWhiteSpace(vUploadFile))
+                {
+                    parameters.VehiclePhotoFileName = vUploadFile;
+                }
+            }
+
             int result = await _manageVisitorsRepository.SaveVisitors(parameters);
 
             if (result == (int)SaveOperationEnums.NoRecordExists)
@@ -660,6 +671,16 @@ namespace Visitor.API.Controllers
                 //#endregion
             }
 
+            return _response;
+        }
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> GetPreviousVisitorList(PreviousVisitor_Search parameters)
+        {
+            IEnumerable<PreviousVisitor_Response> lstVisitorss = await _manageVisitorsRepository.GetPreviousVisitorList(parameters);
+            _response.Data = lstVisitorss.ToList();
+            _response.Total = parameters.Total;
             return _response;
         }
     }
