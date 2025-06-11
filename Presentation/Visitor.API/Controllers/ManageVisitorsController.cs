@@ -557,10 +557,10 @@ namespace Visitor.API.Controllers
             {
                 _response.Message = "Already Checked Out for this gate.";
             }
-            //else if (result == -6)
-            //{
-            //    _response.Message = "Not Allowed Checked Out this gate again.";
-            //}
+            else if (result == -6)
+            {
+                _response.Message = "This gate is not assigned for you.";
+            }
             //else if (result == -7)
             //{
             //    _response.Message = "Not Allow to Checked Out from this gate";

@@ -139,7 +139,7 @@ namespace Visitor.API.Controllers
 
             if (loginResponse != null)
             {
-                if(loginResponse.RoleId == 0 || loginResponse.RoleId == null)
+                if((loginResponse.UserType=="Employee" || loginResponse.UserType == "EMPLOYEE") && (loginResponse.RoleId == 0 || loginResponse.RoleId == null))
                 {
                     _response.IsSuccess = false;
                     _response.Message = ErrorConstants.RoleNotAssigned;
