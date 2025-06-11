@@ -214,6 +214,7 @@ namespace Visitor.Application.Models
         public string? VehiclePhotoOriginalFileName { get; set; }
         public string? VehiclePhotoFileName { get; set; }
         public string? VehiclePhotoURL { get; set; }
+        public bool? IsApprovedReject { get; set; }
         public bool? IsActive { get; set; }
 
         public List<VisitorGateNo_Response> GateNumberList { get; set; }
