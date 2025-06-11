@@ -29,6 +29,7 @@ namespace Visitor.API.Controllers
 
         [Route("[action]")]
         [HttpPost]
+        [AllowAnonymous]
         public async Task<ResponseModel> SaveVisitorCompany(VisitorCompany_Request parameters)
         {
             // GSt Upload
