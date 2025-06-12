@@ -221,6 +221,9 @@ namespace Visitor.API.Controllers
                                     };
                                     var resultBarcode = _barcodeRepository.SaveBarcode(vBarcode_Request);
                                 }
+
+                                //Send Email
+                                var vEmailEmp = await SendVisitorApproved_EmailToSecurity(vVisitor.Id);
                             }
                         }
                     }
