@@ -895,7 +895,7 @@ namespace Visitor.API.Controllers.Admin
                     WorkSheet1.Cells[1, 12].Value = "Date Of Joining";
                     WorkSheet1.Cells[1, 13].Value = "Blood Group";
                     WorkSheet1.Cells[1, 14].Value = "Gender";
-                    WorkSheet1.Cells[1, 15].Value = "Merital Status";
+                    WorkSheet1.Cells[1, 15].Value = "Marital Status";
 
                     WorkSheet1.Cells[1, 16].Value = "Emergency Name";
                     WorkSheet1.Cells[1, 17].Value = "Emergency Contact Number";
