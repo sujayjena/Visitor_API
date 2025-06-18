@@ -126,6 +126,7 @@ namespace Visitor.Application.Models
         [JsonIgnore]
         public string? VehiclePhotoFileName { get; set; }
         public string? VehiclePhoto_Base64 { get; set; }
+        public bool? IsMeetingOver { get; set; }
         public bool? IsActive { get; set; }
         public List<VisitorGateNo_Request> GateNumberList { get; set; }
         public List<VisitorDocumentVerification_Request> DocumentVerificationList { get; set; }
@@ -455,5 +456,27 @@ namespace Visitor.Application.Models
         public DateTime? CheckedInDate { get; set; }
 
         public bool? IsActive { get; set; }
+    }
+    public class MeetingPurposeLogHistory_Search : BaseSearchEntity
+    {
+        public int? VisitorId { get; set; }
+    }
+
+    public class MeetingPurposeLogHistory_Response
+    {
+        public int Id { get; set; }
+        public int? VisitorId { get; set; }
+        public int? BranchId { get; set; }
+        public string? BranchName { get; set; }
+        public int? GateDetailsId { get; set; }
+        public string? GateNumber { get; set; }
+        public int? DepartmentId { get; set; }
+        public string? DepartmentName { get; set; }
+        public int? EmployeeId { get; set; }
+        public string? EmployeeName { get; set; }
+        public bool? IsMeetingOver { get; set; }
+        public string? CreatorName { get; set; }
+        public long CreatedBy { get; set; }
+        public DateTime? CreatedDate { get; set; }
     }
 }

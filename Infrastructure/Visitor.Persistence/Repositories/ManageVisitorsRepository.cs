@@ -74,6 +74,7 @@ namespace Visitor.Persistence.Repositories
             queryParameters.Add("@IsPlanned", parameters.IsPlanned);
             queryParameters.Add("@VehiclePhotoOriginalFileName", parameters.VehiclePhotoOriginalFileName);
             queryParameters.Add("@VehiclePhotoFileName", parameters.VehiclePhotoFileName);
+            queryParameters.Add("@IsMeetingOver", parameters.IsMeetingOver);
             queryParameters.Add("@IsActive", parameters.IsActive);
             queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
 
@@ -330,6 +331,23 @@ namespace Visitor.Persistence.Repositories
             queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
 
             var result = await ListByStoredProcedure<PreviousVisitor_Response>("GetPreviousVisitorList", queryParameters);
+            parameters.Total = queryParameters.Get<int>("Total");
+
+            return result;
+        }
+
+        public async Task<IEnumerable<MeetingPurposeLogHistory_Response>> GetMeetingPurposeLogHistoryList(MeetingPurposeLogHistory_Search parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@VisitorId", parameters.VisitorId);
+            queryParameters.Add("@SearchText", parameters.SearchText.SanitizeValue());
+            queryParameters.Add("@IsActive", parameters.IsActive);
+            queryParameters.Add("@PageNo", parameters.PageNo);
+            queryParameters.Add("@PageSize", parameters.PageSize);
+            queryParameters.Add("@Total", parameters.Total, null, System.Data.ParameterDirection.Output);
+            queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
+
+            var result = await ListByStoredProcedure<MeetingPurposeLogHistory_Response>("GetMeetingPurposeLogHistoryList", queryParameters);
             parameters.Total = queryParameters.Get<int>("Total");
 
             return result;
