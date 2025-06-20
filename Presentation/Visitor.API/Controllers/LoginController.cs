@@ -76,32 +76,33 @@ namespace Visitor.API.Controllers
         [Route("[action]")]
         public async Task<ResponseModel> OTPVerification(OTPVerifyModel parameters)
         {
-            if (parameters.OTP == "1234")
-            {
-                _response.Message = "OTP verified sucessfully.";
-            }
-            else
-            {
-                //int result = await _loginRepository.VerifyOTP(parameters);
+            //if (parameters.OTP == "1234")
+            //{
+            //    _response.Message = "OTP verified sucessfully.";
+            //}
+            //else
+            //{
 
-                //if (result == (int)SaveOperationEnums.NoResult)
-                //{
-                //    _response.Message = "Invalid OTP!";
-                //    _response.IsSuccess = false;
-                //}
-                //else if (result == (int)SaveOperationEnums.ReocrdExists)
-                //{
-                //    _response.Message = "OTP timeout!";
-                //    _response.IsSuccess = false;
-                //}
-                //else
-                //{
-                //    _response.Message = "OTP verified sucessfully.";
-                //}
+            int result = await _loginRepository.VerifyOTP(parameters);
 
+            if (result == (int)SaveOperationEnums.NoResult)
+            {
                 _response.Message = "Invalid OTP!";
                 _response.IsSuccess = false;
             }
+            else if (result == (int)SaveOperationEnums.ReocrdExists)
+            {
+                _response.Message = "OTP timeout!";
+                _response.IsSuccess = false;
+            }
+            else
+            {
+                _response.Message = "OTP verified sucessfully.";
+            }
+
+            //_response.Message = "Invalid OTP!";
+            //    _response.IsSuccess = false;
+            //}
 
             return _response;
         }
