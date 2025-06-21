@@ -27,8 +27,9 @@ namespace Visitor.API.Controllers
         private readonly IWebHostEnvironment _environment;
         private IEmailHelper _emailHelper;
         private ISMSHelper _smsHelper;
+        private readonly INotificationRepository _notificationRepository;
 
-        public ManageVisitorsController(IManageVisitorsRepository manageVisitorsRepository, IFileManager fileManager, IBarcodeRepository barcodeRepository, IUserRepository userRepository, IWebHostEnvironment environment, IEmailHelper emailHelper, ILoginRepository loginRepository, IConfigRefRepository configRefRepository, ISMSHelper smsHelper)
+        public ManageVisitorsController(IManageVisitorsRepository manageVisitorsRepository, IFileManager fileManager, IBarcodeRepository barcodeRepository, IUserRepository userRepository, IWebHostEnvironment environment, IEmailHelper emailHelper, ILoginRepository loginRepository, IConfigRefRepository configRefRepository, ISMSHelper smsHelper, INotificationRepository notificationRepository)
         {
             _manageVisitorsRepository = manageVisitorsRepository;
             _fileManager = fileManager;
@@ -39,6 +40,7 @@ namespace Visitor.API.Controllers
             _loginRepository = loginRepository;
             _configRefRepository = configRefRepository;
             _smsHelper = smsHelper;
+            _notificationRepository = notificationRepository;
 
             _response = new ResponseModel();
             _response.IsSuccess = true;
@@ -226,6 +228,53 @@ namespace Visitor.API.Controllers
 
                                 //Send Email
                                 var vEmailEmp = await SendVisitorApproved_EmailToSecurity(vVisitor.Id);
+                            }
+                        }
+
+                        //Notification
+                        var vVisitors = await _manageVisitorsRepository.GetVisitorsById(result);
+                        if (vVisitors != null)
+                        {
+                            string notifyMessage = "";
+                            if (vVisitors.StatusName == "Approved")
+                            {
+                                notifyMessage = String.Format(@"Visit Pass. has been Approved for Visit ID {0}.", vVisitors.VisitNumber);
+                            }
+                            else
+                            {
+                                notifyMessage = String.Format(@"Visit Pass. has been Pending for Visit ID {0}.", vVisitors.VisitNumber);
+                            }
+
+                            var vSearch = new User_Search()
+                            {
+                                UserTypeId = 2,
+                                BranchId = 0
+                            };
+
+                            var vSecurityList = await _userRepository.GetUserList(vSearch); //get branch wise security list
+
+                            var vGateNumberList = await _userRepository.GetEmployeeGateNoByEmployeeId(0, 0); //get gate list of security
+                            var vGateNumberList_1 = vGateNumberList.Where(x => x.GateNumber == "1").ToList();
+
+                            var vSecurityGate_1 = vSecurityList.Where(x => vGateNumberList_1.Select(x => x.EmployeeId).Contains(x.Id)).ToList();
+                            if (vSecurityGate_1.Count > 0)
+                            {
+                                foreach(var vSecurity in vSecurityGate_1)
+                                {
+                                    var vNotifyObj = new Notification_Request()
+                                    {
+                                        Subject = "Visitor Created",
+                                        SendTo = "Security",
+                                        //CustomerId = vWorkOrderObj.CustomerId,
+                                        //CustomerMessage = NotifyMessage,
+                                        EmployeeId = vSecurity.Id,
+                                        EmployeeMessage = notifyMessage,
+                                        RefValue1 = vVisitors.VisitNumber,
+                                        ReadUnread = false
+                                    };
+
+                                    int resultNotification = await _notificationRepository.SaveNotification(vNotifyObj);
+                                }
                             }
                         }
                     }

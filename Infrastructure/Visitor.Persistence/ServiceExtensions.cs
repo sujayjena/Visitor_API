@@ -47,6 +47,8 @@ namespace Visitor.Persistence
             services.AddScoped<ISMSHelper, SMSHelper>();
             services.AddScoped<ISMSConfigRepository, SMSConfigRepository>();
             services.AddScoped<IManageEarlyLeaveRepository, ManageEarlyLeaveRepository>();
+            services.AddScoped<INotificationRepository, NotificationRepository>();
+            services.AddScoped<IDashboardRepository, DashboardRepository>();
         }
     }
 }
