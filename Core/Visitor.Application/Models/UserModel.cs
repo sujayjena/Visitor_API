@@ -33,7 +33,7 @@ namespace Visitor.Application.Models
         {
             BranchList = new List<BranchMapping_Request>();
             UserOtherDetailsList = new List<UserOtherDetails_Request>();
-            GateNumberList = new List<EmployeeGateNo_Request>();
+            GateNumberList = new List<AssignGateNo_Request>();
         }
 
         public string? UserCode { get; set; }
@@ -153,7 +153,7 @@ namespace Visitor.Application.Models
 
         public List<BranchMapping_Request>? BranchList { get; set; }
         public List<UserOtherDetails_Request>? UserOtherDetailsList { get; set; }
-        public List<EmployeeGateNo_Request> GateNumberList { get; set; }
+        public List<AssignGateNo_Request> GateNumberList { get; set; }
     }
 
     public class User_Response : BaseResponseEntity
@@ -162,7 +162,7 @@ namespace Visitor.Application.Models
         {
             BranchList = new List<BranchMapping_Response>();
             UserOtherDetailsList = new List<UserOtherDetails_Response>();
-            GateNumberList = new List<EmployeeGateNo_Response>();
+            GateNumberList = new List<AssignGateNo_Response>();
         }
 
         public string? UserCode { get; set; }
@@ -308,7 +308,7 @@ namespace Visitor.Application.Models
 
         public List<BranchMapping_Response>? BranchList { get; set; }
         public List<UserOtherDetails_Response>? UserOtherDetailsList { get; set; }
-        public List<EmployeeGateNo_Response> GateNumberList { get; set; }
+        public List<AssignGateNo_Response> GateNumberList { get; set; }
     }
 
     public class UserOtherDetails_Request : BaseEntity
@@ -345,25 +345,25 @@ namespace Visitor.Application.Models
         public string? Passwords { get; set; }
     }
 
-    public class EmployeeGateNo_Request
-    {
-        public int Id { get; set; }
+    //public class EmployeeGateNo_Request
+    //{
+    //    public int Id { get; set; }
 
-        [JsonIgnore]
-        public string? Action { get; set; }
+    //    [JsonIgnore]
+    //    public string? Action { get; set; }
 
-        [JsonIgnore]
-        public int? EmployeeId { get; set; }
-        public int? GateDetailsId { get; set; }
-    }
+    //    [JsonIgnore]
+    //    public int? EmployeeId { get; set; }
+    //    public int? GateDetailsId { get; set; }
+    //}
 
-    public class EmployeeGateNo_Response
-    {
-        public int Id { get; set; }
-        public int? EmployeeId { get; set; }
-        public int? GateDetailsId { get; set; }
-        public string? GateNumber { get; set; }
-    }
+    //public class EmployeeGateNo_Response
+    //{
+    //    public int Id { get; set; }
+    //    public int? EmployeeId { get; set; }
+    //    public int? GateDetailsId { get; set; }
+    //    public string? GateNumber { get; set; }
+    //}
 
     public class ImportRequest
     {

@@ -27,8 +27,9 @@ namespace Visitor.API.Controllers.Admin
         private IFileManager _fileManager;
         private readonly IWebHostEnvironment _environment;
         private readonly IConfigRefRepository _configRefRepository;
+        private readonly IAssignGateNoRepository _assignGateNoRepository;
 
-        public UserController(IUserRepository userRepository, ICompanyRepository companyRepository, IBranchRepository branchRepository, IFileManager fileManager, IBarcodeRepository barcodeRepository, IEmailHelper emailHelper, IWebHostEnvironment environment, IConfigRefRepository configRefRepository)
+        public UserController(IUserRepository userRepository, ICompanyRepository companyRepository, IBranchRepository branchRepository, IFileManager fileManager, IBarcodeRepository barcodeRepository, IEmailHelper emailHelper, IWebHostEnvironment environment, IConfigRefRepository configRefRepository, IAssignGateNoRepository assignGateNoRepository)
         {
             _userRepository = userRepository;
             _companyRepository = companyRepository;
@@ -38,6 +39,7 @@ namespace Visitor.API.Controllers.Admin
             _emailHelper = emailHelper;
             _environment = environment;
             _configRefRepository = configRefRepository;
+            _assignGateNoRepository = assignGateNoRepository;
 
             _response = new ResponseModel();
             _response.IsSuccess = true;
@@ -258,30 +260,31 @@ namespace Visitor.API.Controllers.Admin
                 }
                 #endregion
 
-                #region // Add/Update Gate Number
+                #region // Add/Update Assign GateNo
 
-                // Delete Old gate of employee
-
-                var vGateDELETEObj = new EmployeeGateNo_Request()
+                // Delete Assign
+                var vGateNoDELETEObj = new AssignGateNo_Request()
                 {
                     Action = "DELETE",
-                    EmployeeId = result,
+                    RefId = result,
+                    RefType = parameters.UserTypeId == 1 ? "Employee" : "Security",
                     GateDetailsId = 0
                 };
-                int resultGateDELETE = await _userRepository.SaveEmployeeGateNo(vGateDELETEObj);
+                int resultGateNoDELETE = await _assignGateNoRepository.SaveAssignGateNo(vGateNoDELETEObj);
 
 
-                // Add new gate number
+                // add new gate details
                 foreach (var vGateitem in parameters.GateNumberList)
                 {
-                    var vGateObj = new EmployeeGateNo_Request()
+                    var vGateNoMapObj = new AssignGateNo_Request()
                     {
                         Action = "INSERT",
-                        EmployeeId = result,
+                        RefId = result,
+                        RefType = parameters.UserTypeId == 1 ? "Employee" : "Security",
                         GateDetailsId = vGateitem.GateDetailsId
                     };
 
-                    int resultGate = await _userRepository.SaveEmployeeGateNo(vGateObj);
+                    int resultGateNo = await _assignGateNoRepository.SaveAssignGateNo(vGateNoMapObj);
                 }
 
                 #endregion
@@ -372,7 +375,7 @@ namespace Visitor.API.Controllers.Admin
                         vResultObj.UserOtherDetailsList.Add(vUserOtherDetailsResObj);
                     }
 
-                    var gateNolistObj = await _userRepository.GetEmployeeGateNoByEmployeeId(vResultObj.Id, 0);
+                    var gateNolistObj = await _assignGateNoRepository.GetAssignGateNoById(vResultObj.Id, vResultObj.UserTypeId == 1 ? "Employee" : "Security", 0);
                     vResultObj.GateNumberList = gateNolistObj.ToList();
                 }
                 _response.Data = vResultObj;
@@ -936,7 +939,7 @@ namespace Visitor.API.Controllers.Admin
                         var vResultObj = await _userRepository.GetUserById(items.Id);
 
                         string strGateNumberList = string.Empty;
-                        var vSecurityGateDetail = await _userRepository.GetEmployeeGateNoByEmployeeId(EmployeeId: Convert.ToInt32(items.Id), GateDetailsId: 0);
+                        var vSecurityGateDetail = await _assignGateNoRepository.GetAssignGateNoById(RefId: Convert.ToInt32(items.Id), vResultObj.UserTypeId == 1 ? "Employee" : "Security", GateDetailsId: 0);
                         if (vSecurityGateDetail.ToList().Count > 0)
                         {
                             strGateNumberList = string.Join(",", vSecurityGateDetail.ToList().OrderBy(x => x.GateDetailsId).Select(x => x.GateDetailsId));

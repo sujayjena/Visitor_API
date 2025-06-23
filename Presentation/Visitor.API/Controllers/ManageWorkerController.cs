@@ -136,7 +136,7 @@ namespace Visitor.API.Controllers
                 int resultGateNoDELETE = await _assignGateNoRepository.SaveAssignGateNo(vGateNoDELETEObj);
 
 
-                // add new Visitor field
+                // add new gate details
                 foreach (var vGateitem in parameters.GateNumberList)
                 {
                     var vGateNoMapObj = new AssignGateNo_Request()

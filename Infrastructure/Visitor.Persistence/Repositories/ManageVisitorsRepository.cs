@@ -135,28 +135,28 @@ namespace Visitor.Persistence.Repositories
             return (await ListByStoredProcedure<Visitors_Response>("GetVisitorDetailByMobileNumber", queryParameters)).FirstOrDefault();
         }
 
-        public async Task<int> SaveVisitorsGateNo(VisitorGateNo_Request parameters)
-        {
-            DynamicParameters queryParameters = new DynamicParameters();
-            queryParameters.Add("@Action", parameters.Action);
-            queryParameters.Add("@VisitorId", parameters.VisitorId);
-            queryParameters.Add("@GateDetailsId", parameters.GateDetailsId);
-            queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
+        //public async Task<int> SaveVisitorsGateNo(VisitorGateNo_Request parameters)
+        //{
+        //    DynamicParameters queryParameters = new DynamicParameters();
+        //    queryParameters.Add("@Action", parameters.Action);
+        //    queryParameters.Add("@VisitorId", parameters.VisitorId);
+        //    queryParameters.Add("@GateDetailsId", parameters.GateDetailsId);
+        //    queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
 
-            return await SaveByStoredProcedure<int>("SaveVisitorsGateNo", queryParameters);
-        }
+        //    return await SaveByStoredProcedure<int>("SaveVisitorsGateNo", queryParameters);
+        //}
 
-        public async Task<IEnumerable<VisitorGateNo_Response>> GetVisitorsGateNoByVisitorId(long VisitorId, long GateDetailsId)
-        {
-            DynamicParameters queryParameters = new DynamicParameters();
-            queryParameters.Add("@VisitorId", VisitorId);
-            queryParameters.Add("@GateDetailsId", GateDetailsId);
-            queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
+        //public async Task<IEnumerable<VisitorGateNo_Response>> GetVisitorsGateNoByVisitorId(long VisitorId, long GateDetailsId)
+        //{
+        //    DynamicParameters queryParameters = new DynamicParameters();
+        //    queryParameters.Add("@VisitorId", VisitorId);
+        //    queryParameters.Add("@GateDetailsId", GateDetailsId);
+        //    queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
 
-            var result = await ListByStoredProcedure<VisitorGateNo_Response>("GetVisitorsGateNoByVisitorId", queryParameters);
+        //    var result = await ListByStoredProcedure<VisitorGateNo_Response>("GetVisitorsGateNoByVisitorId", queryParameters);
 
-            return result;
-        }
+        //    return result;
+        //}
 
         public async Task<IEnumerable<VisitorApproveNRejectHistory_Response>> GetVisitorApproveNRejectHistoryListById(VisitorApproveNRejectHistory_Search parameters)
         {
@@ -237,6 +237,7 @@ namespace Visitor.Persistence.Repositories
             queryParameters.Add("@RefId", parameters.RefId);
             queryParameters.Add("@RefType", parameters.RefType);
             queryParameters.Add("@GateDetailsId", parameters.GateDetailsId);
+            queryParameters.Add("@IsReject", parameters.IsReject);
             queryParameters.Add("@SearchText", parameters.SearchText.SanitizeValue());
             queryParameters.Add("@IsActive", parameters.IsActive);
             queryParameters.Add("@PageNo", parameters.PageNo);

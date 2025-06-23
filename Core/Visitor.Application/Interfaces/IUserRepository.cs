@@ -40,8 +40,8 @@ namespace Visitor.Application.Interfaces
         #endregion
 
         #region Employee Gate Number
-        Task<int> SaveEmployeeGateNo(EmployeeGateNo_Request parameters);
-        Task<IEnumerable<EmployeeGateNo_Response>> GetEmployeeGateNoByEmployeeId(long EmployeeId, long GateDetailsId);
+        //Task<int> SaveEmployeeGateNo(EmployeeGateNo_Request parameters);
+        //Task<IEnumerable<EmployeeGateNo_Response>> GetEmployeeGateNoByEmployeeId(long EmployeeId, long GateDetailsId);
         #endregion
     }
 }

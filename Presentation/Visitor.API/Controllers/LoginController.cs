@@ -21,6 +21,7 @@ namespace Visitor.API.Controllers
         private readonly IBranchRepository _branchRepository;
         private readonly IManageSecurityRepository _manageSecurityRepository;
         private readonly IManageVisitorsRepository _manageVisitorsRepository;
+        private readonly IAssignGateNoRepository _assignGateNoRepository;
 
         public LoginController(ILoginRepository loginRepository,
             IJwtUtilsRepository jwt,
@@ -28,7 +29,8 @@ namespace Visitor.API.Controllers
             IUserRepository userRepository,
             IBranchRepository branchRepository,
             IManageSecurityRepository manageSecurityRepository,
-            IManageVisitorsRepository manageVisitorsRepository)
+            IManageVisitorsRepository manageVisitorsRepository,
+            IAssignGateNoRepository assignGateNoRepository)
         {
             _loginRepository = loginRepository;
             _jwt = jwt;
@@ -37,6 +39,7 @@ namespace Visitor.API.Controllers
             _branchRepository = branchRepository;
             _manageSecurityRepository = manageSecurityRepository;
             _manageVisitorsRepository = manageVisitorsRepository;
+            _assignGateNoRepository = assignGateNoRepository;
 
             _response = new ResponseModel();
             _response.IsSuccess = true;
@@ -167,7 +170,7 @@ namespace Visitor.API.Controllers
                             strBrnachIdList = string.Join(",", vUserBranchMappingDetail.ToList().OrderBy(x => x.BranchId).Select(x => x.BranchId));
                         }
 
-                        var vSecurityGateDetail = await _userRepository.GetEmployeeGateNoByEmployeeId(EmployeeId: Convert.ToInt32(loginResponse.UserId), GateDetailsId: 0);
+                        var vSecurityGateDetail = await _assignGateNoRepository.GetAssignGateNoById(RefId: Convert.ToInt32(loginResponse.UserId),"Employee", GateDetailsId: 0);
                         if (vSecurityGateDetail.ToList().Count > 0)
                         {
                             strGateDetailsIdList = string.Join(",", vSecurityGateDetail.ToList().OrderBy(x => x.GateDetailsId).Select(x => x.GateDetailsId));

@@ -38,7 +38,7 @@ namespace Visitor.Application.Models
     {
         public Visitors_Request()
         {
-            GateNumberList = new List<VisitorGateNo_Request>();
+            GateNumberList = new List<AssignGateNo_Request>();
             DocumentVerificationList = new List<VisitorDocumentVerification_Request>();
             AssetList = new List<VisitorAsset_Request>();
         }
@@ -128,7 +128,7 @@ namespace Visitor.Application.Models
         public string? VehiclePhoto_Base64 { get; set; }
         public bool? IsMeetingOver { get; set; }
         public bool? IsActive { get; set; }
-        public List<VisitorGateNo_Request> GateNumberList { get; set; }
+        public List<AssignGateNo_Request> GateNumberList { get; set; }
         public List<VisitorDocumentVerification_Request> DocumentVerificationList { get; set; }
         public List<VisitorAsset_Request> AssetList { get; set; }
     }
@@ -218,7 +218,7 @@ namespace Visitor.Application.Models
         public bool? IsApprovedReject { get; set; }
         public bool? IsActive { get; set; }
 
-        public List<VisitorGateNo_Response> GateNumberList { get; set; }
+        public List<AssignGateNo_Response> GateNumberList { get; set; }
         public List<VisitorDocumentVerification_Response> DocumentVerificationList { get; set; }
         public List<VisitorAsset_Response> AssetList { get; set; }
     }
@@ -262,25 +262,26 @@ namespace Visitor.Application.Models
         public string? AssetName { get; set; }
         public string? AssetDesc { get; set; }
     }
-    public class VisitorGateNo_Request
-    {
-        public int Id { get; set; }
 
-        [JsonIgnore]
-        public string? Action { get; set; }
+    //public class VisitorGateNo_Request
+    //{
+    //    public int Id { get; set; }
 
-        [JsonIgnore]
-        public int? VisitorId { get; set; }
-        public int? GateDetailsId { get; set; }
-    }
+    //    [JsonIgnore]
+    //    public string? Action { get; set; }
 
-    public class VisitorGateNo_Response
-    {
-        public int Id { get; set; }
-        public int? VisitorId { get; set; }
-        public int? GateDetailsId { get; set; }
-        public string? GateNumber { get; set; }
-    }
+    //    [JsonIgnore]
+    //    public int? VisitorId { get; set; }
+    //    public int? GateDetailsId { get; set; }
+    //}
+
+    //public class VisitorGateNo_Response
+    //{
+    //    public int Id { get; set; }
+    //    public int? VisitorId { get; set; }
+    //    public int? GateDetailsId { get; set; }
+    //    public string? GateNumber { get; set; }
+    //}
 
     public class VisitorApproveNRejectHistory_Search : BaseSearchEntity
     {
@@ -394,6 +395,9 @@ namespace Visitor.Application.Models
         [DefaultValue("Employee")]
         public string? RefType { get; set; }
         public int? GateDetailsId { get; set; }
+
+        [DefaultValue(null)]
+        public bool? IsReject { get; set; }
     }
 
     public class CheckedInOutLogHistory_Response

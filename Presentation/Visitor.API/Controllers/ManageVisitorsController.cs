@@ -28,8 +28,9 @@ namespace Visitor.API.Controllers
         private IEmailHelper _emailHelper;
         private ISMSHelper _smsHelper;
         private readonly INotificationRepository _notificationRepository;
+        private readonly IAssignGateNoRepository _assignGateNoRepository;
 
-        public ManageVisitorsController(IManageVisitorsRepository manageVisitorsRepository, IFileManager fileManager, IBarcodeRepository barcodeRepository, IUserRepository userRepository, IWebHostEnvironment environment, IEmailHelper emailHelper, ILoginRepository loginRepository, IConfigRefRepository configRefRepository, ISMSHelper smsHelper, INotificationRepository notificationRepository)
+        public ManageVisitorsController(IManageVisitorsRepository manageVisitorsRepository, IFileManager fileManager, IBarcodeRepository barcodeRepository, IUserRepository userRepository, IWebHostEnvironment environment, IEmailHelper emailHelper, ILoginRepository loginRepository, IConfigRefRepository configRefRepository, ISMSHelper smsHelper, INotificationRepository notificationRepository, IAssignGateNoRepository assignGateNoRepository)
         {
             _manageVisitorsRepository = manageVisitorsRepository;
             _fileManager = fileManager;
@@ -41,6 +42,7 @@ namespace Visitor.API.Controllers
             _configRefRepository = configRefRepository;
             _smsHelper = smsHelper;
             _notificationRepository = notificationRepository;
+            _assignGateNoRepository = assignGateNoRepository;
 
             _response = new ResponseModel();
             _response.IsSuccess = true;
@@ -120,29 +122,31 @@ namespace Visitor.API.Controllers
                     _response.Message = "Record details saved successfully";
                 }
 
-                #region // Add/Update Visitor GateNo
+                #region // Add/Update Assign GateNo
 
-                // Delete Region of Branch
-                var vGateNoDELETEObj = new VisitorGateNo_Request()
+                // Delete Assign
+                var vGateNoDELETEObj = new AssignGateNo_Request()
                 {
                     Action = "DELETE",
-                    VisitorId = result,
+                    RefId = result,
+                    RefType = "Visitor",
                     GateDetailsId = 0
                 };
-                int resultGateNoDELETE = await _manageVisitorsRepository.SaveVisitorsGateNo(vGateNoDELETEObj);
+                int resultGateNoDELETE = await _assignGateNoRepository.SaveAssignGateNo(vGateNoDELETEObj);
 
 
-                // add new Visitor field
+                // add new gate details
                 foreach (var vGateitem in parameters.GateNumberList)
                 {
-                    var vGateNoMapObj = new VisitorGateNo_Request()
+                    var vGateNoMapObj = new AssignGateNo_Request()
                     {
                         Action = "INSERT",
-                        VisitorId = result,
+                        RefId = result,
+                        RefType = "Visitor",
                         GateDetailsId = vGateitem.GateDetailsId
                     };
 
-                    int resultGateNo = await _manageVisitorsRepository.SaveVisitorsGateNo(vGateNoMapObj);
+                    int resultGateNo = await _assignGateNoRepository.SaveAssignGateNo(vGateNoMapObj);
                 }
 
                 #endregion
@@ -253,10 +257,10 @@ namespace Visitor.API.Controllers
 
                             var vSecurityList = await _userRepository.GetUserList(vSearch); //get branch wise security list
 
-                            var vGateNumberList = await _userRepository.GetEmployeeGateNoByEmployeeId(0, 0); //get gate list of security
+                            var vGateNumberList = await _assignGateNoRepository.GetAssignGateNoById(0, "Security", 0); //get gate list of security
                             var vGateNumberList_1 = vGateNumberList.Where(x => x.GateNumber == "1").ToList();
 
-                            var vSecurityGate_1 = vSecurityList.Where(x => vGateNumberList_1.Select(x => x.EmployeeId).Contains(x.Id)).ToList();
+                            var vSecurityGate_1 = vSecurityList.Where(x => vGateNumberList_1.Select(x => x.RefId).Contains(x.Id)).ToList();
                             if (vSecurityGate_1.Count > 0)
                             {
                                 foreach(var vSecurity in vSecurityGate_1)
@@ -293,7 +297,7 @@ namespace Visitor.API.Controllers
             IEnumerable<Visitors_Response> lstVisitorss = await _manageVisitorsRepository.GetVisitorsList(parameters);
             foreach (var user in lstVisitorss)
             {
-                var gateNolistObj = await _manageVisitorsRepository.GetVisitorsGateNoByVisitorId(user.Id, 0);
+                var gateNolistObj = await _assignGateNoRepository.GetAssignGateNoById(user.Id, "Visitor", 0);
                 user.GateNumberList = gateNolistObj.ToList();
             }
             _response.Data = lstVisitorss.ToList();
@@ -314,7 +318,7 @@ namespace Visitor.API.Controllers
                 var vResultObj = await _manageVisitorsRepository.GetVisitorsById(Id);
                 if (vResultObj != null)
                 {
-                    var gateNolistObj = await _manageVisitorsRepository.GetVisitorsGateNoByVisitorId(vResultObj.Id, 0);
+                    var gateNolistObj = await _assignGateNoRepository.GetAssignGateNoById(vResultObj.Id, "Visitor", 0);
                     vResultObj.GateNumberList = gateNolistObj.ToList();
 
                     var vVisitorDocumentVerification = new VisitorDocumentVerification_Search()
@@ -419,7 +423,7 @@ namespace Visitor.API.Controllers
 
                 if (vVisitor != null)
                 {
-                    var vGateNolistObj = await _manageVisitorsRepository.GetVisitorsGateNoByVisitorId(vVisitor.Id, 0);
+                    var vGateNolistObj = await _assignGateNoRepository.GetAssignGateNoById(vVisitor.Id, "Visitor", 0);
                     visitorGate = string.Join(",", vGateNolistObj.Select(x => x.GateNumber).ToList());
 
                     var vSearch = new User_Search()
@@ -430,10 +434,10 @@ namespace Visitor.API.Controllers
 
                     var vSecurityList = await _userRepository.GetUserList(vSearch); //get branch wise security list
 
-                    var vGateNumberList = await _userRepository.GetEmployeeGateNoByEmployeeId(0, 0); //get gate list of security
+                    var vGateNumberList = await _assignGateNoRepository.GetAssignGateNoById(0,"Security", 0); //get gate list of security
                     var vGateNumberList_1 = vGateNumberList.Where(x => x.GateNumber == "1").ToList();
 
-                    var vSecurityGate_1 = vSecurityList.Where(x => vGateNumberList_1.Select(x => x.EmployeeId).Contains(x.Id)).ToList();
+                    var vSecurityGate_1 = vSecurityList.Where(x => vGateNumberList_1.Select(x => x.RefId).Contains(x.Id)).ToList();
                     if (vSecurityGate_1.Count > 0)
                     {
                         recipientEmail = string.Join(",", vSecurityGate_1.Select(x => x.EmailId).ToList());
@@ -524,8 +528,7 @@ namespace Visitor.API.Controllers
                 var vResultObj = await _manageVisitorsRepository.GetVisitorDetailByMobileNumber(MobileNumber);
                 if (vResultObj != null)
                 {
-                    var gateNolistObj = await _manageVisitorsRepository.GetVisitorsGateNoByVisitorId(vResultObj.Id, 0);
-
+                    var gateNolistObj = await _assignGateNoRepository.GetAssignGateNoById(vResultObj.Id, "Visitor", 0);
                     vResultObj.GateNumberList = gateNolistObj.ToList();
 
                     var vVisitorDocumentVerification = new VisitorDocumentVerification_Search()
