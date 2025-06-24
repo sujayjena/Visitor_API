@@ -49,6 +49,7 @@ namespace Visitor.Persistence
             services.AddScoped<IManageEarlyLeaveRepository, ManageEarlyLeaveRepository>();
             services.AddScoped<INotificationRepository, NotificationRepository>();
             services.AddScoped<IDashboardRepository, DashboardRepository>();
+            services.AddScoped<IManagePurchaseOrderRepository, ManagePurchaseOrderRepository>();
         }
     }
 }

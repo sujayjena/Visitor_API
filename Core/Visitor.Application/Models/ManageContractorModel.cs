@@ -20,7 +20,10 @@ namespace Visitor.Application.Models
         public int? ContractorTypeId { get; set; }
         public string? ContractorName { get; set; }
         public string? ContractorPerson { get; set; }
+
+        [JsonIgnore]
         public int? NoofContractedWorkers { get; set; }
+        public int? NoofContractedPO { get; set; }
         public string? MobileNo { get; set; }
         public DateTime? ValidFromDate { get; set; }
         public DateTime? ValidToDate { get; set; }
@@ -76,7 +79,10 @@ namespace Visitor.Application.Models
         public string? ContractorType { get; set; }
         public string? ContractorName { get; set; }
         public string? ContractorPerson { get; set; }
+
+        [JsonIgnore]
         public int? NoofContractedWorkers { get; set; }
+        public int? NoofContractedPO { get; set; }
         public string? MobileNo { get; set; }
         public DateTime? ValidFromDate { get; set; }
         public DateTime? ValidToDate { get; set; }

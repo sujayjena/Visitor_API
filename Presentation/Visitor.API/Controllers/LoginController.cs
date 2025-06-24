@@ -170,7 +170,7 @@ namespace Visitor.API.Controllers
                             strBrnachIdList = string.Join(",", vUserBranchMappingDetail.ToList().OrderBy(x => x.BranchId).Select(x => x.BranchId));
                         }
 
-                        var vSecurityGateDetail = await _assignGateNoRepository.GetAssignGateNoById(RefId: Convert.ToInt32(loginResponse.UserId),"Employee", GateDetailsId: 0);
+                        var vSecurityGateDetail = await _assignGateNoRepository.GetAssignGateNoById(RefId: Convert.ToInt32(loginResponse.UserId), loginResponse.UserTypeId == 1 ? "Employee" : "Security", GateDetailsId: 0);
                         if (vSecurityGateDetail.ToList().Count > 0)
                         {
                             strGateDetailsIdList = string.Join(",", vSecurityGateDetail.ToList().OrderBy(x => x.GateDetailsId).Select(x => x.GateDetailsId));
