@@ -25,7 +25,7 @@ namespace Visitor.Persistence.Repositories
             DynamicParameters queryParameters = new DynamicParameters();
             queryParameters.Add("@Id", parameters.Id);
             queryParameters.Add("@WorkerName", parameters.WorkerName);
-            queryParameters.Add("@ContractorId", parameters.ContractorId);
+            queryParameters.Add("@PurchaseOrderId", parameters.PurchaseOrderId);
             queryParameters.Add("@WorkerTypeId", parameters.WorkerTypeId);
             queryParameters.Add("@ContractTypeId", parameters.ContractTypeId);
             queryParameters.Add("@WorkerMobileNo", parameters.WorkerMobileNo);
@@ -62,7 +62,7 @@ namespace Visitor.Persistence.Repositories
             queryParameters.Add("@SearchText", parameters.SearchText.SanitizeValue());
             queryParameters.Add("@IsActive", parameters.IsActive);
             queryParameters.Add("@IsBlackList", parameters.IsBlackList);
-            queryParameters.Add("@ContractorId", parameters.ContractorId);
+            queryParameters.Add("@PurchaseOrderId", parameters.PurchaseOrderId);
             queryParameters.Add("@BranchId", parameters.BranchId);
             queryParameters.Add("@PageNo", parameters.PageNo);
             queryParameters.Add("@PageSize", parameters.PageSize);

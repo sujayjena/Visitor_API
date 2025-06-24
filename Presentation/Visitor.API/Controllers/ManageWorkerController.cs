@@ -17,15 +17,17 @@ namespace Visitor.API.Controllers
         private readonly IManageContractorRepository _manageContractorRepository;
         private readonly IAssignGateNoRepository _assignGateNoRepository;
         private readonly IBarcodeRepository _barcodeRepository;
+        private readonly IManagePurchaseOrderRepository _managePurchaseOrderRepository;
         private IFileManager _fileManager;
 
-        public ManageWorkerController(IManageWorkerRepository manageWorkerRepository, IFileManager fileManager, IManageContractorRepository manageContractorRepository, IAssignGateNoRepository assignGateNoRepository, IBarcodeRepository barcodeRepository)
+        public ManageWorkerController(IManageWorkerRepository manageWorkerRepository, IFileManager fileManager, IManageContractorRepository manageContractorRepository, IAssignGateNoRepository assignGateNoRepository, IBarcodeRepository barcodeRepository, IManagePurchaseOrderRepository managePurchaseOrderRepository)
         {
             _manageWorkerRepository = manageWorkerRepository;
             _fileManager = fileManager;
             _manageContractorRepository = manageContractorRepository;
             _assignGateNoRepository = assignGateNoRepository;
             _barcodeRepository = barcodeRepository;
+            _managePurchaseOrderRepository = managePurchaseOrderRepository;
 
             _response = new ResponseModel();
             _response.IsSuccess = true;
@@ -37,13 +39,13 @@ namespace Visitor.API.Controllers
         {
             #region User Restriction 
 
-            int vNoofContractedWorker = 0;
+            int vNoofPOWorker = 0;
             int totalWorkderRegistered = 0;
 
             if (parameters.Id == 0)
             {
                 var vWorkerSearch = new WorkerSearch_Request();
-                vWorkerSearch.ContractorId = 0;
+                vWorkerSearch.PurchaseOrderId = 0;
                 vWorkerSearch.IsBlackList = false;
                 vWorkerSearch.IsActive = true;
 
@@ -51,23 +53,23 @@ namespace Visitor.API.Controllers
               
                 #region Contractor Wise Worker Check
 
-                if (parameters.ContractorId > 0)
+                if (parameters.PurchaseOrderId > 0)
                 {
                     //get total worker count
-                    totalWorkderRegistered = vWorker.Where(x => x.ContractorId == parameters.ContractorId).Count();
+                    totalWorkderRegistered = vWorker.Where(x => x.PurchaseOrderId == parameters.PurchaseOrderId).Count();
 
-                    //get total NoofContractedWorkers 
-                    var vContractor = await _manageContractorRepository.GetContractorById(Convert.ToInt32(parameters.ContractorId));
-                    if (vContractor != null)
+                    //get total NoofPOWorkers 
+                    var vPurchaseOrder = await _managePurchaseOrderRepository.GetPurchaseOrderById(Convert.ToInt32(parameters.PurchaseOrderId));
+                    if (vPurchaseOrder != null)
                     {
-                        vNoofContractedWorker = vContractor.NoofContractedWorkers ?? 0;
+                        vNoofPOWorker = vPurchaseOrder.NoofPOWorker ?? 0;
                     }
                 }
 
                 // Total Contractor check with register worker
-                if (totalWorkderRegistered >= vNoofContractedWorker)
+                if (totalWorkderRegistered >= vNoofPOWorker)
                 {
-                    _response.Message = "You are not allowed to create worker more than " + vNoofContractedWorker + ", Please contact your administrator to access this feature!";
+                    _response.Message = "You are not allowed to create worker more than " + vNoofPOWorker + ", Please contact your administrator to access this feature!";
                     return _response;
                 }
 

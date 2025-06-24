@@ -38,5 +38,7 @@ namespace Visitor.Application.Interfaces
         Task<IEnumerable<PreviousVisitor_Response>> GetPreviousVisitorList(PreviousVisitor_Search parameters);
 
         Task<IEnumerable<MeetingPurposeLogHistory_Response>> GetMeetingPurposeLogHistoryList(MeetingPurposeLogHistory_Search parameters);
+
+        Task<int> DeleteVisitorDocumentVerification(int Id);
     }
 }

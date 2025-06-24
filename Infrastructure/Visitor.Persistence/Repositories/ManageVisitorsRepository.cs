@@ -257,8 +257,10 @@ namespace Visitor.Persistence.Repositories
             queryParameters.Add("@Id", parameters.Id);
             queryParameters.Add("@VisitorId", parameters.VisitorId);
             queryParameters.Add("@IDTypeId", parameters.IDTypeId);
+            queryParameters.Add("@DocumentNumber", parameters.DocumentNumber);
             queryParameters.Add("@DocumentOriginalFileName", parameters.DocumentOriginalFileName);
             queryParameters.Add("@DocumentFileName", parameters.DocumentFileName);
+            queryParameters.Add("@IsDocumentStatus", parameters.IsDocumentStatus);
             queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
 
             return await SaveByStoredProcedure<int>("SaveVisitorDocumentVerification", queryParameters);
@@ -352,6 +354,15 @@ namespace Visitor.Persistence.Repositories
             parameters.Total = queryParameters.Get<int>("Total");
 
             return result;
+        }
+
+        public async Task<int> DeleteVisitorDocumentVerification(int Id)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+
+            queryParameters.Add("@Id", Id);
+
+            return await SaveByStoredProcedure<int>("DeleteVisitorDocumentVerification", queryParameters);
         }
     }
 }

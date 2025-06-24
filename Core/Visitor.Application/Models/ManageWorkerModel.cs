@@ -21,7 +21,7 @@ namespace Visitor.Application.Models
             GateNumberList = new List<AssignGateNo_Request>();
         }
         public string? WorkerName { get; set; }
-        public int? ContractorId { get; set; }
+        public int? PurchaseOrderId { get; set; }
         public int? WorkerTypeId { get; set; }
         public int? ContractTypeId { get; set; }
         public string? WorkerMobileNo { get; set; }
@@ -62,7 +62,7 @@ namespace Visitor.Application.Models
     {
         [DefaultValue(null)]
         public bool? IsBlackList { get; set; }
-        public int? ContractorId { get; set; }
+        public int? PurchaseOrderId { get; set; }
         public int? BranchId { get; set; }
     }
 
@@ -73,10 +73,8 @@ namespace Visitor.Application.Models
             GateNumberList = new List<AssignGateNo_Response>();
         }
         public string? WorkerName { get; set; }
-        public int? ContractorId { get; set; }
-        public string? ContractorName { get; set; }
-        public int? ContractorTypeId { get; set; }
-        public string? ContractorType { get; set; }
+        public int? PurchaseOrderId { get; set; }
+        public string? PONumber { get; set; }
         public int? WorkerTypeId { get; set; }
         public string? WorkerType { get; set; }
         public int? ContractTypeId { get; set; }
@@ -113,7 +111,7 @@ namespace Visitor.Application.Models
         public string? BarcodeOriginalFileName { get; set; }
         public string? BarcodeFileName { get; set; }
         public string? BarcodeURL { get; set; }
-        public DateTime? ContractorValidity { get; set; }
+        public DateTime? PurchaseOrderValidity { get; set; }
         public string? PassNumber { get; set; }
         public bool? IsExpire { get; set; }
 

@@ -227,11 +227,13 @@ namespace Visitor.Application.Models
         [JsonIgnore]
         public int? VisitorId { get; set; }
         public int? IDTypeId { get; set; }
+        public string? DocumentNumber { get; set; }
         public string? DocumentOriginalFileName { get; set; }
 
         [JsonIgnore]
         public string? DocumentFileName { get; set; }
         public string? DocumentFile_Base64 { get; set; }
+        public int? IsDocumentStatus { get; set; }
     }
 
     public class VisitorDocumentVerification_Search : BaseSearchEntity
@@ -244,9 +246,11 @@ namespace Visitor.Application.Models
         public int? VisitorId { get; set; }
         public int? IDTypeId { get; set; }
         public string? IDType { get; set; }
+        public string? DocumentNumber { get; set; }
         public string? DocumentOriginalFileName { get; set; }
         public string? DocumentFileName { get; set; }
         public string? DocumentURL { get; set; }
+        public int? IsDocumentStatus { get; set; }
     }
 
     public class VisitorAsset_Request : BaseEntity

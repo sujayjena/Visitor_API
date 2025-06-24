@@ -171,8 +171,10 @@ namespace Visitor.API.Controllers
                         Id = vitem.Id,
                         VisitorId = result,
                         IDTypeId = vitem.IDTypeId,
+                        DocumentNumber = vitem.DocumentNumber,
                         DocumentOriginalFileName = vitem.DocumentOriginalFileName,
                         DocumentFileName = vitem.DocumentFileName,
+                        IsDocumentStatus = vitem.IsDocumentStatus,
                     };
 
                     int resultGateNo = await _manageVisitorsRepository.SaveVisitorDocumentVerification(vVisitorDocumentVerification);
@@ -662,6 +664,7 @@ namespace Visitor.API.Controllers
 
         [Route("[action]")]
         [HttpPost]
+        [AllowAnonymous]
         public async Task<ResponseModel> VisitorOTPGenerate(VisitorOTPVerify parameters)
         {
             var vOTPRequestModelObj = new OTPRequestModel()
@@ -749,6 +752,27 @@ namespace Visitor.API.Controllers
             IEnumerable<MeetingPurposeLogHistory_Response> lstVisitorss = await _manageVisitorsRepository.GetMeetingPurposeLogHistoryList(parameters);
             _response.Data = lstVisitorss.ToList();
             _response.Total = parameters.Total;
+            return _response;
+        }
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> DeleteVisitorDocumentVerification(int Id)
+        {
+            int result = await _manageVisitorsRepository.DeleteVisitorDocumentVerification(Id);
+
+            if (result == (int)SaveOperationEnums.NoRecordExists)
+            {
+                _response.Message = "No record exists";
+            }
+            else if (result == (int)SaveOperationEnums.NoResult)
+            {
+                _response.Message = "Something went wrong, please try again";
+            }
+            else
+            {
+                _response.Message = "Record details deleted successfully";
+            }
             return _response;
         }
     }
