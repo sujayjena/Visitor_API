@@ -28,6 +28,8 @@ namespace Visitor.Application.Interfaces
 
         Task<State_Response?> GetStateById(long Id);
 
+        Task<IEnumerable<StateDataValidationErrors>> ImportState(List<ImportedState> parameters);
+
         #endregion
 
         #region District 
@@ -37,6 +39,8 @@ namespace Visitor.Application.Interfaces
         Task<IEnumerable<District_Response>> GetDistrictList(BaseSearchEntity parameters);
 
         Task<District_Response?> GetDistrictById(long Id);
+
+        Task<IEnumerable<ProvinceDataValidationErrors>> ImportProvince(List<ImportedProvince> parameters);
 
         #endregion
 
@@ -66,6 +70,8 @@ namespace Visitor.Application.Interfaces
         Task<IEnumerable<Territories_Response>> GetTerritoriesList(BaseSearchEntity parameters);
         Task<Territories_Response?> GetTerritoriesById(long Id);
         Task<IEnumerable<Territories_Country_State_Dist_City_Response>> GetTerritories_Country_State_Dist_City_List_ById(Territories_Country_State_Dist_City_Search parameters);
+
+        Task<IEnumerable<TerritoriesDataValidationErrors>> ImportTerritories(List<ImportedTerritories> parameters);
 
         #endregion
     }

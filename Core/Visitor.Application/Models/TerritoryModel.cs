@@ -48,6 +48,18 @@ namespace Visitor.Application.Models
         public bool? IsActive { get; set; }
     }
 
+    public class StateDataValidationErrors
+    {
+        public string StateName { get; set; }
+        public string IsActive { get; set; }
+        public string ValidationMessage { get; set; }
+    }
+    public class ImportedState
+    {
+        public string StateName { get; set; }
+        public string IsActive { get; set; }
+    }
+
     #endregion
 
     #region District
@@ -64,6 +76,18 @@ namespace Visitor.Application.Models
         public string? DistrictName { get; set; }
 
         public bool? IsActive { get; set; }
+    }
+
+    public class ProvinceDataValidationErrors
+    {
+        public string ProvinceName { get; set; }
+        public string IsActive { get; set; }
+        public string ValidationMessage { get; set; }
+    }
+    public class ImportedProvince
+    {
+        public string ProvinceName { get; set; }
+        public string IsActive { get; set; }
     }
 
     #endregion
@@ -162,6 +186,20 @@ namespace Visitor.Application.Models
 
         public string? Text { get; set; }
     }
-
+    public class TerritoriesDataValidationErrors
+    {
+        public string CountryName { get; set; }
+        public string StateName { get; set; }
+        public string ProvinceName { get; set; }
+        public string IsActive { get; set; }
+        public string ValidationMessage { get; set; }
+    }
+    public class ImportedTerritories
+    {
+        public string CountryName { get; set; }
+        public string StateName { get; set; }
+        public string ProvinceName { get; set; }
+        public string IsActive { get; set; }
+    }
     #endregion
 }

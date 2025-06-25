@@ -95,6 +95,15 @@ namespace Visitor.Persistence.Repositories
             return (await ListByStoredProcedure<State_Response>("GetStateById", queryParameters)).FirstOrDefault();
         }
 
+        public async Task<IEnumerable<StateDataValidationErrors>> ImportState(List<ImportedState> parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            string xmlData = ConvertListToXml(parameters);
+            queryParameters.Add("@XmlData", xmlData);
+            queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
+            return await ListByStoredProcedure<StateDataValidationErrors>("ImportState", queryParameters);
+        }
+
         #endregion
 
         #region District
@@ -131,6 +140,15 @@ namespace Visitor.Persistence.Repositories
             DynamicParameters queryParameters = new DynamicParameters();
             queryParameters.Add("@Id", Id);
             return (await ListByStoredProcedure<District_Response>("GetDistrictById", queryParameters)).FirstOrDefault();
+        }
+
+        public async Task<IEnumerable<ProvinceDataValidationErrors>> ImportProvince(List<ImportedProvince> parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            string xmlData = ConvertListToXml(parameters);
+            queryParameters.Add("@XmlData", xmlData);
+            queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
+            return await ListByStoredProcedure<ProvinceDataValidationErrors>("ImportProvince", queryParameters);
         }
 
         #endregion
@@ -262,6 +280,14 @@ namespace Visitor.Persistence.Repositories
             var result = await ListByStoredProcedure<Territories_Country_State_Dist_City_Response>("GetTerritories_Country_State_Dist_City_List_ById", queryParameters);
 
             return result;
+        }
+        public async Task<IEnumerable<TerritoriesDataValidationErrors>> ImportTerritories(List<ImportedTerritories> parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            string xmlData = ConvertListToXml(parameters);
+            queryParameters.Add("@XmlData", xmlData);
+            queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
+            return await ListByStoredProcedure<TerritoriesDataValidationErrors>("ImportTerritories", queryParameters);
         }
 
         #endregion
