@@ -241,14 +241,22 @@ namespace Visitor.API.Controllers
                         var vVisitors = await _manageVisitorsRepository.GetVisitorsById(result);
                         if (vVisitors != null)
                         {
+                            var gateNolistObj = await _assignGateNoRepository.GetAssignGateNoById(vVisitors.Id, "Visitor", 0);
+
+                            var visitorGate = "";
+                            if (gateNolistObj != null)
+                            {
+                                visitorGate = string.Join(",", gateNolistObj.ToList().Select(x => x.GateNumber).ToList());
+                            }
+
                             string notifyMessage = "";
                             if (vVisitors.StatusName == "Approved")
                             {
-                                notifyMessage = String.Format(@"Visit Pass. has been Approved for Visit ID {0}.", vVisitors.VisitNumber);
+                                notifyMessage = String.Format(@"Pass created for {0} at Gate Number - {1} on {2}.", vVisitors.VisitorName, visitorGate, vVisitors.CreatedDate);
                             }
                             else
                             {
-                                notifyMessage = String.Format(@"Visit Pass. has been Pending for Visit ID {0}.", vVisitors.VisitNumber);
+                                notifyMessage = String.Format(@"Pass created for {0} at Gate Number - {1} on {2}.", vVisitors.VisitorName, visitorGate, vVisitors.CreatedDate);
                             }
 
                             var vSearch = new User_Search()
