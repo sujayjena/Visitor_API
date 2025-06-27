@@ -859,8 +859,8 @@ namespace Visitor.API.Controllers.Admin
                         WorkSheet1.Cells[recordIndex, 3].Value = items.DistrictName;
                         WorkSheet1.Cells[recordIndex, 4].Value = items.IsActive == true ? "Active" : "Inactive";
 
-                        WorkSheet1.Cells[recordIndex, 5].Style.Numberformat.Format = DateTimeFormatInfo.CurrentInfo.ShortDatePattern;
-                        WorkSheet1.Cells[recordIndex, 5].Value = items.CreatedDate;
+                        //WorkSheet1.Cells[recordIndex, 5].Style.Numberformat.Format = DateTimeFormatInfo.CurrentInfo.ShortDatePattern;
+                        WorkSheet1.Cells[recordIndex, 5].Value = items.CreatedDate.ToString("dd/MM/yyyy");  
                         WorkSheet1.Cells[recordIndex, 6].Value = items.CreatorName;
 
                         recordIndex += 1;
