@@ -282,6 +282,74 @@ namespace Visitor.API.Controllers.Admin
             return result;
         }
 
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> ExportStateData()
+        {
+            _response.IsSuccess = false;
+            byte[] result;
+            int recordIndex;
+            ExcelWorksheet WorkSheet1;
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+
+            var request = new BaseSearchEntity();
+
+            IEnumerable<State_Response> lstSizeObj = await _territoryRepository.GetStateList(request);
+
+            using (MemoryStream msExportDataFile = new MemoryStream())
+            {
+                using (ExcelPackage excelExportData = new ExcelPackage())
+                {
+                    WorkSheet1 = excelExportData.Workbook.Worksheets.Add("State");
+                    WorkSheet1.TabColor = System.Drawing.Color.Black;
+                    WorkSheet1.DefaultRowHeight = 12;
+
+                    //Header of table
+                    WorkSheet1.Row(1).Height = 20;
+                    WorkSheet1.Row(1).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    WorkSheet1.Row(1).Style.Font.Bold = true;
+
+                    WorkSheet1.Cells[1, 1].Value = "State";
+                    WorkSheet1.Cells[1, 2].Value = "Status";
+
+                    WorkSheet1.Cells[1, 3].Value = "CreatedDate";
+                    WorkSheet1.Cells[1, 4].Value = "CreatedBy";
+
+                    recordIndex = 2;
+
+                    foreach (var items in lstSizeObj)
+                    {
+                        WorkSheet1.Cells[recordIndex, 1].Value = items.StateName;
+                        WorkSheet1.Cells[recordIndex, 2].Value = items.IsActive == true ? "Active" : "Inactive";
+
+                        //WorkSheet1.Cells[recordIndex, 5].Style.Numberformat.Format = DateTimeFormatInfo.CurrentInfo.ShortDatePattern;
+                        WorkSheet1.Cells[recordIndex, 3].Value = items.CreatedDate.ToString("dd/MM/yyyy");
+                        WorkSheet1.Cells[recordIndex, 4].Value = items.CreatorName;
+
+                        recordIndex += 1;
+                    }
+
+                    WorkSheet1.Column(1).AutoFit();
+                    WorkSheet1.Column(2).AutoFit();
+                    WorkSheet1.Column(3).AutoFit();
+                    WorkSheet1.Column(4).AutoFit();
+
+                    excelExportData.SaveAs(msExportDataFile);
+                    msExportDataFile.Position = 0;
+                    result = msExportDataFile.ToArray();
+                }
+            }
+
+            if (result != null)
+            {
+                _response.Data = result;
+                _response.IsSuccess = true;
+                _response.Message = "State list Exported successfully";
+            }
+
+            return _response;
+        }
+
         #endregion
 
         #region District 
@@ -473,6 +541,74 @@ namespace Visitor.API.Controllers.Admin
             }
 
             return result;
+        }
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> ExportProvinceData()
+        {
+            _response.IsSuccess = false;
+            byte[] result;
+            int recordIndex;
+            ExcelWorksheet WorkSheet1;
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+
+            var request = new BaseSearchEntity();
+
+            IEnumerable<District_Response> lstSizeObj = await _territoryRepository.GetDistrictList(request);
+
+            using (MemoryStream msExportDataFile = new MemoryStream())
+            {
+                using (ExcelPackage excelExportData = new ExcelPackage())
+                {
+                    WorkSheet1 = excelExportData.Workbook.Worksheets.Add("State");
+                    WorkSheet1.TabColor = System.Drawing.Color.Black;
+                    WorkSheet1.DefaultRowHeight = 12;
+
+                    //Header of table
+                    WorkSheet1.Row(1).Height = 20;
+                    WorkSheet1.Row(1).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    WorkSheet1.Row(1).Style.Font.Bold = true;
+
+                    WorkSheet1.Cells[1, 1].Value = "Province";
+                    WorkSheet1.Cells[1, 2].Value = "Status";
+
+                    WorkSheet1.Cells[1, 3].Value = "CreatedDate";
+                    WorkSheet1.Cells[1, 4].Value = "CreatedBy";
+
+                    recordIndex = 2;
+
+                    foreach (var items in lstSizeObj)
+                    {
+                        WorkSheet1.Cells[recordIndex, 1].Value = items.DistrictName;
+                        WorkSheet1.Cells[recordIndex, 2].Value = items.IsActive == true ? "Active" : "Inactive";
+
+                        //WorkSheet1.Cells[recordIndex, 5].Style.Numberformat.Format = DateTimeFormatInfo.CurrentInfo.ShortDatePattern;
+                        WorkSheet1.Cells[recordIndex, 3].Value = items.CreatedDate.ToString("dd/MM/yyyy");
+                        WorkSheet1.Cells[recordIndex, 4].Value = items.CreatorName;
+
+                        recordIndex += 1;
+                    }
+
+                    WorkSheet1.Column(1).AutoFit();
+                    WorkSheet1.Column(2).AutoFit();
+                    WorkSheet1.Column(3).AutoFit();
+                    WorkSheet1.Column(4).AutoFit();
+
+                    excelExportData.SaveAs(msExportDataFile);
+                    msExportDataFile.Position = 0;
+                    result = msExportDataFile.ToArray();
+                }
+            }
+
+            if (result != null)
+            {
+                _response.Data = result;
+                _response.IsSuccess = true;
+                _response.Message = "Province list Exported successfully";
+            }
+
+            return _response;
         }
 
         #endregion
