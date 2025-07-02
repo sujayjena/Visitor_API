@@ -842,14 +842,34 @@ namespace Visitor.API.Controllers.Admin
                 };
 
                 var vUserList = await _userRepository.GetUserList(vSearch);
-
-                //Generate Password
-                var resultPass = await _userRepository.GetAutoGenPassword("");
-
-                //Send Email
-                if (!string.IsNullOrEmpty(vItem.EmailId) && vUserList.ToList().Count > 0)
+                if(vUserList.ToList().Count > 0)
                 {
-                    var vEmailEmp = await SendPassword_EmailToEmployee(resultPass, vUserList.ToList().FirstOrDefault().Id, "Login Credential");
+                    #region Generate Barcode
+                    var vGenerateBarcode = _barcodeRepository.GenerateBarcode(vUserList.ToList().FirstOrDefault().UserCode);
+                    if (vGenerateBarcode.Barcode_Unique_Id != "")
+                    {
+                        var vBarcode_Request = new Barcode_Request()
+                        {
+                            Id = 0,
+                            BarcodeNo = vUserList.ToList().FirstOrDefault().UserCode,
+                            BarcodeType = vUserList.ToList().FirstOrDefault().UserType,
+                            Barcode_Unique_Id = vGenerateBarcode.Barcode_Unique_Id,
+                            BarcodeOriginalFileName = vGenerateBarcode.BarcodeOriginalFileName,
+                            BarcodeFileName = vGenerateBarcode.BarcodeFileName,
+                            RefId = vUserList.ToList().FirstOrDefault().Id
+                        };
+                        var resultBarcode = _barcodeRepository.SaveBarcode(vBarcode_Request);
+                    }
+                    #endregion
+
+                    //Generate Password
+                    var resultPass = await _userRepository.GetAutoGenPassword("");
+
+                    //Send Email
+                    if (!string.IsNullOrEmpty(vItem.EmailId))
+                    {
+                        var vEmailEmp = await SendPassword_EmailToEmployee(resultPass, vUserList.ToList().FirstOrDefault().Id, "Login Credential");
+                    }
                 }
             }
 
