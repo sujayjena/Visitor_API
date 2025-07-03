@@ -234,6 +234,48 @@ namespace Visitor.API.Controllers
 
                                 //Send Email
                                 var vEmailEmp = await SendVisitorApproved_EmailToSecurity(vVisitor.Id);
+
+                                #region SMS Send
+
+                                var vConfigRef_Search = new ConfigRef_Search()
+                                {
+                                    Ref_Type = "SMS",
+                                    Ref_Param = "VisitorApproved"
+                                };
+
+                                string sSMSTemplateName = string.Empty;
+                                string sSMSTemplateContent = string.Empty;
+                                var vConfigRefObj = _configRefRepository.GetConfigRefList(vConfigRef_Search).Result.ToList().FirstOrDefault();
+                                if (vConfigRefObj != null)
+                                {
+                                    sSMSTemplateName = vConfigRefObj.Ref_Value1;
+                                    sSMSTemplateContent = vConfigRefObj.Ref_Value2;
+
+                                    if (!string.IsNullOrWhiteSpace(sSMSTemplateContent))
+                                    {
+                                        //Replace parameter 
+                                        sSMSTemplateContent = sSMSTemplateContent.Replace("{#var#}", vVisitor.VisitorName.ToString());
+                                        sSMSTemplateContent = sSMSTemplateContent.Replace("{#var1#}", Convert.ToDateTime(vVisitor.VisitStartDate).ToString("dd/MM/yyyy"));
+                                        sSMSTemplateContent = sSMSTemplateContent.Replace("{#var2#}", Convert.ToDateTime(vVisitor.VisitStartDate).ToString("hh:mm:ss:tt"));
+
+                                        //StringBuilder sb = new StringBuilder();
+                                        //sb.AppendFormat(sSMSTemplateContent, iOTP.ToString(), parameters.VisitNumber);
+
+                                        //sSMSTemplateContent = sb.ToString();
+                                    }
+                                }
+
+                                // Send SMS
+                                var vsmsRequest = new SMS_Request()
+                                {
+                                    Ref2_Other = vVisitor.VisitNumber,
+                                    TemplateName = sSMSTemplateName,
+                                    TemplateContent = sSMSTemplateContent,
+                                    Mobile = vVisitor.VisitorMobileNo,
+                                };
+                                bool bSMSResult = await _smsHelper.SMSSend(vsmsRequest);
+                                
+                                #endregion
                             }
                         }
 
@@ -357,9 +399,9 @@ namespace Visitor.API.Controllers
             }
             else
             {
+                var vVisitorResponse = await _manageVisitorsRepository.GetVisitorsById(Convert.ToInt32(parameters.Id));
                 if (parameters.StatusId == 2)
                 {
-                    var vVisitorResponse = await _manageVisitorsRepository.GetVisitorsById(Convert.ToInt32(parameters.Id));
                     if (vVisitorResponse != null)
                     {
                         var vGenerateBarcode = _barcodeRepository.GenerateBarcode(vVisitorResponse.VisitNumber);
@@ -411,6 +453,50 @@ namespace Visitor.API.Controllers
                     {
                         var vEmailEmp = await SendVisitorApproved_EmailToSecurity(Convert.ToInt32(parameters.Id));
                     }
+
+                    #region SMS Send
+
+                    if (vVisitorResponse != null)
+                    {
+                        var vConfigRef_Search = new ConfigRef_Search()
+                        {
+                            Ref_Type = "SMS",
+                            Ref_Param = "VisitorApproved"
+                        };
+
+                        string sSMSTemplateName = string.Empty;
+                        string sSMSTemplateContent = string.Empty;
+                        var vConfigRefObj = _configRefRepository.GetConfigRefList(vConfigRef_Search).Result.ToList().FirstOrDefault();
+                        if (vConfigRefObj != null)
+                        {
+                            sSMSTemplateName = vConfigRefObj.Ref_Value1;
+                            sSMSTemplateContent = vConfigRefObj.Ref_Value2;
+
+                            if (!string.IsNullOrWhiteSpace(sSMSTemplateContent))
+                            {
+                                //Replace parameter 
+                                sSMSTemplateContent = sSMSTemplateContent.Replace("{#var#}", vVisitorResponse.VisitorName.ToString());
+                                sSMSTemplateContent = sSMSTemplateContent.Replace("{#var1#}", Convert.ToDateTime(vVisitorResponse.VisitStartDate).ToString("dd/MM/yyyy"));
+                                sSMSTemplateContent = sSMSTemplateContent.Replace("{#var2#}", Convert.ToDateTime(vVisitorResponse.VisitStartDate).ToString("hh:mm:ss:tt"));
+
+                                //StringBuilder sb = new StringBuilder();
+                                //sb.AppendFormat(sSMSTemplateContent, iOTP.ToString(), parameters.VisitNumber);
+
+                                //sSMSTemplateContent = sb.ToString();
+                            }
+                        }
+
+                        // Send SMS
+                        var vsmsRequest = new SMS_Request()
+                        {
+                            Ref2_Other = vVisitorResponse.VisitNumber,
+                            TemplateName = sSMSTemplateName,
+                            TemplateContent = sSMSTemplateContent,
+                            Mobile = vVisitorResponse.VisitorMobileNo,
+                        };
+                        bool bSMSResult = await _smsHelper.SMSSend(vsmsRequest);
+                    }
+                    #endregion
                 }
             }
 
@@ -693,7 +779,7 @@ namespace Visitor.API.Controllers
             {
                 _response.Message = "OTP sent successfully.";
 
-                //#region SMS Send
+                #region SMS Send
 
                 var vConfigRef_Search = new ConfigRef_Search()
                 {
@@ -737,7 +823,7 @@ namespace Visitor.API.Controllers
                 }
                 _response.Id = resultOTP;
 
-                //#endregion
+                #endregion
             }
 
             return _response;
@@ -783,5 +869,7 @@ namespace Visitor.API.Controllers
             }
             return _response;
         }
+
+
     }
 }
