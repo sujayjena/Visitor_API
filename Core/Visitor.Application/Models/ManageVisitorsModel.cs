@@ -16,6 +16,7 @@ namespace Visitor.Application.Models
 
     public class Visitors_Search : BaseSearchEntity
     {
+        [DefaultValue("")]
         public string? MobileNo { get; set; }
         public int? VisitorId { get; set; }
         public int? GateDetailsId { get; set; }
@@ -127,6 +128,9 @@ namespace Visitor.Application.Models
         public string? VehiclePhotoFileName { get; set; }
         public string? VehiclePhoto_Base64 { get; set; }
         public bool? IsMeetingOver { get; set; }
+
+        [DefaultValue(false)]
+        public bool? IsWithoutToken { get; set; }
         public bool? IsActive { get; set; }
         public List<AssignGateNo_Request> GateNumberList { get; set; }
         public List<VisitorDocumentVerification_Request> DocumentVerificationList { get; set; }

@@ -76,7 +76,14 @@ namespace Visitor.Persistence.Repositories
             queryParameters.Add("@VehiclePhotoFileName", parameters.VehiclePhotoFileName);
             queryParameters.Add("@IsMeetingOver", parameters.IsMeetingOver);
             queryParameters.Add("@IsActive", parameters.IsActive);
-            queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
+            if(parameters.IsWithoutToken ==  true)
+            {
+                queryParameters.Add("@UserId", 0);
+            }
+            else
+            {
+                queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
+            }
 
             return await SaveByStoredProcedure<int>("SaveVisitors", queryParameters);
         }

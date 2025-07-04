@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using OfficeOpenXml.Style;
+using OfficeOpenXml;
 using System.Net;
 using System.Text;
 using Visitor.API.CustomAttributes;
@@ -870,6 +872,149 @@ namespace Visitor.API.Controllers
             return _response;
         }
 
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> ExportVisitorAttendanceData(Visitors_Search parameters)
+        {
+            _response.IsSuccess = false;
+            byte[] result;
+            int recordIndex;
+            ExcelWorksheet WorkSheet1;
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 
+            IEnumerable<Visitors_Response> lstSizeObj = await _manageVisitorsRepository.GetVisitorsList(parameters);
+
+            using (MemoryStream msExportDataFile = new MemoryStream())
+            {
+                using (ExcelPackage excelExportData = new ExcelPackage())
+                {
+                    WorkSheet1 = excelExportData.Workbook.Worksheets.Add("VisitorAttendance");
+                    WorkSheet1.TabColor = System.Drawing.Color.Black;
+                    WorkSheet1.DefaultRowHeight = 12;
+
+                    //Header of table
+                    WorkSheet1.Row(1).Height = 20;
+                    WorkSheet1.Row(1).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    WorkSheet1.Row(1).Style.Font.Bold = true;
+
+                    WorkSheet1.Cells[1, 1].Value = "Sr.No";
+                    WorkSheet1.Cells[1, 2].Value = "Visit ID";
+                    WorkSheet1.Cells[1, 3].Value = "Visit Name";
+                    WorkSheet1.Cells[1, 4].Value = "Visit Purpose";
+                    WorkSheet1.Cells[1, 5].Value = "Branch";
+                    WorkSheet1.Cells[1, 6].Value = "Department";
+                    WorkSheet1.Cells[1, 7].Value = "Gate No";
+                    WorkSheet1.Cells[1, 8].Value = "Status";
+                    WorkSheet1.Cells[1, 9].Value = "Remark";
+                    WorkSheet1.Cells[1, 10].Value = "Created Date";
+                    WorkSheet1.Cells[1, 11].Value = "Created By";
+
+                    recordIndex = 2;
+
+                    int i = 1;
+
+                    foreach (var items in lstSizeObj)
+                    {
+                        //log history list
+                        var vCheckedInOutLogHistory_Search = new CheckedInOutLogHistory_Search();
+                        vCheckedInOutLogHistory_Search.RefId = items.Id;
+                        vCheckedInOutLogHistory_Search.RefType = "Visitor";
+                        vCheckedInOutLogHistory_Search.GateDetailsId = 0;
+                        vCheckedInOutLogHistory_Search.IsReject = null;
+
+                        int j = 0;
+                        IEnumerable<CheckedInOutLogHistory_Response> lstMUserObj = await _manageVisitorsRepository.GetCheckedInOutLogHistoryList(vCheckedInOutLogHistory_Search);
+                        if (lstMUserObj.ToList().Count > 0)
+                        {
+                            foreach (var mitems in lstMUserObj)
+                            {
+                                if (j == 0)
+                                {
+                                    WorkSheet1.Cells[recordIndex, 1].Value = i.ToString();
+                                }
+                                else
+                                {
+                                    WorkSheet1.Cells[recordIndex, 1].Value = i + "." + j;
+                                }
+                                WorkSheet1.Cells[recordIndex, 2].Value = items.VisitNumber;
+                                WorkSheet1.Cells[recordIndex, 3].Value = items.VisitorName;
+                                WorkSheet1.Cells[recordIndex, 4].Value = items.Purpose;
+                                WorkSheet1.Cells[recordIndex, 5].Value = items.BranchName;
+                                WorkSheet1.Cells[recordIndex, 6].Value = items.DepartmentName;
+                                WorkSheet1.Cells[recordIndex, 7].Value = mitems.GateNumber;
+                                WorkSheet1.Cells[recordIndex, 8].Value = mitems.CheckedStatus;
+                                WorkSheet1.Cells[recordIndex, 9].Value = mitems.CheckedRemark;
+                                WorkSheet1.Cells[recordIndex, 10].Value = Convert.ToDateTime(mitems.CreatedDate).ToString("dd/MM/yyyy");
+                                WorkSheet1.Cells[recordIndex, 11].Value = mitems.CreatorName;
+
+                                recordIndex += 1;
+
+                                j++;
+                            }
+                        }
+                        else
+                        {
+                            WorkSheet1.Cells[recordIndex, 1].Value = i.ToString();
+                            WorkSheet1.Cells[recordIndex, 2].Value = items.VisitNumber;
+                            WorkSheet1.Cells[recordIndex, 3].Value = items.VisitorName;
+                            WorkSheet1.Cells[recordIndex, 4].Value = items.Purpose;
+                            WorkSheet1.Cells[recordIndex, 5].Value = items.BranchName;
+                            WorkSheet1.Cells[recordIndex, 6].Value = items.DepartmentName;
+
+                            recordIndex += 1;
+                        }
+
+                        //meeting log
+                        var vMeetingPurposeLogHistory_Search = new MeetingPurposeLogHistory_Search();
+                        vMeetingPurposeLogHistory_Search.VisitorId = items.Id;
+
+                        int k = 1;
+                        IEnumerable<MeetingPurposeLogHistory_Response> lstMeetingObj = await _manageVisitorsRepository.GetMeetingPurposeLogHistoryList(vMeetingPurposeLogHistory_Search);
+                        foreach (var mitems in lstMeetingObj)
+                        {
+                            if (j > 0)
+                            {
+                                WorkSheet1.Cells[recordIndex, 1].Value = i + "." + j + "." + k;
+                            }
+                            else
+                            {
+                                WorkSheet1.Cells[recordIndex, 1].Value = i + "." + k;
+                            }
+                            WorkSheet1.Cells[recordIndex, 2].Value = items.VisitNumber;
+                            WorkSheet1.Cells[recordIndex, 3].Value = items.VisitorName;
+                            WorkSheet1.Cells[recordIndex, 4].Value = items.Purpose;
+                            WorkSheet1.Cells[recordIndex, 5].Value = items.BranchName;
+                            WorkSheet1.Cells[recordIndex, 6].Value = items.DepartmentName;
+                            WorkSheet1.Cells[recordIndex, 7].Value = mitems.GateNumber;
+                            WorkSheet1.Cells[recordIndex, 8].Value = ((mitems.IsMeetingOver == false || mitems.IsMeetingOver == null) ? "Start" : "Meeting Over");
+                            WorkSheet1.Cells[recordIndex, 9].Value = "";
+                            WorkSheet1.Cells[recordIndex, 10].Value = Convert.ToDateTime(mitems.CreatedDate).ToString("dd/MM/yyyy");
+                            WorkSheet1.Cells[recordIndex, 11].Value = mitems.CreatorName;
+
+                            recordIndex += 1;
+
+                            k++;
+                        }
+
+                        i++;
+                    }
+
+                    WorkSheet1.Columns.AutoFit();
+
+                    excelExportData.SaveAs(msExportDataFile);
+                    msExportDataFile.Position = 0;
+                    result = msExportDataFile.ToArray();
+                }
+            }
+
+            if (result != null)
+            {
+                _response.Data = result;
+                _response.IsSuccess = true;
+                _response.Message = "Exported successfully";
+            }
+
+            return _response;
+        }
     }
 }
