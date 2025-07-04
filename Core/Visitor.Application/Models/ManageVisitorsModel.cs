@@ -378,6 +378,7 @@ namespace Visitor.Application.Models
       
         public int? StatusId { get; set; }
         public string? StatusName { get; set; }
+        public string? CheckedInOutStatus { get; set; }
         public DateTime? CheckedInDate { get; set; }
 
         public bool? IsActive { get; set; }
