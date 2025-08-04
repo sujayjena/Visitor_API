@@ -223,6 +223,7 @@ namespace Visitor.Application.Models
         public string? ApprovedReject_Remarks { get; set; }
         public bool? IsMeetingOver { get; set; }
         public DateTime? IsMeetingOverDateAndTime { get; set; }
+        public bool? IsMeetingOverDisabled { get; set; }
 
         public bool? IsActive { get; set; }
 

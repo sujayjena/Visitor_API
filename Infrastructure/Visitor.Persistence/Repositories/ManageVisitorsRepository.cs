@@ -118,6 +118,7 @@ namespace Visitor.Persistence.Repositories
         {
             DynamicParameters queryParameters = new DynamicParameters();
             queryParameters.Add("@Id", Id);
+            queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
             return (await ListByStoredProcedure<Visitors_Response>("GetVisitorsById", queryParameters)).FirstOrDefault();
         }
 
