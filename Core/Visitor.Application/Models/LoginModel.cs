@@ -76,6 +76,7 @@ namespace Visitor.Application.Models
         public string UserType { get; set; }
         public int? RoleId { get; set; }
         public string RoleName { get; set; }
+        public int BranchId { get; set; }
         public bool IsWebUser { get; set; }
         public bool IsMobileUser { get; set; }
         public bool IsActive { get; set; }
@@ -105,7 +106,7 @@ namespace Visitor.Application.Models
         public string DepartmentName { get; set; }
         public int CompanyId { get; set; }
         public string CompanyName { get; set; }
-        public string BranchId { get; set; }
+        public int BranchId { get; set; }
         public string AssignedGateDetailsId { get; set; }
         public int CurrentCheckedInGateDetailsId { get; set; }
         

@@ -891,7 +891,6 @@ namespace Visitor.API.Controllers.Admin
             {
                 _response.Message = "Uploaded file contains invalid records, please check downloaded file for more details";
                 _response.Data = GenerateInvalidTerritoriesDataFile(lstTerritoriesFailedToImport);
-
             }
             #endregion
 

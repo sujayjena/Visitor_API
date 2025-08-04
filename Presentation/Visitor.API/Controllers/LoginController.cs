@@ -164,11 +164,11 @@ namespace Visitor.API.Controllers
                         //var vUserNotificationList = await _notificationService.GetNotificationListById(Convert.ToInt64(loginResponse.EmployeeId));
                         var vUserDetail = await _userRepository.GetUserById(Convert.ToInt32(loginResponse.UserId));
 
-                        var vUserBranchMappingDetail = await _branchRepository.GetBranchMappingByEmployeeId(EmployeeId: Convert.ToInt32(loginResponse.UserId), BranchId: 0);
-                        if (vUserBranchMappingDetail.ToList().Count > 0)
-                        {
-                            strBrnachIdList = string.Join(",", vUserBranchMappingDetail.ToList().OrderBy(x => x.BranchId).Select(x => x.BranchId));
-                        }
+                        //var vUserBranchMappingDetail = await _branchRepository.GetBranchMappingByEmployeeId(EmployeeId: Convert.ToInt32(loginResponse.UserId), BranchId: 0);
+                        //if (vUserBranchMappingDetail.ToList().Count > 0)
+                        //{
+                        //    strBrnachIdList = string.Join(",", vUserBranchMappingDetail.ToList().OrderBy(x => x.BranchId).Select(x => x.BranchId));
+                        //}
 
                         var vSecurityGateDetail = await _assignGateNoRepository.GetAssignGateNoById(RefId: Convert.ToInt32(loginResponse.UserId), loginResponse.UserTypeId == 1 ? "Employee" : "Security", GateDetailsId: 0);
                         if (vSecurityGateDetail.ToList().Count > 0)
@@ -221,7 +221,7 @@ namespace Visitor.API.Controllers
                             CompanyName = vUserDetail != null ? vUserDetail.CompanyName : String.Empty,
                             DepartmentId = vUserDetail != null ? Convert.ToInt32(vUserDetail.DepartmentId) : 0,
                             DepartmentName = vUserDetail != null ? vUserDetail.DepartmentName : String.Empty,
-                            BranchId = strBrnachIdList,
+                            BranchId = loginResponse.BranchId,
                             AssignedGateDetailsId = strGateDetailsIdList,
                             CurrentCheckedInGateDetailsId = intCurrentCheckedInGateDetailsId,
 

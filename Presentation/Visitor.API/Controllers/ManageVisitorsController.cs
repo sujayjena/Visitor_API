@@ -938,7 +938,7 @@ namespace Visitor.API.Controllers
                                 }
                                 WorkSheet1.Cells[recordIndex, 2].Value = items.VisitNumber;
                                 WorkSheet1.Cells[recordIndex, 3].Value = items.VisitorName;
-                                WorkSheet1.Cells[recordIndex, 4].Value = items.Purpose;
+                                WorkSheet1.Cells[recordIndex, 4].Value = items.VisitType;
                                 WorkSheet1.Cells[recordIndex, 5].Value = items.BranchName;
                                 WorkSheet1.Cells[recordIndex, 6].Value = items.DepartmentName;
                                 WorkSheet1.Cells[recordIndex, 7].Value = mitems.GateNumber;
@@ -957,7 +957,7 @@ namespace Visitor.API.Controllers
                             WorkSheet1.Cells[recordIndex, 1].Value = i.ToString();
                             WorkSheet1.Cells[recordIndex, 2].Value = items.VisitNumber;
                             WorkSheet1.Cells[recordIndex, 3].Value = items.VisitorName;
-                            WorkSheet1.Cells[recordIndex, 4].Value = items.Purpose;
+                            WorkSheet1.Cells[recordIndex, 4].Value = items.VisitType;
                             WorkSheet1.Cells[recordIndex, 5].Value = items.BranchName;
                             WorkSheet1.Cells[recordIndex, 6].Value = items.DepartmentName;
 
@@ -982,7 +982,7 @@ namespace Visitor.API.Controllers
                             }
                             WorkSheet1.Cells[recordIndex, 2].Value = items.VisitNumber;
                             WorkSheet1.Cells[recordIndex, 3].Value = items.VisitorName;
-                            WorkSheet1.Cells[recordIndex, 4].Value = items.Purpose;
+                            WorkSheet1.Cells[recordIndex, 4].Value = items.VisitType;
                             WorkSheet1.Cells[recordIndex, 5].Value = items.BranchName;
                             WorkSheet1.Cells[recordIndex, 6].Value = items.DepartmentName;
                             WorkSheet1.Cells[recordIndex, 7].Value = mitems.GateNumber;

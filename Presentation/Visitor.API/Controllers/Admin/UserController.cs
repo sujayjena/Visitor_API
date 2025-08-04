@@ -757,10 +757,9 @@ namespace Visitor.API.Controllers.Admin
                             UserCode = workSheet.Cells[rowIterator, 1].Value?.ToString(),
                             UserName = workSheet.Cells[rowIterator, 2].Value?.ToString(),
                             UserType = workSheet.Cells[rowIterator, 3].Value?.ToString(),
-
                             MobileNumber = workSheet.Cells[rowIterator, 4].Value?.ToString(),
                             EmailId = workSheet.Cells[rowIterator, 5].Value?.ToString(),
-                            //Password = !string.IsNullOrWhiteSpace(workSheet.Cells[rowIterator, 6].Value?.ToString()) ? EncryptDecryptHelper.EncryptString(workSheet.Cells[rowIterator, 6].Value?.ToString()) : string.Empty,
+                            Password = !string.IsNullOrWhiteSpace(await _userRepository.GetAutoGenPassword("")) ? EncryptDecryptHelper.EncryptString(await _userRepository.GetAutoGenPassword("")) : string.Empty,
                             GateNumber = workSheet.Cells[rowIterator, 6].Value?.ToString(),
                             Role = workSheet.Cells[rowIterator, 7].Value?.ToString(),
                             ReportingTo = workSheet.Cells[rowIterator, 8].Value?.ToString(),
@@ -803,7 +802,7 @@ namespace Visitor.API.Controllers.Admin
                             IsMobileUser = workSheet.Cells[rowIterator, 40].Value?.ToString(),
                             IsWebUser = workSheet.Cells[rowIterator, 41].Value?.ToString(),
                             IsActive = workSheet.Cells[rowIterator, 42].Value?.ToString()
-                        });
+                        }); ;
                     }
                 }
             }
@@ -865,7 +864,7 @@ namespace Visitor.API.Controllers.Admin
                     #endregion
 
                     //Generate Password
-                    var resultPass = await _userRepository.GetAutoGenPassword("");
+                    var resultPass = !string.IsNullOrWhiteSpace(vItem.Password) ? EncryptDecryptHelper.DecryptString(vItem.Password) : string.Empty;
 
                     //Send Email
                     if (!string.IsNullOrEmpty(vItem.EmailId))

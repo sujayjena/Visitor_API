@@ -32,6 +32,8 @@ namespace Visitor.Persistence.Repositories
             queryParameters.Add("@DocumentOriginalFileName", parameters.DocumentOriginalFileName);
             queryParameters.Add("@DocumentFileName", parameters.DocumentFileName);
             queryParameters.Add("@NoofPOWorker", parameters.NoofPOWorker);
+            queryParameters.Add("@POAttachmentOriginalFileName", parameters.POAttachmentOriginalFileName);
+            queryParameters.Add("@POAttachmentFileName", parameters.POAttachmentFileName);
             queryParameters.Add("@IsActive", parameters.IsActive);
             queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
 

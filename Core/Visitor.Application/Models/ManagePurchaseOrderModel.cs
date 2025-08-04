@@ -22,6 +22,11 @@ namespace Visitor.Application.Models
         public string? DocumentFileName { get; set; }
         public string? Document_Base64 { get; set; }
         public int? NoofPOWorker { get; set; }
+        public string? POAttachmentOriginalFileName { get; set; }
+
+        [JsonIgnore]
+        public string? POAttachmentFileName { get; set; }
+        public string? POAttachment_Base64 { get; set; }
         public bool? IsActive { get; set; }
     }
 
@@ -43,6 +48,9 @@ namespace Visitor.Application.Models
         public string? DocumentFileName { get; set; }
         public string? DocumentURL { get; set; }
         public int? NoofPOWorker { get; set; }
+        public string? POAttachmentOriginalFileName { get; set; }
+        public string? POAttachmentFileName { get; set; }
+        public string? POAttachmentURL { get; set; }
         public bool? IsActive { get; set; }
     }
 }

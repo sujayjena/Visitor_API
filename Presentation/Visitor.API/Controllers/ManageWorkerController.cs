@@ -50,6 +50,7 @@ namespace Visitor.API.Controllers
             {
                 var vWorkerSearch = new WorkerSearch_Request();
                 vWorkerSearch.PurchaseOrderId = 0;
+                vWorkerSearch.BranchId = 0;
                 vWorkerSearch.IsBlackList = false;
                 vWorkerSearch.IsActive = true;
 

@@ -85,6 +85,16 @@ namespace Visitor.API.Controllers
                 }
             }
 
+            if (parameters != null && !string.IsNullOrWhiteSpace(parameters.POAttachment_Base64))
+            {
+                var vUploadFile = _fileManager.UploadDocumentsBase64ToFile(parameters.POAttachment_Base64, "\\Uploads\\PurchaseOrder\\", parameters.POAttachmentOriginalFileName);
+
+                if (!string.IsNullOrWhiteSpace(vUploadFile))
+                {
+                    parameters.POAttachmentFileName = vUploadFile;
+                }
+            }
+
             int result = await _managePurchaseOrderRepository.SavePurchaseOrder(parameters);
 
             if (result == (int)SaveOperationEnums.NoRecordExists)

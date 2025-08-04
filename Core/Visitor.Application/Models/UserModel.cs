@@ -384,7 +384,9 @@ namespace Visitor.Application.Models
         public string? UserType { get; set; }
         public string? MobileNumber { get; set; }
         public string? EmailId { get; set; }
-        //public string? Password { get; set; }
+
+        [JsonIgnore]
+        public string? Password { get; set; }
         public string? GateNumber { get; set; }
         public string? Role { get; set; }
         public string? ReportingTo { get; set; }
