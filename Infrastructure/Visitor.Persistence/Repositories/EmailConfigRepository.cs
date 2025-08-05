@@ -80,6 +80,7 @@ namespace Visitor.Persistence.Repositories
             queryParameters.Add("@RefValue1", parameters.RefValue1);
             queryParameters.Add("@RefValue2", parameters.RefValue2);
             queryParameters.Add("@IsSent", parameters.IsSent);
+            queryParameters.Add("@ErrorMessage", parameters.ErrorMessage);
             queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
 
             return await SaveByStoredProcedure<int>("SaveEmailNotification", queryParameters);

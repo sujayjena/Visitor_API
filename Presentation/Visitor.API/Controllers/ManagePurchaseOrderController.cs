@@ -36,41 +36,41 @@ namespace Visitor.API.Controllers
         {
             #region User Restriction 
 
-            int vNoofContractedPO = 0;
-            int totalPORegistered = 0;
+            //int vNoofContractedPO = 0;
+            //int totalPORegistered = 0;
 
-            if (parameters.Id == 0)
-            {
-                var vPurchaseOrderSearch_Request = new PurchaseOrderSearch_Request();
-                vPurchaseOrderSearch_Request.ContractorId = 0;
-                vPurchaseOrderSearch_Request.IsActive = true;
+            //if (parameters.Id == 0)
+            //{
+            //    var vPurchaseOrderSearch_Request = new PurchaseOrderSearch_Request();
+            //    vPurchaseOrderSearch_Request.ContractorId = 0;
+            //    vPurchaseOrderSearch_Request.IsActive = true;
 
-                var vPO = await _managePurchaseOrderRepository.GetPurchaseOrderList(vPurchaseOrderSearch_Request);
+            //    var vPO = await _managePurchaseOrderRepository.GetPurchaseOrderList(vPurchaseOrderSearch_Request);
 
-                #region Contractor Wise PO Check
+            //    #region Contractor Wise PO Check
 
-                if (parameters.ContractorId > 0)
-                {
-                    //get total po count
-                    totalPORegistered = vPO.Where(x => x.ContractorId == parameters.ContractorId).Count();
+            //    if (parameters.ContractorId > 0)
+            //    {
+            //        //get total po count
+            //        totalPORegistered = vPO.Where(x => x.ContractorId == parameters.ContractorId).Count();
 
-                    //get total NoofContractedPO 
-                    var vContractor = await _manageContractorRepository.GetContractorById(Convert.ToInt32(parameters.ContractorId));
-                    if (vContractor != null)
-                    {
-                        vNoofContractedPO = vContractor.NoofContractedPO ?? 0;
-                    }
-                }
+            //        //get total NoofContractedPO 
+            //        var vContractor = await _manageContractorRepository.GetContractorById(Convert.ToInt32(parameters.ContractorId));
+            //        if (vContractor != null)
+            //        {
+            //            vNoofContractedPO = vContractor.NoofContractedPO ?? 0;
+            //        }
+            //    }
 
-                // Total Contractor check with register worker
-                if (totalPORegistered >= vNoofContractedPO)
-                {
-                    _response.Message = "You are not allowed to create po more than " + vNoofContractedPO + ", Please contact your administrator to access this feature!";
-                    return _response;
-                }
+            //    // Total Contractor check with register worker
+            //    if (totalPORegistered >= vNoofContractedPO)
+            //    {
+            //        _response.Message = "You are not allowed to create po more than " + vNoofContractedPO + ", Please contact your administrator to access this feature!";
+            //        return _response;
+            //    }
 
-                #endregion
-            }
+            //    #endregion
+            //}
 
             #endregion
 

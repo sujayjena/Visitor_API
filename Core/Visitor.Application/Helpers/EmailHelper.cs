@@ -29,6 +29,7 @@ namespace Visitor.Application.Helpers
         public async Task<bool> SendEmail(string module = "", string subject = "", string sendTo = "", string content = "", string recipientEmail = "", List<Attachment> files = null, string remarks = "")
         {
             bool result = false;
+            string errorMsg = string.Empty;
 
             #region Email Notificaiton Save/Upate
 
@@ -122,6 +123,7 @@ namespace Visitor.Application.Helpers
                                     catch (Exception ex)
                                     {
                                         result = false;
+                                        errorMsg = ex.Message;
                                     }
                                 }
                             }
@@ -131,13 +133,14 @@ namespace Visitor.Application.Helpers
 
                 #region Email Notificaiton Save/Upate
 
-                if (result && resultEmailNotification > 0)
+                if (resultEmailNotification > 0)
                 {
                     var vResultObj = await _emailConfigRepository.GetEmailNotificationById(resultEmailNotification);
                     if (vResultObj != null)
                     {
                         vEmailNotification_RequestObj.Id = resultEmailNotification;
-                        vEmailNotification_RequestObj.IsSent = true;
+                        vEmailNotification_RequestObj.IsSent = result;
+                        vEmailNotification_RequestObj.ErrorMessage = errorMsg;
 
                         int resultEmailNotificationUpdate = await _emailConfigRepository.SaveEmailNotification(vEmailNotification_RequestObj);
                     }
@@ -147,6 +150,18 @@ namespace Visitor.Application.Helpers
             }
             catch (Exception ex)
             {
+                if (resultEmailNotification > 0)
+                {
+                    var vResultObj = await _emailConfigRepository.GetEmailNotificationById(resultEmailNotification);
+                    if (vResultObj != null)
+                    {
+                        vEmailNotification_RequestObj.Id = resultEmailNotification;
+                        vEmailNotification_RequestObj.ErrorMessage = ex.Message;
+
+                        int resultEmailNotificationUpdate = await _emailConfigRepository.SaveEmailNotification(vEmailNotification_RequestObj);
+                    }
+                }
+
                 result = false;
             }
             return result;
