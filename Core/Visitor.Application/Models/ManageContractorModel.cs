@@ -127,6 +127,10 @@ namespace Visitor.Application.Models
         public string? Validity { get; set; }
         public int? RemainingDays { get; set; }
         public bool? InsuranceStatus { get; set; }
+        public string? InsuranceOriginalFileName { get; set; }
+        [JsonIgnore]
+        public string? InsuranceFileName { get; set; }
+        public string? Insurance_Base64 { get; set; }
         public bool? IsActive { get; set; }
     }
 
@@ -146,6 +150,9 @@ namespace Visitor.Application.Models
         public string? Validity { get; set; }
         public int? RemainingDays { get; set; }
         public bool? InsuranceStatus { get; set; }
+        public string? InsuranceOriginalFileName { get; set; }
+        public string? InsuranceFileName { get; set; }
+        public string? InsuranceURL { get; set; }
         public bool? IsActive { get; set; }
     }
     #endregion

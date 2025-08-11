@@ -135,6 +135,17 @@ namespace Visitor.API.Controllers
         [HttpPost]
         public async Task<ResponseModel> SaveContractorInsurance(ContractorInsurance_Request parameters)
         {
+            // Pan Card Upload
+            if (parameters != null && !string.IsNullOrWhiteSpace(parameters.Insurance_Base64))
+            {
+                var vUploadFile = _fileManager.UploadDocumentsBase64ToFile(parameters.Insurance_Base64, "\\Uploads\\Contractor\\", parameters.InsuranceOriginalFileName);
+
+                if (!string.IsNullOrWhiteSpace(vUploadFile))
+                {
+                    parameters.InsuranceFileName = vUploadFile;
+                }
+            }
+
             int result = await _manageContractorRepository.SaveContractorInsurance(parameters);
 
             if (result == (int)SaveOperationEnums.NoRecordExists)

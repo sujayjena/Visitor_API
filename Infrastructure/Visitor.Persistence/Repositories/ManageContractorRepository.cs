@@ -97,6 +97,8 @@ namespace Visitor.Persistence.Repositories
             queryParameters.Add("@Validity", parameters.Validity);
             queryParameters.Add("@RemainingDays", parameters.RemainingDays);
             queryParameters.Add("@InsuranceStatus", parameters.InsuranceStatus);
+            queryParameters.Add("@InsuranceOriginalFileName", parameters.InsuranceOriginalFileName);
+            queryParameters.Add("@InsuranceFileName", parameters.InsuranceFileName);
             queryParameters.Add("@IsActive", parameters.IsActive);
             queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
 
