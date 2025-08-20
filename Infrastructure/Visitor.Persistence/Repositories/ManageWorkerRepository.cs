@@ -48,6 +48,8 @@ namespace Visitor.Persistence.Repositories
             queryParameters.Add("@DocumentFileName", parameters.DocumentFileName);
             queryParameters.Add("@WorkerPhotoOriginalFileName", parameters.WorkerPhotoOriginalFileName);
             queryParameters.Add("@WorkerPhotoFileName", parameters.WorkerPhotoFileName);
+            queryParameters.Add("@DepartmentId", parameters.DepartmentId);
+            queryParameters.Add("@EmployeeId", parameters.EmployeeId);
 
             queryParameters.Add("@IsBlackList", parameters.IsBlackList);
             queryParameters.Add("@IsActive", parameters.IsActive);

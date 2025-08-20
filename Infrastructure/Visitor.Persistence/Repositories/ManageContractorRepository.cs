@@ -51,6 +51,9 @@ namespace Visitor.Persistence.Repositories
             queryParameters.Add("@PanCardOriginalFileName", parameters.PanCardOriginalFileName);
             queryParameters.Add("@PanCardFileName", parameters.PanCardFileName);
             queryParameters.Add("@ContractorLevel", parameters.ContractorLevel);
+            queryParameters.Add("@BranchId", parameters.BranchId);
+            queryParameters.Add("@DepartmentId", parameters.DepartmentId);
+            queryParameters.Add("@EmployeeId", parameters.EmployeeId);
 
             queryParameters.Add("@IsActive", parameters.IsActive);
             queryParameters.Add("@IsBlackList", parameters.IsBlackList);

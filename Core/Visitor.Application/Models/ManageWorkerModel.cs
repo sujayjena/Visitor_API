@@ -52,8 +52,12 @@ namespace Visitor.Application.Models
         public string? WorkerPhotoFileName { get; set; }
         public string? WorkerPhoto_Base64 { get; set; }
 
+        public int? DepartmentId { get; set; }
+        public int? EmployeeId { get; set; }
+
         [DefaultValue(false)]
         public bool? IsBlackList { get; set; }
+
         public bool? IsActive { get; set; }
         public List<AssignGateNo_Request> GateNumberList { get; set; }
     }
@@ -118,6 +122,13 @@ namespace Visitor.Application.Models
         public DateTime? PurchaseOrderValidity { get; set; }
         public string? PassNumber { get; set; }
         public bool? IsExpire { get; set; }
+
+        public int? DepartmentId { get; set; }
+        public string? DepartmentName { get; set; }
+        public int? EmployeeId { get; set; }
+        public string? EmployeeEmailId { get; set; }
+        public string? EmployeeMobileNo { get; set; }
+
 
         [DefaultValue(false)]
         public bool? IsBlackList { get; set; }

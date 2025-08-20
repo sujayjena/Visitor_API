@@ -62,6 +62,9 @@ namespace Visitor.Application.Models
         public string? PanCard_Base64 { get; set; }
 
         public int? ContractorLevel { get; set; }
+        public int? BranchId { get; set; }
+        public int? DepartmentId { get; set; }
+        public int? EmployeeId { get; set; }
         public bool? IsActive { get; set; }
 
         [DefaultValue(false)]
@@ -124,6 +127,14 @@ namespace Visitor.Application.Models
         public string? PanCardFileName { get; set; }
         public string? PanCardURL { get; set; }
         public int? ContractorLevel { get; set; }
+        public int? BranchId { get; set; }
+        public string? BranchName { get; set; }
+        public int? DepartmentId { get; set; }
+        public string? DepartmentName { get; set; }
+        public int? EmployeeId { get; set; }
+        public string? EmployeeName { get; set; }
+        public string? EmployeeEmailId { get; set; }
+        public string? EmployeeMobileNo { get; set; }
         public bool? IsActive { get; set; }
         public bool? IsBlackList { get; set; }
         public List<ContractorAsset_Response> assetList { get; set; }
