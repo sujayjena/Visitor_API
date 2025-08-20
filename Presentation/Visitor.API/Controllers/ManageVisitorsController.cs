@@ -1016,5 +1016,380 @@ namespace Visitor.API.Controllers
 
             return _response;
         }
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> DownloadVisitorTemplate()
+        {
+            byte[]? formatFile = await Task.Run(() => _fileManager.GetFormatFileFromPath("Template_Visitor.xlsx"));
+
+            if (formatFile != null)
+            {
+                _response.Data = formatFile;
+            }
+
+            return _response;
+        }
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> ImportVisitor([FromQuery] ImportRequest request)
+        {
+            _response.IsSuccess = false;
+
+            ExcelWorksheets currentSheet;
+            ExcelWorksheet workSheet;
+            ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
+            int noOfCol, noOfRow;
+
+            List<string[]> data = new List<string[]>();
+            List<Visitor_ImportData> lstVisitor_ImportData = new List<Visitor_ImportData>();
+            IEnumerable<Visitor_ImportDataValidation> lstVisitor_ImportDataValidation;
+
+            if (request.FileUpload == null || request.FileUpload.Length == 0)
+            {
+                _response.Message = "Please upload an excel file";
+                return _response;
+            }
+
+            using (MemoryStream stream = new MemoryStream())
+            {
+                request.FileUpload.CopyTo(stream);
+                using ExcelPackage package = new ExcelPackage(stream);
+                currentSheet = package.Workbook.Worksheets;
+                workSheet = currentSheet.First();
+                noOfCol = workSheet.Dimension.End.Column;
+                noOfRow = workSheet.Dimension.End.Row;
+
+                if (!string.Equals(workSheet.Cells[1, 1].Value.ToString(), "PassType", StringComparison.OrdinalIgnoreCase) ||
+                    !string.Equals(workSheet.Cells[1, 2].Value.ToString(), "VisitStartDate", StringComparison.OrdinalIgnoreCase) ||
+                    !string.Equals(workSheet.Cells[1, 3].Value.ToString(), "VisitEndDate", StringComparison.OrdinalIgnoreCase) ||
+                    !string.Equals(workSheet.Cells[1, 4].Value.ToString(), "VisitorMobileNo", StringComparison.OrdinalIgnoreCase) ||
+                    !string.Equals(workSheet.Cells[1, 5].Value.ToString(), "VisitorName", StringComparison.OrdinalIgnoreCase) ||
+                    !string.Equals(workSheet.Cells[1, 6].Value.ToString(), "VisitorEmailId", StringComparison.OrdinalIgnoreCase) ||
+                    !string.Equals(workSheet.Cells[1, 7].Value.ToString(), "Gender", StringComparison.OrdinalIgnoreCase) ||
+                    !string.Equals(workSheet.Cells[1, 8].Value.ToString(), "Country", StringComparison.OrdinalIgnoreCase) ||
+                    !string.Equals(workSheet.Cells[1, 9].Value.ToString(), "State", StringComparison.OrdinalIgnoreCase) ||
+                    !string.Equals(workSheet.Cells[1, 10].Value.ToString(), "Province", StringComparison.OrdinalIgnoreCase) ||
+                    !string.Equals(workSheet.Cells[1, 11].Value.ToString(), "Pincode", StringComparison.OrdinalIgnoreCase) ||
+                    !string.Equals(workSheet.Cells[1, 12].Value.ToString(), "Address", StringComparison.OrdinalIgnoreCase) ||
+                    !string.Equals(workSheet.Cells[1, 13].Value.ToString(), "IsCompany", StringComparison.OrdinalIgnoreCase) ||
+                    !string.Equals(workSheet.Cells[1, 14].Value.ToString(), "VisitorCompany", StringComparison.OrdinalIgnoreCase) ||
+                    !string.Equals(workSheet.Cells[1, 15].Value.ToString(), "VisitPurpose", StringComparison.OrdinalIgnoreCase) ||
+                    !string.Equals(workSheet.Cells[1, 16].Value.ToString(), "Branch", StringComparison.OrdinalIgnoreCase) ||
+                    !string.Equals(workSheet.Cells[1, 17].Value.ToString(), "Department", StringComparison.OrdinalIgnoreCase) ||
+                    !string.Equals(workSheet.Cells[1, 18].Value.ToString(), "GateNumber", StringComparison.OrdinalIgnoreCase) ||
+                    !string.Equals(workSheet.Cells[1, 19].Value.ToString(), "EmployeeName", StringComparison.OrdinalIgnoreCase) ||
+                    !string.Equals(workSheet.Cells[1, 20].Value.ToString(), "IsVehicle", StringComparison.OrdinalIgnoreCase) ||
+                    !string.Equals(workSheet.Cells[1, 21].Value.ToString(), "VehicleNumber", StringComparison.OrdinalIgnoreCase) ||
+                    !string.Equals(workSheet.Cells[1, 22].Value.ToString(), "VehicleType", StringComparison.OrdinalIgnoreCase) ||
+                    !string.Equals(workSheet.Cells[1, 23].Value.ToString(), "IsDrivingLicense", StringComparison.OrdinalIgnoreCase) ||
+                    !string.Equals(workSheet.Cells[1, 24].Value.ToString(), "IsPUC", StringComparison.OrdinalIgnoreCase) ||
+                    !string.Equals(workSheet.Cells[1, 25].Value.ToString(), "IsInsurance", StringComparison.OrdinalIgnoreCase) ||
+                    !string.Equals(workSheet.Cells[1, 26].Value.ToString(), "Remarks", StringComparison.OrdinalIgnoreCase))
+                {
+                    _response.IsSuccess = false;
+                    _response.Message = "Please upload a valid excel file";
+                    return _response;
+                }
+
+                for (int rowIterator = 2; rowIterator <= noOfRow; rowIterator++)
+                {
+                    if (!string.IsNullOrWhiteSpace(workSheet.Cells[rowIterator, 2].Value?.ToString()) && !string.IsNullOrWhiteSpace(workSheet.Cells[rowIterator, 3].Value?.ToString()))
+                    {
+                        lstVisitor_ImportData.Add(new Visitor_ImportData()
+                        {
+                            PassType = workSheet.Cells[rowIterator, 1].Value?.ToString(),
+                            VisitStartDate = !string.IsNullOrWhiteSpace(workSheet.Cells[rowIterator, 2].Value?.ToString()) ? DateTime.ParseExact(workSheet.Cells[rowIterator, 2].Value?.ToString(), "dd/MM/yyyy", System.Globalization.CultureInfo.CurrentUICulture.DateTimeFormat) : null,
+                            VisitEndDate = !string.IsNullOrWhiteSpace(workSheet.Cells[rowIterator, 3].Value?.ToString()) ? DateTime.ParseExact(workSheet.Cells[rowIterator, 3].Value?.ToString(), "dd/MM/yyyy", System.Globalization.CultureInfo.CurrentUICulture.DateTimeFormat) : null,
+                            VisitorMobileNo = workSheet.Cells[rowIterator, 4].Value?.ToString(),
+                            VisitorName = workSheet.Cells[rowIterator, 5].Value?.ToString(),
+                            VisitorEmailId = workSheet.Cells[rowIterator, 6].Value?.ToString(),
+                            Gender = workSheet.Cells[rowIterator, 7].Value?.ToString(),
+                            Country = workSheet.Cells[rowIterator, 8].Value?.ToString(),
+                            State = workSheet.Cells[rowIterator, 9].Value?.ToString(),
+                            Province = workSheet.Cells[rowIterator, 10].Value?.ToString(),
+                            Pincode = workSheet.Cells[rowIterator, 11].Value?.ToString(),
+                            Address = workSheet.Cells[rowIterator, 12].Value?.ToString(),
+                            IsCompany = workSheet.Cells[rowIterator, 13].Value?.ToString(),
+                            VisitorCompany = workSheet.Cells[rowIterator, 14].Value?.ToString(),
+                            VisitPurpose = workSheet.Cells[rowIterator, 15].Value?.ToString(),
+                            Branch = workSheet.Cells[rowIterator, 16].Value?.ToString(),
+                            Department = workSheet.Cells[rowIterator, 17].Value?.ToString(),
+                            GateNumber = workSheet.Cells[rowIterator, 18].Value?.ToString(),
+                            EmployeeName = workSheet.Cells[rowIterator, 19].Value?.ToString(),
+                            IsVehicle = workSheet.Cells[rowIterator, 20].Value?.ToString(),
+                            VehicleNumber = workSheet.Cells[rowIterator, 21].Value?.ToString(),
+                            VehicleType = workSheet.Cells[rowIterator, 22].Value?.ToString(),
+
+                            IsDrivingLicense = workSheet.Cells[rowIterator, 23].Value?.ToString(),
+                            IsPUC = workSheet.Cells[rowIterator, 24].Value?.ToString(),
+                            IsInsurance = workSheet.Cells[rowIterator, 25].Value?.ToString(),
+                            Remarks = workSheet.Cells[rowIterator, 26].Value?.ToString()
+                        }); ;
+                    }
+                }
+            }
+
+            if (lstVisitor_ImportData.Count == 0)
+            {
+                _response.Message = "File does not contains any record(s)";
+                return _response;
+            }
+
+            lstVisitor_ImportDataValidation = await _manageVisitorsRepository.ImportVisitor(lstVisitor_ImportData);
+
+            #region Generate Excel file for Invalid Data
+
+            if (lstVisitor_ImportDataValidation.ToList().Count > 0 && lstVisitor_ImportDataValidation.ToList().FirstOrDefault().VisitStartDate != null)
+            {
+                _response.IsSuccess = false;
+                _response.Message = "Uploaded file contains invalid records, please check downloaded file for more details";
+                _response.Data = GenerateInvalidImportDataFile(lstVisitor_ImportDataValidation);
+            }
+            else
+            {
+                _response.IsSuccess = true;
+                _response.Message = "Record imported successfully";
+            }
+
+            #endregion
+
+            return _response;
+        }
+
+        private byte[] GenerateInvalidImportDataFile(IEnumerable<Visitor_ImportDataValidation> lstVisitor_ImportDataValidation)
+        {
+            byte[] result;
+            int recordIndex;
+            ExcelWorksheet WorkSheet1;
+
+            using (MemoryStream msInvalidDataFile = new MemoryStream())
+            {
+                using (ExcelPackage excelInvalidData = new ExcelPackage())
+                {
+                    WorkSheet1 = excelInvalidData.Workbook.Worksheets.Add("Invalid_Records");
+                    WorkSheet1.TabColor = System.Drawing.Color.Black;
+                    WorkSheet1.DefaultRowHeight = 12;
+
+                    //Header of table
+                    WorkSheet1.Row(1).Height = 20;
+                    WorkSheet1.Row(1).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    WorkSheet1.Row(1).Style.Font.Bold = true;
+
+                    WorkSheet1.Cells[1, 1].Value = "PassType";
+                    WorkSheet1.Cells[1, 2].Value = "VisitStartDate";
+                    WorkSheet1.Cells[1, 3].Value = "VisitEndDate";
+                    WorkSheet1.Cells[1, 4].Value = "VisitorMobileNo";
+                    WorkSheet1.Cells[1, 5].Value = "VisitorName";
+                    WorkSheet1.Cells[1, 6].Value = "VisitorEmailId";
+
+                    WorkSheet1.Cells[1, 7].Value = "Gender";
+                    WorkSheet1.Cells[1, 8].Value = "Country";
+                    WorkSheet1.Cells[1, 9].Value = "State";
+                    WorkSheet1.Cells[1, 10].Value = "Province";
+                    WorkSheet1.Cells[1, 11].Value = "Pincode";
+                    WorkSheet1.Cells[1, 12].Value = "Address";
+                    WorkSheet1.Cells[1, 13].Value = "IsCompany";
+                    WorkSheet1.Cells[1, 14].Value = "VisitorCompany";
+
+                    WorkSheet1.Cells[1, 15].Value = "VisitPurpose";
+                    WorkSheet1.Cells[1, 16].Value = "Branch";
+                    WorkSheet1.Cells[1, 17].Value = "Department";
+                    WorkSheet1.Cells[1, 18].Value = "GateNumber";
+                    WorkSheet1.Cells[1, 19].Value = "EmployeeName";
+
+                    WorkSheet1.Cells[1, 20].Value = "IsVehicle";
+                    WorkSheet1.Cells[1, 21].Value = "VehicleNumber";
+                    WorkSheet1.Cells[1, 22].Value = "VehicleType";
+
+                    WorkSheet1.Cells[1, 23].Value = "IsDrivingLicense";
+                    WorkSheet1.Cells[1, 24].Value = "IsPUC";
+                    WorkSheet1.Cells[1, 25].Value = "IsInsurance";
+                    WorkSheet1.Cells[1, 26].Value = "Remarks";
+                    WorkSheet1.Cells[1, 27].Value = "ErrorMessage";
+
+                    recordIndex = 2;
+
+                    foreach (Visitor_ImportDataValidation record in lstVisitor_ImportDataValidation)
+                    {
+                        WorkSheet1.Cells[recordIndex, 1].Value = record.PassType;
+                        WorkSheet1.Cells[recordIndex, 2].Value = record.VisitStartDate;
+                        WorkSheet1.Cells[recordIndex, 3].Value = record.VisitEndDate;
+                        WorkSheet1.Cells[recordIndex, 4].Value = record.VisitorMobileNo;
+                        WorkSheet1.Cells[recordIndex, 5].Value = record.VisitorName;
+                        WorkSheet1.Cells[recordIndex, 6].Value = record.VisitorEmailId;
+
+                        WorkSheet1.Cells[recordIndex, 7].Value = record.Gender;
+                        WorkSheet1.Cells[recordIndex, 8].Value = record.Country;
+                        WorkSheet1.Cells[recordIndex, 9].Value = record.State;
+                        WorkSheet1.Cells[recordIndex, 10].Value = record.Province;
+                        WorkSheet1.Cells[recordIndex, 11].Value = record.Pincode;
+
+                        WorkSheet1.Cells[recordIndex, 12].Value = record.Address;
+                        WorkSheet1.Cells[recordIndex, 13].Value = record.IsCompany;
+                        WorkSheet1.Cells[recordIndex, 14].Value = record.VisitorCompany;
+
+                        WorkSheet1.Cells[recordIndex, 15].Value = record.VisitPurpose;
+                        WorkSheet1.Cells[recordIndex, 16].Value = record.Branch;
+                        WorkSheet1.Cells[recordIndex, 17].Value = record.Department;
+                        WorkSheet1.Cells[recordIndex, 18].Value = record.GateNumber;
+                        WorkSheet1.Cells[recordIndex, 19].Value = record.EmployeeName;
+
+                        WorkSheet1.Cells[recordIndex, 20].Value = record.IsVehicle;
+                        WorkSheet1.Cells[recordIndex, 21].Value = record.VehicleNumber;
+                        WorkSheet1.Cells[recordIndex, 22].Value = record.VehicleType;
+
+                        WorkSheet1.Cells[recordIndex, 23].Value = record.IsDrivingLicense;
+                        WorkSheet1.Cells[recordIndex, 24].Value = record.IsPUC;
+                        WorkSheet1.Cells[recordIndex, 25].Value = record.IsInsurance;
+                        WorkSheet1.Cells[recordIndex, 26].Value = record.Remarks;
+                        WorkSheet1.Cells[recordIndex, 27].Value = record.ValidationMessage;
+
+                        recordIndex += 1;
+                    }
+
+                    WorkSheet1.Columns.AutoFit();
+
+                    excelInvalidData.SaveAs(msInvalidDataFile);
+                    msInvalidDataFile.Position = 0;
+                    result = msInvalidDataFile.ToArray();
+                }
+            }
+
+            return result;
+        }
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> ExportVisitorData(Visitors_Search parameters)
+        {
+            _response.IsSuccess = false;
+            byte[] result;
+            int recordIndex;
+            ExcelWorksheet WorkSheet1;
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+
+            IEnumerable<Visitors_Response> lstSizeObj = await _manageVisitorsRepository.GetVisitorsList(parameters);
+
+            using (MemoryStream msExportDataFile = new MemoryStream())
+            {
+                using (ExcelPackage excelExportData = new ExcelPackage())
+                {
+                    WorkSheet1 = excelExportData.Workbook.Worksheets.Add("Visitor");
+                    WorkSheet1.TabColor = System.Drawing.Color.Black;
+                    WorkSheet1.DefaultRowHeight = 12;
+
+                    //Header of table
+                    WorkSheet1.Row(1).Height = 20;
+                    WorkSheet1.Row(1).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    WorkSheet1.Row(1).Style.Font.Bold = true;
+
+                    WorkSheet1.Cells[1, 1].Value = "Sr.No";
+                    WorkSheet1.Cells[1, 2].Value = "Visit ID";
+                    WorkSheet1.Cells[1, 3].Value = "Visitor Name";
+                    WorkSheet1.Cells[1, 4].Value = "Visitor Mobile Number";
+                    WorkSheet1.Cells[1, 5].Value = "Pass Type";
+                    WorkSheet1.Cells[1, 6].Value = "Visit Start Date & Time";
+                    WorkSheet1.Cells[1, 7].Value = "Visit End Date & Time";
+                    WorkSheet1.Cells[1, 8].Value = "Visitor Email Id";
+                    WorkSheet1.Cells[1, 9].Value = "Gender";
+                    WorkSheet1.Cells[1, 10].Value = "Visitor Company";
+                    WorkSheet1.Cells[1, 11].Value = "Address";
+                    WorkSheet1.Cells[1, 12].Value = "Country";
+                    WorkSheet1.Cells[1, 13].Value = "State";
+                    WorkSheet1.Cells[1, 14].Value = "Province";
+                    WorkSheet1.Cells[1, 15].Value = "Pincode";
+                    WorkSheet1.Cells[1, 16].Value = "Meeting Purpose";
+                    WorkSheet1.Cells[1, 17].Value = "Branch";
+                    WorkSheet1.Cells[1, 18].Value = "Department";
+                    WorkSheet1.Cells[1, 19].Value = "Gate Number";
+                    WorkSheet1.Cells[1, 20].Value = "Employee Name";
+                    WorkSheet1.Cells[1, 21].Value = "Employee Mobile Number";
+                    WorkSheet1.Cells[1, 22].Value = "Employee EmailId";
+                    WorkSheet1.Cells[1, 23].Value = "Is Vehicle";
+                    WorkSheet1.Cells[1, 24].Value = "Vehicle Number";
+                    WorkSheet1.Cells[1, 25].Value = "Vehicle Type";
+                    WorkSheet1.Cells[1, 26].Value = "Is Driving Licence";
+                    WorkSheet1.Cells[1, 27].Value = "Is PUC";
+                    WorkSheet1.Cells[1, 28].Value = "Is Insurance";
+                    WorkSheet1.Cells[1, 29].Value = "Remarks";
+                    WorkSheet1.Cells[1, 30].Value = "Status";
+                    WorkSheet1.Cells[1, 31].Value = "Is Active";
+                    WorkSheet1.Cells[1, 32].Value = "Created Date";
+                    WorkSheet1.Cells[1, 33].Value = "Created By";
+
+                    recordIndex = 2;
+
+                    int i = 1;
+
+                    foreach (var items in lstSizeObj)
+                    {
+                        var vResultObj = await _userRepository.GetUserById(items.Id);
+
+                        string strGateNumberList = string.Empty;
+                        var vSecurityGateDetail = await _assignGateNoRepository.GetAssignGateNoById(RefId: Convert.ToInt32(items.Id), "Visitor", GateDetailsId: 0);
+                        if (vSecurityGateDetail.ToList().Count > 0)
+                        {
+                            strGateNumberList = string.Join(",", vSecurityGateDetail.ToList().OrderBy(x => x.GateDetailsId).Select(x => x.GateDetailsId));
+                        }
+
+                        WorkSheet1.Cells[recordIndex, 1].Value = i;
+                        WorkSheet1.Cells[recordIndex, 2].Value = items.VisitNumber;
+                        WorkSheet1.Cells[recordIndex, 3].Value = items.VisitorName;
+                        WorkSheet1.Cells[recordIndex, 4].Value = items.VisitorMobileNo;
+                        WorkSheet1.Cells[recordIndex, 5].Value = items.PassType;
+                       
+                        WorkSheet1.Cells[recordIndex, 6].Value = items.VisitStartDate.HasValue? items.VisitStartDate.Value.ToString("dd/MM/yyyy") : string.Empty;
+                        WorkSheet1.Cells[recordIndex, 7].Value = items.VisitEndDate.HasValue ? items.VisitEndDate.Value.ToString("dd/MM/yyyy") : string.Empty;
+                        WorkSheet1.Cells[recordIndex, 8].Value = items.VisitorEmailId;
+                        WorkSheet1.Cells[recordIndex, 9].Value = items.GenderName;
+                        WorkSheet1.Cells[recordIndex, 10].Value = items.CompanyName;
+                        WorkSheet1.Cells[recordIndex, 11].Value = items.AddressLine;
+                        WorkSheet1.Cells[recordIndex, 12].Value = items.CountryName;
+                        WorkSheet1.Cells[recordIndex, 13].Value = items.StateName;
+                        WorkSheet1.Cells[recordIndex, 14].Value = items.DistrictName;
+                        WorkSheet1.Cells[recordIndex, 15].Value = items.Pincode;
+                        WorkSheet1.Cells[recordIndex, 16].Value = items.MeetingType;
+                        WorkSheet1.Cells[recordIndex, 17].Value = items.BranchName;
+                        WorkSheet1.Cells[recordIndex, 18].Value = items.DepartmentName;
+                        WorkSheet1.Cells[recordIndex, 19].Value = strGateNumberList;
+                        WorkSheet1.Cells[recordIndex, 20].Value = items.EmployeeName;
+                        WorkSheet1.Cells[recordIndex, 21].Value = items.Employee_MobileNumber;
+                        WorkSheet1.Cells[recordIndex, 22].Value = items.Employee_EmailId;
+                        WorkSheet1.Cells[recordIndex, 23].Value = items.IsVehicle;
+                        WorkSheet1.Cells[recordIndex, 24].Value = items.VehicleNumber;
+                        WorkSheet1.Cells[recordIndex, 25].Value = items.VehicleType;
+                        WorkSheet1.Cells[recordIndex, 26].Value = items.IsDrivingLicense;
+                        WorkSheet1.Cells[recordIndex, 27].Value = items.IsPUC;
+                        WorkSheet1.Cells[recordIndex, 28].Value = items.IsInsurance;
+                        WorkSheet1.Cells[recordIndex, 29].Value = items.Remarks;
+                        WorkSheet1.Cells[recordIndex, 30].Value = items.StatusName;
+
+                        WorkSheet1.Cells[recordIndex, 31].Value = items.IsActive == true ? "Active" : "Inactive";
+                        WorkSheet1.Cells[recordIndex, 32].Value = Convert.ToDateTime(items.CreatedDate).ToString("dd/MM/yyyy");
+                        WorkSheet1.Cells[recordIndex, 33].Value = items.CreatorName;
+
+                        recordIndex += 1;
+                        i++;
+                    }
+
+                    WorkSheet1.Columns.AutoFit();
+
+                    excelExportData.SaveAs(msExportDataFile);
+                    msExportDataFile.Position = 0;
+                    result = msExportDataFile.ToArray();
+                }
+            }
+
+            if (result != null)
+            {
+                _response.Data = result;
+                _response.IsSuccess = true;
+                _response.Message = "Exported successfully";
+            }
+
+            return _response;
+        }
     }
 }

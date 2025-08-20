@@ -499,4 +499,65 @@ namespace Visitor.Application.Models
         public long CreatedBy { get; set; }
         public DateTime? CreatedDate { get; set; }
     }
+
+    public class Visitor_ImportData
+    {
+        public string? PassType { get; set; }
+        public DateTime? VisitStartDate { get; set; }
+        public DateTime? VisitEndDate { get; set; }
+        public string? VisitorMobileNo { get; set; }
+        public string? VisitorName { get; set; }
+        public string? VisitorEmailId { get; set; }
+        public string? Gender { get; set; }
+        public string? Country { get; set; }
+        public string? State { get; set; }
+        public string? Province { get; set; }
+        public string? Pincode { get; set; }
+        public string? Address { get; set; }
+        public string? IsCompany { get; set; }
+        public string? VisitorCompany { get; set; }
+        public string? VisitPurpose { get; set; }
+        public string? Branch { get; set; }
+        public string? Department { get; set; }
+        public string? GateNumber { get; set; }
+        public string? EmployeeName { get; set; }
+        public string? IsVehicle { get; set; }
+        public string? VehicleNumber { get; set; }
+        public string? VehicleType { get; set; }
+        public string? IsDrivingLicense { get; set; }
+        public string? IsPUC { get; set; }
+        public string? IsInsurance { get; set; }
+        public string? Remarks { get; set; }
+    }
+
+    public class Visitor_ImportDataValidation
+    {
+        public string? PassType { get; set; }
+        public string? VisitStartDate { get; set; }
+        public string? VisitEndDate { get; set; }
+        public string? VisitorMobileNo { get; set; }
+        public string? VisitorName { get; set; }
+        public string? VisitorEmailId { get; set; }
+        public string? Gender { get; set; }
+        public string? Country { get; set; }
+        public string? State { get; set; }
+        public string? Province { get; set; }
+        public string? Pincode { get; set; }
+        public string? Address { get; set; }
+        public string? IsCompany { get; set; }
+        public string? VisitorCompany { get; set; }
+        public string? VisitPurpose { get; set; }
+        public string? Branch { get; set; }
+        public string? Department { get; set; }
+        public string? GateNumber { get; set; }
+        public string? EmployeeName { get; set; }
+        public string? IsVehicle { get; set; }
+        public string? VehicleNumber { get; set; }
+        public string? VehicleType { get; set; }
+        public string? IsDrivingLicense { get; set; }
+        public string? IsPUC { get; set; }
+        public string? IsInsurance { get; set; }
+        public string? Remarks { get; set; }
+        public string ValidationMessage { get; set; }
+    }
 }

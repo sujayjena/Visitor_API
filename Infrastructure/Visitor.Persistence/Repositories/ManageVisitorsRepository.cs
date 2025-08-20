@@ -373,5 +373,15 @@ namespace Visitor.Persistence.Repositories
 
             return await SaveByStoredProcedure<int>("DeleteVisitorDocumentVerification", queryParameters);
         }
+
+        public async Task<IEnumerable<Visitor_ImportDataValidation>> ImportVisitor(List<Visitor_ImportData> parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            string xmlData = ConvertListToXml(parameters);
+            queryParameters.Add("@XmlData", xmlData);
+            queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
+
+            return await ListByStoredProcedure<Visitor_ImportDataValidation>("ImportVisitor", queryParameters);
+        }
     }
 }
