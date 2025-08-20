@@ -26,5 +26,11 @@ namespace Visitor.Application.Interfaces
 
         Task<ContractorInsurance_Response?> GetContractorInsuranceById(int Id);
         #endregion
+
+        #region Contractor Asset
+        Task<int> SaveContractorAsset(ContractorAsset_Request parameters);
+        Task<IEnumerable<ContractorAsset_Response>> GetContractorAssetList(ContractorAsset_Search parameters);
+        Task<int> DeleteContractorAsset(int Id);
+        #endregion
     }
 }

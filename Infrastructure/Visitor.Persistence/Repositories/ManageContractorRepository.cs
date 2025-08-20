@@ -50,6 +50,7 @@ namespace Visitor.Persistence.Repositories
             queryParameters.Add("@PanCardNumber", parameters.PanCardNumber);
             queryParameters.Add("@PanCardOriginalFileName", parameters.PanCardOriginalFileName);
             queryParameters.Add("@PanCardFileName", parameters.PanCardFileName);
+            queryParameters.Add("@ContractorLevel", parameters.ContractorLevel);
 
             queryParameters.Add("@IsActive", parameters.IsActive);
             queryParameters.Add("@IsBlackList", parameters.IsBlackList);
@@ -127,6 +128,48 @@ namespace Visitor.Persistence.Repositories
             DynamicParameters queryParameters = new DynamicParameters();
             queryParameters.Add("@Id", Id);
             return (await ListByStoredProcedure<ContractorInsurance_Response>("GetContractorInsuranceById", queryParameters)).FirstOrDefault();
+        }
+        #endregion
+
+        #region Contractor Asset
+        public async Task<int> SaveContractorAsset(ContractorAsset_Request parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@Id", parameters.Id);
+            queryParameters.Add("@ContractorId", parameters.ContractorId);
+            queryParameters.Add("@AssetName", parameters.AssetName);
+            queryParameters.Add("@AssetDesc", parameters.AssetDesc);
+            queryParameters.Add("@Quantity", parameters.Quantity);
+            queryParameters.Add("@UOMId", parameters.UOMId);
+            queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
+
+            return await SaveByStoredProcedure<int>("SaveContractorAsset", queryParameters);
+        }
+
+        public async Task<IEnumerable<ContractorAsset_Response>> GetContractorAssetList(ContractorAsset_Search parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@ContractorId", parameters.ContractorId);
+            queryParameters.Add("@SearchText", parameters.SearchText.SanitizeValue());
+            queryParameters.Add("@IsActive", parameters.IsActive);
+            queryParameters.Add("@PageNo", parameters.PageNo);
+            queryParameters.Add("@PageSize", parameters.PageSize);
+            queryParameters.Add("@Total", parameters.Total, null, System.Data.ParameterDirection.Output);
+            queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
+
+            var result = await ListByStoredProcedure<ContractorAsset_Response>("GetContractorAssetList", queryParameters);
+            parameters.Total = queryParameters.Get<int>("Total");
+
+            return result;
+        }
+
+        public async Task<int> DeleteContractorAsset(int Id)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+
+            queryParameters.Add("@Id", Id);
+
+            return await SaveByStoredProcedure<int>("DeleteContractorAsset", queryParameters);
         }
         #endregion
     }

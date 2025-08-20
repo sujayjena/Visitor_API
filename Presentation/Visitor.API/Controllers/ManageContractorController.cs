@@ -98,6 +98,27 @@ namespace Visitor.API.Controllers
                 {
                     _response.Message = "Record details saved successfully";
                 }
+
+                #region Contractor Asset
+                if (result > 0)
+                {
+                    foreach (var items in parameters.assetList)
+                    {
+                        var vContractorAsset_Request = new ContractorAsset_Request()
+                        {
+                            Id = items.Id,
+                            ContractorId = result,
+                            AssetName = items.AssetName,
+                            AssetDesc = items.AssetDesc,
+                            Quantity = items.Quantity,
+                            UOMId = items.UOMId
+                        };
+
+                        int resultSaveContractor = await _manageContractorRepository.SaveContractorAsset(vContractorAsset_Request);
+                    }
+
+                }
+                #endregion
             }
             return _response;
         }
@@ -124,6 +145,15 @@ namespace Visitor.API.Controllers
             else
             {
                 var vResultObj = await _manageContractorRepository.GetContractorById(Id);
+                if (vResultObj != null)
+                {
+                    var vContractorAsset_Search = new ContractorAsset_Search()
+                    {
+                        ContractorId = vResultObj.Id
+                    };
+                    var vContractorAsset = await _manageContractorRepository.GetContractorAssetList(vContractorAsset_Search);
+                    vResultObj.assetList = vContractorAsset.ToList();
+                }
                 _response.Data = vResultObj;
             }
             return _response;
@@ -200,6 +230,31 @@ namespace Visitor.API.Controllers
             }
             return _response;
         }
+        #endregion
+
+        #region Contractor Asset
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> DeleteContractorAsset(int Id)
+        {
+            int result = await _manageContractorRepository.DeleteContractorAsset(Id);
+
+            if (result == (int)SaveOperationEnums.NoRecordExists)
+            {
+                _response.Message = "No record exists";
+            }
+            else if (result == (int)SaveOperationEnums.NoResult)
+            {
+                _response.Message = "Something went wrong, please try again";
+            }
+            else
+            {
+                _response.Message = "Record details deleted successfully";
+            }
+            return _response;
+        }
+
         #endregion
     }
 }

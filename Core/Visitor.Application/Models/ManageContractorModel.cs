@@ -17,6 +17,10 @@ namespace Visitor.Application.Models
     #region Contrator
     public class Contractor_Request : BaseEntity
     {
+        public Contractor_Request()
+        {
+            assetList = new List<ContractorAsset_Request>();
+        }
         public int? ContractorTypeId { get; set; }
         public string? ContractorName { get; set; }
         public string? ContractorPerson { get; set; }
@@ -57,10 +61,13 @@ namespace Visitor.Application.Models
         public string? PanCardFileName { get; set; }
         public string? PanCard_Base64 { get; set; }
 
+        public int? ContractorLevel { get; set; }
         public bool? IsActive { get; set; }
 
         [DefaultValue(false)]
         public bool? IsBlackList { get; set; }
+
+        public List<ContractorAsset_Request> assetList { get; set; }
     }
 
     public class ContractorSearch_Request : BaseSearchEntity
@@ -75,6 +82,10 @@ namespace Visitor.Application.Models
 
     public class Contractor_Response : BaseResponseEntity
     {
+        public Contractor_Response()
+        {
+            assetList = new List<ContractorAsset_Response>();
+        }
         public int? ContractorTypeId { get; set; }
         public string? ContractorType { get; set; }
         public string? ContractorName { get; set; }
@@ -112,8 +123,44 @@ namespace Visitor.Application.Models
         public string? PanCardOriginalFileName { get; set; }
         public string? PanCardFileName { get; set; }
         public string? PanCardURL { get; set; }
+        public int? ContractorLevel { get; set; }
         public bool? IsActive { get; set; }
         public bool? IsBlackList { get; set; }
+        public List<ContractorAsset_Response> assetList { get; set; }
+    }
+
+    public class ContractorAsset_Request : BaseEntity
+    {
+        [JsonIgnore]
+        public int? ContractorId { get; set; }
+
+        [DefaultValue("")]
+        public string? AssetName { get; set; }
+
+        [DefaultValue("")]
+        public string? AssetDesc { get; set; }
+        public decimal? Quantity { get; set; }
+        public int? UOMId { get; set; }
+    }
+
+    public class ContractorAsset_Search : BaseSearchEntity
+    {
+        public int? ContractorId { get; set; }
+    }
+
+    public class ContractorAsset_Response : BaseResponseEntity
+    {
+        public int? ContractorId { get; set; }
+        public string? ContractorName { get; set; }
+
+        [DefaultValue("")]
+        public string? AssetName { get; set; }
+
+        [DefaultValue("")]
+        public string? AssetDesc { get; set; }
+        public decimal? Quantity { get; set; }
+        public int? UOMId { get; set; }
+        public string? UOMName { get; set; }
     }
     #endregion
 
