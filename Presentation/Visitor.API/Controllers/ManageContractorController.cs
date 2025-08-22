@@ -14,12 +14,14 @@ namespace Visitor.API.Controllers
     {
         private ResponseModel _response;
         private readonly IManageContractorRepository _manageContractorRepository;
+        private readonly IManageVisitorsRepository _manageVisitorsRepository;
         private IFileManager _fileManager;
 
-        public ManageContractorController(IManageContractorRepository manageContractorRepository, IFileManager fileManager)
+        public ManageContractorController(IManageContractorRepository manageContractorRepository, IFileManager fileManager, IManageVisitorsRepository manageVisitorsRepository)
         {
             _manageContractorRepository = manageContractorRepository;
             _fileManager = fileManager;
+            _manageVisitorsRepository = manageVisitorsRepository;
 
             _response = new ResponseModel();
             _response.IsSuccess = true;
@@ -74,6 +76,39 @@ namespace Visitor.API.Controllers
                 }
             }
 
+            //insurance Upload
+            if (parameters != null && !string.IsNullOrWhiteSpace(parameters.DV_Insurance_Base64))
+            {
+                var vUploadFile = _fileManager.UploadDocumentsBase64ToFile(parameters.DV_Insurance_Base64, "\\Uploads\\Contractor\\", parameters.DV_InsuranceOriginalFileName);
+
+                if (!string.IsNullOrWhiteSpace(vUploadFile))
+                {
+                    parameters.DV_InsuranceFileName = vUploadFile;
+                }
+            }
+
+            //wc Upload
+            if (parameters != null && !string.IsNullOrWhiteSpace(parameters.DV_WC_Base64))
+            {
+                var vUploadFile = _fileManager.UploadDocumentsBase64ToFile(parameters.DV_WC_Base64, "\\Uploads\\Contractor\\", parameters.DV_WCOriginalFileName);
+
+                if (!string.IsNullOrWhiteSpace(vUploadFile))
+                {
+                    parameters.DV_WCFileName = vUploadFile;
+                }
+            }
+
+            //esic Upload
+            if (parameters != null && !string.IsNullOrWhiteSpace(parameters.DV_ESIC_Base64))
+            {
+                var vUploadFile = _fileManager.UploadDocumentsBase64ToFile(parameters.DV_ESIC_Base64, "\\Uploads\\Contractor\\", parameters.DV_ESICOriginalFileName);
+
+                if (!string.IsNullOrWhiteSpace(vUploadFile))
+                {
+                    parameters.DV_ESICFileName = vUploadFile;
+                }
+            }
+
             int result = await _manageContractorRepository.SaveContractor(parameters);
 
             if (result == (int)SaveOperationEnums.NoRecordExists)
@@ -119,6 +154,39 @@ namespace Visitor.API.Controllers
 
                 }
                 #endregion
+
+                #region Document Verification
+
+                foreach (var vitem in parameters.DocumentVerificationList)
+                {
+                    // Document Upload
+                    if (vitem != null && !string.IsNullOrWhiteSpace(vitem.DocumentFile_Base64))
+                    {
+                        var vUploadFile = _fileManager.UploadDocumentsBase64ToFile(vitem.DocumentFile_Base64, "\\Uploads\\Visitors\\", vitem.DocumentOriginalFileName);
+
+                        if (!string.IsNullOrWhiteSpace(vUploadFile))
+                        {
+                            vitem.DocumentFileName = vUploadFile;
+                        }
+                    }
+
+                    var vVisitorDocumentVerification = new VisitorDocumentVerification_Request()
+                    {
+                        Id = vitem.Id,
+                        RefId = result,
+                        RefType = "Contractor",
+                        //VisitorId = result,
+                        IDTypeId = vitem.IDTypeId,
+                        DocumentNumber = vitem.DocumentNumber,
+                        DocumentOriginalFileName = vitem.DocumentOriginalFileName,
+                        DocumentFileName = vitem.DocumentFileName,
+                        IsDocumentStatus = vitem.IsDocumentStatus,
+                    };
+
+                    int resultGateNo = await _manageVisitorsRepository.SaveVisitorDocumentVerification(vVisitorDocumentVerification);
+                }
+
+                #endregion
             }
             return _response;
         }
@@ -153,6 +221,15 @@ namespace Visitor.API.Controllers
                     };
                     var vContractorAsset = await _manageContractorRepository.GetContractorAssetList(vContractorAsset_Search);
                     vResultObj.assetList = vContractorAsset.ToList();
+
+                    var vVisitorDocumentVerification = new VisitorDocumentVerification_Search()
+                    {
+                        RefId = vResultObj.Id,
+                        RefType = "Contractor"
+                    };
+
+                    var visitorDocumentVerificationlistObj = await _manageVisitorsRepository.GetVisitorDocumentVerificationList(vVisitorDocumentVerification);
+                    vResultObj.DocumentVerificationList = visitorDocumentVerificationlistObj.ToList();
                 }
                 _response.Data = vResultObj;
             }

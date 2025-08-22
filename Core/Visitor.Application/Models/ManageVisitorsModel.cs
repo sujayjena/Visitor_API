@@ -137,7 +137,10 @@ namespace Visitor.Application.Models
         public List<VisitorDocumentVerification_Request> DocumentVerificationList { get; set; }
         public List<VisitorAsset_Request> AssetList { get; set; }
     }
-
+    public class VisitorAsset_Search : BaseSearchEntity
+    {
+        public int? VisitorId { get; set; }
+    }
     public class Visitors_Response : BaseResponseEntity
     {
         public string? VisitNumber { get; set; }
@@ -235,7 +238,15 @@ namespace Visitor.Application.Models
     public class VisitorDocumentVerification_Request : BaseEntity
     {
         [JsonIgnore]
-        public int? VisitorId { get; set; }
+        public int? RefId { get; set; }
+
+        [JsonIgnore]
+        [DefaultValue("Visitor")]
+        public string? RefType { get; set; }
+
+        //[JsonIgnore]
+        //public int? VisitorId { get; set; }
+
         public int? IDTypeId { get; set; }
         public string? DocumentNumber { get; set; }
         public string? DocumentOriginalFileName { get; set; }
@@ -248,12 +259,18 @@ namespace Visitor.Application.Models
 
     public class VisitorDocumentVerification_Search : BaseSearchEntity
     {
-        public int? VisitorId { get; set; }
+        public int? RefId { get; set; }
+
+        [DefaultValue("Visitor")]
+        public string? RefType { get; set; }
+        //public int? VisitorId { get; set; }
     }
 
     public class VisitorDocumentVerification_Response : BaseEntity
     {
-        public int? VisitorId { get; set; }
+        public int? RefId { get; set; }
+        public string? RefType { get; set; }
+        //public int? VisitorId { get; set; }
         public int? IDTypeId { get; set; }
         public string? IDType { get; set; }
         public string? DocumentNumber { get; set; }

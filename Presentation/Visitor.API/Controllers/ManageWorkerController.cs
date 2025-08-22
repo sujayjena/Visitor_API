@@ -105,6 +105,61 @@ namespace Visitor.API.Controllers
                 }
             }
 
+            //insurance Upload
+            if (parameters != null && !string.IsNullOrWhiteSpace(parameters.DV_Insurance_Base64))
+            {
+                var vUploadFile = _fileManager.UploadDocumentsBase64ToFile(parameters.DV_Insurance_Base64, "\\Uploads\\Worker\\", parameters.DV_InsuranceOriginalFileName);
+
+                if (!string.IsNullOrWhiteSpace(vUploadFile))
+                {
+                    parameters.DV_InsuranceFileName = vUploadFile;
+                }
+            }
+
+            //wc Upload
+            if (parameters != null && !string.IsNullOrWhiteSpace(parameters.DV_WC_Base64))
+            {
+                var vUploadFile = _fileManager.UploadDocumentsBase64ToFile(parameters.DV_WC_Base64, "\\Uploads\\Worker\\", parameters.DV_WCOriginalFileName);
+
+                if (!string.IsNullOrWhiteSpace(vUploadFile))
+                {
+                    parameters.DV_WCFileName = vUploadFile;
+                }
+            }
+
+            //esic Upload
+            if (parameters != null && !string.IsNullOrWhiteSpace(parameters.DV_ESIC_Base64))
+            {
+                var vUploadFile = _fileManager.UploadDocumentsBase64ToFile(parameters.DV_ESIC_Base64, "\\Uploads\\Worker\\", parameters.DV_ESICOriginalFileName);
+
+                if (!string.IsNullOrWhiteSpace(vUploadFile))
+                {
+                    parameters.DV_ESICFileName = vUploadFile;
+                }
+            }
+
+            //police verification Upload
+            if (parameters != null && !string.IsNullOrWhiteSpace(parameters.PoliceV_Base64))
+            {
+                var vUploadFile = _fileManager.UploadDocumentsBase64ToFile(parameters.PoliceV_Base64, "\\Uploads\\Worker\\", parameters.PoliceVOriginalFileName);
+
+                if (!string.IsNullOrWhiteSpace(vUploadFile))
+                {
+                    parameters.PoliceVFileName = vUploadFile;
+                }
+            }
+
+            //Fitness Certificate Upload
+            if (parameters != null && !string.IsNullOrWhiteSpace(parameters.FitnessCert_Base64))
+            {
+                var vUploadFile = _fileManager.UploadDocumentsBase64ToFile(parameters.FitnessCert_Base64, "\\Uploads\\Worker\\", parameters.FitnessCertOriginalFileName);
+
+                if (!string.IsNullOrWhiteSpace(vUploadFile))
+                {
+                    parameters.FitnessCertFileName = vUploadFile;
+                }
+            }
+
             int result = await _manageWorkerRepository.SaveWorker(parameters);
 
             if (result == (int)SaveOperationEnums.NoRecordExists)
@@ -155,6 +210,39 @@ namespace Visitor.API.Controllers
                     };
 
                     int resultGateNo = await _assignGateNoRepository.SaveAssignGateNo(vGateNoMapObj);
+                }
+
+                #endregion
+
+                #region Document Verification
+
+                foreach (var vitem in parameters.DocumentVerificationList)
+                {
+                    // Document Upload
+                    if (vitem != null && !string.IsNullOrWhiteSpace(vitem.DocumentFile_Base64))
+                    {
+                        var vUploadFile = _fileManager.UploadDocumentsBase64ToFile(vitem.DocumentFile_Base64, "\\Uploads\\Visitors\\", vitem.DocumentOriginalFileName);
+
+                        if (!string.IsNullOrWhiteSpace(vUploadFile))
+                        {
+                            vitem.DocumentFileName = vUploadFile;
+                        }
+                    }
+
+                    var vVisitorDocumentVerification = new VisitorDocumentVerification_Request()
+                    {
+                        Id = vitem.Id,
+                        RefId = result,
+                        RefType = "Worker",
+                        //VisitorId = result,
+                        IDTypeId = vitem.IDTypeId,
+                        DocumentNumber = vitem.DocumentNumber,
+                        DocumentOriginalFileName = vitem.DocumentOriginalFileName,
+                        DocumentFileName = vitem.DocumentFileName,
+                        IsDocumentStatus = vitem.IsDocumentStatus,
+                    };
+
+                    int resultGateNo = await _manageVisitorsRepository.SaveVisitorDocumentVerification(vVisitorDocumentVerification);
                 }
 
                 #endregion
@@ -232,6 +320,15 @@ namespace Visitor.API.Controllers
                 {
                     var gateNolistObj = await _assignGateNoRepository.GetAssignGateNoById(vResultObj.Id, "Worker", 0);
                     vResultObj.GateNumberList = gateNolistObj.ToList();
+
+                    var vVisitorDocumentVerification = new VisitorDocumentVerification_Search()
+                    {
+                        RefId = vResultObj.Id,
+                        RefType = "Worker"
+                    };
+
+                    var visitorDocumentVerificationlistObj = await _manageVisitorsRepository.GetVisitorDocumentVerificationList(vVisitorDocumentVerification);
+                    vResultObj.DocumentVerificationList = visitorDocumentVerificationlistObj.ToList();
                 }
                 _response.Data = vResultObj;
             }

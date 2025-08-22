@@ -31,7 +31,7 @@ namespace Visitor.Application.Interfaces
         Task<IEnumerable<VisitorDocumentVerification_Response>> GetVisitorDocumentVerificationList(VisitorDocumentVerification_Search parameters);
 
         Task<int> SaveVisitorAsset(VisitorAsset_Request parameters);
-        Task<IEnumerable<VisitorAsset_Response>> GetVisitorAssetList(VisitorDocumentVerification_Search parameters);
+        Task<IEnumerable<VisitorAsset_Response>> GetVisitorAssetList(VisitorAsset_Search parameters);
 
         Task<IEnumerable<SelectListResponse>> GetVisitorMobileNoListForSelectList();
 

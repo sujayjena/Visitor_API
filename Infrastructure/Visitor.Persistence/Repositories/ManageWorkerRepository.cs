@@ -50,6 +50,24 @@ namespace Visitor.Persistence.Repositories
             queryParameters.Add("@WorkerPhotoFileName", parameters.WorkerPhotoFileName);
             queryParameters.Add("@DepartmentId", parameters.DepartmentId);
             queryParameters.Add("@EmployeeId", parameters.EmployeeId);
+            queryParameters.Add("@DV_IsInsurance", parameters.DV_IsInsurance);
+            queryParameters.Add("@DV_InsuranceNumber", parameters.DV_InsuranceNumber);
+            queryParameters.Add("@DV_InsuranceOriginalFileName", parameters.DV_InsuranceOriginalFileName);
+            queryParameters.Add("@DV_InsuranceFileName", parameters.DV_InsuranceFileName);
+            queryParameters.Add("@DV_IsWC", parameters.DV_IsWC);
+            queryParameters.Add("@DV_WCNumber", parameters.DV_WCNumber);
+            queryParameters.Add("@DV_WCOriginalFileName", parameters.DV_WCOriginalFileName);
+            queryParameters.Add("@DV_WCFileName", parameters.DV_WCFileName);
+            queryParameters.Add("@DV_IsESIC", parameters.DV_IsESIC);
+            queryParameters.Add("@DV_ESICNumber", parameters.DV_ESICNumber);
+            queryParameters.Add("@DV_ESICOriginalFileName", parameters.DV_ESICOriginalFileName);
+            queryParameters.Add("@WorkerShift", parameters.WorkerShift);
+            queryParameters.Add("@IsPoliceV", parameters.IsPoliceV);
+            queryParameters.Add("@PoliceVOriginalFileName", parameters.PoliceVOriginalFileName);
+            queryParameters.Add("@PoliceVFileName", parameters.PoliceVFileName);
+            queryParameters.Add("@IsFitnessCert", parameters.IsFitnessCert);
+            queryParameters.Add("@FitnessCertOriginalFileName", parameters.FitnessCertOriginalFileName);
+            queryParameters.Add("@FitnessCertFileName", parameters.FitnessCertFileName);
 
             queryParameters.Add("@IsBlackList", parameters.IsBlackList);
             queryParameters.Add("@IsActive", parameters.IsActive);

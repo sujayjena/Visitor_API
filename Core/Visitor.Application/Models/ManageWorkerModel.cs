@@ -19,6 +19,7 @@ namespace Visitor.Application.Models
         public Worker_Request()
         {
             GateNumberList = new List<AssignGateNo_Request>();
+            DocumentVerificationList = new List<VisitorDocumentVerification_Request>();
         }
         public string? WorkerName { get; set; }
         public int? PurchaseOrderId { get; set; }
@@ -56,10 +57,57 @@ namespace Visitor.Application.Models
         public int? EmployeeId { get; set; }
 
         [DefaultValue(false)]
+        public bool? DV_IsInsurance { get; set; }
+        public string? DV_InsuranceNumber { get; set; }
+        public string? DV_InsuranceOriginalFileName { get; set; }
+
+        [JsonIgnore]
+        public string? DV_InsuranceFileName { get; set; }
+        public string? DV_Insurance_Base64 { get; set; }
+
+        [DefaultValue(false)]
+        public bool? DV_IsWC { get; set; }
+        public string? DV_WCNumber { get; set; }
+        public string? DV_WCOriginalFileName { get; set; }
+
+        [JsonIgnore]
+        public string? DV_WCFileName { get; set; }
+        public string? DV_WC_Base64 { get; set; }
+
+        [DefaultValue(false)]
+        public bool? DV_IsESIC { get; set; }
+        public string? DV_ESICNumber { get; set; }
+        public string? DV_ESICOriginalFileName { get; set; }
+
+        [JsonIgnore]
+        public string? DV_ESICFileName { get; set; }
+        public string? DV_ESIC_Base64 { get; set; }
+
+        public int? WorkerShift { get; set; }
+
+        [DefaultValue(false)]
+        public bool? IsPoliceV { get; set; }
+        public string? PoliceVOriginalFileName { get; set; }
+
+        [JsonIgnore]
+        public string? PoliceVFileName { get; set; }
+        public string? PoliceV_Base64 { get; set; }
+
+        [DefaultValue(false)]
+        public bool? IsFitnessCert { get; set; }
+        public string? FitnessCertOriginalFileName { get; set; }
+
+        [JsonIgnore]
+        public string? FitnessCertFileName { get; set; }
+        public string? FitnessCert_Base64 { get; set; }
+
+
+        [DefaultValue(false)]
         public bool? IsBlackList { get; set; }
 
         public bool? IsActive { get; set; }
         public List<AssignGateNo_Request> GateNumberList { get; set; }
+        public List<VisitorDocumentVerification_Request> DocumentVerificationList { get; set; }
     }
 
     public class WorkerSearch_Request : BaseSearchEntity
@@ -129,11 +177,41 @@ namespace Visitor.Application.Models
         public string? EmployeeEmailId { get; set; }
         public string? EmployeeMobileNo { get; set; }
 
+        public bool? DV_IsInsurance { get; set; }
+        public string? DV_InsuranceNumber { get; set; }
+        public string? DV_InsuranceOriginalFileName { get; set; }
+        public string? DV_InsuranceFileName { get; set; }
+        public string? DV_InsuranceURL { get; set; }
+
+        public bool? DV_IsWC { get; set; }
+        public string? DV_WCNumber { get; set; }
+        public string? DV_WCOriginalFileName { get; set; }
+        public string? DV_WCFileName { get; set; }
+        public string? DV_WCURL { get; set; }
+
+        public bool? DV_IsESIC { get; set; }
+        public string? DV_ESICNumber { get; set; }
+        public string? DV_ESICOriginalFileName { get; set; }
+        public string? DV_ESICFileName { get; set; }
+        public string? DV_ESICURL { get; set; }
+
+        public int? WorkerShift { get; set; }
+        public bool? IsPoliceV { get; set; }
+        public string? PoliceVOriginalFileName { get; set; }
+        public string? PoliceVFileName { get; set; }
+        public string? PoliceVURL { get; set; }
+
+        public bool? IsFitnessCert { get; set; }
+        public string? FitnessCertOriginalFileName { get; set; }
+        public string? FitnessCertFileName { get; set; }
+        public string? FitnessCertURL { get; set; }
+
 
         [DefaultValue(false)]
         public bool? IsBlackList { get; set; }
         public bool? IsActive { get; set; }
         public List<AssignGateNo_Response> GateNumberList { get; set; }
+        public List<VisitorDocumentVerification_Response> DocumentVerificationList { get; set; }
     }
 
     public class WorkerPass_Request : BaseEntity

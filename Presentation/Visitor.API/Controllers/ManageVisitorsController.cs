@@ -171,7 +171,9 @@ namespace Visitor.API.Controllers
                     var vVisitorDocumentVerification = new VisitorDocumentVerification_Request()
                     {
                         Id = vitem.Id,
-                        VisitorId = result,
+                        RefId = result,
+                        RefType = "Visitor",
+                        //VisitorId = result,
                         IDTypeId = vitem.IDTypeId,
                         DocumentNumber = vitem.DocumentNumber,
                         DocumentOriginalFileName = vitem.DocumentOriginalFileName,
@@ -377,13 +379,19 @@ namespace Visitor.API.Controllers
 
                     var vVisitorDocumentVerification = new VisitorDocumentVerification_Search()
                     {
-                        VisitorId = vResultObj.Id
+                        RefId = vResultObj.Id,
+                        RefType = "Visitor"
                     };
 
                     var visitorDocumentVerificationlistObj = await _manageVisitorsRepository.GetVisitorDocumentVerificationList(vVisitorDocumentVerification);
                     vResultObj.DocumentVerificationList = visitorDocumentVerificationlistObj.ToList();
 
-                    var visitorAssetlistObj = await _manageVisitorsRepository.GetVisitorAssetList(vVisitorDocumentVerification);
+                    var vVisitorAsset_Search = new VisitorAsset_Search()
+                    {
+                        VisitorId = vResultObj.Id,
+                    };
+
+                    var visitorAssetlistObj = await _manageVisitorsRepository.GetVisitorAssetList(vVisitorAsset_Search);
                     vResultObj.AssetList = visitorAssetlistObj.ToList();
                 }
                 _response.Data = vResultObj;
@@ -631,13 +639,19 @@ namespace Visitor.API.Controllers
 
                     var vVisitorDocumentVerification = new VisitorDocumentVerification_Search()
                     {
-                        VisitorId = vResultObj.Id
+                        RefId = vResultObj.Id,
+                        RefType = "Visitor"
                     };
 
                     var visitorDocumentVerificationlistObj = await _manageVisitorsRepository.GetVisitorDocumentVerificationList(vVisitorDocumentVerification);
                     vResultObj.DocumentVerificationList = visitorDocumentVerificationlistObj.ToList();
 
-                    var visitorAssetlistObj = await _manageVisitorsRepository.GetVisitorAssetList(vVisitorDocumentVerification);
+                    var vVisitorAsset_Search = new VisitorAsset_Search()
+                    {
+                        VisitorId = vResultObj.Id,
+                    };
+
+                    var visitorAssetlistObj = await _manageVisitorsRepository.GetVisitorAssetList(vVisitorAsset_Search);
                     vResultObj.AssetList = visitorAssetlistObj.ToList();
                 }
                 _response.Data = vResultObj;

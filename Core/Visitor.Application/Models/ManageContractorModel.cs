@@ -20,6 +20,7 @@ namespace Visitor.Application.Models
         public Contractor_Request()
         {
             assetList = new List<ContractorAsset_Request>();
+            DocumentVerificationList = new List<VisitorDocumentVerification_Request>();
         }
         public int? ContractorTypeId { get; set; }
         public string? ContractorName { get; set; }
@@ -65,12 +66,41 @@ namespace Visitor.Application.Models
         public int? BranchId { get; set; }
         public int? DepartmentId { get; set; }
         public int? EmployeeId { get; set; }
+
+        [DefaultValue(false)]
+        public bool? DV_IsInsurance { get; set; }
+        public string? DV_InsuranceNumber { get; set; }
+        public string? DV_InsuranceOriginalFileName { get; set; }
+
+        [JsonIgnore]
+        public string? DV_InsuranceFileName { get; set; }
+        public string? DV_Insurance_Base64 { get; set; }
+
+        [DefaultValue(false)]
+        public bool? DV_IsWC { get; set; }
+        public string? DV_WCNumber { get; set; }
+        public string? DV_WCOriginalFileName { get; set; }
+
+        [JsonIgnore]
+        public string? DV_WCFileName { get; set; }
+        public string? DV_WC_Base64 { get; set; }
+
+        [DefaultValue(false)]
+        public bool? DV_IsESIC { get; set; }
+        public string? DV_ESICNumber { get; set; }
+        public string? DV_ESICOriginalFileName { get; set; }
+
+        [JsonIgnore]
+        public string? DV_ESICFileName { get; set; }
+        public string? DV_ESIC_Base64 { get; set; }
+
         public bool? IsActive { get; set; }
 
         [DefaultValue(false)]
         public bool? IsBlackList { get; set; }
 
         public List<ContractorAsset_Request> assetList { get; set; }
+        public List<VisitorDocumentVerification_Request> DocumentVerificationList { get; set; }
     }
 
     public class ContractorSearch_Request : BaseSearchEntity
@@ -135,9 +165,28 @@ namespace Visitor.Application.Models
         public string? EmployeeName { get; set; }
         public string? EmployeeEmailId { get; set; }
         public string? EmployeeMobileNo { get; set; }
+        public bool? DV_IsInsurance { get; set; }
+        public string? DV_InsuranceNumber { get; set; }
+        public string? DV_InsuranceOriginalFileName { get; set; }
+        public string? DV_InsuranceFileName { get; set; }
+        public string? DV_InsuranceURL { get; set; }
+
+        public bool? DV_IsWC { get; set; }
+        public string? DV_WCNumber { get; set; }
+        public string? DV_WCOriginalFileName { get; set; }
+        public string? DV_WCFileName { get; set; }
+        public string? DV_WCURL { get; set; }
+
+        public bool? DV_IsESIC { get; set; }
+        public string? DV_ESICNumber { get; set; }
+        public string? DV_ESICOriginalFileName { get; set; }
+        public string? DV_ESICFileName { get; set; }
+        public string? DV_ESICURL { get; set; }
+
         public bool? IsActive { get; set; }
         public bool? IsBlackList { get; set; }
         public List<ContractorAsset_Response> assetList { get; set; }
+        public List<VisitorDocumentVerification_Response> DocumentVerificationList { get; set; }
     }
 
     public class ContractorAsset_Request : BaseEntity

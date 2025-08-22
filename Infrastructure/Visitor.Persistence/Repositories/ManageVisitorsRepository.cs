@@ -264,7 +264,9 @@ namespace Visitor.Persistence.Repositories
         {
             DynamicParameters queryParameters = new DynamicParameters();
             queryParameters.Add("@Id", parameters.Id);
-            queryParameters.Add("@VisitorId", parameters.VisitorId);
+            queryParameters.Add("@RefId", parameters.RefId);
+            queryParameters.Add("@RefType", parameters.RefType);
+            //queryParameters.Add("@VisitorId", parameters.VisitorId);
             queryParameters.Add("@IDTypeId", parameters.IDTypeId);
             queryParameters.Add("@DocumentNumber", parameters.DocumentNumber);
             queryParameters.Add("@DocumentOriginalFileName", parameters.DocumentOriginalFileName);
@@ -278,7 +280,8 @@ namespace Visitor.Persistence.Repositories
         public async Task<IEnumerable<VisitorDocumentVerification_Response>> GetVisitorDocumentVerificationList(VisitorDocumentVerification_Search parameters)
         {
             DynamicParameters queryParameters = new DynamicParameters();
-            queryParameters.Add("@VisitorId", parameters.VisitorId);
+            queryParameters.Add("@RefId", parameters.RefId);
+            queryParameters.Add("@RefType", parameters.RefType);
             queryParameters.Add("@SearchText", parameters.SearchText.SanitizeValue());
             queryParameters.Add("@IsActive", parameters.IsActive);
             queryParameters.Add("@PageNo", parameters.PageNo);
@@ -304,7 +307,7 @@ namespace Visitor.Persistence.Repositories
             return await SaveByStoredProcedure<int>("SaveVisitorAsset", queryParameters);
         }
 
-        public async Task<IEnumerable<VisitorAsset_Response>> GetVisitorAssetList(VisitorDocumentVerification_Search parameters)
+        public async Task<IEnumerable<VisitorAsset_Response>> GetVisitorAssetList(VisitorAsset_Search parameters)
         {
             DynamicParameters queryParameters = new DynamicParameters();
             queryParameters.Add("@VisitorId", parameters.VisitorId);
