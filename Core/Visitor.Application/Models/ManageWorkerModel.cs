@@ -101,6 +101,16 @@ namespace Visitor.Application.Models
         public string? FitnessCertFileName { get; set; }
         public string? FitnessCert_Base64 { get; set; }
 
+        [DefaultValue(false)]
+        public bool? IsDriver { get; set; }
+        public string? VehicleNumber { get; set; }
+        public string? DrivingLicenseNo { get; set; }
+
+        [DefaultValue(null)]
+        public DateTime? LicenseValidFrom { get; set; }
+
+        [DefaultValue(null)]
+        public DateTime? LicenseValidTo { get; set; }
 
         [DefaultValue(false)]
         public bool? IsBlackList { get; set; }
@@ -205,6 +215,14 @@ namespace Visitor.Application.Models
         public string? FitnessCertOriginalFileName { get; set; }
         public string? FitnessCertFileName { get; set; }
         public string? FitnessCertURL { get; set; }
+
+        [DefaultValue(false)]
+        public bool? IsDriver { get; set; }
+        public string? VehicleNumber { get; set; }
+        public string? DrivingLicenseNo { get; set; }
+        public DateTime? LicenseValidFrom { get; set; }
+        public DateTime? LicenseValidTo { get; set; }
+        public string? ValidityPeriod { get; set; }
 
 
         [DefaultValue(false)]

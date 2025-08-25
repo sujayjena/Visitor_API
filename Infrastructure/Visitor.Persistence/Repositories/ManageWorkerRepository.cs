@@ -70,6 +70,12 @@ namespace Visitor.Persistence.Repositories
             queryParameters.Add("@FitnessCertOriginalFileName", parameters.FitnessCertOriginalFileName);
             queryParameters.Add("@FitnessCertFileName", parameters.FitnessCertFileName);
 
+            queryParameters.Add("@IsDriver", parameters.IsDriver);
+            queryParameters.Add("@VehicleNumber", parameters.VehicleNumber);
+            queryParameters.Add("@DrivingLicenseNo", parameters.DrivingLicenseNo);
+            queryParameters.Add("@LicenseValidFrom", parameters.LicenseValidFrom);
+            queryParameters.Add("@LicenseValidTo", parameters.LicenseValidTo);
+
             queryParameters.Add("@IsBlackList", parameters.IsBlackList);
             queryParameters.Add("@IsActive", parameters.IsActive);
             queryParameters.Add("@UserId", SessionManager.LoggedInUserId);

@@ -15,6 +15,7 @@ namespace Visitor.Application.Models
         [DefaultValue(0)]
         public int GateDetailsId { get; set; }
         public int DepartmentId { get; set; }
+        public int BranchId { get; set; }
     }
 
     public class Dashboard_TotalSummary_Result
