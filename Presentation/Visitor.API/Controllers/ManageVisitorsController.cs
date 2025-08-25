@@ -940,7 +940,7 @@ namespace Visitor.API.Controllers
                         IEnumerable<CheckedInOutLogHistory_Response> lstMUserObj = await _manageVisitorsRepository.GetCheckedInOutLogHistoryList(vCheckedInOutLogHistory_Search);
                         if (lstMUserObj.ToList().Count > 0)
                         {
-                            foreach (var mitems in lstMUserObj)
+                            foreach (var mitems in lstMUserObj.ToList().OrderBy(x=>x.Id))
                             {
                                 if (j == 0)
                                 {
@@ -1403,6 +1403,18 @@ namespace Visitor.API.Controllers
                 _response.Message = "Exported successfully";
             }
 
+            return _response;
+        }
+
+        [Route("[action]")]
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<ResponseModel> AutoDailyReport()
+        {
+            IEnumerable<AutoDailyReport_Response> lst = await _manageVisitorsRepository.AutoDailyReport();
+
+            _response.Data = lst.ToList();
+            _response.Total = 0;
             return _response;
         }
     }

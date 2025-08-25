@@ -42,5 +42,7 @@ namespace Visitor.Application.Interfaces
         Task<int> DeleteVisitorDocumentVerification(int Id);
 
         Task<IEnumerable<Visitor_ImportDataValidation>> ImportVisitor(List<Visitor_ImportData> parameters);
+
+        Task<IEnumerable<AutoDailyReport_Response>> AutoDailyReport();
     }
 }

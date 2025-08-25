@@ -577,4 +577,16 @@ namespace Visitor.Application.Models
         public string? Remarks { get; set; }
         public string ValidationMessage { get; set; }
     }
+
+    public class AutoDailyReport_Response
+    {
+        public int Id { get; set; }
+        public string? VisitNumber { get; set; }
+        public string? VisitorName { get; set; }
+        public string? VisitorCompany { get; set; }
+        public string? VisitorMobileNo { get; set; }
+        public string? PassType { get; set; }
+        public string? BranchName { get; set; }
+        public string? GateNumber { get; set; }
+    }
 }

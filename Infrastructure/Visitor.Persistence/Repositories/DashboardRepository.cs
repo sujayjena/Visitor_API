@@ -27,6 +27,7 @@ namespace Visitor.Persistence.Repositories
             queryParameters.Add("@FromDate", parameters.FromDate);
             queryParameters.Add("@ToDate", parameters.ToDate);
             queryParameters.Add("@GateDetailsId", parameters.GateDetailsId);
+            queryParameters.Add("@DepartmentId", parameters.DepartmentId);
             queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
 
             var result = await ListByStoredProcedure<Dashboard_TotalSummary_Result>("GetDashboard_TotalSummary", queryParameters);

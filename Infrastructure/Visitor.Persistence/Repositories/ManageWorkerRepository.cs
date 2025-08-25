@@ -61,6 +61,7 @@ namespace Visitor.Persistence.Repositories
             queryParameters.Add("@DV_IsESIC", parameters.DV_IsESIC);
             queryParameters.Add("@DV_ESICNumber", parameters.DV_ESICNumber);
             queryParameters.Add("@DV_ESICOriginalFileName", parameters.DV_ESICOriginalFileName);
+            queryParameters.Add("@DV_ESICFileName", parameters.DV_ESICFileName);
             queryParameters.Add("@WorkerShift", parameters.WorkerShift);
             queryParameters.Add("@IsPoliceV", parameters.IsPoliceV);
             queryParameters.Add("@PoliceVOriginalFileName", parameters.PoliceVOriginalFileName);

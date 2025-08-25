@@ -14,12 +14,16 @@ namespace Visitor.Application.Models
 
         [DefaultValue(0)]
         public int GateDetailsId { get; set; }
+        public int DepartmentId { get; set; }
     }
 
     public class Dashboard_TotalSummary_Result
     {
         public int? EmployeeCount { get; set; }
         public int? VisitorCount { get; set; }
+        public int? VisitorPendingCount { get; set; }
+        public int? VisitorApproveCount { get; set; }
+        public int? VisitorRejectCount { get; set; }
         public int? WorkerCount { get; set; }
         public int? PeopleInsideCount { get; set; }
         public int? TotalLeftCount { get; set; }
