@@ -582,11 +582,16 @@ namespace Visitor.Application.Models
     {
         public int Id { get; set; }
         public string? VisitNumber { get; set; }
+        public string? VisitDate { get; set; }
         public string? VisitorName { get; set; }
         public string? VisitorCompany { get; set; }
         public string? VisitorMobileNo { get; set; }
-        public string? PassType { get; set; }
-        public string? BranchName { get; set; }
+        public string? HostDepartment { get; set; }
+        public string? HostName { get; set; }
         public string? GateNumber { get; set; }
+        public string? CheckInTime { get; set; }
+        public string? CheckOutTime { get; set; }
+        public string? BranchName { get; set; }
+        public string? StatusName { get; set; }
     }
 }

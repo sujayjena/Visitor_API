@@ -137,10 +137,14 @@ namespace Visitor.Application.Models
         public string? WorkerName { get; set; }
         public int? PurchaseOrderId { get; set; }
         public string? PONumber { get; set; }
+        public DateTime? POStartDate { get; set; }
+        public DateTime? POEndDate { get; set; }
         public int? ContractorId { get; set; }
         public string? ContractorName { get; set; }
         public int? ContractorTypeId { get; set; }
         public string? ContractorType { get; set; }
+        public DateTime? ContractorStartDate { get; set; }
+        public DateTime? ContractorEndDate { get; set; }
         public int? WorkerTypeId { get; set; }
         public string? WorkerType { get; set; }
         public int? ContractTypeId { get; set; }
@@ -184,6 +188,7 @@ namespace Visitor.Application.Models
         public int? DepartmentId { get; set; }
         public string? DepartmentName { get; set; }
         public int? EmployeeId { get; set; }
+        public string? EmployeeName { get; set; }
         public string? EmployeeEmailId { get; set; }
         public string? EmployeeMobileNo { get; set; }
 
@@ -256,5 +261,83 @@ namespace Visitor.Application.Models
         public string? CreatorName { get; set; }
         public long? CreatedBy { get; set; }
         public DateTime? CreatedDate { get; set; }
+    }
+    public class Worker_ImportData
+    {
+        public string? WorkerShift { get; set; }
+        public string? WorkerName { get; set; }
+        public string? WorkerType { get; set; }
+        public string? WorkerMobileNo { get; set; }
+        public DateTime? ValidFromDate { get; set; }
+        public DateTime? ValidToDate { get; set; }
+        public string? PONumber { get; set; }
+        public DateTime? DateOfBirth { get; set; }
+        public string? BloodGroup { get; set; }
+        public string? IdentificationMark { get; set; }
+        public string? Address { get; set; }
+        public string? Country { get; set; }
+        public string? State { get; set; }
+        public string? Province { get; set; }
+        public string? Pincode { get; set; }
+        public string? IsInsurance { get; set; }
+        public string? InsuranceNumber { get; set; }
+        public string? IsWC { get; set; }
+        public string? WCNumber { get; set; }
+        public string? IsESIC { get; set; }
+        public string? ESICNumber { get; set; }
+        public string? IsPoliceVerification { get; set; }
+        public string? IsFitnessCertificate { get; set; }
+        public string? Branch { get; set; }
+        public string? WorkPlace { get; set; }
+        public string? Department { get; set; }
+        public string? EmployeeName { get; set; }
+        public string? GateNumber { get; set; }
+        public string? IsDriver { get; set; }
+        public string? VehicleNumber { get; set; }
+        public string? DrivingLicenseNo { get; set; }
+        public DateTime? LicenseValidFrom { get; set; }
+        public DateTime? LicenseValidTo { get; set; }
+        public string? IsBlackList { get; set; }
+        public string? IsActive { get; set; }
+    }
+
+    public class Worker_ImportDataValidation
+    {
+        public string? WorkerShift { get; set; }
+        public string? WorkerName { get; set; }
+        public string? WorkerType { get; set; }
+        public string? WorkerMobileNo { get; set; }
+        public string? ValidFromDate { get; set; }
+        public string? ValidToDate { get; set; }
+        public string? PONumber { get; set; }
+        public string? DateOfBirth { get; set; }
+        public string? BloodGroup { get; set; }
+        public string? IdentificationMark { get; set; }
+        public string? Address { get; set; }
+        public string? Country { get; set; }
+        public string? State { get; set; }
+        public string? Province { get; set; }
+        public string? Pincode { get; set; }
+        public string? IsInsurance { get; set; }
+        public string? InsuranceNumber { get; set; }
+        public string? IsWC { get; set; }
+        public string? WCNumber { get; set; }
+        public string? IsESIC { get; set; }
+        public string? ESICNumber { get; set; }
+        public string? IsPoliceVerification { get; set; }
+        public string? IsFitnessCertificate { get; set; }
+        public string? Branch { get; set; }
+        public string? WorkPlace { get; set; }
+        public string? Department { get; set; }
+        public string? EmployeeName { get; set; }
+        public string? GateNumber { get; set; }
+        public string? IsDriver { get; set; }
+        public string? VehicleNumber { get; set; }
+        public string? DrivingLicenseNo { get; set; }
+        public string? LicenseValidFrom { get; set; }
+        public string? LicenseValidTo { get; set; }
+        public string? IsBlackList { get; set; }
+        public string? IsActive { get; set; }
+        public string ValidationMessage { get; set; }
     }
 }

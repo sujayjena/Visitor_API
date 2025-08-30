@@ -109,6 +109,16 @@ namespace Visitor.Persistence.Repositories
             return (await ListByStoredProcedure<Worker_Response>("GetWorkerById", queryParameters)).FirstOrDefault();
         }
 
+        public async Task<IEnumerable<Worker_ImportDataValidation>> ImportWorker(List<Worker_ImportData> parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            string xmlData = ConvertListToXml(parameters);
+            queryParameters.Add("@XmlData", xmlData);
+            queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
+
+            return await ListByStoredProcedure<Worker_ImportDataValidation>("ImportWorker", queryParameters);
+        }
+
         public async Task<int> SaveWorkerPass(WorkerPass_Request parameters)
         {
             DynamicParameters queryParameters = new DynamicParameters();

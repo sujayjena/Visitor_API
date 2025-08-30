@@ -12,6 +12,7 @@ using Visitor.Application.Helpers;
 using Visitor.Application.Interfaces;
 using Visitor.Application.Models;
 using Visitor.Persistence.Repositories;
+using System.Net.Mail;
 
 namespace Visitor.API.Controllers
 {
@@ -1413,9 +1414,147 @@ namespace Visitor.API.Controllers
         {
             IEnumerable<AutoDailyReport_Response> lst = await _manageVisitorsRepository.AutoDailyReport();
 
-            _response.Data = lst.ToList();
-            _response.Total = 0;
+            //CHOWGULE LAVGAN
+            var vCHOWGULE = lst.ToList().Where(x => x.BranchName == "CHOWGULE LAVGAN").ToList();
+            string file1 = CreateExcel(vCHOWGULE, "CHOWGULE LAVGAN", "Visitor");
+
+            //ANGRE PORT
+            var vANGRE = lst.ToList().Where(x => x.BranchName == "ANGRE PORT").ToList();
+            string file2 = CreateExcel(vANGRE, "ANGRE PORT", "Visitor");
+
+            //FIBER GLASS
+            var vFIBER = lst.ToList().Where(x => x.BranchName == "FIBER GLASS").ToList();
+            string file3 = CreateExcel(vFIBER, "FIBER GLASS", "Visitor");
+
+            //Send Email
+            var vEmailEmp = await SendDailyReport_EmailToSecurity("Visitor");
+            if (vEmailEmp)
+            {
+                _response.Message = "Daily Report send successfully";
+            }
+            else
+            {
+                _response.IsSuccess = false;
+                _response.Message = "Daily Report not send successfully";
+            }
+
             return _response;
+        }
+        private string CreateExcel(List<AutoDailyReport_Response> parameter, string branchName, string refType = "Visitor")
+        {
+            var fileName = string.Empty;
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+
+            using (ExcelPackage excel = new ExcelPackage())
+            {
+                excel.Workbook.Worksheets.Add(branchName);
+
+                var headerRow = new List<string[]>()
+                {
+                    new string[] { "VisitNumber", "Date", "VisitorName", "VisitorCompany", "VisitorMobileNo", "HostDepartment", "HostName", "GateNumber", "CheckInTime", "CheckOutTime", "Remark" }
+                };
+
+                string headerRange = "A1:" + Char.ConvertFromUtf32(headerRow[0].Length + 64) + "1";
+                var worksheet = excel.Workbook.Worksheets[branchName];
+                var stream = excel.Stream;
+                var count = parameter.Count();
+                worksheet.Cells[headerRange].Style.Font.Bold = true;
+                worksheet.Cells[headerRange].LoadFromArrays(headerRow);
+
+                var fileN = string.Empty;
+
+                for (int i = 2; i <= count + 1;)
+                {
+                    foreach (var item in parameter)
+                    {
+                        worksheet.Cells["A" + i].Value = item.VisitNumber;
+                        worksheet.Cells["B" + i].Value = item.VisitDate;
+                        worksheet.Cells["C" + i].Value = item.VisitorName;
+                        worksheet.Cells["D" + i].Value = item.VisitorCompany;
+                        worksheet.Cells["E" + i].Value = item.VisitorMobileNo;
+                        worksheet.Cells["F" + i].Value = item.HostDepartment;
+                        worksheet.Cells["G" + i].Value = item.HostName;
+                        worksheet.Cells["H" + i].Value = item.GateNumber;
+                        worksheet.Cells["I" + i].Value = item.CheckInTime;
+                        worksheet.Cells["J" + i].Value = item.CheckOutTime;
+                        worksheet.Cells["K" + i].Value = item.StatusName;
+                        i++;
+                    }
+                }
+
+                worksheet.Columns.AutoFit();
+
+                fileName = "DailyReport_" + branchName + "_" + refType + "_" + DateTime.Now.ToString("ddMMyyyy") + ".xlsx";
+
+
+                string path =  _environment.ContentRootPath + "\\Uploads\\DailyReportFile\\";
+
+                if (System.IO.File.Exists(path + fileName))
+                {
+                    System.IO.File.Delete(path + fileName);
+                }
+
+                excel.SaveAs(new FileInfo(path + fileName));
+            }
+            return fileName;
+        }
+
+        protected async Task<bool> SendDailyReport_EmailToSecurity(string refType)
+        {
+            bool result = false;
+            string templateFilePath = "", emailTemplateContent = "", sSubjectDynamicContent = "";
+
+            try
+            {
+                string recipientEmail = "";
+
+                var vSearch = new User_Search()
+                {
+                    UserTypeId = 2,
+                    BranchId = 0
+                };
+
+                var vSecurityList = await _userRepository.GetUserList(vSearch); //get branch wise security list
+
+                var vGateNumberList = await _assignGateNoRepository.GetAssignGateNoById(0, "Security", 0); //get gate list of security
+                var vGateNumberList_1 = vGateNumberList.Where(x => x.GateNumber == "1").ToList();
+
+                var vSecurityGate_1 = vSecurityList.Where(x => vGateNumberList_1.Select(x => x.RefId).Contains(x.Id)).ToList();
+                if (vSecurityGate_1.Count > 0)
+                {
+                    recipientEmail = string.Join(",", vSecurityGate_1.Select(x => x.EmailId).ToList());
+                }
+
+                templateFilePath = _environment.ContentRootPath + "\\EmailTemplates\\AutoDailyReport_Template.html";
+                emailTemplateContent = System.IO.File.ReadAllText(templateFilePath);
+
+                if (emailTemplateContent.IndexOf("[Date]", StringComparison.OrdinalIgnoreCase) > 0)
+                {
+                    emailTemplateContent = emailTemplateContent.Replace("[Date]", DateTime.Now.ToString("dd/MM/yyyy"));
+                }
+
+                var vAtt = _environment.ContentRootPath + "\\Uploads\\DailyReportFile\\DailyReport_CHOWGULE LAVGAN_" + refType + "_" + DateTime.Now.ToString("ddMMyyyy") + ".xlsx";
+                var vAtt1 = _environment.ContentRootPath + "\\Uploads\\DailyReportFile\\DailyReport_ANGRE PORT_" + refType + "_" + DateTime.Now.ToString("ddMMyyyy") + ".xlsx";
+                var vAtt2 = _environment.ContentRootPath + "\\Uploads\\DailyReportFile\\DailyReport_FIBER GLASS_" + refType + "_" + DateTime.Now.ToString("ddMMyyyy") + ".xlsx";
+
+                var vfiles = new List<Attachment>()
+                {
+                    new Attachment(vAtt),
+                    new Attachment(vAtt1),
+                    new Attachment(vAtt2)
+                };
+                    
+
+                sSubjectDynamicContent = "Visitor Report - " + DateTime.Now.ToShortDateString();
+                result = await _emailHelper.SendEmail(module: "Auto Daily Report", subject: sSubjectDynamicContent, sendTo: "Security", content: emailTemplateContent, recipientEmail: recipientEmail, files: vfiles, remarks: "");
+            }
+            catch (Exception ex)
+            {
+                result = false;
+            }
+
+            return result;
+
         }
     }
 }

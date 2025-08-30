@@ -5,6 +5,9 @@ using Visitor.Application.Models;
 using Visitor.Persistence.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using OfficeOpenXml.Style;
+using OfficeOpenXml;
+using System.Globalization;
 
 namespace Visitor.API.Controllers.Admin
 {
@@ -83,6 +86,68 @@ namespace Visitor.API.Controllers.Admin
             return _response;
         }
 
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> ExportDepartmentData(Department_Search parameters)
+        {
+            _response.IsSuccess = false;
+            byte[] result;
+            int recordIndex;
+            ExcelWorksheet WorkSheet1;
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+
+            IEnumerable<Department_Response> lstData = await _profileRepository.GetDepartmentList(parameters);
+
+            using (MemoryStream msExportDataFile = new MemoryStream())
+            {
+                using (ExcelPackage excelExportData = new ExcelPackage())
+                {
+                    WorkSheet1 = excelExportData.Workbook.Worksheets.Add("Department");
+                    WorkSheet1.TabColor = System.Drawing.Color.Black;
+                    WorkSheet1.DefaultRowHeight = 12;
+
+                    //Header of table
+                    WorkSheet1.Row(1).Height = 20;
+                    WorkSheet1.Row(1).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    WorkSheet1.Row(1).Style.Font.Bold = true;
+
+                    WorkSheet1.Cells[1, 1].Value = "Department Name";
+                    WorkSheet1.Cells[1, 2].Value = "Status";
+
+                    WorkSheet1.Cells[1, 3].Value = "CreatedDate";
+                    WorkSheet1.Cells[1, 4].Value = "CreatedBy";
+
+
+                    recordIndex = 2;
+
+                    foreach (var items in lstData)
+                    {
+                        WorkSheet1.Cells[recordIndex, 1].Value = items.DepartmentName;
+                        WorkSheet1.Cells[recordIndex, 2].Value = items.IsActive == true ? "Active" : "Inactive";
+
+                        WorkSheet1.Cells[recordIndex, 3].Value = Convert.ToDateTime(items.CreatedDate).ToString("dd/MM/yyyy");
+                        WorkSheet1.Cells[recordIndex, 4].Value = items.CreatorName;
+
+                        recordIndex += 1;
+                    }
+
+                    WorkSheet1.Columns.AutoFit();
+
+                    excelExportData.SaveAs(msExportDataFile);
+                    msExportDataFile.Position = 0;
+                    result = msExportDataFile.ToArray();
+                }
+            }
+
+            if (result != null)
+            {
+                _response.Data = result;
+                _response.IsSuccess = true;
+                _response.Message = "Exported successfully";
+            }
+
+            return _response;
+        }
         #endregion
 
         #region Role 
@@ -122,7 +187,6 @@ namespace Visitor.API.Controllers.Admin
             return _response;
         }
 
-
         [Route("[action]")]
         [HttpPost]
         public async Task<ResponseModel> GetRoleList(Role_Search parameters)
@@ -149,6 +213,71 @@ namespace Visitor.API.Controllers.Admin
             return _response;
         }
 
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> ExportRoleData(Role_Search parameters)
+        {
+            _response.IsSuccess = false;
+            byte[] result;
+            int recordIndex;
+            ExcelWorksheet WorkSheet1;
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+
+            var request = new BaseSearchEntity();
+
+            IEnumerable<Role_Response> lstObj = await _profileRepository.GetRoleList(parameters);
+
+            using (MemoryStream msExportDataFile = new MemoryStream())
+            {
+                using (ExcelPackage excelExportData = new ExcelPackage())
+                {
+                    WorkSheet1 = excelExportData.Workbook.Worksheets.Add("Role");
+                    WorkSheet1.TabColor = System.Drawing.Color.Black;
+                    WorkSheet1.DefaultRowHeight = 12;
+
+                    //Header of table
+                    WorkSheet1.Row(1).Height = 20;
+                    WorkSheet1.Row(1).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    WorkSheet1.Row(1).Style.Font.Bold = true;
+
+                    WorkSheet1.Cells[1, 1].Value = "Role Name";
+                    WorkSheet1.Cells[1, 2].Value = "Department Name";
+                    WorkSheet1.Cells[1, 3].Value = "Status";
+
+                    WorkSheet1.Cells[1, 4].Value = "CreatedDate";
+                    WorkSheet1.Cells[1, 5].Value = "CreatedBy";
+
+                    recordIndex = 2;
+
+                    foreach (var items in lstObj)
+                    {
+                        WorkSheet1.Cells[recordIndex, 1].Value = items.RoleName;
+                        WorkSheet1.Cells[recordIndex, 2].Value = items.DepartmentName;
+                        WorkSheet1.Cells[recordIndex, 3].Value = items.IsActive == true ? "Active" : "Inactive";
+
+                        WorkSheet1.Cells[recordIndex, 4].Value = Convert.ToDateTime(items.CreatedDate).ToString("dd/MM/yyyy");
+                        WorkSheet1.Cells[recordIndex, 5].Value = items.CreatorName;
+
+                        recordIndex += 1;
+                    }
+
+                    WorkSheet1.Columns.AutoFit();
+
+                    excelExportData.SaveAs(msExportDataFile);
+                    msExportDataFile.Position = 0;
+                    result = msExportDataFile.ToArray();
+                }
+            }
+
+            if (result != null)
+            {
+                _response.Data = result;
+                _response.IsSuccess = true;
+                _response.Message = "Exported successfully";
+            }
+
+            return _response;
+        }
         #endregion
 
         #region RoleHierarchy 

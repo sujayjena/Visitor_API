@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using OfficeOpenXml.Style;
+using OfficeOpenXml;
 using Visitor.Application.Enums;
 using Visitor.Application.Helpers;
 using Visitor.Application.Interfaces;
@@ -235,6 +237,109 @@ namespace Visitor.API.Controllers
             }
             return _response;
         }
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> ExportContractorData(ContractorSearch_Request parameters)
+        {
+            _response.IsSuccess = false;
+            byte[] result;
+            int recordIndex;
+            ExcelWorksheet WorkSheet1;
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+
+            IEnumerable<Contractor_Response> lstData = await _manageContractorRepository.GetContractorList(parameters);
+
+            using (MemoryStream msExportDataFile = new MemoryStream())
+            {
+                using (ExcelPackage excelExportData = new ExcelPackage())
+                {
+                    WorkSheet1 = excelExportData.Workbook.Worksheets.Add("Contractor");
+                    WorkSheet1.TabColor = System.Drawing.Color.Black;
+                    WorkSheet1.DefaultRowHeight = 12;
+
+                    //Header of table
+                    WorkSheet1.Row(1).Height = 20;
+                    WorkSheet1.Row(1).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    WorkSheet1.Row(1).Style.Font.Bold = true;
+
+                    WorkSheet1.Cells[1, 1].Value = "Contractor Level";
+                    WorkSheet1.Cells[1, 2].Value = "Contractor Type";
+                    WorkSheet1.Cells[1, 3].Value = "Contractor Firm";
+                    WorkSheet1.Cells[1, 4].Value = "Contractor Person Name";
+                    WorkSheet1.Cells[1, 5].Value = "Mobile Number";
+                    WorkSheet1.Cells[1, 6].Value = "Valid From";
+                    WorkSheet1.Cells[1, 7].Value = "Valid To";
+                    WorkSheet1.Cells[1, 8].Value = "Address";
+                    WorkSheet1.Cells[1, 9].Value = "Country";
+                    WorkSheet1.Cells[1, 10].Value = "State";
+                    WorkSheet1.Cells[1, 11].Value = "Province";
+                    WorkSheet1.Cells[1, 12].Value = "Pincode";
+                    WorkSheet1.Cells[1, 13].Value = "Insurance Available?";
+                    WorkSheet1.Cells[1, 14].Value = "Insurance Number";
+                    WorkSheet1.Cells[1, 15].Value = "Workmen Compensation (WC)?";
+                    WorkSheet1.Cells[1, 16].Value = "WC Number";
+                    WorkSheet1.Cells[1, 17].Value = "ESIC Available?";
+                    WorkSheet1.Cells[1, 18].Value = "ESIC Number";
+                    WorkSheet1.Cells[1, 19].Value = "Branch";
+                    WorkSheet1.Cells[1, 20].Value = "Department";
+                    WorkSheet1.Cells[1, 21].Value = "Employee Name";
+                    WorkSheet1.Cells[1, 22].Value = "Blacklisted?";
+                    WorkSheet1.Cells[1, 23].Value = "Status";
+                    WorkSheet1.Cells[1, 24].Value = "CreatedDate";
+                    WorkSheet1.Cells[1, 25].Value = "CreatedBy";
+
+                    recordIndex = 2;
+
+                    foreach (var items in lstData)
+                    {
+                        WorkSheet1.Cells[recordIndex, 1].Value = items.ContractorLevel;
+                        WorkSheet1.Cells[recordIndex, 2].Value = items.ContractorType;
+                        WorkSheet1.Cells[recordIndex, 3].Value = items.ContractorName;
+                        WorkSheet1.Cells[recordIndex, 4].Value = items.ContractorPerson;
+                        WorkSheet1.Cells[recordIndex, 5].Value = items.MobileNo;
+                        WorkSheet1.Cells[recordIndex, 6].Value = items.ValidFromDate.HasValue? items.ValidFromDate.Value.ToString("dd/MM/yyyy") : string.Empty;
+                        WorkSheet1.Cells[recordIndex, 7].Value = items.ValidToDate.HasValue? items.ValidToDate.Value.ToString("dd/MM/yyyy") : string.Empty;
+                        WorkSheet1.Cells[recordIndex, 8].Value = items.AddressLine;
+                        WorkSheet1.Cells[recordIndex, 9].Value = items.CountryName;
+                        WorkSheet1.Cells[recordIndex, 10].Value =items.StateName;
+                        WorkSheet1.Cells[recordIndex, 11].Value =items.DistrictName;
+                        WorkSheet1.Cells[recordIndex, 12].Value =items.Pincode;
+                        WorkSheet1.Cells[recordIndex, 13].Value =items.DV_IsInsurance == true ? "Yes" : "No";
+                        WorkSheet1.Cells[recordIndex, 14].Value =items.DV_InsuranceNumber;
+                        WorkSheet1.Cells[recordIndex, 15].Value =items.DV_IsWC == true ? "Yes" : "No";
+                        WorkSheet1.Cells[recordIndex, 16].Value =items.DV_WCNumber;
+                        WorkSheet1.Cells[recordIndex, 17].Value =items.DV_IsESIC == true ? "Yes" : "No";
+                        WorkSheet1.Cells[recordIndex, 18].Value =items.DV_ESICNumber;
+                        WorkSheet1.Cells[recordIndex, 19].Value =items.BranchName;
+                        WorkSheet1.Cells[recordIndex, 20].Value =items.DepartmentName;
+                        WorkSheet1.Cells[recordIndex, 21].Value =items.EmployeeName;
+                        WorkSheet1.Cells[recordIndex, 22].Value =items.IsBlackList == true ? "Yes" : "No";
+                        WorkSheet1.Cells[recordIndex, 23].Value =items.IsActive == true ? "Active" : "Inactive";
+                        WorkSheet1.Cells[recordIndex, 24].Value =Convert.ToDateTime(items.CreatedDate).ToString("dd/MM/yyyy");
+                        WorkSheet1.Cells[recordIndex, 25].Value = items.CreatorName;
+
+                        recordIndex += 1;
+                    }
+
+                    WorkSheet1.Columns.AutoFit();
+
+                    excelExportData.SaveAs(msExportDataFile);
+                    msExportDataFile.Position = 0;
+                    result = msExportDataFile.ToArray();
+                }
+            }
+
+            if (result != null)
+            {
+                _response.Data = result;
+                _response.IsSuccess = true;
+                _response.Message = "Exported successfully";
+            }
+
+            return _response;
+        }
+
         #endregion
 
         #region Contractor Insurance
