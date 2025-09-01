@@ -1346,7 +1346,7 @@ namespace Visitor.API.Controllers
                         var vSecurityGateDetail = await _assignGateNoRepository.GetAssignGateNoById(RefId: Convert.ToInt32(items.Id), "Visitor", GateDetailsId: 0);
                         if (vSecurityGateDetail.ToList().Count > 0)
                         {
-                            strGateNumberList = string.Join(",", vSecurityGateDetail.ToList().OrderBy(x => x.GateDetailsId).Select(x => x.GateDetailsId));
+                            strGateNumberList = string.Join(",", vSecurityGateDetail.ToList().Select(x => x.GateNumber));
                         }
 
                         WorkSheet1.Cells[recordIndex, 1].Value = i;
@@ -1355,8 +1355,8 @@ namespace Visitor.API.Controllers
                         WorkSheet1.Cells[recordIndex, 4].Value = items.VisitorMobileNo;
                         WorkSheet1.Cells[recordIndex, 5].Value = items.PassType;
                        
-                        WorkSheet1.Cells[recordIndex, 6].Value = items.VisitStartDate.HasValue? items.VisitStartDate.Value.ToString("dd/MM/yyyy") : string.Empty;
-                        WorkSheet1.Cells[recordIndex, 7].Value = items.VisitEndDate.HasValue ? items.VisitEndDate.Value.ToString("dd/MM/yyyy") : string.Empty;
+                        WorkSheet1.Cells[recordIndex, 6].Value = items.VisitStartDate.HasValue? items.VisitStartDate.Value.ToString("dd/MM/yyyy hh:mm:ss:tt") : string.Empty;
+                        WorkSheet1.Cells[recordIndex, 7].Value = items.VisitEndDate.HasValue ? items.VisitEndDate.Value.ToString("dd/MM/yyyy hh:mm:ss:tt") : string.Empty;
                         WorkSheet1.Cells[recordIndex, 8].Value = items.VisitorEmailId;
                         WorkSheet1.Cells[recordIndex, 9].Value = items.GenderName;
                         WorkSheet1.Cells[recordIndex, 10].Value = items.CompanyName;
