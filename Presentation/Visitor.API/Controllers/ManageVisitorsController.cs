@@ -232,6 +232,7 @@ namespace Visitor.API.Controllers
                                         Barcode_Unique_Id = vGenerateBarcode.Barcode_Unique_Id,
                                         BarcodeOriginalFileName = vGenerateBarcode.BarcodeOriginalFileName,
                                         BarcodeFileName = vGenerateBarcode.BarcodeFileName,
+                                        BranchId = vVisitor.BranchId,
                                         RefId = vVisitor.Id
                                     };
                                     var resultBarcode = _barcodeRepository.SaveBarcode(vBarcode_Request);
@@ -426,6 +427,7 @@ namespace Visitor.API.Controllers
                                 Barcode_Unique_Id = vGenerateBarcode.Barcode_Unique_Id,
                                 BarcodeOriginalFileName = vGenerateBarcode.BarcodeOriginalFileName,
                                 BarcodeFileName = vGenerateBarcode.BarcodeFileName,
+                                BranchId = vVisitorResponse.BranchId,
                                 RefId = vVisitorResponse.Id
                             };
                             var resultBarcode = _barcodeRepository.SaveBarcode(vBarcode_Request);
@@ -1410,24 +1412,59 @@ namespace Visitor.API.Controllers
         [Route("[action]")]
         [HttpPost]
         [AllowAnonymous]
-        public async Task<ResponseModel> AutoDailyReport()
+        public async Task<ResponseModel> AutoDailyReport(string refType = "Visitor", string? JobType = "")
         {
-            IEnumerable<AutoDailyReport_Response> lst = await _manageVisitorsRepository.AutoDailyReport();
+            if (refType == "Visitor")
+            {
+                IEnumerable<AutoDailyReport_Response> lst = await _manageVisitorsRepository.AutoDailyReport();
 
-            //CHOWGULE LAVGAN
-            var vCHOWGULE = lst.ToList().Where(x => x.BranchName == "CHOWGULE LAVGAN").ToList();
-            string file1 = CreateExcel(vCHOWGULE, "CHOWGULE LAVGAN", "Visitor");
+                //CHOWGULE LAVGAN
+                var vCHOWGULE = lst.ToList().Where(x => x.BranchName == "CHOWGULE LAVGAN").ToList();
+                string file1 = CreateExcel(vCHOWGULE, null, null, "CHOWGULE LAVGAN", refType);
 
-            //ANGRE PORT
-            var vANGRE = lst.ToList().Where(x => x.BranchName == "ANGRE PORT").ToList();
-            string file2 = CreateExcel(vANGRE, "ANGRE PORT", "Visitor");
+                //ANGRE PORT
+                var vANGRE = lst.ToList().Where(x => x.BranchName == "ANGRE PORT").ToList();
+                string file2 = CreateExcel(vANGRE, null, null, "ANGRE PORT", refType);
 
-            //FIBER GLASS
-            var vFIBER = lst.ToList().Where(x => x.BranchName == "FIBER GLASS").ToList();
-            string file3 = CreateExcel(vFIBER, "FIBER GLASS", "Visitor");
+                //FIBER GLASS
+                var vFIBER = lst.ToList().Where(x => x.BranchName == "FIBER GLASS").ToList();
+                string file3 = CreateExcel(vFIBER, null, null, "FIBER GLASS", refType);
+            }
+            else if (refType == "Worker")
+            {
+                IEnumerable<AutoDailyReport_Worker_Response> lst = await _manageVisitorsRepository.AutoDailyReport_Worker(JobType);
+
+                //CHOWGULE LAVGAN
+                var vCHOWGULE = lst.ToList().Where(x => x.BranchName == "CHOWGULE LAVGAN").ToList();
+                string file1 = CreateExcel(null,vCHOWGULE, null, "CHOWGULE LAVGAN", refType, JobType);
+
+                //ANGRE PORT
+                var vANGRE = lst.ToList().Where(x => x.BranchName == "ANGRE PORT").ToList();
+                string file2 = CreateExcel(null,vANGRE, null, "ANGRE PORT", refType, JobType);
+
+                //FIBER GLASS
+                var vFIBER = lst.ToList().Where(x => x.BranchName == "FIBER GLASS").ToList();
+                string file3 = CreateExcel(null,vFIBER, null, "FIBER GLASS", refType, JobType);
+            }
+            else if (refType == "Employee")
+            {
+                IEnumerable<AutoDailyReport_Employee_Response> lst = await _manageVisitorsRepository.AutoDailyReport_Employee(JobType);
+
+                //CHOWGULE LAVGAN
+                var vCHOWGULE = lst.ToList().Where(x => x.BranchName == "CHOWGULE LAVGAN").ToList();
+                string file1 = CreateExcel(null, null, vCHOWGULE, "CHOWGULE LAVGAN", refType, JobType);
+
+                //ANGRE PORT
+                var vANGRE = lst.ToList().Where(x => x.BranchName == "ANGRE PORT").ToList();
+                string file2 = CreateExcel(null, null, vANGRE, "ANGRE PORT", refType, JobType);
+
+                //FIBER GLASS
+                var vFIBER = lst.ToList().Where(x => x.BranchName == "FIBER GLASS").ToList();
+                string file3 = CreateExcel(null, null, vFIBER, "FIBER GLASS", refType, JobType);
+            }
 
             //Send Email
-            var vEmailEmp = await SendDailyReport_EmailToSecurity("Visitor");
+            var vEmailEmp = await SendDailyReport_EmailToSecurity(refType, JobType);
             if (vEmailEmp)
             {
                 _response.Message = "Daily Report send successfully";
@@ -1440,7 +1477,8 @@ namespace Visitor.API.Controllers
 
             return _response;
         }
-        private string CreateExcel(List<AutoDailyReport_Response> parameter, string branchName, string refType = "Visitor")
+
+        private string CreateExcel(List<AutoDailyReport_Response> parameter, List<AutoDailyReport_Worker_Response> wParameter, List<AutoDailyReport_Employee_Response> empParameter, string branchName, string refType = "Visitor", string JobType = "")
         {
             var fileName = string.Empty;
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
@@ -1449,57 +1487,132 @@ namespace Visitor.API.Controllers
             {
                 excel.Workbook.Worksheets.Add(branchName);
 
-                var headerRow = new List<string[]>()
+                var headerRow = new List<string[]>();
+                if (refType == "Visitor")
                 {
-                    new string[] { "VisitNumber", "Date", "VisitorName", "VisitorCompany", "VisitorMobileNo", "HostDepartment", "HostName", "GateNumber", "CheckInTime", "CheckOutTime", "Remark" }
-                };
+                    headerRow.Add(new string[] { "VisitorID", "Date", "VisitorName", "VisitorCompany", "VisitorMobileNo", "HostDepartment", "HostName", "GateNumber", "CheckInTime", "CheckOutTime", "Remark" });
 
-                string headerRange = "A1:" + Char.ConvertFromUtf32(headerRow[0].Length + 64) + "1";
-                var worksheet = excel.Workbook.Worksheets[branchName];
-                var stream = excel.Stream;
-                var count = parameter.Count();
-                worksheet.Cells[headerRange].Style.Font.Bold = true;
-                worksheet.Cells[headerRange].LoadFromArrays(headerRow);
+                    string headerRange = "A1:" + Char.ConvertFromUtf32(headerRow[0].Length + 64) + "1";
+                    var worksheet = excel.Workbook.Worksheets[branchName];
+                    var stream = excel.Stream;
+                    var count = parameter.Count();
+                    worksheet.Cells[headerRange].Style.Font.Bold = true;
+                    worksheet.Cells[headerRange].LoadFromArrays(headerRow);
 
-                var fileN = string.Empty;
+                    var fileN = string.Empty;
 
-                for (int i = 2; i <= count + 1;)
-                {
-                    foreach (var item in parameter)
+                    for (int i = 2; i <= count + 1;)
                     {
-                        worksheet.Cells["A" + i].Value = item.VisitNumber;
-                        worksheet.Cells["B" + i].Value = item.VisitDate;
-                        worksheet.Cells["C" + i].Value = item.VisitorName;
-                        worksheet.Cells["D" + i].Value = item.VisitorCompany;
-                        worksheet.Cells["E" + i].Value = item.VisitorMobileNo;
-                        worksheet.Cells["F" + i].Value = item.HostDepartment;
-                        worksheet.Cells["G" + i].Value = item.HostName;
-                        worksheet.Cells["H" + i].Value = item.GateNumber;
-                        worksheet.Cells["I" + i].Value = item.CheckInTime;
-                        worksheet.Cells["J" + i].Value = item.CheckOutTime;
-                        worksheet.Cells["K" + i].Value = item.StatusName;
-                        i++;
+                        foreach (var item in parameter)
+                        {
+                            worksheet.Cells["A" + i].Value = item.VisitNumber;
+                            worksheet.Cells["B" + i].Value = item.VisitDate;
+                            worksheet.Cells["C" + i].Value = item.VisitorName;
+                            worksheet.Cells["D" + i].Value = item.VisitorCompany;
+                            worksheet.Cells["E" + i].Value = item.VisitorMobileNo;
+                            worksheet.Cells["F" + i].Value = item.HostDepartment;
+                            worksheet.Cells["G" + i].Value = item.HostName;
+                            worksheet.Cells["H" + i].Value = item.GateNumber;
+                            worksheet.Cells["I" + i].Value = item.CheckInTime;
+                            worksheet.Cells["J" + i].Value = item.CheckOutTime;
+                            worksheet.Cells["K" + i].Value = item.Remarks;
+                            i++;
+                        }
                     }
+                    worksheet.Columns.AutoFit();
                 }
+                else if (refType == "Worker")
+                {
+                    headerRow.Add(new string[] { "Date", "GateNumber", "ContractorCompanyName", "WorkerName", "WorkerId", "WorkerType", "MobileNumber", "CheckInTime", "CheckOutTime" });
 
-                worksheet.Columns.AutoFit();
+                    string headerRange = "A1:" + Char.ConvertFromUtf32(headerRow[0].Length + 64) + "1";
+                    var worksheet = excel.Workbook.Worksheets[branchName];
+                    var stream = excel.Stream;
+                    var count = wParameter.Count();
+                    worksheet.Cells[headerRange].Style.Font.Bold = true;
+                    worksheet.Cells[headerRange].LoadFromArrays(headerRow);
+
+                    var fileN = string.Empty;
+
+                    for (int i = 2; i <= count + 1;)
+                    {
+                        foreach (var item in wParameter)
+                        {
+                            worksheet.Cells["A" + i].Value = item.VisitDate;
+                            worksheet.Cells["B" + i].Value = item.GateNumber;
+                            worksheet.Cells["C" + i].Value = item.ContractorName;
+                            worksheet.Cells["D" + i].Value = item.WorkerName;
+                            worksheet.Cells["E" + i].Value = item.WorkerId;
+                            worksheet.Cells["F" + i].Value = item.WorkerType;
+                            worksheet.Cells["G" + i].Value = item.WorkerMobileNo;
+                            worksheet.Cells["H" + i].Value = item.CheckInTime;
+                            worksheet.Cells["I" + i].Value = item.CheckOutTime;
+                            i++;
+                        }
+                    }
+                    worksheet.Columns.AutoFit();
+                }
+                else if (refType == "Employee")
+                {
+                    headerRow.Add(new string[] { "Date", "GateNumber", "EmployeeName", "ContactNumber", "EmployeeCode", "Department", "Role", "CheckInTime", "CheckOutTime" });
+
+                    string headerRange = "A1:" + Char.ConvertFromUtf32(headerRow[0].Length + 64) + "1";
+                    var worksheet = excel.Workbook.Worksheets[branchName];
+                    var stream = excel.Stream;
+                    var count = empParameter.Count();
+                    worksheet.Cells[headerRange].Style.Font.Bold = true;
+                    worksheet.Cells[headerRange].LoadFromArrays(headerRow);
+
+                    var fileN = string.Empty;
+
+                    for (int i = 2; i <= count + 1;)
+                    {
+                        foreach (var item in empParameter)
+                        {
+                            worksheet.Cells["A" + i].Value = item.VisitDate;
+                            worksheet.Cells["B" + i].Value = item.GateNumber;
+                            worksheet.Cells["C" + i].Value = item.EmployeeName;
+                            worksheet.Cells["D" + i].Value = item.ContactNumber;
+                            worksheet.Cells["E" + i].Value = item.EmployeeCode;
+                            worksheet.Cells["F" + i].Value = item.DepartmentName;
+                            worksheet.Cells["G" + i].Value = item.RoleName;
+                            worksheet.Cells["H" + i].Value = item.CheckInTime;
+                            worksheet.Cells["I" + i].Value = item.CheckOutTime;
+                            i++;
+                        }
+                    }
+                    worksheet.Columns.AutoFit();
+                }
 
                 fileName = "DailyReport_" + branchName + "_" + refType + "_" + DateTime.Now.ToString("ddMMyyyy") + ".xlsx";
+                string path = "";
 
-
-                string path =  _environment.ContentRootPath + "\\Uploads\\DailyReportFile\\";
-
-                if (System.IO.File.Exists(path + fileName))
+                if (JobType != "")
                 {
-                    System.IO.File.Delete(path + fileName);
+                    path = _environment.ContentRootPath + "\\Uploads\\DailyReportFile\\" + DateTime.Now.ToString("dd-MM-yyyy") + "_" + JobType + "\\";
                 }
+                else
+                {
+                    path = _environment.ContentRootPath + "\\Uploads\\DailyReportFile\\" + DateTime.Now.ToString("dd-MM-yyyy") + "\\";
+                }
+                
+
+                if (!System.IO.Directory.Exists(path))
+                {
+                    System.IO.Directory.CreateDirectory(path);
+                }
+
+                //if (System.IO.File.Exists(path + fileName))
+                //{
+                //    System.IO.File.Delete(path + fileName);
+                //}
 
                 excel.SaveAs(new FileInfo(path + fileName));
             }
             return fileName;
         }
 
-        protected async Task<bool> SendDailyReport_EmailToSecurity(string refType)
+        protected async Task<bool> SendDailyReport_EmailToSecurity(string refType, string JobType = "")
         {
             bool result = false;
             string templateFilePath = "", emailTemplateContent = "", sSubjectDynamicContent = "";
@@ -1525,17 +1638,45 @@ namespace Visitor.API.Controllers
                     recipientEmail = string.Join(",", vSecurityGate_1.Select(x => x.EmailId).ToList());
                 }
 
-                templateFilePath = _environment.ContentRootPath + "\\EmailTemplates\\AutoDailyReport_Template.html";
-                emailTemplateContent = System.IO.File.ReadAllText(templateFilePath);
+                if (refType == "Visitor")
+                {
+                    templateFilePath = _environment.ContentRootPath + "\\EmailTemplates\\AutoDailyReport_Visitor_Template.html";
+                    emailTemplateContent = System.IO.File.ReadAllText(templateFilePath);
+                }
+                else if (refType == "Worker")
+                {
+                    templateFilePath = _environment.ContentRootPath + "\\EmailTemplates\\AutoDailyReport_Worker_Template.html";
+                    emailTemplateContent = System.IO.File.ReadAllText(templateFilePath);
+                }
+                else if (refType == "Employee")
+                {
+                    templateFilePath = _environment.ContentRootPath + "\\EmailTemplates\\AutoDailyReport_Employee_Template.html";
+                    emailTemplateContent = System.IO.File.ReadAllText(templateFilePath);
+                }
+               
 
                 if (emailTemplateContent.IndexOf("[Date]", StringComparison.OrdinalIgnoreCase) > 0)
                 {
                     emailTemplateContent = emailTemplateContent.Replace("[Date]", DateTime.Now.ToString("dd/MM/yyyy"));
                 }
 
-                var vAtt = _environment.ContentRootPath + "\\Uploads\\DailyReportFile\\DailyReport_CHOWGULE LAVGAN_" + refType + "_" + DateTime.Now.ToString("ddMMyyyy") + ".xlsx";
-                var vAtt1 = _environment.ContentRootPath + "\\Uploads\\DailyReportFile\\DailyReport_ANGRE PORT_" + refType + "_" + DateTime.Now.ToString("ddMMyyyy") + ".xlsx";
-                var vAtt2 = _environment.ContentRootPath + "\\Uploads\\DailyReportFile\\DailyReport_FIBER GLASS_" + refType + "_" + DateTime.Now.ToString("ddMMyyyy") + ".xlsx";
+                string basePath = "";
+                string moduleName = "";
+                if (JobType != "")
+                {
+                    basePath = _environment.ContentRootPath + "\\Uploads\\DailyReportFile\\" + DateTime.Now.ToString("dd-MM-yyyy") + "_" + JobType + "\\";
+                    moduleName = "Auto Daily Report - " + JobType;
+                }
+                else
+                {
+                    basePath = _environment.ContentRootPath + "\\Uploads\\DailyReportFile\\" + DateTime.Now.ToString("dd-MM-yyyy") + "\\";
+                    moduleName = "Auto Daily Report";
+                }
+
+
+                var vAtt = basePath + "DailyReport_CHOWGULE LAVGAN_" + refType + "_" + DateTime.Now.ToString("ddMMyyyy") + ".xlsx";
+                var vAtt1 = basePath + "DailyReport_ANGRE PORT_" + refType + "_" + DateTime.Now.ToString("ddMMyyyy") + ".xlsx";
+                var vAtt2 = basePath + "DailyReport_FIBER GLASS_" + refType + "_" + DateTime.Now.ToString("ddMMyyyy") + ".xlsx";
 
                 var vfiles = new List<Attachment>()
                 {
@@ -1545,8 +1686,8 @@ namespace Visitor.API.Controllers
                 };
                     
 
-                sSubjectDynamicContent = "Visitor Report - " + DateTime.Now.ToShortDateString();
-                result = await _emailHelper.SendEmail(module: "Auto Daily Report", subject: sSubjectDynamicContent, sendTo: "Security", content: emailTemplateContent, recipientEmail: recipientEmail, files: vfiles, remarks: "");
+                sSubjectDynamicContent = refType + " Report - " + DateTime.Now.ToShortDateString();
+                result = await _emailHelper.SendEmail(module: moduleName, subject: sSubjectDynamicContent, sendTo: "Security", content: emailTemplateContent, recipientEmail: recipientEmail, files: vfiles, remarks: "");
             }
             catch (Exception ex)
             {

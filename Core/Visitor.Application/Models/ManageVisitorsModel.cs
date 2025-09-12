@@ -487,11 +487,10 @@ namespace Visitor.Application.Models
         public string? VisitorPhotoOriginalFileName { get; set; }
         public string? VisitorPhoto { get; set; }
         public string? VisitorPhotoURL { get; set; }
-
         public int? StatusId { get; set; }
         public string? StatusName { get; set; }
         public DateTime? CheckedInDate { get; set; }
-
+        public string? Validity { get; set; }
         public bool? IsActive { get; set; }
     }
     public class MeetingPurposeLogHistory_Search : BaseSearchEntity
@@ -592,6 +591,37 @@ namespace Visitor.Application.Models
         public string? CheckInTime { get; set; }
         public string? CheckOutTime { get; set; }
         public string? BranchName { get; set; }
-        public string? StatusName { get; set; }
+        public string? Remarks { get; set; }
+    }
+
+    public class AutoDailyReport_Worker_Response
+    {
+        public int Id { get; set; }
+        public string? VisitDate { get; set; }
+        public string? GateNumber { get; set; }
+        public string? ContractorName { get; set; }
+        public string? WorkerName { get; set; }
+        public string? WorkerId { get; set; }
+        public string? WorkerTypeId { get; set; }
+        public string? WorkerType { get; set; }
+        public string? WorkerMobileNo { get; set; }
+        public string? CheckInTime { get; set; }
+        public string? CheckOutTime { get; set; }
+        public string? BranchName { get; set; }
+    }
+
+    public class AutoDailyReport_Employee_Response
+    {
+        public int Id { get; set; }
+        public string? VisitDate { get; set; }
+        public string? GateNumber { get; set; }
+        public string? EmployeeName { get; set; }
+        public string? ContactNumber { get; set; }
+        public string? EmployeeCode { get; set; }
+        public string? DepartmentName { get; set; }
+        public string? RoleName { get; set; }
+        public string? CheckInTime { get; set; }
+        public string? CheckOutTime { get; set; }
+        public string? BranchName { get; set; }
     }
 }

@@ -25,11 +25,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="EmailTemplates\Logo\" />
     <Folder Include="ErrorLogs\" />
     <Folder Include="Uploads\Documents\" />
     <Folder Include="Uploads\Employee\" />
     <Folder Include="Uploads\Company\" />
-    <Folder Include="Uploads\DailyReportFile\" />
     <Folder Include="Uploads\Vendor\" />
   </ItemGroup>
 

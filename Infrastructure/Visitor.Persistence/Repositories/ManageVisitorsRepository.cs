@@ -395,5 +395,21 @@ namespace Visitor.Persistence.Repositories
 
             return result;
         }
+        public async Task<IEnumerable<AutoDailyReport_Worker_Response>> AutoDailyReport_Worker(string JobType = "")
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@JobType", JobType);
+            var result = await ListByStoredProcedure<AutoDailyReport_Worker_Response>("AutoDailyReport_Worker", queryParameters);
+
+            return result;
+        }
+        public async Task<IEnumerable<AutoDailyReport_Employee_Response>> AutoDailyReport_Employee(string JobType = "")
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@JobType", JobType);
+            var result = await ListByStoredProcedure<AutoDailyReport_Employee_Response>("AutoDailyReport_Employee", queryParameters);
+
+            return result;
+        }
     }
 }

@@ -293,7 +293,7 @@ namespace Visitor.API.Controllers
 
                     foreach (var items in lstData)
                     {
-                        WorkSheet1.Cells[recordIndex, 1].Value = items.ContractorLevel;
+                        WorkSheet1.Cells[recordIndex, 1].Value = items.ContractorLevel == 1 ? "INHOUSE" : items.ContractorLevel == 2 ? "OUTSIDE" : "";
                         WorkSheet1.Cells[recordIndex, 2].Value = items.ContractorType;
                         WorkSheet1.Cells[recordIndex, 3].Value = items.ContractorName;
                         WorkSheet1.Cells[recordIndex, 4].Value = items.ContractorPerson;

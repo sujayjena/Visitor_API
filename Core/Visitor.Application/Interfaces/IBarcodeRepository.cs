@@ -12,5 +12,6 @@ namespace Visitor.Application.Interfaces
         BarcodeGenerate_Response GenerateBarcode(string value);
         Task<int> SaveBarcode(Barcode_Request parameters);
         Task<Barcode_Response?> GetBarcodeById(string BarcodeNo);
+        Task<string?> AutoBarcodeGenerate(int BranchId, string BarcodeType, string BarcodeNumber);
     }
 }

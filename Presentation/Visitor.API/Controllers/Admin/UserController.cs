@@ -305,6 +305,7 @@ namespace Visitor.API.Controllers.Admin
                             Barcode_Unique_Id = vGenerateBarcode.Barcode_Unique_Id,
                             BarcodeOriginalFileName = vGenerateBarcode.BarcodeOriginalFileName,
                             BarcodeFileName = vGenerateBarcode.BarcodeFileName,
+                            BranchId = parameters.BranchId,
                             RefId = result
                         };
                         var resultBarcode = _barcodeRepository.SaveBarcode(vBarcode_Request);
@@ -857,6 +858,7 @@ namespace Visitor.API.Controllers.Admin
                             Barcode_Unique_Id = vGenerateBarcode.Barcode_Unique_Id,
                             BarcodeOriginalFileName = vGenerateBarcode.BarcodeOriginalFileName,
                             BarcodeFileName = vGenerateBarcode.BarcodeFileName,
+                            BranchId = vUserList.ToList().FirstOrDefault().BranchId,
                             RefId = vUserList.ToList().FirstOrDefault().Id
                         };
                         var resultBarcode = _barcodeRepository.SaveBarcode(vBarcode_Request);

@@ -103,6 +103,7 @@ namespace Visitor.Persistence.Repositories
             queryParameters.Add("@Barcode_Unique_Id", parameters.Barcode_Unique_Id);
             queryParameters.Add("@BarcodeOriginalFileName", parameters.BarcodeOriginalFileName);
             queryParameters.Add("@BarcodeFileName", parameters.BarcodeFileName);
+            queryParameters.Add("@BranchId", parameters.BranchId);
             queryParameters.Add("@RefId", parameters.RefId);
 
             return await SaveByStoredProcedure<int>("SaveBarcode", queryParameters);
@@ -114,6 +115,19 @@ namespace Visitor.Persistence.Repositories
             queryParameters.Add("@BarcodeNo", BarcodeNo);
 
             return (await ListByStoredProcedure<Barcode_Response>("GetBarcodeById", queryParameters)).FirstOrDefault();
+        }
+
+        public async Task<string?> AutoBarcodeGenerate(int BranchId, string BarcodeType, string BarcodeNumber)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@BranchId", BranchId);
+            queryParameters.Add("@BarcodeType", BarcodeType);
+            queryParameters.Add("@BarcodeNumber", BarcodeNumber, null, System.Data.ParameterDirection.Output);
+
+            var result = await SaveByStoredProcedure<string>("sp_AutoBarcodeGenerate", queryParameters);
+            var vBarcodeNumber = queryParameters.Get<string>("BarcodeNumber");
+
+            return vBarcodeNumber;
         }
     }
 }

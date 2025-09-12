@@ -72,6 +72,32 @@ namespace Visitor.Application.Models
         public int? NoofBranchAdd { get; set; }
         public DateTime? LicenseStartDate { get; set; }
         public DateTime? LicenseEndDate { get; set; }
+        public DateTime? AmcLastEmailDate { get; set; }
+        public int? TotalAmcDays { get; set; }
+        public int? TotalAmcRemainingDays { get; set; }
         public bool? IsActive { get; set; }
+    }
+
+    public class CompanyAMC_Search
+    {
+        public int? CompanyId { get; set; }
+    }
+
+    public class CompanyAMCRminderEmail_Request : BaseEntity
+    {
+        public int? CompanyId { get; set; }
+        public string AMCYear { get; set; }
+        public string AMCStartDate_EndDate_LastEmailDate { get; set; }
+
+        [DefaultValue(0)]
+        public int? AMCRemainingDays { get; set; }
+
+        [DefaultValue(0)]
+        public int? AMCReminderCount { get; set; }
+
+        [DefaultValue(false)]
+        public bool? AMCPreorPostExpire { get; set; }
+        public DateTime? AmcEndDate { get; set; }
+        public DateTime? AmcLastEmailDate { get; set; }
     }
 }

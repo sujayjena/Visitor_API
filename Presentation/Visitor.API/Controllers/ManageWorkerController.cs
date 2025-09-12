@@ -272,20 +272,35 @@ namespace Visitor.API.Controllers
                     var vWorker = await _manageWorkerRepository.GetWorkerById(result);
                     if (vWorker != null)
                     {
-                        var vGenerateBarcode = _barcodeRepository.GenerateBarcode(vWorker.PassNumber);
-                        if (vGenerateBarcode.Barcode_Unique_Id != "")
+                        string vBarcodeNo = "";
+                        if (vWorker.BranchName == "ANGRE PORT")
                         {
-                            var vBarcode_Request = new Barcode_Request()
+                            vBarcodeNo = await _barcodeRepository.AutoBarcodeGenerate(Convert.ToInt32(vWorker.BranchId ?? 0), "Worker", "");
+                        }
+                        else
+                        {
+                            vBarcodeNo = vWorker.PassNumber;
+                        }
+
+                        if (vBarcodeNo != "")
+                        {
+                            var vGenerateBarcode = _barcodeRepository.GenerateBarcode(vBarcodeNo);
+                            if (vGenerateBarcode.Barcode_Unique_Id != "")
                             {
-                                Id = 0,
-                                BarcodeNo = vWorker.PassNumber,
-                                BarcodeType = "Worker",
-                                Barcode_Unique_Id = vGenerateBarcode.Barcode_Unique_Id,
-                                BarcodeOriginalFileName = vGenerateBarcode.BarcodeOriginalFileName,
-                                BarcodeFileName = vGenerateBarcode.BarcodeFileName,
-                                RefId = result
-                            };
-                            var resultBarcode = _barcodeRepository.SaveBarcode(vBarcode_Request);
+                                var vBarcode_Request = new Barcode_Request()
+                                {
+                                    Id = 0,
+                                    BarcodeNo = vBarcodeNo,
+                                    BarcodeType = "Worker",
+                                    Barcode_Unique_Id = vGenerateBarcode.Barcode_Unique_Id,
+                                    BarcodeOriginalFileName = vGenerateBarcode.BarcodeOriginalFileName,
+                                    BarcodeFileName = vGenerateBarcode.BarcodeFileName,
+                                    BranchId = vWorker.BranchId,
+
+                                    RefId = result
+                                };
+                                var resultBarcode = _barcodeRepository.SaveBarcode(vBarcode_Request);
+                            }
                         }
                     }
                 }
@@ -370,20 +385,34 @@ namespace Visitor.API.Controllers
                     var vWorker = await _manageWorkerRepository.GetWorkerById(Convert.ToInt32(parameters.WorkerId));
                     if (vWorker != null)
                     {
-                        var vGenerateBarcode = _barcodeRepository.GenerateBarcode(vWorker.PassNumber);
-                        if (vGenerateBarcode.Barcode_Unique_Id != "")
+                        string vBarcodeNo = "";
+                        if (vWorker.BranchName == "ANGRE PORT")
                         {
-                            var vBarcode_Request = new Barcode_Request()
+                            vBarcodeNo = await _barcodeRepository.AutoBarcodeGenerate(Convert.ToInt32(vWorker.BranchId ?? 0), "Worker", "");
+                        }
+                        else
+                        {
+                            vBarcodeNo = vWorker.PassNumber;
+                        }
+
+                        if (vBarcodeNo != "")
+                        {
+                            var vGenerateBarcode = _barcodeRepository.GenerateBarcode(vBarcodeNo);
+                            if (vGenerateBarcode.Barcode_Unique_Id != "")
                             {
-                                Id = 0,
-                                BarcodeNo = vWorker.PassNumber,
-                                BarcodeType = "Worker",
-                                Barcode_Unique_Id = vGenerateBarcode.Barcode_Unique_Id,
-                                BarcodeOriginalFileName = vGenerateBarcode.BarcodeOriginalFileName,
-                                BarcodeFileName = vGenerateBarcode.BarcodeFileName,
-                                RefId = result
-                            };
-                            var resultBarcode = _barcodeRepository.SaveBarcode(vBarcode_Request);
+                                var vBarcode_Request = new Barcode_Request()
+                                {
+                                    Id = 0,
+                                    BarcodeNo = vBarcodeNo,
+                                    BarcodeType = "Worker",
+                                    Barcode_Unique_Id = vGenerateBarcode.Barcode_Unique_Id,
+                                    BarcodeOriginalFileName = vGenerateBarcode.BarcodeOriginalFileName,
+                                    BarcodeFileName = vGenerateBarcode.BarcodeFileName,
+                                    BranchId = vWorker.BranchId,
+                                    RefId = result
+                                };
+                                var resultBarcode = _barcodeRepository.SaveBarcode(vBarcode_Request);
+                            }
                         }
                     }
                 }

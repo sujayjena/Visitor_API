@@ -25,6 +25,7 @@ namespace Visitor.Application.Models
         public string? BarcodeOriginalFileName { get; set; }
         public string? BarcodeFileName { get; set; }
         public int? RefId { get; set; }
+        public int? BranchId { get; set; }
     }
 
     public class Barcode_Response : BaseEntity
