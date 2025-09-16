@@ -605,8 +605,9 @@ namespace Visitor.API.Controllers
                     !string.Equals(workSheet.Cells[1, 31].Value.ToString(), "DrivingLicenseNo", StringComparison.OrdinalIgnoreCase) ||
                     !string.Equals(workSheet.Cells[1, 32].Value.ToString(), "LicenseValidFrom", StringComparison.OrdinalIgnoreCase) ||
                     !string.Equals(workSheet.Cells[1, 33].Value.ToString(), "LicenseValidTo", StringComparison.OrdinalIgnoreCase) ||
-                    !string.Equals(workSheet.Cells[1, 34].Value.ToString(), "IsBlackList", StringComparison.OrdinalIgnoreCase) ||
-                    !string.Equals(workSheet.Cells[1, 35].Value.ToString(), "IsActive", StringComparison.OrdinalIgnoreCase))
+                    !string.Equals(workSheet.Cells[1, 34].Value.ToString(), "AadharNumber", StringComparison.OrdinalIgnoreCase) ||
+                    !string.Equals(workSheet.Cells[1, 35].Value.ToString(), "IsBlackList", StringComparison.OrdinalIgnoreCase) ||
+                    !string.Equals(workSheet.Cells[1, 36].Value.ToString(), "IsActive", StringComparison.OrdinalIgnoreCase))
                 {
                     _response.IsSuccess = false;
                     _response.Message = "Please upload a valid excel file";
@@ -652,8 +653,9 @@ namespace Visitor.API.Controllers
                             DrivingLicenseNo = workSheet.Cells[rowIterator, 31].Value?.ToString(),
                             LicenseValidFrom = !string.IsNullOrWhiteSpace(workSheet.Cells[rowIterator, 32].Value?.ToString()) ? DateTime.ParseExact(workSheet.Cells[rowIterator, 32].Value?.ToString(), "dd/MM/yyyy", System.Globalization.CultureInfo.CurrentUICulture.DateTimeFormat) : null,
                             LicenseValidTo = !string.IsNullOrWhiteSpace(workSheet.Cells[rowIterator, 33].Value?.ToString()) ? DateTime.ParseExact(workSheet.Cells[rowIterator, 33].Value?.ToString(), "dd/MM/yyyy", System.Globalization.CultureInfo.CurrentUICulture.DateTimeFormat) : null,
-                            IsBlackList = workSheet.Cells[rowIterator, 34].Value?.ToString(),
-                            IsActive = workSheet.Cells[rowIterator, 35].Value?.ToString()
+                            AadharNumber = workSheet.Cells[rowIterator, 34].Value?.ToString(),
+                            IsBlackList = workSheet.Cells[rowIterator, 35].Value?.ToString(),
+                            IsActive = workSheet.Cells[rowIterator, 36].Value?.ToString()
                         }); ;
                     }
                 }
@@ -669,7 +671,7 @@ namespace Visitor.API.Controllers
 
             #region Generate Excel file for Invalid Data
 
-            if (lst_ImportDataValidation.ToList().Count > 0 && lst_ImportDataValidation.ToList().FirstOrDefault().ValidFromDate != null)
+            if (lst_ImportDataValidation.ToList().Count > 0 && lst_ImportDataValidation.ToList().FirstOrDefault().ValidationMessage != null)
             {
                 _response.IsSuccess = false;
                 _response.Message = "Uploaded file contains invalid records, please check downloaded file for more details";
@@ -738,9 +740,10 @@ namespace Visitor.API.Controllers
                     WorkSheet1.Cells[1, 31].Value = "DrivingLicenseNo";
                     WorkSheet1.Cells[1, 32].Value = "LicenseValidFrom";
                     WorkSheet1.Cells[1, 33].Value = "LicenseValidTo";
-                    WorkSheet1.Cells[1, 34].Value = "IsBlackList";
-                    WorkSheet1.Cells[1, 35].Value = "IsActive";
-                    WorkSheet1.Cells[1, 36].Value = "ErrorMessage";
+                    WorkSheet1.Cells[1, 34].Value = "AadharNumber";
+                    WorkSheet1.Cells[1, 35].Value = "IsBlackList";
+                    WorkSheet1.Cells[1, 36].Value = "IsActive";
+                    WorkSheet1.Cells[1, 37].Value = "ErrorMessage";
 
                     recordIndex = 2;
 
@@ -779,9 +782,10 @@ namespace Visitor.API.Controllers
                         WorkSheet1.Cells[recordIndex, 31].Value = record.DrivingLicenseNo;
                         WorkSheet1.Cells[recordIndex, 32].Value = record.LicenseValidFrom;
                         WorkSheet1.Cells[recordIndex, 33].Value = record.LicenseValidTo;
-                        WorkSheet1.Cells[recordIndex, 34].Value = record.IsBlackList;
-                        WorkSheet1.Cells[recordIndex, 35].Value = record.IsActive;
-                        WorkSheet1.Cells[recordIndex, 36].Value = record.ValidationMessage;
+                        WorkSheet1.Cells[recordIndex, 34].Value = record.AadharNumber;
+                        WorkSheet1.Cells[recordIndex, 35].Value = record.IsBlackList;
+                        WorkSheet1.Cells[recordIndex, 36].Value = record.IsActive;
+                        WorkSheet1.Cells[recordIndex, 37].Value = record.ValidationMessage;
 
                         recordIndex += 1;
                     }
@@ -862,20 +866,34 @@ namespace Visitor.API.Controllers
                     WorkSheet1.Cells[1, 38].Value = "License Valid From";
                     WorkSheet1.Cells[1, 39].Value = "License Valid To";
                     WorkSheet1.Cells[1, 40].Value = "Validity Period";
-                    WorkSheet1.Cells[1, 41].Value = "Blacklisted?";
-                    WorkSheet1.Cells[1, 42].Value = "Status";
-                    WorkSheet1.Cells[1, 43].Value = "CreatedDate";
-                    WorkSheet1.Cells[1, 44].Value = "CreatedBy";
+                    WorkSheet1.Cells[1, 41].Value = "AadharNumber";
+                    WorkSheet1.Cells[1, 42].Value = "Blacklisted?";
+                    WorkSheet1.Cells[1, 43].Value = "Status";
+                    WorkSheet1.Cells[1, 44].Value = "CreatedDate";
+                    WorkSheet1.Cells[1, 45].Value = "CreatedBy";
 
                     recordIndex = 2;
 
                     foreach (var items in lstData)
                     {
                         string strGateNumberList = string.Empty;
+                        string vAadharNo = string.Empty;
+
                         var vSecurityGateDetail = await _assignGateNoRepository.GetAssignGateNoById(RefId: Convert.ToInt32(items.Id), "Worker", GateDetailsId: 0);
                         if (vSecurityGateDetail.ToList().Count > 0)
                         {
                             strGateNumberList = string.Join(",", vSecurityGateDetail.ToList().Select(x => x.GateNumber));
+                        }
+
+                        var vVisitorDocumentVerification_Search = new VisitorDocumentVerification_Search()
+                        {
+                            RefId = Convert.ToInt32(items.Id),
+                            RefType = "Worker"
+                        };
+                        var vVisitorDocumentVerificationList = await _manageVisitorsRepository.GetVisitorDocumentVerificationList(vVisitorDocumentVerification_Search);
+                        if (vVisitorDocumentVerificationList.ToList().Count > 0)
+                        {
+                            vAadharNo = string.Join(",", vVisitorDocumentVerificationList.ToList().Select(x => x.DocumentNumber));
                         }
 
                         if (items.WorkerShift == 1)
@@ -929,11 +947,12 @@ namespace Visitor.API.Controllers
                         WorkSheet1.Cells[recordIndex, 38].Value = items.LicenseValidFrom.HasValue ? items.LicenseValidFrom.Value.ToString("dd/MM/yyyy hh:mm:ss:tt") : string.Empty; 
                         WorkSheet1.Cells[recordIndex, 39].Value = items.LicenseValidTo.HasValue? items.LicenseValidTo.Value.ToString("dd/MM/yyyy hh:mm:ss:tt") : string.Empty;
                         WorkSheet1.Cells[recordIndex, 40].Value = items.ValidityPeriod;
-                        WorkSheet1.Cells[recordIndex, 41].Value = items.IsBlackList == true ? "Yes" : "No";
-                        WorkSheet1.Cells[recordIndex, 42].Value = items.IsActive == true ? "Active" : "Inactive";
+                        WorkSheet1.Cells[recordIndex, 41].Value = vAadharNo;
+                        WorkSheet1.Cells[recordIndex, 42].Value = items.IsBlackList == true ? "Yes" : "No";
+                        WorkSheet1.Cells[recordIndex, 43].Value = items.IsActive == true ? "Active" : "Inactive";
 
-                        WorkSheet1.Cells[recordIndex, 43].Value = Convert.ToDateTime(items.CreatedDate).ToString("dd/MM/yyyy");
-                        WorkSheet1.Cells[recordIndex, 44].Value = items.CreatorName;
+                        WorkSheet1.Cells[recordIndex, 44].Value = Convert.ToDateTime(items.CreatedDate).ToString("dd/MM/yyyy");
+                        WorkSheet1.Cells[recordIndex, 45].Value = items.CreatorName;
 
                         recordIndex += 1;
                     }

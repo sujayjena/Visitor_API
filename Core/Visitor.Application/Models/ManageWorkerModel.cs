@@ -297,6 +297,7 @@ namespace Visitor.Application.Models
         public string? DrivingLicenseNo { get; set; }
         public DateTime? LicenseValidFrom { get; set; }
         public DateTime? LicenseValidTo { get; set; }
+        public string? AadharNumber { get; set; }
         public string? IsBlackList { get; set; }
         public string? IsActive { get; set; }
     }
@@ -336,6 +337,7 @@ namespace Visitor.Application.Models
         public string? DrivingLicenseNo { get; set; }
         public string? LicenseValidFrom { get; set; }
         public string? LicenseValidTo { get; set; }
+        public string? AadharNumber { get; set; }
         public string? IsBlackList { get; set; }
         public string? IsActive { get; set; }
         public string ValidationMessage { get; set; }
