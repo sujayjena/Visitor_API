@@ -7,6 +7,7 @@ using Visitor.Application.Helpers;
 using Visitor.Application.Interfaces;
 using Visitor.Application.Models;
 using Visitor.Persistence.Repositories;
+using System.Net.Mail;
 
 namespace Visitor.API.Controllers
 {
@@ -22,8 +23,11 @@ namespace Visitor.API.Controllers
         private readonly IManagePurchaseOrderRepository _managePurchaseOrderRepository;
         private readonly IManageVisitorsRepository _manageVisitorsRepository;
         private IFileManager _fileManager;
+        private readonly IWebHostEnvironment _environment;
+        private IEmailHelper _emailHelper;
+        private readonly IUserRepository _userRepository;
 
-        public ManageWorkerController(IManageWorkerRepository manageWorkerRepository, IFileManager fileManager, IManageContractorRepository manageContractorRepository, IAssignGateNoRepository assignGateNoRepository, IBarcodeRepository barcodeRepository, IManagePurchaseOrderRepository managePurchaseOrderRepository, IManageVisitorsRepository manageVisitorsRepository)
+        public ManageWorkerController(IManageWorkerRepository manageWorkerRepository, IFileManager fileManager, IManageContractorRepository manageContractorRepository, IAssignGateNoRepository assignGateNoRepository, IBarcodeRepository barcodeRepository, IManagePurchaseOrderRepository managePurchaseOrderRepository, IManageVisitorsRepository manageVisitorsRepository, IWebHostEnvironment environment, IEmailHelper emailHelper, IUserRepository userRepository)
         {
             _manageWorkerRepository = manageWorkerRepository;
             _fileManager = fileManager;
@@ -32,6 +36,9 @@ namespace Visitor.API.Controllers
             _barcodeRepository = barcodeRepository;
             _managePurchaseOrderRepository = managePurchaseOrderRepository;
             _manageVisitorsRepository = manageVisitorsRepository;
+            _environment = environment;
+            _emailHelper = emailHelper;
+            _userRepository = userRepository;
 
             _response = new ResponseModel();
             _response.IsSuccess = true;
@@ -303,6 +310,13 @@ namespace Visitor.API.Controllers
                             }
                         }
                     }
+                }
+                #endregion
+
+                #region Document Approval Email 
+                if (parameters.DV_IsInsurance == true && parameters.DV_IsWC == true && parameters.IsPoliceV == true && parameters.IsFitnessCert == true && parameters.DV_IsESIC == true && parameters.Id > 0)
+                {
+                    var vEmailEmployee = await SendWorkerDocumentApproval_EmailToEmployee(result);
                 }
                 #endregion
             }
@@ -683,6 +697,53 @@ namespace Visitor.API.Controllers
                 _response.Message = "Record imported successfully";
             }
 
+            lst_ImportData.RemoveAll(x => lst_ImportDataValidation.Select(x => x.WorkerName).Contains(x.WorkerName));
+
+            foreach (var vItem in lst_ImportData)
+            {
+                var vSearch = new WorkerSearch_Request()
+                {
+                    SearchText = vItem.WorkerName,
+                    BranchId = 0,
+                    PurchaseOrderId = 0,
+                    IsBlackList = null,
+                };
+
+                var vWorkerList = await _manageWorkerRepository.GetWorkerList(vSearch);
+                if (vWorkerList.ToList().Count > 0)
+                {
+                    #region Generate Barcode
+
+                    string vBarcodeNo = "";
+                    if (vWorkerList.ToList().FirstOrDefault().BranchName == "ANGRE PORT")
+                    {
+                        vBarcodeNo = await _barcodeRepository.AutoBarcodeGenerate(Convert.ToInt32(vWorkerList.ToList().FirstOrDefault().BranchId ?? 0), "Worker", "");
+                    }
+                    else
+                    {
+                        vBarcodeNo = vWorkerList.ToList().FirstOrDefault().PassNumber;
+                    }
+
+                    var vGenerateBarcode = _barcodeRepository.GenerateBarcode(vBarcodeNo);
+                    if (vGenerateBarcode.Barcode_Unique_Id != "")
+                    {
+                        var vBarcode_Request = new Barcode_Request()
+                        {
+                            Id = 0,
+                            BarcodeNo = vBarcodeNo,
+                            BarcodeType = "Worker",
+                            Barcode_Unique_Id = vGenerateBarcode.Barcode_Unique_Id,
+                            BarcodeOriginalFileName = vGenerateBarcode.BarcodeOriginalFileName,
+                            BarcodeFileName = vGenerateBarcode.BarcodeFileName,
+                            BranchId = vWorkerList.ToList().FirstOrDefault().BranchId,
+                            RefId = vWorkerList.ToList().FirstOrDefault().Id
+                        };
+                        var resultBarcode = _barcodeRepository.SaveBarcode(vBarcode_Request);
+                    }
+                    #endregion
+                }
+            }
+
             #endregion
 
             return _response;
@@ -973,6 +1034,79 @@ namespace Visitor.API.Controllers
             }
 
             return _response;
+        }
+
+        protected async Task<bool> SendWorkerDocumentApproval_EmailToEmployee(int id)
+        {
+            bool result = false;
+            string templateFilePath = "", emailTemplateContent = "", sSubjectDynamicContent = "";
+
+            try
+            {
+                string recipientEmail = "";
+                string moduleName = "";
+                var vfiles = new List<Attachment>();
+
+                var vWorker = await _manageWorkerRepository.GetWorkerById(id); //get worker list
+
+                if (vWorker != null)
+                {
+                    var vSearch = new User_Search()
+                    {
+                        UserTypeId = 0,
+                        BranchId = 0
+                    };
+
+                    List<string> vRoleName = new List<string>() { "SR EXECUTIVE-HR", "IR & PR" };
+
+                    var vUserList = await _userRepository.GetUserList(vSearch); //get employee list
+                    if (vUserList.ToList().Count > 0)
+                    {
+                        var vUserListFilter = vUserList.ToList().Where(x => vRoleName.Contains(x.RoleName));
+                        if (vUserListFilter.ToList().Count > 0)
+                        {
+                            recipientEmail = string.Join(",", new List<string>(vUserListFilter.ToList().Select(x => x.EmailId)).ToArray());
+                        }
+                    }
+
+                    var vInsurance = _environment.ContentRootPath + "\\Uploads\\Worker\\" + vWorker.DV_InsuranceFileName;
+                    var vWC = _environment.ContentRootPath + "\\Uploads\\Worker\\" + vWorker.DV_WCFileName;
+                    var vPoliceV = _environment.ContentRootPath + "\\Uploads\\Worker\\" + vWorker.PoliceVFileName;
+                    var vFitnessCert = _environment.ContentRootPath + "\\Uploads\\Worker\\" + vWorker.FitnessCertFileName;
+                    var vESIC = _environment.ContentRootPath + "\\Uploads\\Worker\\" + vWorker.DV_ESICFileName;
+
+                    vfiles.Add(new Attachment(vInsurance));
+                    vfiles.Add(new Attachment(vWC));
+                    vfiles.Add(new Attachment(vPoliceV));
+                    vfiles.Add(new Attachment(vFitnessCert));
+                    vfiles.Add(new Attachment(vESIC));
+                }
+
+                templateFilePath = _environment.ContentRootPath + "\\EmailTemplates\\Document_Approved_Template.html";
+                emailTemplateContent = System.IO.File.ReadAllText(templateFilePath);
+
+                if (emailTemplateContent.IndexOf("[RefType]", StringComparison.OrdinalIgnoreCase) > 0)
+                {
+                    emailTemplateContent = emailTemplateContent.Replace("[RefType]", "Worker");
+                }
+
+                if (emailTemplateContent.IndexOf("[Documents]", StringComparison.OrdinalIgnoreCase) > 0)
+                {
+                    emailTemplateContent = emailTemplateContent.Replace("[Documents]", "Insurance, WC, Police Verification, Fitness Certificate, and ESIC");
+                }
+
+                moduleName = "Document Approval - Worker";
+                sSubjectDynamicContent = "Request for Approval of Worker Documents";
+
+                result = await _emailHelper.SendEmail(module: moduleName, subject: sSubjectDynamicContent, sendTo: "Employee", content: emailTemplateContent, recipientEmail: recipientEmail, files: vfiles, remarks: "");
+            }
+            catch (Exception ex)
+            {
+                result = false;
+            }
+
+            return result;
+
         }
     }
 }

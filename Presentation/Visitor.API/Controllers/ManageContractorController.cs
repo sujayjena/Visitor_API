@@ -7,6 +7,7 @@ using Visitor.Application.Helpers;
 using Visitor.Application.Interfaces;
 using Visitor.Application.Models;
 using Visitor.Persistence.Repositories;
+using System.Net.Mail;
 
 namespace Visitor.API.Controllers
 {
@@ -18,12 +19,18 @@ namespace Visitor.API.Controllers
         private readonly IManageContractorRepository _manageContractorRepository;
         private readonly IManageVisitorsRepository _manageVisitorsRepository;
         private IFileManager _fileManager;
+        private readonly IWebHostEnvironment _environment;
+        private IEmailHelper _emailHelper;
+        private readonly IUserRepository _userRepository;
 
-        public ManageContractorController(IManageContractorRepository manageContractorRepository, IFileManager fileManager, IManageVisitorsRepository manageVisitorsRepository)
+        public ManageContractorController(IManageContractorRepository manageContractorRepository, IFileManager fileManager, IManageVisitorsRepository manageVisitorsRepository, IWebHostEnvironment environment, IEmailHelper emailHelper, IUserRepository userRepository)
         {
             _manageContractorRepository = manageContractorRepository;
             _fileManager = fileManager;
             _manageVisitorsRepository = manageVisitorsRepository;
+            _environment = environment;
+            _emailHelper = emailHelper;
+            _userRepository = userRepository;
 
             _response = new ResponseModel();
             _response.IsSuccess = true;
@@ -189,6 +196,13 @@ namespace Visitor.API.Controllers
                 }
 
                 #endregion
+
+                #region Document Approval Email 
+                if(parameters.DV_IsInsurance == true && parameters.DV_IsWC == true && parameters.DV_IsESIC == true && parameters.Id > 0)
+                {
+                    var vEmailEmployee = await SendContractorDocumentApproval_EmailToEmployee(result);
+                }
+                #endregion
             }
             return _response;
         }
@@ -338,6 +352,75 @@ namespace Visitor.API.Controllers
             }
 
             return _response;
+        }
+
+        protected async Task<bool> SendContractorDocumentApproval_EmailToEmployee(int id)
+        {
+            bool result = false;
+            string templateFilePath = "", emailTemplateContent = "", sSubjectDynamicContent = "";
+
+            try
+            {
+                string recipientEmail = "";
+                string moduleName = "";
+                var vfiles = new List<Attachment>();
+
+                var vContractor = await _manageContractorRepository.GetContractorById(id); //get contact list
+
+                if (vContractor != null)
+                {
+                    var vSearch = new User_Search()
+                    {
+                        UserTypeId = 0,
+                        BranchId = 0
+                    };
+
+                    List<string> vRoleName = new List<string>() { "SR EXECUTIVE-HR", "IR & PR" };
+
+                    var vUserList = await _userRepository.GetUserList(vSearch); //get employee list
+                    if (vUserList.ToList().Count > 0)
+                    {
+                        var vUserListFilter = vUserList.ToList().Where(x => vRoleName.Contains(x.RoleName));
+                        if (vUserListFilter.ToList().Count > 0)
+                        {
+                            recipientEmail = string.Join(",", new List<string>(vUserListFilter.ToList().Select(x => x.EmailId)).ToArray());
+                        }
+                    }
+
+                    var vInsurance = _environment.ContentRootPath + "\\Uploads\\Contractor\\" + vContractor.DV_InsuranceFileName;
+                    var vWC = _environment.ContentRootPath + "\\Uploads\\Contractor\\" + vContractor.DV_WCFileName;
+                    var vESIC = _environment.ContentRootPath + "\\Uploads\\Contractor\\" + vContractor.DV_ESICFileName;
+
+                    vfiles.Add(new Attachment(vInsurance));
+                    vfiles.Add(new Attachment(vWC));
+                    vfiles.Add(new Attachment(vESIC));
+                }
+
+                templateFilePath = _environment.ContentRootPath + "\\EmailTemplates\\Document_Approved_Template.html";
+                emailTemplateContent = System.IO.File.ReadAllText(templateFilePath);
+
+                if (emailTemplateContent.IndexOf("[RefType]", StringComparison.OrdinalIgnoreCase) > 0)
+                {
+                    emailTemplateContent = emailTemplateContent.Replace("[RefType]", "Contractor");
+                }
+
+                if (emailTemplateContent.IndexOf("[Documents]", StringComparison.OrdinalIgnoreCase) > 0)
+                {
+                    emailTemplateContent = emailTemplateContent.Replace("[Documents]", "Insurance, WC,  and ESIC");
+                }         
+
+                moduleName = "Document Approval - Contractor";
+                sSubjectDynamicContent = "Request for Approval of Contractor Documents";
+                
+                result = await _emailHelper.SendEmail(module: moduleName, subject: sSubjectDynamicContent, sendTo: "Employee", content: emailTemplateContent, recipientEmail: recipientEmail, files: vfiles, remarks: "");
+            }
+            catch (Exception ex)
+            {
+                result = false;
+            }
+
+            return result;
+
         }
 
         #endregion
