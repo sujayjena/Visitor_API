@@ -100,6 +100,24 @@ namespace Visitor.API.Controllers
                 }
             }
 
+            //get prev BranchId, Department, EmployeeId
+            int prevBranchId = 0;
+            int prevDepartmentId = 0;
+            int prevEmployeeId = 0;
+            var vVisitNumber = "";
+
+            if (parameters.Id > 0)
+            {
+                var vVisitor = await _manageVisitorsRepository.GetVisitorsById(parameters.Id);
+                if (vVisitor != null)
+                {
+                    prevBranchId = Convert.ToInt32(vVisitor.BranchId ?? 0);
+                    prevDepartmentId = Convert.ToInt32(vVisitor.DepartmentId ?? 0);
+                    prevEmployeeId = Convert.ToInt32(vVisitor.EmployeeId ?? 0);
+                    vVisitNumber = vVisitor.VisitNumber;
+                }
+            }
+
             int result = await _manageVisitorsRepository.SaveVisitors(parameters);
 
             if (result == (int)SaveOperationEnums.NoRecordExists)
@@ -343,6 +361,79 @@ namespace Visitor.API.Controllers
                 }
                 #endregion
 
+                #region Meeting Employee Changed >> Notification
+                if (parameters.Id > 0)
+                {
+                    if (prevBranchId != parameters.BranchId || prevDepartmentId != parameters.DepartmentId || prevEmployeeId != parameters.EmployeeId)
+                    {
+                        var vSearch = new User_Search()
+                        {
+                            UserTypeId = 0,
+                            BranchId = 0
+                        };
+
+                        var vUserList = await _userRepository.GetUserList(vSearch); //get all User list
+                        if (vUserList.ToList().Count > 0)
+                        {
+                            //Notification to Host Employee
+                            string notifyMessage_host = String.Format(@"Visitor {0}, with Visitor ID {1} and Mobile Number {2}, Branch, Department, Employee and Gate Number have been changed.", parameters.VisitorName, vVisitNumber, parameters.VisitorMobileNo);
+                            var vNotifyObj_host = new Notification_Request()
+                            {
+                                Subject = "Meeting Employee Changed",
+                                SendTo = "Host Employee",
+                                //CustomerId = vWorkOrderObj.CustomerId,
+                                //CustomerMessage = NotifyMessage,
+                                EmployeeId = parameters.EmployeeId,
+                                EmployeeMessage = notifyMessage_host,
+                                RefValue1 = vVisitNumber,
+                                ReadUnread = false
+                            };
+
+                            int resultNotification_host = await _notificationRepository.SaveNotification(vNotifyObj_host);
+
+                            //Notification to all security
+                            var vSecurityList = vUserList.ToList().Where(x => x.UserTypeId == 2);
+                            foreach (var vSecurity in vSecurityList)
+                            {
+                                string notifyMessage = String.Format(@"Visitor {0}, with Visitor ID {1} and Mobile Number {2}, Branch, Department, Employee and Gate Number have been changed.", parameters.VisitorName, vVisitNumber, parameters.VisitorMobileNo);
+                                var vNotifyObj = new Notification_Request()
+                                {
+                                    Subject = "Meeting Employee Changed",
+                                    SendTo = "Security",
+                                    //CustomerId = vWorkOrderObj.CustomerId,
+                                    //CustomerMessage = NotifyMessage,
+                                    EmployeeId = vSecurity.Id,
+                                    EmployeeMessage = notifyMessage,
+                                    RefValue1 = vVisitNumber,
+                                    ReadUnread = false
+                                };
+
+                                int resultNotification = await _notificationRepository.SaveNotification(vNotifyObj);
+                            }
+
+                            //Notification to HOD Employee
+                            var vHODEmployeeList = vUserList.ToList().Where(x => x.BranchId == parameters.BranchId && x.DepartmentId == parameters.DepartmentId && x.IsHOD == true).ToList();
+                            foreach(var vHODEmployee in vHODEmployeeList)
+                            {
+                                string notifyMessage = String.Format(@"Visitor {0}, with Visitor ID {1} and Mobile Number {2}, Branch, Department, Employee and Gate Number have been changed.", parameters.VisitorName, vVisitNumber, parameters.VisitorMobileNo);
+                                var vNotifyObj = new Notification_Request()
+                                {
+                                    Subject = "Meeting Employee Changed",
+                                    SendTo = "HOD Employee",
+                                    //CustomerId = vWorkOrderObj.CustomerId,
+                                    //CustomerMessage = NotifyMessage,
+                                    EmployeeId = vHODEmployee.Id,
+                                    EmployeeMessage = notifyMessage,
+                                    RefValue1 = vVisitNumber,
+                                    ReadUnread = false
+                                };
+
+                                int resultNotification = await _notificationRepository.SaveNotification(vNotifyObj);
+                            }
+                        }
+                    }
+                }
+                #endregion
             }
             return _response;
         }

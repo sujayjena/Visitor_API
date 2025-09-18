@@ -212,6 +212,7 @@ namespace Visitor.API.Controllers
                             UserType = loginResponse.UserType,
                             RoleId = loginResponse.RoleId,
                             RoleName = loginResponse.RoleName,
+                            IsHOD = loginResponse.IsHOD,
                             IsMobileUser = loginResponse.IsMobileUser,
                             IsWebUser = loginResponse.IsWebUser,
                             IsActive = loginResponse.IsActive,
