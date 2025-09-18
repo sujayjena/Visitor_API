@@ -126,6 +126,7 @@ namespace Visitor.Application.Models
         public bool? IsBlackList { get; set; }
         public int? PurchaseOrderId { get; set; }
         public int? BranchId { get; set; }
+        public int? ContractorId { get; set; }
     }
 
     public class Worker_Response : BaseResponseEntity

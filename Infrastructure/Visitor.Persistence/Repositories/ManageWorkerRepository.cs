@@ -91,6 +91,7 @@ namespace Visitor.Persistence.Repositories
             queryParameters.Add("@IsBlackList", parameters.IsBlackList);
             queryParameters.Add("@PurchaseOrderId", parameters.PurchaseOrderId);
             queryParameters.Add("@BranchId", parameters.BranchId);
+            queryParameters.Add("@ContractorId", parameters.ContractorId);
             queryParameters.Add("@PageNo", parameters.PageNo);
             queryParameters.Add("@PageSize", parameters.PageSize);
             queryParameters.Add("@Total", parameters.Total, null, System.Data.ParameterDirection.Output);
