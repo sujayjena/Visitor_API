@@ -39,6 +39,8 @@ namespace Visitor.Application.Models
         public string? RoleName { get; set; }
         public int? EmployeeId { get; set; }
         public string? EmployeeName { get; set; }
+        public string? UserCode { get; set; }
+        public string? MobileNumber { get; set; }
         public int? Reason { get; set; }
         public string? LeaveDesc { get; set; }
         public int? StatusId { get; set; }
