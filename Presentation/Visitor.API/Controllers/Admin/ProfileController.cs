@@ -74,6 +74,7 @@ namespace Visitor.API.Controllers.Admin
 
         [Route("[action]")]
         [HttpPost]
+        [AllowAnonymous]
         public async Task<ResponseModel> GetDepartmentById(long Id)
         {
             if (Id <= 0)
