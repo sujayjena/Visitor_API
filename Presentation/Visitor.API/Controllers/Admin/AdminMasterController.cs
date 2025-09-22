@@ -1561,6 +1561,7 @@ namespace Visitor.API.Controllers.Admin
 
         [Route("[action]")]
         [HttpPost]
+        [AllowAnonymous]
         public async Task<ResponseModel> GetIDTypeList(BaseSearchEntity parameters)
         {
             IEnumerable<IDType_Response> lstRoles = await _adminMasterRepository.GetIDTypeList(parameters);

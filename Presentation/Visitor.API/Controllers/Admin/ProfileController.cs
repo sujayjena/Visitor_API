@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using OfficeOpenXml.Style;
 using OfficeOpenXml;
 using System.Globalization;
+using Visitor.API.CustomAttributes;
 
 namespace Visitor.API.Controllers.Admin
 {
@@ -62,6 +63,7 @@ namespace Visitor.API.Controllers.Admin
 
         [Route("[action]")]
         [HttpPost]
+        [AllowAnonymous]
         public async Task<ResponseModel> GetDepartmentList(Department_Search parameters)
         {
             IEnumerable<Department_Response> lstRoles = await _profileRepository.GetDepartmentList(parameters);
