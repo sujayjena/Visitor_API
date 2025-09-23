@@ -424,7 +424,10 @@ namespace Visitor.Application.Models
         public int? IsCheckedIn_Out { get; set; }
 
         [DefaultValue(null)]
-        public DateTime? CheckedInOutDate { get; set; }
+        public DateTime? CheckedInDate { get; set; }
+
+        [DefaultValue(null)]
+        public DateTime? CheckedOutDate { get; set; }
         public string? CheckedRemark { get; set; }
     }
 

@@ -420,7 +420,8 @@ namespace Visitor.Persistence.Repositories
             queryParameters.Add("@RefType", parameters.RefType);
             queryParameters.Add("@GateDetailsId", parameters.GateDetailsId);
             queryParameters.Add("@IsCheckedIn_Out", parameters.IsCheckedIn_Out);
-            queryParameters.Add("@CheckedInOutDate", parameters.CheckedInOutDate);
+            queryParameters.Add("@CheckedInDate", parameters.CheckedInDate);
+            queryParameters.Add("@CheckedOutDate", parameters.CheckedOutDate);
             queryParameters.Add("@CheckedRemark", parameters.CheckedRemark);
             queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
 

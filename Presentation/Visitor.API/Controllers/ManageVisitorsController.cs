@@ -1801,10 +1801,17 @@ namespace Visitor.API.Controllers
 
                 return _response;
             }
-            else if (parameters.CheckedInOutDate == null)
+            else if (parameters.CheckedInDate == null)
             {
                 _response.IsSuccess = false;
-                _response.Message = "CheckedInOut Date is required.";
+                _response.Message = "CheckedIn Date is required.";
+
+                return _response;
+            }
+            else if (parameters.CheckedOutDate == null && parameters.IsCheckedIn_Out == 2)
+            {
+                _response.IsSuccess = false;
+                _response.Message = "CheckedOut Date is required.";
 
                 return _response;
             }
