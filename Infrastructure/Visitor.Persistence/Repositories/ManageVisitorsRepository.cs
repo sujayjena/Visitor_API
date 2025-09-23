@@ -411,5 +411,20 @@ namespace Visitor.Persistence.Repositories
 
             return result;
         }
+
+        public async Task<int> SaveVisitorCheckedInOut_Offline(VisitorCheckedInOut_Offline_Request parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@Id", parameters.Id);
+            queryParameters.Add("@RefId", parameters.RefId);
+            queryParameters.Add("@RefType", parameters.RefType);
+            queryParameters.Add("@GateDetailsId", parameters.GateDetailsId);
+            queryParameters.Add("@IsCheckedIn_Out", parameters.IsCheckedIn_Out);
+            queryParameters.Add("@CheckedInOutDate", parameters.CheckedInOutDate);
+            queryParameters.Add("@CheckedRemark", parameters.CheckedRemark);
+            queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
+
+            return await SaveByStoredProcedure<int>("SaveVisitorCheckedInOut_Offline", queryParameters);
+        }
     }
 }

@@ -311,6 +311,22 @@ namespace Visitor.Application.Models
         public List<AssignGateNo_Response> GateNumberList { get; set; }
     }
 
+    public class UserOffline_Search : BaseSearchEntity
+    {
+    }
+
+    public class UserOffline_Response
+    {
+        public int? Id { get; set; }
+        public string? UserName { get; set; }
+        public string? MobileNumber { get; set; }
+        public string? EmailId { get; set; }
+        public int? DepartmentId { get; set; }
+        public string? DepartmentName { get; set; }
+        public int? BranchId { get; set; }
+        public string? BranchName { get; set; }
+    }
+
     public class UserOtherDetails_Request : BaseEntity
     {
         public int? EmployeeId { get; set; }

@@ -322,7 +322,6 @@ namespace Visitor.API.Controllers.Admin
             return _response;
         }
 
-
         [Route("[action]")]
         [HttpPost]
         public async Task<ResponseModel> GetUserList(User_Search parameters)
@@ -465,6 +464,16 @@ namespace Visitor.API.Controllers.Admin
                 }
             }
 
+            return _response;
+        }
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> GetUserOfflineList(UserOffline_Search parameters)
+        {
+            IEnumerable<UserOffline_Response> lstUsers = await _userRepository.GetUserOfflineList(parameters);
+            _response.Data = lstUsers.ToList();
+            _response.Total = parameters.Total;
             return _response;
         }
 

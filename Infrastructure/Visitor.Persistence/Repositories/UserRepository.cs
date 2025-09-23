@@ -162,6 +162,23 @@ namespace Visitor.Persistence.Repositories
             return AutoPassword;
         }
 
+        public async Task<IEnumerable<UserOffline_Response>> GetUserOfflineList(UserOffline_Search parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@SearchText", parameters.SearchText.SanitizeValue());
+            queryParameters.Add("@IsActive", parameters.IsActive);
+            queryParameters.Add("@PageNo", parameters.PageNo);
+            queryParameters.Add("@PageSize", parameters.PageSize);
+            queryParameters.Add("@Total", parameters.Total, null, System.Data.ParameterDirection.Output);
+            queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
+
+            var result = await ListByStoredProcedure<UserOffline_Response>("GetUserOfflineList", queryParameters);
+
+            parameters.Total = queryParameters.Get<int>("Total");
+
+            return result;
+        }
+
         #endregion
 
         #region User Other Details

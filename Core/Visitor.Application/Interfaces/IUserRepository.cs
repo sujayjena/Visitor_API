@@ -26,6 +26,8 @@ namespace Visitor.Application.Interfaces
 
         Task<IEnumerable<User_ImportDataValidation>> ImportUser(List<User_ImportData> parameters);
 
+        Task<IEnumerable<UserOffline_Response>> GetUserOfflineList(UserOffline_Search parameters);
+
         #endregion
 
         #region User Other Details

@@ -46,5 +46,7 @@ namespace Visitor.Application.Interfaces
         Task<IEnumerable<AutoDailyReport_Response>> AutoDailyReport();
         Task<IEnumerable<AutoDailyReport_Worker_Response>> AutoDailyReport_Worker(string JobType = "");
         Task<IEnumerable<AutoDailyReport_Employee_Response>> AutoDailyReport_Employee(string JobType = "");
+
+        Task<int> SaveVisitorCheckedInOut_Offline(VisitorCheckedInOut_Offline_Request parameters);
     }
 }

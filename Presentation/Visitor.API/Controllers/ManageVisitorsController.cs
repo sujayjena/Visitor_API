@@ -961,6 +961,7 @@ namespace Visitor.API.Controllers
 
         [Route("[action]")]
         [HttpPost]
+        [AllowAnonymous]
         public async Task<ResponseModel> DeleteVisitorDocumentVerification(int Id)
         {
             int result = await _manageVisitorsRepository.DeleteVisitorDocumentVerification(Id);
@@ -1787,6 +1788,73 @@ namespace Visitor.API.Controllers
 
             return result;
 
+        }
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> SaveVisitorCheckedInOut_Offline(VisitorCheckedInOut_Offline_Request parameters)
+        {
+            if (parameters.GateDetailsId == 0)
+            {
+                _response.IsSuccess = false;
+                _response.Message = "Gate Details is required.";
+
+                return _response;
+            }
+            else if (parameters.CheckedInOutDate == null)
+            {
+                _response.IsSuccess = false;
+                _response.Message = "CheckedInOut Date is required.";
+
+                return _response;
+            }
+
+            int result = await _manageVisitorsRepository.SaveVisitorCheckedInOut_Offline(parameters);
+
+            if (result == (int)SaveOperationEnums.NoRecordExists)
+            {
+                _response.IsSuccess = false;
+                _response.Message = "No record exists";
+            }
+            else if (result == (int)SaveOperationEnums.ReocrdExists)
+            {
+                _response.IsSuccess = false;
+                _response.Message = "Record is already exists";
+            }
+            else if (result == -3)
+            {
+                _response.IsSuccess = false;
+                _response.Message = "Permission from previous gate is required.";
+            }
+            else if (result == -4)
+            {
+                _response.Message = "Already checked In for this gate.";
+            }
+            else if (result == -5)
+            {
+                _response.Message = "Already Checked Out for this gate.";
+            }
+            else if (result == -6)
+            {
+                _response.Message = "This gate is not assigned for you.";
+            }
+            else if (result == (int)SaveOperationEnums.NoResult)
+            {
+                _response.IsSuccess = false;
+                _response.Message = "Something went wrong, please try again";
+            }
+            else
+            {
+                if (parameters.Id > 0)
+                {
+                    _response.Message = "Record updated successfully";
+                }
+                else
+                {
+                    _response.Message = "Record details saved successfully";
+                }
+            }
+            return _response;
         }
     }
 }

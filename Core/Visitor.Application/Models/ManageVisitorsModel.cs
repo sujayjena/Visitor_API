@@ -416,6 +416,18 @@ namespace Visitor.Application.Models
         public string? CheckedRemark { get; set; }
     }
 
+    public class VisitorCheckedInOut_Offline_Request : BaseEntity
+    {
+        public int? RefId { get; set; }
+        public string? RefType { get; set; }
+        public int? GateDetailsId { get; set; }
+        public int? IsCheckedIn_Out { get; set; }
+
+        [DefaultValue(null)]
+        public DateTime? CheckedInOutDate { get; set; }
+        public string? CheckedRemark { get; set; }
+    }
+
     public class CheckedInOutLogHistory_Search : BaseSearchEntity
     {
         [DefaultValue(null)]
