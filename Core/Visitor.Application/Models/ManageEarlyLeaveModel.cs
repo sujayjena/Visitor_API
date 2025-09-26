@@ -45,6 +45,7 @@ namespace Visitor.Application.Models
         public string? LeaveDesc { get; set; }
         public int? StatusId { get; set; }
         public string? StatusName { get; set; }
+        public string? Remarks { get; set; }
         public bool? IsActive { get; set; }
     }
 
@@ -89,6 +90,7 @@ namespace Visitor.Application.Models
         public string? LeaveDesc { get; set; }
         public int? StatusId { get; set; }
         public string? StatusName { get; set; }
+        public string? Remarks { get; set; }
         public bool? IsActive { get; set; }
     }
     #endregion
