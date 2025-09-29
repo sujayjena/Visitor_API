@@ -714,7 +714,6 @@ namespace Visitor.API.Controllers.Admin
                     !string.Equals(workSheet.Cells[1, 3].Value.ToString(), "UserType", StringComparison.OrdinalIgnoreCase) ||
                     !string.Equals(workSheet.Cells[1, 4].Value.ToString(), "MobileNumber", StringComparison.OrdinalIgnoreCase) ||
                     !string.Equals(workSheet.Cells[1, 5].Value.ToString(), "EmailId", StringComparison.OrdinalIgnoreCase) ||
-                    //!string.Equals(workSheet.Cells[1, 6].Value.ToString(), "Password", StringComparison.OrdinalIgnoreCase) ||
                     !string.Equals(workSheet.Cells[1, 6].Value.ToString(), "GateNumber", StringComparison.OrdinalIgnoreCase) ||
                     !string.Equals(workSheet.Cells[1, 7].Value.ToString(), "Role", StringComparison.OrdinalIgnoreCase) ||
                     !string.Equals(workSheet.Cells[1, 8].Value.ToString(), "ReportingTo", StringComparison.OrdinalIgnoreCase) ||

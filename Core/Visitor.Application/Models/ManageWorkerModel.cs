@@ -229,6 +229,8 @@ namespace Visitor.Application.Models
         public DateTime? LicenseValidFrom { get; set; }
         public DateTime? LicenseValidTo { get; set; }
         public string? ValidityPeriod { get; set; }
+        public decimal? OverTime { get; set; }
+        public decimal? TotalHours { get; set; }
 
 
         [DefaultValue(false)]
