@@ -507,29 +507,33 @@ namespace Visitor.API.Controllers
                 {
                     if (vVisitorResponse != null)
                     {
-                        var vGenerateBarcode = _barcodeRepository.GenerateBarcode(vVisitorResponse.VisitNumber);
-                        if (vGenerateBarcode.Barcode_Unique_Id != "")
+                        var vDuplicateBarcode = _barcodeRepository.GetBarcodeById(vVisitorResponse.VisitNumber);
+                        if(vDuplicateBarcode == null)
                         {
-                            var vBarcode_Request = new Barcode_Request()
+                            var vGenerateBarcode = _barcodeRepository.GenerateBarcode(vVisitorResponse.VisitNumber);
+                            if (vGenerateBarcode.Barcode_Unique_Id != "")
                             {
-                                Id = 0,
-                                BarcodeNo = vVisitorResponse.VisitNumber,
-                                BarcodeType = "Visitor",
-                                Barcode_Unique_Id = vGenerateBarcode.Barcode_Unique_Id,
-                                BarcodeOriginalFileName = vGenerateBarcode.BarcodeOriginalFileName,
-                                BarcodeFileName = vGenerateBarcode.BarcodeFileName,
-                                BranchId = vVisitorResponse.BranchId,
-                                RefId = vVisitorResponse.Id
-                            };
-                            var resultBarcode = _barcodeRepository.SaveBarcode(vBarcode_Request);
-                        }
+                                var vBarcode_Request = new Barcode_Request()
+                                {
+                                    Id = 0,
+                                    BarcodeNo = vVisitorResponse.VisitNumber,
+                                    BarcodeType = "Visitor",
+                                    Barcode_Unique_Id = vGenerateBarcode.Barcode_Unique_Id,
+                                    BarcodeOriginalFileName = vGenerateBarcode.BarcodeOriginalFileName,
+                                    BarcodeFileName = vGenerateBarcode.BarcodeFileName,
+                                    BranchId = vVisitorResponse.BranchId,
+                                    RefId = vVisitorResponse.Id
+                                };
+                                var resultBarcode = _barcodeRepository.SaveBarcode(vBarcode_Request);
+                            }
 
-                        if (string.IsNullOrEmpty(vGenerateBarcode.BarcodeFileName) && parameters.StatusId == 2)
-                        {
-                            _response.IsSuccess = false;
-                            _response.Message = "Barcode is not generated";
+                            if (string.IsNullOrEmpty(vGenerateBarcode.BarcodeFileName) && parameters.StatusId == 2)
+                            {
+                                _response.IsSuccess = false;
+                                _response.Message = "Barcode is not generated";
 
-                            return _response;
+                                return _response;
+                            }
                         }
                     }
                 }
@@ -1860,6 +1864,28 @@ namespace Visitor.API.Controllers
                 {
                     _response.Message = "Record details saved successfully";
                 }
+            }
+            return _response;
+        }
+
+        [Route("[action]")]
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<ResponseModel> DeleteVisitorAsset(int Id)
+        {
+            int result = await _manageVisitorsRepository.DeleteVisitorAsset(Id);
+
+            if (result == (int)SaveOperationEnums.NoRecordExists)
+            {
+                _response.Message = "No record exists";
+            }
+            else if (result == (int)SaveOperationEnums.NoResult)
+            {
+                _response.Message = "Something went wrong, please try again";
+            }
+            else
+            {
+                _response.Message = "Record details deleted successfully";
             }
             return _response;
         }

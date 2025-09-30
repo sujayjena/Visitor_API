@@ -400,7 +400,7 @@ namespace Visitor.Application.Models
         public string? CheckedInOutStatus { get; set; }
         public DateTime? CheckedInDate { get; set; }
         public string? Validity { get; set; }
-
+        public bool? IsCheckedInDisable { get; set; }
         public bool? IsActive { get; set; }
     }
 
