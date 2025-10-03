@@ -41,24 +41,20 @@ namespace Visitor.Application.Models
         public int? DocumentTypeId { get; set; }
 
         public string? DocumentOriginalFileName { get; set; }
-        [JsonIgnore]
         public string? DocumentImage { get; set; }
         public string? DocumentImage_Base64 { get; set; }
 
         public string? ContractorPhotoOriginalFileName { get; set; }
-        [JsonIgnore]
         public string? ContractorPhoto { get; set; }
         public string? ContractorPhoto_Base64 { get; set; }
 
         public string? AadharCardNumber { get; set; }
         public string? AadharCardOriginalFileName { get; set; }
-        [JsonIgnore]
         public string? AadharCardFileName { get; set; }
         public string? AadharCard_Base64 { get; set; }
 
         public string? PanCardNumber { get; set; }
         public string? PanCardOriginalFileName { get; set; }
-        [JsonIgnore]
         public string? PanCardFileName { get; set; }
         public string? PanCard_Base64 { get; set; }
 
@@ -71,8 +67,6 @@ namespace Visitor.Application.Models
         public bool? DV_IsInsurance { get; set; }
         public string? DV_InsuranceNumber { get; set; }
         public string? DV_InsuranceOriginalFileName { get; set; }
-
-        [JsonIgnore]
         public string? DV_InsuranceFileName { get; set; }
         public string? DV_Insurance_Base64 { get; set; }
 
@@ -89,8 +83,6 @@ namespace Visitor.Application.Models
         public bool? DV_IsESIC { get; set; }
         public string? DV_ESICNumber { get; set; }
         public string? DV_ESICOriginalFileName { get; set; }
-
-        [JsonIgnore]
         public string? DV_ESICFileName { get; set; }
         public string? DV_ESIC_Base64 { get; set; }
 
@@ -235,7 +227,6 @@ namespace Visitor.Application.Models
         public int? RemainingDays { get; set; }
         public bool? InsuranceStatus { get; set; }
         public string? InsuranceOriginalFileName { get; set; }
-        [JsonIgnore]
         public string? InsuranceFileName { get; set; }
         public string? Insurance_Base64 { get; set; }
         public bool? IsActive { get; set; }

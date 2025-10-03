@@ -67,7 +67,6 @@ namespace Visitor.Application.Models
         public int? IDTypeId { get; set; }
 
         public string? VisitorPhotoOriginalFileName { get; set; }
-        [JsonIgnore]
         public string? VisitorPhoto { get; set; }
         public string? VisitorPhoto_Base64 { get; set; }
 
@@ -120,12 +119,10 @@ namespace Visitor.Application.Models
         public bool? IsInsurance { get; set; }
         public string? Remarks { get; set; }
         public string? CompanyIdOriginalFileName { get; set; }
-        [JsonIgnore]
         public string? CompanyIdFileName { get; set; }
         public string? CompanyId_Base64 { get; set; }
         public bool? IsPlanned { get; set; }
         public string? VehiclePhotoOriginalFileName { get; set; }
-        [JsonIgnore]
         public string? VehiclePhotoFileName { get; set; }
         public string? VehiclePhoto_Base64 { get; set; }
         public bool? IsMeetingOver { get; set; }
@@ -251,7 +248,6 @@ namespace Visitor.Application.Models
         public string? DocumentNumber { get; set; }
         public string? DocumentOriginalFileName { get; set; }
 
-        [JsonIgnore]
         public string? DocumentFileName { get; set; }
         public string? DocumentFile_Base64 { get; set; }
         public int? IsDocumentStatus { get; set; }

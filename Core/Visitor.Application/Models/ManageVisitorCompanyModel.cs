@@ -29,7 +29,6 @@ namespace Visitor.Application.Models
         public bool? IsGST { get; set; }
         public string? GSTNo { get; set; }
         public string? GSTOriginalFileName { get; set; }
-        [JsonIgnore]
         public string? GSTFileName { get; set; }
         public string? GSTFile_Base64 { get; set; }
 
@@ -37,7 +36,6 @@ namespace Visitor.Application.Models
         public bool? IsPan { get; set; }
         public string? PanCardNumber { get; set; }
         public string? PanCardOriginalFileName { get; set; }
-        [JsonIgnore]
         public string? PanCardFileName { get; set; }
         public string? PanCardFile_Base64 { get; set; }
         public bool? IsActive { get; set; }

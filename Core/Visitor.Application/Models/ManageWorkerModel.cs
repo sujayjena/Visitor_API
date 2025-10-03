@@ -42,14 +42,10 @@ namespace Visitor.Application.Models
         public int? DistrictId { get; set; }
         public string? Pincode { get; set; }
         public string? DocumentOriginalFileName { get; set; }
-
-        [JsonIgnore]
         public string? DocumentFileName { get; set; }
         public string? Document_Base64 { get; set; }
 
         public string? WorkerPhotoOriginalFileName { get; set; }
-
-        [JsonIgnore]
         public string? WorkerPhotoFileName { get; set; }
         public string? WorkerPhoto_Base64 { get; set; }
 
@@ -60,8 +56,6 @@ namespace Visitor.Application.Models
         public bool? DV_IsInsurance { get; set; }
         public string? DV_InsuranceNumber { get; set; }
         public string? DV_InsuranceOriginalFileName { get; set; }
-
-        [JsonIgnore]
         public string? DV_InsuranceFileName { get; set; }
         public string? DV_Insurance_Base64 { get; set; }
 
@@ -69,8 +63,6 @@ namespace Visitor.Application.Models
         public bool? DV_IsWC { get; set; }
         public string? DV_WCNumber { get; set; }
         public string? DV_WCOriginalFileName { get; set; }
-
-        [JsonIgnore]
         public string? DV_WCFileName { get; set; }
         public string? DV_WC_Base64 { get; set; }
 
@@ -78,8 +70,6 @@ namespace Visitor.Application.Models
         public bool? DV_IsESIC { get; set; }
         public string? DV_ESICNumber { get; set; }
         public string? DV_ESICOriginalFileName { get; set; }
-
-        [JsonIgnore]
         public string? DV_ESICFileName { get; set; }
         public string? DV_ESIC_Base64 { get; set; }
 
@@ -88,16 +78,12 @@ namespace Visitor.Application.Models
         [DefaultValue(false)]
         public bool? IsPoliceV { get; set; }
         public string? PoliceVOriginalFileName { get; set; }
-
-        [JsonIgnore]
         public string? PoliceVFileName { get; set; }
         public string? PoliceV_Base64 { get; set; }
 
         [DefaultValue(false)]
         public bool? IsFitnessCert { get; set; }
         public string? FitnessCertOriginalFileName { get; set; }
-
-        [JsonIgnore]
         public string? FitnessCertFileName { get; set; }
         public string? FitnessCert_Base64 { get; set; }
 

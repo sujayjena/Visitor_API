@@ -832,7 +832,6 @@ namespace Visitor.Application.Models
 
         [DefaultValue("")]
         public string? FoodItemOriginalFileName { get; set; }
-        [JsonIgnore]
         public string? FoodItemImage { get; set; }
         public string? FoodItemImage_Base64 { get; set; }
 

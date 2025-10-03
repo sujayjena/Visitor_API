@@ -30,7 +30,6 @@ namespace Visitor.Application.Models
         public int? GateDetailsId { get; set; }
         public int? NoofUserAdd { get; set; }
         public string? BranchOriginalFileName { get; set; }
-        [JsonIgnore]
         public string? BranchFileName { get; set; }
         public string? Branch_Base64 { get; set; }
         public bool? IsActive { get; set; }

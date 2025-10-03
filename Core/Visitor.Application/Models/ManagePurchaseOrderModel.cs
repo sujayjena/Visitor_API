@@ -17,14 +17,10 @@ namespace Visitor.Application.Models
         public DateTime? ValidFromDate { get; set; }
         public DateTime? ValidToDate { get; set; }
         public string? DocumentOriginalFileName { get; set; }
-
-        [JsonIgnore]
         public string? DocumentFileName { get; set; }
         public string? Document_Base64 { get; set; }
         public int? NoofPOWorker { get; set; }
         public string? POAttachmentOriginalFileName { get; set; }
-
-        [JsonIgnore]
         public string? POAttachmentFileName { get; set; }
         public string? POAttachment_Base64 { get; set; }
         public bool? IsActive { get; set; }
