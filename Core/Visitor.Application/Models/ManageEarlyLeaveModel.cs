@@ -46,9 +46,38 @@ namespace Visitor.Application.Models
         public int? StatusId { get; set; }
         public string? StatusName { get; set; }
         public string? Remarks { get; set; }
+        public bool? IsApprovedReject { get; set; }
         public bool? IsActive { get; set; }
     }
+    public class EmployeeEarlyLeave_CheckedInOut_Search : BaseSearchEntity
+    {
+        [DefaultValue(null)]
+        public DateTime? VisitDate { get; set; }
 
+        [DefaultValue(0)]
+        public int? GateDetailsId { get; set; }
+        public int? IsCheckIn_CheckOut { get; set; }
+    }
+
+    public class EmployeeEarlyLeave_CheckedInOut_Response
+    {
+        public int? EmployeeId { get; set; }
+        public string? EmployeeCode { get; set; }
+        public string? EmplyeeName { get; set; }
+        public string? MobileNumber { get; set; }
+        public int? LeaveTypeId { get; set; }
+        public string? LeaveType { get; set; }
+        public int? DepartmentId { get; set; }
+        public string? DepartmentName { get; set; }
+        public int? GateDetailsId { get; set; }
+        public string? GateNumber { get; set; }
+        public DateTime? CheckedInDate { get; set; }
+        public DateTime? CreatedDate { get; set; }
+        public int? ApprovedById { get; set; }
+        public string? ApprovedByHOD { get; set; }
+        public string? ApprovedByHR { get; set; }
+        public bool? IsActive { get; set; }
+    }
     #endregion
 
     #region Worker
@@ -91,6 +120,36 @@ namespace Visitor.Application.Models
         public int? StatusId { get; set; }
         public string? StatusName { get; set; }
         public string? Remarks { get; set; }
+        public bool? IsActive { get; set; }
+    }
+
+    public class WorkerEarlyLeave_CheckedInOut_Search : BaseSearchEntity
+    {
+        [DefaultValue(null)]
+        public DateTime? VisitDate { get; set; }
+
+        [DefaultValue(0)]
+        public int? GateDetailsId { get; set; }
+        public int? IsCheckIn_CheckOut { get; set; }
+    }
+
+    public class WorkerEarlyLeave_CheckedInOut_Response
+    {
+        public int? WorkerId { get; set; }
+        public string? WorkerCode { get; set; }
+        public string? WorkerName { get; set; }
+        public string? MobileNumber { get; set; }
+        public int? LeaveTypeId { get; set; }
+        public string? LeaveType { get; set; }
+        public int? DepartmentId { get; set; }
+        public string? DepartmentName { get; set; }
+        public int? GateDetailsId { get; set; }
+        public string? GateNumber { get; set; }
+        public DateTime? CheckedInDate { get; set; }
+        public DateTime? CreatedDate { get; set; }
+        public int? ApprovedById { get; set; }
+        public string? ApprovedByHOD { get; set; }
+        public string? ApprovedByHR { get; set; }
         public bool? IsActive { get; set; }
     }
     #endregion

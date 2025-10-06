@@ -697,16 +697,18 @@ namespace Visitor.API.Controllers
                 _response.Message = "Record imported successfully";
             }
 
-            lst_ImportData.RemoveAll(x => lst_ImportDataValidation.Select(x => x.WorkerName).Contains(x.WorkerName));
+            lst_ImportData.RemoveAll(x => lst_ImportDataValidation.Select(x => x.WorkerMobileNo).Contains(x.WorkerMobileNo));
 
             foreach (var vItem in lst_ImportData)
             {
                 var vSearch = new WorkerSearch_Request()
                 {
-                    SearchText = vItem.WorkerName,
+                    SearchText = vItem.WorkerMobileNo,
                     BranchId = 0,
                     PurchaseOrderId = 0,
                     IsBlackList = null,
+                    ContractorId = 0,
+                    IsActive = true
                 };
 
                 var vWorkerList = await _manageWorkerRepository.GetWorkerList(vSearch);

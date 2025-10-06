@@ -82,6 +82,18 @@ namespace Visitor.API.Controllers
             }
             return _response;
         }
+
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> GetEmployeeEarlyLeave_CheckedInOut_List(EmployeeEarlyLeave_CheckedInOut_Search parameters)
+        {
+            IEnumerable<EmployeeEarlyLeave_CheckedInOut_Response> lstVisitorss = await _manageEarlyLeaveRepository.GetEmployeeEarlyLeave_CheckedInOut_List(parameters);
+            _response.Data = lstVisitorss.ToList();
+            _response.Total = parameters.Total;
+            return _response;
+        }
+
         #endregion
 
         #region Worker
@@ -140,6 +152,16 @@ namespace Visitor.API.Controllers
                 var vResultObj = await _manageEarlyLeaveRepository.GetWorkerEarlyLeaveById(Id);
                 _response.Data = vResultObj;
             }
+            return _response;
+        }
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> GetWorkerEarlyLeave_CheckedInOut_List(WorkerEarlyLeave_CheckedInOut_Search parameters)
+        {
+            IEnumerable<WorkerEarlyLeave_CheckedInOut_Response> lstVisitorss = await _manageEarlyLeaveRepository.GetWorkerEarlyLeave_CheckedInOut_List(parameters);
+            _response.Data = lstVisitorss.ToList();
+            _response.Total = parameters.Total;
             return _response;
         }
         #endregion

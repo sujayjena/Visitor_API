@@ -61,6 +61,27 @@ namespace Visitor.Persistence.Repositories
             queryParameters.Add("@Id", Id);
             return (await ListByStoredProcedure<EarlyLeave_Response>("GetEarlyLeaveById", queryParameters)).FirstOrDefault();
         }
+
+        public async Task<IEnumerable<EmployeeEarlyLeave_CheckedInOut_Response>> GetEmployeeEarlyLeave_CheckedInOut_List(EmployeeEarlyLeave_CheckedInOut_Search parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@VisitDate", parameters.VisitDate);
+            //queryParameters.Add("@ToDate", parameters.ToDate);
+            queryParameters.Add("@GateDetailsId", parameters.GateDetailsId);
+            queryParameters.Add("@IsCheckIn_CheckOut", parameters.IsCheckIn_CheckOut);
+            queryParameters.Add("@SearchText", parameters.SearchText.SanitizeValue());
+            queryParameters.Add("@IsActive", parameters.IsActive);
+            queryParameters.Add("@PageNo", parameters.PageNo);
+            queryParameters.Add("@PageSize", parameters.PageSize);
+            queryParameters.Add("@Total", parameters.Total, null, System.Data.ParameterDirection.Output);
+            queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
+
+            var result = await ListByStoredProcedure<EmployeeEarlyLeave_CheckedInOut_Response>("GetEmployeeEarlyLeave_CheckedInOut_List", queryParameters);
+            parameters.Total = queryParameters.Get<int>("Total");
+
+            return result;
+        }
+
         #endregion
 
         #region Worker
@@ -105,6 +126,26 @@ namespace Visitor.Persistence.Repositories
             queryParameters.Add("@Id", Id);
             return (await ListByStoredProcedure<WorkerEarlyLeave_Response>("GetWorkerEarlyLeaveById", queryParameters)).FirstOrDefault();
         }
+        public async Task<IEnumerable<WorkerEarlyLeave_CheckedInOut_Response>> GetWorkerEarlyLeave_CheckedInOut_List(WorkerEarlyLeave_CheckedInOut_Search parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@VisitDate", parameters.VisitDate);
+            //queryParameters.Add("@ToDate", parameters.ToDate);
+            queryParameters.Add("@GateDetailsId", parameters.GateDetailsId);
+            queryParameters.Add("@IsCheckIn_CheckOut", parameters.IsCheckIn_CheckOut);
+            queryParameters.Add("@SearchText", parameters.SearchText.SanitizeValue());
+            queryParameters.Add("@IsActive", parameters.IsActive);
+            queryParameters.Add("@PageNo", parameters.PageNo);
+            queryParameters.Add("@PageSize", parameters.PageSize);
+            queryParameters.Add("@Total", parameters.Total, null, System.Data.ParameterDirection.Output);
+            queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
+
+            var result = await ListByStoredProcedure<WorkerEarlyLeave_CheckedInOut_Response>("GetWorkerEarlyLeave_CheckedInOut_List", queryParameters);
+            parameters.Total = queryParameters.Get<int>("Total");
+
+            return result;
+        }
+
         #endregion
 
         public async Task<int> EarlyLeaveApproveNReject(EarlyLeave_ApproveNReject parameters)

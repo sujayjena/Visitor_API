@@ -1099,7 +1099,7 @@ namespace Visitor.API.Controllers
                             WorkSheet1.Cells[recordIndex, 5].Value = items.BranchName;
                             WorkSheet1.Cells[recordIndex, 6].Value = items.DepartmentName;
                             WorkSheet1.Cells[recordIndex, 7].Value = mitems.GateNumber;
-                            WorkSheet1.Cells[recordIndex, 8].Value = ((mitems.IsMeetingOver == false || mitems.IsMeetingOver == null) ? "Start" : "Meeting Over");
+                            WorkSheet1.Cells[recordIndex, 8].Value = ((mitems.IsMeetingOver == false || mitems.IsMeetingOver == null) ? "Reassign" : "Meeting Over");
                             WorkSheet1.Cells[recordIndex, 9].Value = "";
                             WorkSheet1.Cells[recordIndex, 10].Value = Convert.ToDateTime(mitems.CreatedDate).ToString("dd/MM/yyyy");
                             WorkSheet1.Cells[recordIndex, 11].Value = mitems.CreatorName;
