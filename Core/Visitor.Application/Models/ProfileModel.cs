@@ -117,7 +117,8 @@ namespace Visitor.Application.Models
     }
     public class ReportingToEmpListParameters
     {
-        public long RoleId { get; set; }
+        public int? BranchId { get; set; }
+        public long? RoleId { get; set; }
         public long? RegionId { get; set; }
 
         [DefaultValue(null)]

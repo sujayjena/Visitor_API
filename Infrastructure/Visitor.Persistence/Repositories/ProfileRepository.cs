@@ -180,6 +180,7 @@ namespace Visitor.Persistence.Repositories
         public async Task<IEnumerable<SelectListResponse>> GetReportingToEmployeeForSelectList(ReportingToEmpListParameters parameters)
         {
             DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@BranchId", parameters.BranchId);
             queryParameters.Add("@RoleId", parameters.RoleId);
             queryParameters.Add("@RegionId", parameters.RegionId.SanitizeValue());
             queryParameters.Add("@IsActive", parameters.IsActive);
