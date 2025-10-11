@@ -101,8 +101,8 @@ namespace Visitor.Application.Models
 
         [DefaultValue(null)]
         public bool? IsBlackList { get; set; }
-
         public int? IsExpired { get; set; }
+        public int? BranchId { get; set; }
     }
 
     public class Contractor_Response : BaseResponseEntity

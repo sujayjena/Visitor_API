@@ -79,6 +79,7 @@ namespace Visitor.Persistence.Repositories
             DynamicParameters queryParameters = new DynamicParameters();
             queryParameters.Add("@ContractorTypeId", parameters.ContractorTypeId);
             queryParameters.Add("@IsExpired", parameters.IsExpired);
+            queryParameters.Add("@BranchId", parameters.BranchId);
             queryParameters.Add("@SearchText", parameters.SearchText.SanitizeValue());
             queryParameters.Add("@IsActive", parameters.IsActive);
             queryParameters.Add("@IsBlackList", parameters.IsBlackList);
