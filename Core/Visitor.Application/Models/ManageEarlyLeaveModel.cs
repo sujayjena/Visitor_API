@@ -27,6 +27,7 @@ namespace Visitor.Application.Models
     public class EarlyLeave_Search : BaseSearchEntity
     {
         public int? StatusId { get; set; }
+        public int? DepartmentId { get; set; }
     }
 
     public class EarlyLeave_Response : BaseResponseEntity
@@ -99,8 +100,8 @@ namespace Visitor.Application.Models
     public class WorkerEarlyLeave_Search : BaseSearchEntity
     {
         public int? StatusId { get; set; }
+        public int? DepartmentId { get; set; }
     }
-
     public class WorkerEarlyLeave_Response : BaseResponseEntity
     {
         public int? LeaveTypeId { get; set; }

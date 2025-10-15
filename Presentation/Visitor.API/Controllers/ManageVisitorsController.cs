@@ -100,10 +100,11 @@ namespace Visitor.API.Controllers
                 }
             }
 
-            //get prev BranchId, Department, EmployeeId
+            //get previous BranchId, Department, EmployeeId, visitstartdate
             int prevBranchId = 0;
             int prevDepartmentId = 0;
             int prevEmployeeId = 0;
+            DateTime? prevVisitStartDate = null;
             var vVisitNumber = "";
 
             if (parameters.Id > 0)
@@ -115,6 +116,7 @@ namespace Visitor.API.Controllers
                     prevDepartmentId = Convert.ToInt32(vVisitor.DepartmentId ?? 0);
                     prevEmployeeId = Convert.ToInt32(vVisitor.EmployeeId ?? 0);
                     vVisitNumber = vVisitor.VisitNumber;
+                    prevVisitStartDate = vVisitor.VisitStartDate;
                 }
             }
 
@@ -434,10 +436,50 @@ namespace Visitor.API.Controllers
                     }
                 }
                 #endregion
+
+                #region send sms on reschedule 
+                if (parameters.Id > 0)
+                {
+                    if(prevVisitStartDate != parameters.VisitStartDate)
+                    {
+                        var vConfigRef_Search = new ConfigRef_Search()
+                        {
+                            Ref_Type = "SMS",
+                            Ref_Param = "VisitorRescheduled"
+                        };
+
+                        string sSMSTemplateName = string.Empty;
+                        string sSMSTemplateContent = string.Empty;
+                        var vConfigRefObj = _configRefRepository.GetConfigRefList(vConfigRef_Search).Result.ToList().FirstOrDefault();
+                        if (vConfigRefObj != null)
+                        {
+                            sSMSTemplateName = vConfigRefObj.Ref_Value1;
+                            sSMSTemplateContent = vConfigRefObj.Ref_Value2;
+
+                            if (!string.IsNullOrWhiteSpace(sSMSTemplateContent))
+                            {
+                                //Replace parameter 
+                                sSMSTemplateContent = sSMSTemplateContent.Replace("{#var#}", parameters.VisitorName.ToString());
+                                sSMSTemplateContent = sSMSTemplateContent.Replace("{#var1#}", Convert.ToDateTime(parameters.VisitStartDate).ToString("dd/MM/yyyy"));
+                                sSMSTemplateContent = sSMSTemplateContent.Replace("{#var2#}", Convert.ToDateTime(parameters.VisitStartDate).ToString("hh:mm:ss:tt"));
+                            }
+                        }
+
+                        // Send SMS
+                        var vsmsRequest = new SMS_Request()
+                        {
+                            Ref2_Other = vVisitNumber,
+                            TemplateName = sSMSTemplateName,
+                            TemplateContent = sSMSTemplateContent,
+                            Mobile = parameters.VisitorMobileNo,
+                        };
+                        bool bSMSResult = await _smsHelper.SMSSend(vsmsRequest);
+                    }
+                }
+                #endregion
             }
             return _response;
         }
-
 
         [Route("[action]")]
         [HttpPost]
