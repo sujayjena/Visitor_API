@@ -1046,4 +1046,32 @@ namespace Visitor.Application.Models
         public bool? IsActive { get; set; }
     }
     #endregion
+
+    #region Grocery
+    public class Grocery_Search : BaseSearchEntity
+    {
+    }
+
+    public class Grocery_Request : BaseEntity
+    {
+        [DefaultValue("")]
+        public string? GroceryName { get; set; }
+        public string? GroceryDesc { get; set; }
+        public int? UOMId { get; set; }
+        public decimal? MinQty { get; set; }
+        public decimal? AvailableQty { get; set; }
+        public bool? IsActive { get; set; }
+    }
+
+    public class Grocery_Response : BaseResponseEntity
+    {
+        public string? GroceryName { get; set; }
+        public string? GroceryDesc { get; set; }
+        public int? UOMId { get; set; }
+        public string? UOMName { get; set; }
+        public decimal? MinQty { get; set; }
+        public decimal? AvailableQty { get; set; }
+        public bool? IsActive { get; set; }
+    }
+    #endregion
 }

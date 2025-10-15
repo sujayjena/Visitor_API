@@ -1753,5 +1753,46 @@ namespace Visitor.Persistence.Repositories
         }
 
         #endregion
+
+        #region Grocery
+        public async Task<int> SaveGrocery(Grocery_Request parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@Id", parameters.Id);
+            queryParameters.Add("@GroceryName", parameters.GroceryName.SanitizeValue());
+            queryParameters.Add("@GroceryDesc", parameters.GroceryDesc);
+            queryParameters.Add("@UOMId", parameters.UOMId);
+            queryParameters.Add("@MinQty", parameters.MinQty);
+            queryParameters.Add("@AvailableQty", parameters.AvailableQty);
+            queryParameters.Add("@IsActive", parameters.IsActive);
+            queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
+
+            return await SaveByStoredProcedure<int>("SaveGrocery", queryParameters);
+        }
+
+        public async Task<IEnumerable<Grocery_Response>> GetGroceryList(Grocery_Search parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@SearchText", parameters.SearchText.SanitizeValue());
+            queryParameters.Add("@IsActive", parameters.IsActive);
+            queryParameters.Add("@PageNo", parameters.PageNo);
+            queryParameters.Add("@PageSize", parameters.PageSize);
+            queryParameters.Add("@Total", parameters.Total, null, System.Data.ParameterDirection.Output);
+            queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
+
+            var result = await ListByStoredProcedure<Grocery_Response>("GetGroceryList", queryParameters);
+            parameters.Total = queryParameters.Get<int>("Total");
+
+            return result;
+        }
+
+        public async Task<Grocery_Response?> GetGroceryById(int Id)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@Id", Id);
+            return (await ListByStoredProcedure<Grocery_Response>("GetGroceryById", queryParameters)).FirstOrDefault();
+        }
+
+        #endregion
     }
 }

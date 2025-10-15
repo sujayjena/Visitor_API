@@ -370,5 +370,14 @@ namespace Visitor.Application.Interfaces
         Task<WorkPlace_Response?> GetWorkPlaceById(int Id);
 
         #endregion
+
+        #region Grocery
+        Task<int> SaveGrocery(Grocery_Request parameters);
+
+        Task<IEnumerable<Grocery_Response>> GetGroceryList(Grocery_Search parameters);
+
+        Task<Grocery_Response?> GetGroceryById(int Id);
+
+        #endregion
     }
 }
