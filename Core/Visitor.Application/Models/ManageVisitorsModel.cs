@@ -225,7 +225,7 @@ namespace Visitor.Application.Models
         public bool? IsMeetingOver { get; set; }
         public DateTime? IsMeetingOverDateAndTime { get; set; }
         public bool? IsMeetingOverDisabled { get; set; }
-
+        public bool? IsCheckedInDisable { get; set; }
         public bool? IsActive { get; set; }
 
         public List<AssignGateNo_Response> GateNumberList { get; set; }
