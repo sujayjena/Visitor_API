@@ -11,7 +11,7 @@ namespace Visitor.Application.Interfaces
     public interface IManageVisitorsRepository
     {
         Task<int> SaveVisitors(Visitors_Request parameters);
-        Task<IEnumerable<Visitors_Response>> GetVisitorsList(Visitors_Search parameters);
+        Task<IEnumerable<VisitorsList_Response>> GetVisitorsList(Visitors_Search parameters);
         Task<Visitors_Response?> GetVisitorsById(int Id);
         Task<int> VisitorsApproveNReject(Visitor_ApproveNReject parameters);
         Task<Visitors_Response?> GetVisitorDetailByMobileNumber(string MobileNumber);

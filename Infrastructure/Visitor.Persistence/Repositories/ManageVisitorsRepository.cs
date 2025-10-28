@@ -75,6 +75,10 @@ namespace Visitor.Persistence.Repositories
             queryParameters.Add("@VehiclePhotoOriginalFileName", parameters.VehiclePhotoOriginalFileName);
             queryParameters.Add("@VehiclePhotoFileName", parameters.VehiclePhotoFileName);
             queryParameters.Add("@IsMeetingOver", parameters.IsMeetingOver);
+            queryParameters.Add("@CP_IsBreakfast", parameters.CP_IsBreakfast);
+            queryParameters.Add("@CP_IsLunch", parameters.CP_IsLunch);
+            queryParameters.Add("@CP_IsSnacks", parameters.CP_IsSnacks);
+            queryParameters.Add("@CP_IsDinner", parameters.CP_IsDinner);
             queryParameters.Add("@IsActive", parameters.IsActive);
             if(parameters.IsWithoutToken ==  true)
             {
@@ -88,7 +92,7 @@ namespace Visitor.Persistence.Repositories
             return await SaveByStoredProcedure<int>("SaveVisitors", queryParameters);
         }
 
-        public async Task<IEnumerable<Visitors_Response>> GetVisitorsList(Visitors_Search parameters)
+        public async Task<IEnumerable<VisitorsList_Response>> GetVisitorsList(Visitors_Search parameters)
         {
             DynamicParameters queryParameters = new DynamicParameters();
             queryParameters.Add("@MobileNo", parameters.MobileNo);
@@ -109,7 +113,7 @@ namespace Visitor.Persistence.Repositories
             queryParameters.Add("@Total", parameters.Total, null, System.Data.ParameterDirection.Output);
             queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
 
-            var result = await ListByStoredProcedure<Visitors_Response>("GetVisitorsList", queryParameters);
+            var result = await ListByStoredProcedure<VisitorsList_Response>("GetVisitorsList", queryParameters);
             parameters.Total = queryParameters.Get<int>("Total");
 
             return result;

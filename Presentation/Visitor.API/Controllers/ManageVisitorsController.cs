@@ -485,7 +485,7 @@ namespace Visitor.API.Controllers
         [HttpPost]
         public async Task<ResponseModel> GetVisitorsList(Visitors_Search parameters)
         {
-            IEnumerable<Visitors_Response> lstVisitorss = await _manageVisitorsRepository.GetVisitorsList(parameters);
+            IEnumerable<VisitorsList_Response> lstVisitorss = await _manageVisitorsRepository.GetVisitorsList(parameters);
             foreach (var user in lstVisitorss)
             {
                 var gateNolistObj = await _assignGateNoRepository.GetAssignGateNoById(user.Id, "Visitor", 0);
@@ -1037,7 +1037,7 @@ namespace Visitor.API.Controllers
             ExcelWorksheet WorkSheet1;
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 
-            IEnumerable<Visitors_Response> lstSizeObj = await _manageVisitorsRepository.GetVisitorsList(parameters);
+            IEnumerable<VisitorsList_Response> lstSizeObj = await _manageVisitorsRepository.GetVisitorsList(parameters);
 
             using (MemoryStream msExportDataFile = new MemoryStream())
             {
@@ -1425,7 +1425,7 @@ namespace Visitor.API.Controllers
             ExcelWorksheet WorkSheet1;
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 
-            IEnumerable<Visitors_Response> lstSizeObj = await _manageVisitorsRepository.GetVisitorsList(parameters);
+            IEnumerable<VisitorsList_Response> lstSizeObj = await _manageVisitorsRepository.GetVisitorsList(parameters);
 
             using (MemoryStream msExportDataFile = new MemoryStream())
             {
