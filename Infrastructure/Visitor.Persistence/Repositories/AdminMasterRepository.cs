@@ -1793,6 +1793,16 @@ namespace Visitor.Persistence.Repositories
             return (await ListByStoredProcedure<Grocery_Response>("GetGroceryById", queryParameters)).FirstOrDefault();
         }
 
+        public async Task<IEnumerable<Grocery_ImportDataValidation>> ImportGrocery(List<Grocery_ImportData> parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            string xmlData = ConvertListToXml(parameters);
+            queryParameters.Add("@XmlData", xmlData);
+            queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
+
+            return await ListByStoredProcedure<Grocery_ImportDataValidation>("ImportGrocery", queryParameters);
+        }
+
         #endregion
     }
 }

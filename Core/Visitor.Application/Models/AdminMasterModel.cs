@@ -1073,5 +1073,24 @@ namespace Visitor.Application.Models
         public decimal? AvailableQty { get; set; }
         public bool? IsActive { get; set; }
     }
+    public class Grocery_ImportDataValidation
+    {
+        public string? GroceryName { get; set; }
+        public string? GroceryDesc { get; set; }
+        public string? UOM { get; set; }
+        public string? MinQty { get; set; }
+        public string? AvailableQty { get; set; }
+        public string? IsActive { get; set; }
+        public string? ValidationMessage { get; set; }
+    }
+    public class Grocery_ImportData
+    {
+        public string? GroceryName { get; set; }
+        public string? GroceryDesc { get; set; }
+        public string? UOM { get; set; }
+        public string? MinQty { get; set; }
+        public string? AvailableQty { get; set; }
+        public string? IsActive { get; set; }
+    }
     #endregion
 }

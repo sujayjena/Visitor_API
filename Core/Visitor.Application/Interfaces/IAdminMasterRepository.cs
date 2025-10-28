@@ -373,10 +373,9 @@ namespace Visitor.Application.Interfaces
 
         #region Grocery
         Task<int> SaveGrocery(Grocery_Request parameters);
-
         Task<IEnumerable<Grocery_Response>> GetGroceryList(Grocery_Search parameters);
-
         Task<Grocery_Response?> GetGroceryById(int Id);
+        Task<IEnumerable<Grocery_ImportDataValidation>> ImportGrocery(List<Grocery_ImportData> parameters);
 
         #endregion
     }
