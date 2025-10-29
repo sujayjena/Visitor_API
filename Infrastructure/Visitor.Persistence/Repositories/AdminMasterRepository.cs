@@ -1463,6 +1463,7 @@ namespace Visitor.Persistence.Repositories
             queryParameters.Add("@IsEmployee", parameters.IsEmployee);
             queryParameters.Add("@FoodItemOriginalFileName", parameters.FoodItemOriginalFileName);
             queryParameters.Add("@FoodItemImage", parameters.FoodItemImage);
+            queryParameters.Add("@IsPrimary", parameters.IsPrimary);
             queryParameters.Add("@IsActive", parameters.IsActive);
             queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
 

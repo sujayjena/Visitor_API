@@ -238,6 +238,10 @@ namespace Visitor.Application.Models
         public DateTime? IsMeetingOverDateAndTime { get; set; }
         public bool? IsMeetingOverDisabled { get; set; }
         public bool? IsCheckedInDisable { get; set; }
+        public bool? CP_IsBreakfast { get; set; }
+        public bool? CP_IsLunch { get; set; }
+        public bool? CP_IsSnacks { get; set; }
+        public bool? CP_IsDinner { get; set; }
         public bool? IsActive { get; set; }
 
         public List<AssignGateNo_Response> GateNumberList { get; set; }

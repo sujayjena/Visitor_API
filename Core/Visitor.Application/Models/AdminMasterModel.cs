@@ -835,6 +835,8 @@ namespace Visitor.Application.Models
         public string? FoodItemImage { get; set; }
         public string? FoodItemImage_Base64 { get; set; }
 
+        [DefaultValue(false)]
+        public bool? IsPrimary { get; set; }
         public bool? IsActive { get; set; }
         public List<FoodItemMealType_Request> mealTypeList { get; set; }
         public List<FoodItemDays_Request> daysList { get; set; }
@@ -898,6 +900,7 @@ namespace Visitor.Application.Models
         public string? FoodItemOriginalFileName { get; set; }
         public string? FoodItemImage { get; set; }
         public string? FoodItemImageURL { get; set; }
+        public bool? IsPrimary { get; set; }
         public bool? IsActive { get; set; }
 
         public List<FoodItemMealType_Response> mealTypeList { get; set; }

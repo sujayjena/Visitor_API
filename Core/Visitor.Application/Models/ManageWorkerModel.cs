@@ -133,6 +133,7 @@ namespace Visitor.Application.Models
         public string? ContractorType { get; set; }
         public DateTime? ContractorStartDate { get; set; }
         public DateTime? ContractorEndDate { get; set; }
+        public bool? IsCanteenPrivilege { get; set; }
         public int? WorkerTypeId { get; set; }
         public string? WorkerType { get; set; }
         public int? ContractTypeId { get; set; }

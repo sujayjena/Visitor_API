@@ -86,6 +86,8 @@ namespace Visitor.Application.Models
         public string? DV_ESICFileName { get; set; }
         public string? DV_ESIC_Base64 { get; set; }
 
+        [DefaultValue(false)]
+        public bool? IsCanteenPrivilege { get; set; }
         public bool? IsActive { get; set; }
 
         [DefaultValue(false)]
@@ -174,7 +176,7 @@ namespace Visitor.Application.Models
         public string? DV_ESICOriginalFileName { get; set; }
         public string? DV_ESICFileName { get; set; }
         public string? DV_ESICURL { get; set; }
-
+        public bool? IsCanteenPrivilege { get; set; }
         public bool? IsActive { get; set; }
         public bool? IsBlackList { get; set; }
         public List<ContractorAsset_Response> assetList { get; set; }
