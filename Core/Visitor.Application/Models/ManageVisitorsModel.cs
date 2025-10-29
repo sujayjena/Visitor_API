@@ -141,6 +141,9 @@ namespace Visitor.Application.Models
 
         [DefaultValue(false)]
         public bool? CP_IsDinner { get; set; }
+
+        [DefaultValue(false)]
+        public bool? IsAllowCanteenPrivilege { get; set; }
         public bool? IsActive { get; set; }
         public List<AssignGateNo_Request> GateNumberList { get; set; }
         public List<VisitorDocumentVerification_Request> DocumentVerificationList { get; set; }
@@ -242,6 +245,7 @@ namespace Visitor.Application.Models
         public bool? CP_IsLunch { get; set; }
         public bool? CP_IsSnacks { get; set; }
         public bool? CP_IsDinner { get; set; }
+        public bool? IsAllowCanteenPrivilege { get; set; }
         public bool? IsActive { get; set; }
 
         public List<AssignGateNo_Response> GateNumberList { get; set; }
@@ -340,6 +344,7 @@ namespace Visitor.Application.Models
         public bool? CP_IsLunch { get; set; }
         public bool? CP_IsSnacks { get; set; }
         public bool? CP_IsDinner { get; set; }
+        public bool? IsAllowCanteenPrivilege { get; set; }
         public bool? IsActive { get; set; }
 
         public List<AssignGateNo_Response> GateNumberList { get; set; }

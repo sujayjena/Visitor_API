@@ -79,6 +79,7 @@ namespace Visitor.Persistence.Repositories
             queryParameters.Add("@CP_IsLunch", parameters.CP_IsLunch);
             queryParameters.Add("@CP_IsSnacks", parameters.CP_IsSnacks);
             queryParameters.Add("@CP_IsDinner", parameters.CP_IsDinner);
+            queryParameters.Add("@IsAllowCanteenPrivilege", parameters.IsAllowCanteenPrivilege);
             queryParameters.Add("@IsActive", parameters.IsActive);
             if(parameters.IsWithoutToken ==  true)
             {
