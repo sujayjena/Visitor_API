@@ -49,14 +49,14 @@ namespace Visitor.Application.Models
         public DateTime? VisitEndDate { get; set; }
         public int? IsVisitor_Contractor_Vendor { get; set; }
         public int? VisitTypeId { get; set; }
-       
+
         public string? VisitorName { get; set; }
         public string? VisitorMobileNo { get; set; }
         public string? VerifyOTP { get; set; }
         public string? VisitorEmailId { get; set; }
         public int? GenderId { get; set; }
-        
-       
+
+
         public int? VisitorCompanyId { get; set; }
         public int? CountryId { get; set; }
         public int? StateId { get; set; }
@@ -166,7 +166,7 @@ namespace Visitor.Application.Models
         public string? VisitorEmailId { get; set; }
         public int? GenderId { get; set; }
         public string? GenderName { get; set; }
-     
+
         public int? VisitorCompanyId { get; set; }
         public string? CompanyName { get; set; }
         public int? CountryId { get; set; }
@@ -500,7 +500,7 @@ namespace Visitor.Application.Models
         public string? VisitorPhotoOriginalFileName { get; set; }
         public string? VisitorPhoto { get; set; }
         public string? VisitorPhotoURL { get; set; }
-      
+
         public int? StatusId { get; set; }
         public string? StatusName { get; set; }
         public string? CheckedInOutStatus { get; set; }
@@ -744,5 +744,12 @@ namespace Visitor.Application.Models
         public string? CheckInTime { get; set; }
         public string? CheckOutTime { get; set; }
         public string? BranchName { get; set; }
+    }
+
+    public class BarcodeRegenerate_Request
+    {
+        [DefaultValue("Visitor")]
+        public string? RefType { get; set; }
+        public int? RefId { get; set; }
     }
 }

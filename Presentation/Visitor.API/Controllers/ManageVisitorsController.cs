@@ -32,8 +32,8 @@ namespace Visitor.API.Controllers
         private ISMSHelper _smsHelper;
         private readonly INotificationRepository _notificationRepository;
         private readonly IAssignGateNoRepository _assignGateNoRepository;
-
-        public ManageVisitorsController(IManageVisitorsRepository manageVisitorsRepository, IFileManager fileManager, IBarcodeRepository barcodeRepository, IUserRepository userRepository, IWebHostEnvironment environment, IEmailHelper emailHelper, ILoginRepository loginRepository, IConfigRefRepository configRefRepository, ISMSHelper smsHelper, INotificationRepository notificationRepository, IAssignGateNoRepository assignGateNoRepository)
+        private readonly IManageWorkerRepository _manageWorkerRepository;
+        public ManageVisitorsController(IManageVisitorsRepository manageVisitorsRepository, IFileManager fileManager, IBarcodeRepository barcodeRepository, IUserRepository userRepository, IWebHostEnvironment environment, IEmailHelper emailHelper, ILoginRepository loginRepository, IConfigRefRepository configRefRepository, ISMSHelper smsHelper, INotificationRepository notificationRepository, IAssignGateNoRepository assignGateNoRepository, IManageWorkerRepository manageWorkerRepository)
         {
             _manageVisitorsRepository = manageVisitorsRepository;
             _fileManager = fileManager;
@@ -46,6 +46,7 @@ namespace Visitor.API.Controllers
             _smsHelper = smsHelper;
             _notificationRepository = notificationRepository;
             _assignGateNoRepository = assignGateNoRepository;
+            _manageWorkerRepository = manageWorkerRepository;
 
             _response = new ResponseModel();
             _response.IsSuccess = true;
@@ -300,7 +301,7 @@ namespace Visitor.API.Controllers
                                     Mobile = vVisitor.VisitorMobileNo,
                                 };
                                 bool bSMSResult = await _smsHelper.SMSSend(vsmsRequest);
-                                
+
                                 #endregion
                             }
                         }
@@ -341,7 +342,7 @@ namespace Visitor.API.Controllers
                             var vSecurityGate_1 = vSecurityList.Where(x => vGateNumberList_1.Select(x => x.RefId).Contains(x.Id)).ToList();
                             if (vSecurityGate_1.Count > 0)
                             {
-                                foreach(var vSecurity in vSecurityGate_1)
+                                foreach (var vSecurity in vSecurityGate_1)
                                 {
                                     var vNotifyObj = new Notification_Request()
                                     {
@@ -415,7 +416,7 @@ namespace Visitor.API.Controllers
 
                             //Notification to HOD Employee
                             var vHODEmployeeList = vUserList.ToList().Where(x => x.BranchId == parameters.BranchId && x.DepartmentId == parameters.DepartmentId && x.IsHOD == true).ToList();
-                            foreach(var vHODEmployee in vHODEmployeeList)
+                            foreach (var vHODEmployee in vHODEmployeeList)
                             {
                                 string notifyMessage = String.Format(@"Visitor {0}, with Visitor ID {1} and Mobile Number {2}, Branch, Department, Employee and Gate Number have been changed.", parameters.VisitorName, vVisitNumber, parameters.VisitorMobileNo);
                                 var vNotifyObj = new Notification_Request()
@@ -440,7 +441,7 @@ namespace Visitor.API.Controllers
                 #region send sms on reschedule 
                 if (parameters.Id > 0)
                 {
-                    if(prevVisitStartDate != parameters.VisitStartDate)
+                    if (prevVisitStartDate != parameters.VisitStartDate)
                     {
                         var vConfigRef_Search = new ConfigRef_Search()
                         {
@@ -550,7 +551,7 @@ namespace Visitor.API.Controllers
                     if (vVisitorResponse != null)
                     {
                         var vDuplicateBarcode = _barcodeRepository.GetBarcodeById(vVisitorResponse.VisitNumber);
-                        if(vDuplicateBarcode == null)
+                        if (vDuplicateBarcode == null)
                         {
                             var vGenerateBarcode = _barcodeRepository.GenerateBarcode(vVisitorResponse.VisitNumber);
                             if (vGenerateBarcode.Barcode_Unique_Id != "")
@@ -596,7 +597,7 @@ namespace Visitor.API.Controllers
                 }
                 else
                 {
-                     _response.Message = "Visitor Approved successfully";
+                    _response.Message = "Visitor Approved successfully";
 
                     //Send Email
                     if (parameters.Id > 0)
@@ -680,7 +681,7 @@ namespace Visitor.API.Controllers
 
                     var vSecurityList = await _userRepository.GetUserList(vSearch); //get branch wise security list
 
-                    var vGateNumberList = await _assignGateNoRepository.GetAssignGateNoById(0,"Security", 0); //get gate list of security
+                    var vGateNumberList = await _assignGateNoRepository.GetAssignGateNoById(0, "Security", 0); //get gate list of security
                     var vGateNumberList_1 = vGateNumberList.Where(x => x.GateNumber == "1").ToList();
 
                     var vSecurityGate_1 = vSecurityList.Where(x => vGateNumberList_1.Select(x => x.RefId).Contains(x.Id)).ToList();
@@ -833,7 +834,7 @@ namespace Visitor.API.Controllers
         [HttpPost]
         public async Task<ResponseModel> SaveVisitorCheckedInOut(VisitorCheckedInOut_Request parameters)
         {
-            if(parameters.GateDetailsId == 0)
+            if (parameters.GateDetailsId == 0)
             {
                 _response.IsSuccess = false;
                 _response.Message = "Gate Details is required.";
@@ -1081,7 +1082,7 @@ namespace Visitor.API.Controllers
                         IEnumerable<CheckedInOutLogHistory_Response> lstMUserObj = await _manageVisitorsRepository.GetCheckedInOutLogHistoryList(vCheckedInOutLogHistory_Search);
                         if (lstMUserObj.ToList().Count > 0)
                         {
-                            foreach (var mitems in lstMUserObj.ToList().OrderBy(x=>x.Id))
+                            foreach (var mitems in lstMUserObj.ToList().OrderBy(x => x.Id))
                             {
                                 if (j == 0)
                                 {
@@ -1494,8 +1495,8 @@ namespace Visitor.API.Controllers
                         WorkSheet1.Cells[recordIndex, 3].Value = items.VisitorName;
                         WorkSheet1.Cells[recordIndex, 4].Value = items.VisitorMobileNo;
                         WorkSheet1.Cells[recordIndex, 5].Value = items.PassType;
-                       
-                        WorkSheet1.Cells[recordIndex, 6].Value = items.VisitStartDate.HasValue? items.VisitStartDate.Value.ToString("dd/MM/yyyy hh:mm:ss:tt") : string.Empty;
+
+                        WorkSheet1.Cells[recordIndex, 6].Value = items.VisitStartDate.HasValue ? items.VisitStartDate.Value.ToString("dd/MM/yyyy hh:mm:ss:tt") : string.Empty;
                         WorkSheet1.Cells[recordIndex, 7].Value = items.VisitEndDate.HasValue ? items.VisitEndDate.Value.ToString("dd/MM/yyyy hh:mm:ss:tt") : string.Empty;
                         WorkSheet1.Cells[recordIndex, 8].Value = items.VisitorEmailId;
                         WorkSheet1.Cells[recordIndex, 9].Value = items.GenderName;
@@ -1574,15 +1575,15 @@ namespace Visitor.API.Controllers
 
                 //CHOWGULE LAVGAN
                 var vCHOWGULE = lst.ToList().Where(x => x.BranchName == "CHOWGULE LAVGAN").ToList();
-                string file1 = CreateExcel(null,vCHOWGULE, null, "CHOWGULE LAVGAN", refType, JobType);
+                string file1 = CreateExcel(null, vCHOWGULE, null, "CHOWGULE LAVGAN", refType, JobType);
 
                 //ANGRE PORT
                 var vANGRE = lst.ToList().Where(x => x.BranchName == "ANGRE PORT").ToList();
-                string file2 = CreateExcel(null,vANGRE, null, "ANGRE PORT", refType, JobType);
+                string file2 = CreateExcel(null, vANGRE, null, "ANGRE PORT", refType, JobType);
 
                 //FIBER GLASS
                 var vFIBER = lst.ToList().Where(x => x.BranchName == "FIBER GLASS").ToList();
-                string file3 = CreateExcel(null,vFIBER, null, "FIBER GLASS", refType, JobType);
+                string file3 = CreateExcel(null, vFIBER, null, "FIBER GLASS", refType, JobType);
             }
             else if (refType == "Employee")
             {
@@ -1733,7 +1734,7 @@ namespace Visitor.API.Controllers
                 {
                     path = _environment.ContentRootPath + "\\Uploads\\DailyReportFile\\" + DateTime.Now.ToString("dd-MM-yyyy") + "\\";
                 }
-                
+
 
                 if (!System.IO.Directory.Exists(path))
                 {
@@ -1791,7 +1792,7 @@ namespace Visitor.API.Controllers
                     templateFilePath = _environment.ContentRootPath + "\\EmailTemplates\\AutoDailyReport_Employee_Template.html";
                     emailTemplateContent = System.IO.File.ReadAllText(templateFilePath);
                 }
-               
+
 
                 if (emailTemplateContent.IndexOf("[Date]", StringComparison.OrdinalIgnoreCase) > 0)
                 {
@@ -1822,7 +1823,7 @@ namespace Visitor.API.Controllers
                     new Attachment(vAtt1),
                     new Attachment(vAtt2)
                 };
-                    
+
 
                 sSubjectDynamicContent = refType + " Report - " + DateTime.Now.ToShortDateString();
                 result = await _emailHelper.SendEmail(module: moduleName, subject: sSubjectDynamicContent, sendTo: "Security", content: emailTemplateContent, recipientEmail: recipientEmail, files: vfiles, remarks: "");
@@ -1929,6 +1930,187 @@ namespace Visitor.API.Controllers
             {
                 _response.Message = "Record details deleted successfully";
             }
+            return _response;
+        }
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> BarcodeRegenerate(BarcodeRegenerate_Request parameters)
+        {
+            if(parameters.RefType == "Visitor")
+            {
+                var vVisitorResponse = await _manageVisitorsRepository.GetVisitorsById(Convert.ToInt32(parameters.RefId));
+                if (vVisitorResponse != null)
+                {
+                    if (vVisitorResponse.StatusId == 2)
+                    {
+                        var vDuplicateBarcode = await _barcodeRepository.GetBarcodeById(vVisitorResponse.VisitNumber);
+                        if (vDuplicateBarcode == null)
+                        {
+                            var vGenerateBarcode = _barcodeRepository.GenerateBarcode(vVisitorResponse.VisitNumber);
+                            if (vGenerateBarcode.Barcode_Unique_Id != "")
+                            {
+                                var vBarcode_Request = new Barcode_Request()
+                                {
+                                    Id = 0,
+                                    BarcodeNo = vVisitorResponse.VisitNumber,
+                                    BarcodeType = "Visitor",
+                                    Barcode_Unique_Id = vGenerateBarcode.Barcode_Unique_Id,
+                                    BarcodeOriginalFileName = vGenerateBarcode.BarcodeOriginalFileName,
+                                    BarcodeFileName = vGenerateBarcode.BarcodeFileName,
+                                    BranchId = vVisitorResponse.BranchId,
+                                    RefId = vVisitorResponse.Id
+                                };
+                                var resultBarcode = _barcodeRepository.SaveBarcode(vBarcode_Request);
+                            }
+
+                            if (string.IsNullOrEmpty(vGenerateBarcode.BarcodeFileName))
+                            {
+                                _response.IsSuccess = false;
+                                _response.Message = "Barcode is not generated";
+
+                                return _response;
+                            }
+                        }
+                        else
+                        {
+                            _response.IsSuccess = false;
+                            _response.Message = "Barcode is already exists.";
+
+                            return _response;
+                        }
+                    }
+                    else
+                    {
+                        _response.IsSuccess = false;
+                        _response.Message = "Visitor is not approved";
+
+                        return _response;
+                    }
+                }
+                else
+                {
+                    _response.IsSuccess = false;
+                    _response.Message = "Visitor is not exists.";
+
+                    return _response;
+                }
+            }
+            else if (parameters.RefType == "Employee")
+            {
+                var vEmployeeResponse = await _userRepository.GetUserById(Convert.ToInt32(parameters.RefId));
+                if (vEmployeeResponse != null)
+                {
+                    var vDuplicateBarcode = await _barcodeRepository.GetBarcodeById(vEmployeeResponse.UserCode);
+                    if (vDuplicateBarcode == null)
+                    {
+                        var vGenerateBarcode = _barcodeRepository.GenerateBarcode(vEmployeeResponse.UserCode);
+                        if (vGenerateBarcode.Barcode_Unique_Id != "")
+                        {
+                            var vBarcode_Request = new Barcode_Request()
+                            {
+                                Id = 0,
+                                BarcodeNo = vEmployeeResponse.UserCode,
+                                BarcodeType = "Employee",
+                                Barcode_Unique_Id = vGenerateBarcode.Barcode_Unique_Id,
+                                BarcodeOriginalFileName = vGenerateBarcode.BarcodeOriginalFileName,
+                                BarcodeFileName = vGenerateBarcode.BarcodeFileName,
+                                BranchId = vEmployeeResponse.BranchId,
+                                RefId = vEmployeeResponse.Id
+                            };
+                            var resultBarcode = _barcodeRepository.SaveBarcode(vBarcode_Request);
+                        }
+
+                        if (string.IsNullOrEmpty(vGenerateBarcode.BarcodeFileName))
+                        {
+                            _response.IsSuccess = false;
+                            _response.Message = "Barcode is not generated";
+
+                            return _response;
+                        }
+                    }
+                    else
+                    {
+                        _response.IsSuccess = false;
+                        _response.Message = "Barcode is already exists.";
+
+                        return _response;
+                    }
+                }
+                else
+                {
+                    _response.IsSuccess = false;
+                    _response.Message = "Employee is not exists.";
+
+                    return _response;
+                }
+            }
+            else if (parameters.RefType == "Worker")
+            {
+                var vWorker = await _manageWorkerRepository.GetWorkerById(Convert.ToInt32(parameters.RefId));
+                if (vWorker != null)
+                {
+                    string vBarcodeNo = "";
+                    if (vWorker.BranchName == "ANGRE PORT")
+                    {
+                        vBarcodeNo = await _barcodeRepository.AutoBarcodeGenerate(Convert.ToInt32(vWorker.BranchId ?? 0), "Worker", "");
+                    }
+                    else
+                    {
+                        vBarcodeNo = vWorker.PassNumber;
+                    }
+
+                    if (vBarcodeNo != "")
+                    {
+                        var vDuplicateBarcode = await _barcodeRepository.GetBarcodeById(vBarcodeNo);
+                        if (vDuplicateBarcode == null)
+                        {
+                            var vGenerateBarcode = _barcodeRepository.GenerateBarcode(vBarcodeNo);
+                            if (vGenerateBarcode.Barcode_Unique_Id != "")
+                            {
+                                var vBarcode_Request = new Barcode_Request()
+                                {
+                                    Id = 0,
+                                    BarcodeNo = vBarcodeNo,
+                                    BarcodeType = "Worker",
+                                    Barcode_Unique_Id = vGenerateBarcode.Barcode_Unique_Id,
+                                    BarcodeOriginalFileName = vGenerateBarcode.BarcodeOriginalFileName,
+                                    BarcodeFileName = vGenerateBarcode.BarcodeFileName,
+                                    BranchId = vWorker.BranchId,
+
+                                    RefId = vWorker.Id
+                                };
+                                var resultBarcode = _barcodeRepository.SaveBarcode(vBarcode_Request);
+                            }
+
+                            if (string.IsNullOrEmpty(vGenerateBarcode.BarcodeFileName))
+                            {
+                                _response.IsSuccess = false;
+                                _response.Message = "Barcode is not generated";
+
+                                return _response;
+                            }
+                        }
+                        else
+                        {
+                            _response.IsSuccess = false;
+                            _response.Message = "Barcode is already exists.";
+
+                            return _response;
+                        }
+                    }
+                }
+                else
+                {
+                    _response.IsSuccess = false;
+                    _response.Message = "Worker is not exists.";
+
+                    return _response;
+                }
+            }
+
+            _response.IsSuccess = true;
+            _response.Message = "Barcode Regenerate successfully";
             return _response;
         }
     }
