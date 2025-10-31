@@ -2,9 +2,11 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using OfficeOpenXml.Style;
 using OfficeOpenXml;
+using OfficeOpenXml.Style;
+using System.Collections.Generic;
 using System.Net;
+using System.Net.Mail;
 using System.Text;
 using Visitor.API.CustomAttributes;
 using Visitor.Application.Enums;
@@ -12,7 +14,6 @@ using Visitor.Application.Helpers;
 using Visitor.Application.Interfaces;
 using Visitor.Application.Models;
 using Visitor.Persistence.Repositories;
-using System.Net.Mail;
 
 namespace Visitor.API.Controllers
 {
@@ -1555,7 +1556,12 @@ namespace Visitor.API.Controllers
         {
             if (refType == "Visitor")
             {
-                IEnumerable<AutoDailyReport_Response> lst = await _manageVisitorsRepository.AutoDailyReport();
+                var vSearchObj = new AutoDailyReport_Search()
+                {
+                    RefType = refType,
+                };
+
+                IEnumerable<AutoDailyReport_Response> lst = await _manageVisitorsRepository.AutoDailyReport(vSearchObj);
 
                 //CHOWGULE LAVGAN
                 var vCHOWGULE = lst.ToList().Where(x => x.BranchName == "CHOWGULE LAVGAN").ToList();
@@ -1754,7 +1760,7 @@ namespace Visitor.API.Controllers
         protected async Task<bool> SendDailyReport_EmailToSecurity(string refType, string JobType = "")
         {
             bool result = false;
-            string templateFilePath = "", emailTemplateContent = "", sSubjectDynamicContent = "";
+            string templateFilePath = "", emailTemplateContent = "", sSubjectDynamicContent = "", listContent = "";
 
             try
             {
@@ -1792,41 +1798,108 @@ namespace Visitor.API.Controllers
                     templateFilePath = _environment.ContentRootPath + "\\EmailTemplates\\AutoDailyReport_Employee_Template.html";
                     emailTemplateContent = System.IO.File.ReadAllText(templateFilePath);
                 }
-
-
-                if (emailTemplateContent.IndexOf("[Date]", StringComparison.OrdinalIgnoreCase) > 0)
+                else if (refType == "Visitor_Missed_Appointment")
                 {
-                    emailTemplateContent = emailTemplateContent.Replace("[Date]", DateTime.Now.ToString("dd/MM/yyyy"));
+                    templateFilePath = _environment.ContentRootPath + "\\EmailTemplates\\Visitor_Missed_Appointment_Template.html";
+                    emailTemplateContent = System.IO.File.ReadAllText(templateFilePath);
                 }
 
-                string basePath = "";
-                string moduleName = "";
-                if (JobType != "")
+                if (refType == "Visitor_Missed_Appointment")
                 {
-                    basePath = _environment.ContentRootPath + "\\Uploads\\DailyReportFile\\" + DateTime.Now.ToString("dd-MM-yyyy") + "_" + JobType + "\\";
-                    moduleName = "Auto Daily Report - " + JobType;
+                    if (emailTemplateContent.IndexOf("[VisitorDetailsList]", StringComparison.OrdinalIgnoreCase) > 0)
+                    {
+                        listContent = string.Empty;
+
+                        var vSearchObj = new AutoDailyReport_Search()
+                        {
+                            RefType = refType,
+                        };
+
+                        var objDetailsList = await _manageVisitorsRepository.AutoDailyReport(vSearchObj);
+
+                        int rowNo = 1;
+                        foreach (AutoDailyReport_Response items in objDetailsList)
+                        {
+                            listContent = $@"{listContent}
+                            <tr style='border: 1px solid #dddddd; text-align: left; padding: 8px;'>
+                                <td style='border: 1px solid #dddddd;text-align: center;padding: 8px;'>{rowNo}</td>
+                                <td style='border: 1px solid #dddddd;text-align: center;padding: 8px;'>{items.VisitNumber}</td>
+                                <td style='border: 1px solid #dddddd;text-align: center;padding: 8px;'>{items.PassType}</td>
+                                <td style='border: 1px solid #dddddd;text-align: center;padding: 8px;'>{items.VisitorName}</td>
+                                <td style='border: 1px solid #dddddd;text-align: center;padding: 8px;'>{items.VisitorMobileNo}</td>
+                                <td style='border: 1px solid #dddddd;text-align: center;padding: 8px;'>{items.Validity}</td>
+                                <td style='border: 1px solid #dddddd;text-align: center;padding: 8px;'>{items.GateNumber}</td>
+                                <td style='border: 1px solid #dddddd;text-align: center;padding: 8px;'>{items.VisitorCompany}</td>
+                                <td style='border: 1px solid #dddddd;text-align: center;padding: 8px;'>{items.HostDepartment}</td>
+                                <td style='border: 1px solid #dddddd;text-align: center;padding: 8px;'>{items.HostName}</td>
+                                <td style='border: 1px solid #dddddd;text-align: center;padding: 8px;'>{items.VehicleNumber}</td>
+                                <td style='border: 1px solid #dddddd;text-align: center;padding: 8px;'>{items.VisitType}</td>
+                            </tr>";
+
+                            rowNo++;
+
+                            //Notification to Host Employee
+                            if (items.EmployeeId > 0) 
+                            {
+                                string notifyMessage_host = String.Format(@"{0} missed his/her Appointement dated {1}", items.VisitorName, items.VisitDate);
+                                var vNotifyObj_host = new Notification_Request()
+                                {
+                                    Subject = "Visitor Missed Appointment",
+                                    SendTo = "Host Employee",
+                                    //CustomerId = vWorkOrderObj.CustomerId,
+                                    //CustomerMessage = NotifyMessage,
+                                    EmployeeId = items.EmployeeId,
+                                    EmployeeMessage = notifyMessage_host,
+                                    RefValue1 = items.VisitNumber,
+                                    ReadUnread = false
+                                };
+                                int resultNotification = await _notificationRepository.SaveNotification(vNotifyObj_host);
+                            }
+                        }
+
+                        emailTemplateContent = emailTemplateContent.Replace("[VisitorDetailsList]", listContent);
+
+                        string moduleName = "Visitor Missed Appointment";
+
+                        sSubjectDynamicContent = "Visitor List Missed Todays(" + DateTime.Now.ToShortDateString() + ") Appointment";
+                        result = await _emailHelper.SendEmail(module: moduleName, subject: sSubjectDynamicContent, sendTo: "Security", content: emailTemplateContent, recipientEmail: recipientEmail, files: null, remarks: "");
+                    }
                 }
                 else
                 {
-                    basePath = _environment.ContentRootPath + "\\Uploads\\DailyReportFile\\" + DateTime.Now.ToString("dd-MM-yyyy") + "\\";
-                    moduleName = "Auto Daily Report";
+                    if (emailTemplateContent.IndexOf("[Date]", StringComparison.OrdinalIgnoreCase) > 0)
+                    {
+                        emailTemplateContent = emailTemplateContent.Replace("[Date]", DateTime.Now.ToString("dd/MM/yyyy"));
+                    }
+
+                    string basePath = "";
+                    string moduleName = "";
+                    if (JobType != "")
+                    {
+                        basePath = _environment.ContentRootPath + "\\Uploads\\DailyReportFile\\" + DateTime.Now.ToString("dd-MM-yyyy") + "_" + JobType + "\\";
+                        moduleName = "Auto Daily Report - " + JobType;
+                    }
+                    else
+                    {
+                        basePath = _environment.ContentRootPath + "\\Uploads\\DailyReportFile\\" + DateTime.Now.ToString("dd-MM-yyyy") + "\\";
+                        moduleName = "Auto Daily Report";
+                    }
+
+                    var vAtt = basePath + "DailyReport_CHOWGULE LAVGAN_" + refType + "_" + DateTime.Now.ToString("ddMMyyyy") + ".xlsx";
+                    var vAtt1 = basePath + "DailyReport_ANGRE PORT_" + refType + "_" + DateTime.Now.ToString("ddMMyyyy") + ".xlsx";
+                    var vAtt2 = basePath + "DailyReport_FIBER GLASS_" + refType + "_" + DateTime.Now.ToString("ddMMyyyy") + ".xlsx";
+
+                    var vfiles = new List<Attachment>()
+                    {
+                        new Attachment(vAtt),
+                        new Attachment(vAtt1),
+                        new Attachment(vAtt2)
+                    };
+
+
+                    sSubjectDynamicContent = refType + " Report - " + DateTime.Now.ToShortDateString();
+                    result = await _emailHelper.SendEmail(module: moduleName, subject: sSubjectDynamicContent, sendTo: "Security", content: emailTemplateContent, recipientEmail: recipientEmail, files: vfiles, remarks: "");
                 }
-
-
-                var vAtt = basePath + "DailyReport_CHOWGULE LAVGAN_" + refType + "_" + DateTime.Now.ToString("ddMMyyyy") + ".xlsx";
-                var vAtt1 = basePath + "DailyReport_ANGRE PORT_" + refType + "_" + DateTime.Now.ToString("ddMMyyyy") + ".xlsx";
-                var vAtt2 = basePath + "DailyReport_FIBER GLASS_" + refType + "_" + DateTime.Now.ToString("ddMMyyyy") + ".xlsx";
-
-                var vfiles = new List<Attachment>()
-                {
-                    new Attachment(vAtt),
-                    new Attachment(vAtt1),
-                    new Attachment(vAtt2)
-                };
-
-
-                sSubjectDynamicContent = refType + " Report - " + DateTime.Now.ToShortDateString();
-                result = await _emailHelper.SendEmail(module: moduleName, subject: sSubjectDynamicContent, sendTo: "Security", content: emailTemplateContent, recipientEmail: recipientEmail, files: vfiles, remarks: "");
             }
             catch (Exception ex)
             {
@@ -1937,7 +2010,7 @@ namespace Visitor.API.Controllers
         [HttpPost]
         public async Task<ResponseModel> BarcodeRegenerate(BarcodeRegenerate_Request parameters)
         {
-            if(parameters.RefType == "Visitor")
+            if (parameters.RefType == "Visitor")
             {
                 var vVisitorResponse = await _manageVisitorsRepository.GetVisitorsById(Convert.ToInt32(parameters.RefId));
                 if (vVisitorResponse != null)

@@ -392,10 +392,10 @@ namespace Visitor.Persistence.Repositories
             return await ListByStoredProcedure<Visitor_ImportDataValidation>("ImportVisitor", queryParameters);
         }
 
-        public async Task<IEnumerable<AutoDailyReport_Response>> AutoDailyReport()
+        public async Task<IEnumerable<AutoDailyReport_Response>> AutoDailyReport(AutoDailyReport_Search parameters)
         {
             DynamicParameters queryParameters = new DynamicParameters();
-
+            queryParameters.Add("@RefType", parameters.RefType);
             var result = await ListByStoredProcedure<AutoDailyReport_Response>("AutoDailyReport", queryParameters);
 
             return result;

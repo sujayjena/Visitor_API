@@ -43,7 +43,7 @@ namespace Visitor.Application.Interfaces
 
         Task<IEnumerable<Visitor_ImportDataValidation>> ImportVisitor(List<Visitor_ImportData> parameters);
 
-        Task<IEnumerable<AutoDailyReport_Response>> AutoDailyReport();
+        Task<IEnumerable<AutoDailyReport_Response>> AutoDailyReport(AutoDailyReport_Search parameters);
         Task<IEnumerable<AutoDailyReport_Worker_Response>> AutoDailyReport_Worker(string JobType = "");
         Task<IEnumerable<AutoDailyReport_Employee_Response>> AutoDailyReport_Employee(string JobType = "");
 
