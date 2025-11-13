@@ -28,6 +28,8 @@ namespace Visitor.Application.Interfaces
 
         Task<IEnumerable<UserOffline_Response>> GetUserOfflineList(UserOffline_Search parameters);
 
+        Task<int> EmployeeApproveNReject(Employee_ApproveNReject parameters);
+
         #endregion
 
         #region User Other Details

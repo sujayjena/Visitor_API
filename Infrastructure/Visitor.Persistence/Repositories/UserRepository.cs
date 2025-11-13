@@ -98,6 +98,8 @@ namespace Visitor.Persistence.Repositories
             queryParameters.Add("@IsFilterType", parameters.IsFilterType);
             queryParameters.Add("@RoleId", parameters.RoleId);
             queryParameters.Add("@EmployeeId", parameters.EmployeeId);
+            queryParameters.Add("@StatusId", parameters.StatusId);
+            queryParameters.Add("@GateDetailsId", parameters.GateDetailsId);
             queryParameters.Add("@SearchText", parameters.SearchText.SanitizeValue());
             queryParameters.Add("@IsActive", parameters.IsActive);
             queryParameters.Add("@PageNo", parameters.PageNo);
@@ -177,6 +179,17 @@ namespace Visitor.Persistence.Repositories
             parameters.Total = queryParameters.Get<int>("Total");
 
             return result;
+        }
+
+        public async Task<int> EmployeeApproveNReject(Employee_ApproveNReject parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+
+            queryParameters.Add("@Id", parameters.Id);
+            queryParameters.Add("@StatusId", parameters.StatusId);
+            queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
+
+            return await SaveByStoredProcedure<int>("EmployeeApproveNReject", queryParameters);
         }
 
         #endregion

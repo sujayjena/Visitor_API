@@ -52,5 +52,22 @@ namespace Visitor.Persistence.Repositories
 
             return result;
         }
+
+        public async Task<int> SaveCanteenTransactionToken(CanteenTransactionToken_Request parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@Id", parameters.Id);
+            queryParameters.Add("@MealType", parameters.MealType);
+            queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
+
+            return await SaveByStoredProcedure<int>("SaveCanteenTransactionToken", queryParameters);
+        }
+
+        public async Task<CanteenTransactionToken_Response?> GetCanteenTransactionTokenById(int Id)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@Id", Id);
+            return (await ListByStoredProcedure<CanteenTransactionToken_Response>("GetCanteenTransactionTokenById", queryParameters)).FirstOrDefault();
+        }
     }
 }

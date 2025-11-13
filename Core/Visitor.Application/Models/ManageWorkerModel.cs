@@ -219,6 +219,7 @@ namespace Visitor.Application.Models
         public string? ValidityPeriod { get; set; }
         public decimal? OverTime { get; set; }
         public decimal? TotalHours { get; set; }
+        public string? CheckedInOutStatus { get; set; }
 
 
         [DefaultValue(false)]

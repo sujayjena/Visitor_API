@@ -45,4 +45,15 @@ namespace Visitor.Application.Models
         public long CreatedBy { get; set; }
         public string? CreatorName { get; set; }
     }
+
+    public class CanteenTransactionToken_Request : BaseEntity
+    {
+        [DefaultValue("")]
+        public string? MealType { get; set; }
+    }
+
+    public class CanteenTransactionToken_Response : BaseEntity
+    {
+        public string? TokenNo { get; set; }
+    }
 }

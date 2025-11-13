@@ -1293,5 +1293,45 @@ namespace Visitor.API.Controllers.Admin
 
             return _response;
         }
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> EmployeeApproveNReject(Employee_ApproveNReject parameters)
+        {
+            if (parameters.Id <= 0)
+            {
+                _response.Message = "Id is required";
+            }
+            else
+            {
+                int resultExpenseDetails = await _userRepository.EmployeeApproveNReject(parameters);
+
+                if (resultExpenseDetails == (int)SaveOperationEnums.NoRecordExists)
+                {
+                    _response.Message = "No record exists";
+                }
+                else if (resultExpenseDetails == (int)SaveOperationEnums.ReocrdExists)
+                {
+                    _response.Message = "Record already exists";
+                }
+                else if (resultExpenseDetails == (int)SaveOperationEnums.NoResult)
+                {
+                    _response.Message = "Something went wrong, please try again";
+                }
+                else
+                {
+                    if(parameters.StatusId == 2)
+                    {
+                        _response.Message = "Employee Approved successfully.";
+                    }
+                    else if (parameters.StatusId == 3)
+                    {
+                        _response.Message = "Employee Rejected successfully.";
+                    }
+                }
+            }
+
+            return _response;
+        }
     }
 }
