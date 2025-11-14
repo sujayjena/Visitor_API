@@ -320,6 +320,8 @@ namespace Visitor.Application.Models
 
     public class UserOffline_Search : BaseSearchEntity
     {
+        [DefaultValue(0)]
+        public int? GateDetailsId { get; set; }
     }
 
     public class UserOffline_Response
@@ -334,6 +336,7 @@ namespace Visitor.Application.Models
         public int? BranchId { get; set; }
         public string? BranchName { get; set; }
         public string? CheckedInOutStatus { get; set; }
+        public bool? IsCheckedInDisable { get; set; }
     }
 
     public class UserOtherDetails_Request : BaseEntity

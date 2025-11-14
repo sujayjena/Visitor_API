@@ -15,5 +15,6 @@ namespace Visitor.Application.Interfaces
         Task<IEnumerable<Worker_ImportDataValidation>> ImportWorker(List<Worker_ImportData> parameters);
         Task<int> SaveWorkerPass(WorkerPass_Request parameters);
         Task<IEnumerable<WorkerPass_Response>> GetWorkerPassList(WorkerPassSearch_Request parameters);
+        Task<int> WorkerApproveNReject(Worker_ApproveNReject parameters);
     }
 }

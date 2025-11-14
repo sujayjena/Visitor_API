@@ -114,6 +114,12 @@ namespace Visitor.Application.Models
         public int? BranchId { get; set; }
         public int? ContractorId { get; set; }
         public int? EmployeeId { get; set; }
+
+        [DefaultValue(0)]
+        public int? StatusId { get; set; }
+
+        [DefaultValue(0)]
+        public int? GateDetailsId { get; set; }
     }
 
     public class Worker_Response : BaseResponseEntity
@@ -220,6 +226,7 @@ namespace Visitor.Application.Models
         public decimal? OverTime { get; set; }
         public decimal? TotalHours { get; set; }
         public string? CheckedInOutStatus { get; set; }
+        public bool? IsCheckedInDisable { get; set; }
 
 
         [DefaultValue(false)]
@@ -333,5 +340,10 @@ namespace Visitor.Application.Models
         public string? IsBlackList { get; set; }
         public string? IsActive { get; set; }
         public string ValidationMessage { get; set; }
+    }
+    public class Worker_ApproveNReject
+    {
+        public int? Id { get; set; }
+        public int? StatusId { get; set; }
     }
 }

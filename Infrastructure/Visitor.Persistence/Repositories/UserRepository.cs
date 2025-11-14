@@ -167,6 +167,7 @@ namespace Visitor.Persistence.Repositories
         public async Task<IEnumerable<UserOffline_Response>> GetUserOfflineList(UserOffline_Search parameters)
         {
             DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@GateDetailsId", parameters.GateDetailsId);
             queryParameters.Add("@SearchText", parameters.SearchText.SanitizeValue());
             queryParameters.Add("@IsActive", parameters.IsActive);
             queryParameters.Add("@PageNo", parameters.PageNo);
