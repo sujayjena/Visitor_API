@@ -306,7 +306,7 @@ namespace Visitor.Application.Models
 
         public DateTime? LastWorkingDate { get; set; }
         public bool? IsCheckedInDisable { get; set; }
-
+        public string? Remarks { get; set; }
         public bool? IsMobileUser { get; set; }
 
         public bool? IsWebUser { get; set; }
@@ -402,6 +402,7 @@ namespace Visitor.Application.Models
     {
         public int? Id { get; set; }
         public int? StatusId { get; set; }
+        public string? Remarks { get; set; }
     }
 
     #region Import and Download

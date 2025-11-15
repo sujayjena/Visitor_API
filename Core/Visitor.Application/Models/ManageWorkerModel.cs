@@ -99,6 +99,12 @@ namespace Visitor.Application.Models
         public DateTime? LicenseValidTo { get; set; }
 
         [DefaultValue(false)]
+        public bool? IsCanteenPrivilege { get; set; }
+
+        [DefaultValue(false)]
+        public bool? IsPrimary { get; set; }
+
+        [DefaultValue(false)]
         public bool? IsBlackList { get; set; }
 
         public bool? IsActive { get; set; }
@@ -139,7 +145,7 @@ namespace Visitor.Application.Models
         public string? ContractorType { get; set; }
         public DateTime? ContractorStartDate { get; set; }
         public DateTime? ContractorEndDate { get; set; }
-        public bool? IsCanteenPrivilege { get; set; }
+        public bool? Contractor_IsCanteenPrivilege { get; set; }
         public int? WorkerTypeId { get; set; }
         public string? WorkerType { get; set; }
         public int? ContractTypeId { get; set; }
@@ -215,8 +221,6 @@ namespace Visitor.Application.Models
         public string? FitnessCertOriginalFileName { get; set; }
         public string? FitnessCertFileName { get; set; }
         public string? FitnessCertURL { get; set; }
-
-        [DefaultValue(false)]
         public bool? IsDriver { get; set; }
         public string? VehicleNumber { get; set; }
         public string? DrivingLicenseNo { get; set; }
@@ -227,9 +231,9 @@ namespace Visitor.Application.Models
         public decimal? TotalHours { get; set; }
         public string? CheckedInOutStatus { get; set; }
         public bool? IsCheckedInDisable { get; set; }
-
-
-        [DefaultValue(false)]
+        public string? Remarks { get; set; }
+        public bool? IsCanteenPrivilege { get; set; }
+        public bool? IsPrimary { get; set; }
         public bool? IsBlackList { get; set; }
         public bool? IsActive { get; set; }
         public List<AssignGateNo_Response> GateNumberList { get; set; }
@@ -345,5 +349,6 @@ namespace Visitor.Application.Models
     {
         public int? Id { get; set; }
         public int? StatusId { get; set; }
+        public string? Remarks { get; set; }
     }
 }

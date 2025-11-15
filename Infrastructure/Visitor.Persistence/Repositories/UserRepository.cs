@@ -188,6 +188,7 @@ namespace Visitor.Persistence.Repositories
 
             queryParameters.Add("@Id", parameters.Id);
             queryParameters.Add("@StatusId", parameters.StatusId);
+            queryParameters.Add("@Remarks", parameters.Remarks);
             queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
 
             return await SaveByStoredProcedure<int>("EmployeeApproveNReject", queryParameters);

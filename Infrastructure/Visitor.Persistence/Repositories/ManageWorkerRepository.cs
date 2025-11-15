@@ -76,6 +76,8 @@ namespace Visitor.Persistence.Repositories
             queryParameters.Add("@LicenseValidFrom", parameters.LicenseValidFrom);
             queryParameters.Add("@LicenseValidTo", parameters.LicenseValidTo);
 
+            queryParameters.Add("@IsCanteenPrivilege", parameters.IsCanteenPrivilege);
+            queryParameters.Add("@IsPrimary", parameters.IsPrimary);
             queryParameters.Add("@IsBlackList", parameters.IsBlackList);
             queryParameters.Add("@IsActive", parameters.IsActive);
             queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
@@ -159,6 +161,7 @@ namespace Visitor.Persistence.Repositories
 
             queryParameters.Add("@Id", parameters.Id);
             queryParameters.Add("@StatusId", parameters.StatusId);
+            queryParameters.Add("@Remarks", parameters.Remarks);
             queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
 
             return await SaveByStoredProcedure<int>("WorkerApproveNReject", queryParameters);
