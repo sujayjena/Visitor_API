@@ -1805,5 +1805,43 @@ namespace Visitor.Persistence.Repositories
         }
 
         #endregion
+
+        #region Grocery Approval
+        public async Task<int> SaveGroceryApproval(GroceryApproval_Request parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@Id", parameters.Id);
+            queryParameters.Add("@RoleId", parameters.RoleId);
+            queryParameters.Add("@EmployeeId", parameters.EmployeeId);
+            queryParameters.Add("@IsActive", parameters.IsActive);
+            queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
+
+            return await SaveByStoredProcedure<int>("SaveGroceryApproval", queryParameters);
+        }
+
+        public async Task<IEnumerable<GroceryApproval_Response>> GetGroceryApprovalList(GroceryApproval_Search parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@SearchText", parameters.SearchText.SanitizeValue());
+            queryParameters.Add("@IsActive", parameters.IsActive);
+            queryParameters.Add("@PageNo", parameters.PageNo);
+            queryParameters.Add("@PageSize", parameters.PageSize);
+            queryParameters.Add("@Total", parameters.Total, null, System.Data.ParameterDirection.Output);
+            queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
+
+            var result = await ListByStoredProcedure<GroceryApproval_Response>("GetGroceryApprovalList", queryParameters);
+            parameters.Total = queryParameters.Get<int>("Total");
+
+            return result;
+        }
+
+        public async Task<GroceryApproval_Response?> GetGroceryApprovalById(int Id)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@Id", Id);
+            return (await ListByStoredProcedure<GroceryApproval_Response>("GetGroceryApprovalById", queryParameters)).FirstOrDefault();
+        }
+
+        #endregion
     }
 }

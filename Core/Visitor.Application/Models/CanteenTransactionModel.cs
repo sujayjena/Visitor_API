@@ -32,6 +32,7 @@ namespace Visitor.Application.Models
         public string? RefType { get; set; }
         public int? RefId { get; set; }
         public string? RefName { get; set; }
+        public string? MealType { get; set; }
         public int? FoodItemId { get; set; }
         public int? MenuItemId { get; set; }
         public string? MenuItemName { get; set; }

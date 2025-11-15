@@ -378,5 +378,11 @@ namespace Visitor.Application.Interfaces
         Task<IEnumerable<Grocery_ImportDataValidation>> ImportGrocery(List<Grocery_ImportData> parameters);
 
         #endregion
+
+        #region Grocery Approval
+        Task<int> SaveGroceryApproval(GroceryApproval_Request parameters);
+        Task<IEnumerable<GroceryApproval_Response>> GetGroceryApprovalList(GroceryApproval_Search parameters);
+        Task<GroceryApproval_Response?> GetGroceryApprovalById(int Id);
+        #endregion
     }
 }

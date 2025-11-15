@@ -1096,4 +1096,28 @@ namespace Visitor.Application.Models
         public string? IsActive { get; set; }
     }
     #endregion
+
+    #region Grocery Approval
+    public class GroceryApproval_Search : BaseSearchEntity
+    {
+    }
+
+    public class GroceryApproval_Request : BaseEntity
+    {
+        public int? RoleId { get; set; }
+        public int? EmployeeId { get; set; }
+        public bool? IsActive { get; set; }
+    }
+
+    public class GroceryApproval_Response : BaseResponseEntity
+    {
+        public int? RoleId { get; set; }
+        public string? RoleName { get; set; }
+        public int? EmployeeId { get; set; }
+        public string? EmployeeName { get; set; }
+        public int? ReportingTo { get; set; }
+        public string? ReportingToName { get; set; }
+        public bool? IsActive { get; set; }
+    }
+    #endregion
 }
