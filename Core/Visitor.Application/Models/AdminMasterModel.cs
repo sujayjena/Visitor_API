@@ -1104,19 +1104,25 @@ namespace Visitor.Application.Models
 
     public class GroceryApproval_Request : BaseEntity
     {
+        public int? ApprovalType { get; set; }
         public int? RoleId { get; set; }
         public int? EmployeeId { get; set; }
+        public DateTime? StartDate { get; set; }
+        public DateTime? EndDate { get; set; }
         public bool? IsActive { get; set; }
     }
 
     public class GroceryApproval_Response : BaseResponseEntity
     {
+        public int? ApprovalType { get; set; }
         public int? RoleId { get; set; }
         public string? RoleName { get; set; }
         public int? EmployeeId { get; set; }
         public string? EmployeeName { get; set; }
         public int? ReportingTo { get; set; }
         public string? ReportingToName { get; set; }
+        public DateTime? StartDate { get; set; }
+        public DateTime? EndDate { get; set; }
         public bool? IsActive { get; set; }
     }
     #endregion

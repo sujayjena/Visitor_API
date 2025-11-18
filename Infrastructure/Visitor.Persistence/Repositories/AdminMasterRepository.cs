@@ -1811,8 +1811,11 @@ namespace Visitor.Persistence.Repositories
         {
             DynamicParameters queryParameters = new DynamicParameters();
             queryParameters.Add("@Id", parameters.Id);
+            queryParameters.Add("@ApprovalType", parameters.ApprovalType);
             queryParameters.Add("@RoleId", parameters.RoleId);
             queryParameters.Add("@EmployeeId", parameters.EmployeeId);
+            queryParameters.Add("@StartDate", parameters.StartDate);
+            queryParameters.Add("@EndDate", parameters.EndDate);
             queryParameters.Add("@IsActive", parameters.IsActive);
             queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
 

@@ -52,6 +52,7 @@ namespace Visitor.Persistence
             services.AddScoped<IManagePurchaseOrderRepository, ManagePurchaseOrderRepository>();
             services.AddScoped<IManageVendorRepository, ManageVendorRepository>();
             services.AddScoped<ICanteenTransactionRepository, CanteenTransactionRepository>();
+            services.AddScoped<IManageGroceryRepository, ManageGroceryRepository>();
         }
     }
 }
