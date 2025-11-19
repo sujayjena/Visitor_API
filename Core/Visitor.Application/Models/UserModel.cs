@@ -337,6 +337,7 @@ namespace Visitor.Application.Models
         public string? BranchName { get; set; }
         public string? CheckedInOutStatus { get; set; }
         public bool? IsCheckedInDisable { get; set; }
+        public DateTime? CheckedInDate { get; set; }
     }
 
     public class UserOtherDetails_Request : BaseEntity

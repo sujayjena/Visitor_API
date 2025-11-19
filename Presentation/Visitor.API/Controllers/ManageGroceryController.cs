@@ -101,8 +101,8 @@ namespace Visitor.API.Controllers
                         GroceryRequisitionId = vResultObj.Id
                     };
 
-                    //var vGroceryRequisitionDetailsList = await _manageGroceryRepository.GetGroceryRequisitionDetailsList(vGroceryRequisitionDetails);
-                    //vResultObj.GroceryRequisitionDetails = vGroceryRequisitionDetailsList.ToList();
+                    var vGroceryRequisitionDetailsList = await _manageGroceryRepository.GetGroceryRequisitionDetailsList(vGroceryRequisitionDetails);
+                    vResultObj.GroceryRequisitionDetails = vGroceryRequisitionDetailsList.ToList();
                 }
                 _response.Data = vResultObj;
             }

@@ -232,6 +232,7 @@ namespace Visitor.Application.Models
         public string? CheckedInOutStatus { get; set; }
         public bool? IsCheckedInDisable { get; set; }
         public string? Remarks { get; set; }
+        public DateTime? CheckedInDate { get; set; }
         public bool? IsCanteenPrivilege { get; set; }
         public bool? IsPrimary { get; set; }
         public bool? IsBlackList { get; set; }

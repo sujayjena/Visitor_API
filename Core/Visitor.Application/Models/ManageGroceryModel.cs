@@ -65,6 +65,7 @@ namespace Visitor.Application.Models
     public class GroceryRequisitionDetails_Response : BaseEntity
     {
         public int? GroceryRequisitionId { get; set; }
+        public string? RequisitionId { get; set; }
         public int? GroceryId { get; set; }
         public string? GroceryName { get; set; }
         public decimal? OrderQty { get; set; }
