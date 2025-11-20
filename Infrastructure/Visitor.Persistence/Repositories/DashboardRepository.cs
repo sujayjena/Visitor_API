@@ -35,5 +35,19 @@ namespace Visitor.Persistence.Repositories
 
             return result;
         }
+
+        public async Task<IEnumerable<Dashboard_TokenCountSummary_Result>> GetDashboard_TokenCountSummary(Dashboard_TokenCountSummary_Search parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+
+            queryParameters.Add("@FromDate", parameters.FromDate);
+            queryParameters.Add("@ToDate", parameters.ToDate);
+            queryParameters.Add("@RefType", parameters.RefType);
+            queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
+
+            var result = await ListByStoredProcedure<Dashboard_TokenCountSummary_Result>("GetDashboard_TokenCountSummary", queryParameters);
+
+            return result;
+        }
     }
 }

@@ -30,4 +30,21 @@ namespace Visitor.Application.Models
         public int? TotalLeftCount { get; set; }
         public int? CanteenCount { get; set; }
     }
+
+    public class Dashboard_TokenCountSummary_Search
+    {
+        public DateTime? FromDate { get; set; }
+        public DateTime? ToDate { get; set; }
+
+        [DefaultValue("")]
+        public string? RefType { get; set; }
+    }
+
+    public class Dashboard_TokenCountSummary_Result
+    {
+        public int? BreakfastCount { get; set; }
+        public int? LunchCount { get; set; }
+        public int? SnacksCount { get; set; }
+        public int? DinnerCount { get; set; }
+    }
 }

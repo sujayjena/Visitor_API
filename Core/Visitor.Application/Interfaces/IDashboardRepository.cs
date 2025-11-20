@@ -10,5 +10,6 @@ namespace Visitor.Application.Interfaces
     public interface IDashboardRepository
     {
         Task<IEnumerable<Dashboard_TotalSummary_Result>> GetDashboard_TotalSummary(Dashboard_Search_Request parameters);
+        Task<IEnumerable<Dashboard_TokenCountSummary_Result>> GetDashboard_TokenCountSummary(Dashboard_TokenCountSummary_Search parameters);
     }
 }
