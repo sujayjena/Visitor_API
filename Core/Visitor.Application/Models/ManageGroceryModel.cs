@@ -11,6 +11,7 @@ namespace Visitor.Application.Models
 {
     public class GroceryRequisition_Request : BaseEntity
     {
+        #region Grocery requisition
         public GroceryRequisition_Request()
         {
             GroceryRequisitionDetails = new List<GroceryRequisitionDetails_Request>();
@@ -52,15 +53,36 @@ namespace Visitor.Application.Models
         public string? Approver2_Name { get; set; }
         public List<GroceryRequisitionDetails_Response> GroceryRequisitionDetails { get; set; }
     }
+    public class GroceryRequisition_ApproveNRejectHistory_Search : BaseSearchEntity
+    {
+        public int GroceryRequisitionId { get; set; }
+    }
+    public class GroceryRequisition_ApproveNRejectHistory_Response
+    {
+        public int? Id { get; set; }
+        public string? Remarks { get; set; }
+        public string? ApprovalType { get; set; }
+        public string? ApproveOrReject { get; set; }
+        public string? CreatorName { get; set; }
+        public long CreatedBy { get; set; }
+        public DateTime? CreatedDate { get; set; }
+    }
+
+    #endregion
+
+    #region grocery requisition details
     public class GroceryRequisitionDetails_Request : BaseEntity
     {
         public int? GroceryRequisitionId { get; set; }
         public int? GroceryId { get; set; }
         public decimal? OrderQty { get; set; }
+        public decimal? ReceivedQty { get; set; }
+        public int? IsOK { get; set; }
     }
     public class GroceryRequisitionDetails_Search : BaseSearchEntity
     {
         public int? GroceryRequisitionId { get; set; }
+        public int? IsOk { get; set; }
     }
     public class GroceryRequisitionDetails_Response : BaseEntity
     {
@@ -73,5 +95,35 @@ namespace Visitor.Application.Models
         public string? UOMName { get; set; }
         public decimal? MinQty { get; set; }
         public decimal? AvailableQty { get; set; }
+        public decimal? ReceivedQty { get; set; }
+        public int? IsOK { get; set; }
     }
+
+    #endregion
+
+    #region grocery outwarding
+    public class GroceryOutwarding_Request : BaseEntity
+    {
+        public int? GroceryId { get; set; }
+        public decimal? AvailableQty { get; set; }
+        public decimal? OutwardingQty { get; set; }
+        public decimal? RemainingQty { get; set; }
+    }
+    public class GroceryOutwarding_Search : BaseSearchEntity
+    {
+    }
+    public class GroceryOutwarding_Response : BaseEntity
+    {
+        public string? OutwardingId { get; set; }
+        public int? GroceryId { get; set; }
+        public string? GroceryName { get; set; }
+        public string? GroceryDesc { get; set; }
+        public int? UOMId { get; set; }
+        public string? UOMName { get; set; }
+        public decimal? MinQty { get; set; }
+        public decimal? AvailableQty { get; set; }
+        public decimal? OutwardingQty { get; set; }
+        public decimal? RemainingQty { get; set; }
+    }
+    #endregion
 }

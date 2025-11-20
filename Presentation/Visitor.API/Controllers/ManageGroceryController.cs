@@ -41,6 +41,10 @@ namespace Visitor.API.Controllers
             {
                 _response.Message = "Something went wrong, please try again";
             }
+            else if (result == -3)
+            {
+                _response.Message = "Not Allowed to approved requisition";
+            }
             else
             {
                 if (parameters.Id > 0)
@@ -62,7 +66,9 @@ namespace Visitor.API.Controllers
                             Id = items.Id,
                             GroceryRequisitionId = result,
                             GroceryId = items.GroceryId,
-                            OrderQty = items.OrderQty
+                            OrderQty = items.OrderQty,
+                            ReceivedQty = 0,
+                            IsOK = 0,
                         };
 
                         int resultUserOtherDetails = await _manageGroceryRepository.SaveGroceryRequisitionDetails(vGroceryRequisitionDetails);
@@ -98,7 +104,8 @@ namespace Visitor.API.Controllers
                 {
                     var vGroceryRequisitionDetails = new GroceryRequisitionDetails_Search()
                     {
-                        GroceryRequisitionId = vResultObj.Id
+                        GroceryRequisitionId = vResultObj.Id,
+                        IsOk = 0,
                     };
 
                     var vGroceryRequisitionDetailsList = await _manageGroceryRepository.GetGroceryRequisitionDetailsList(vGroceryRequisitionDetails);
@@ -108,7 +115,113 @@ namespace Visitor.API.Controllers
             }
             return _response;
         }
-       
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> GetGroceryRequisition_ApproveNRejectHistoryListById(GroceryRequisition_ApproveNRejectHistory_Search parameters)
+        {
+            IEnumerable<GroceryRequisition_ApproveNRejectHistory_Response> lst = await _manageGroceryRepository.GetGroceryRequisition_ApproveNRejectHistoryListById(parameters);
+            _response.Data = lst.ToList();
+            _response.Total = parameters.Total;
+            return _response;
+        }
+        #endregion
+
+        #region Grocery Inwarding
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> SaveGroceryRequisitionDetails(GroceryRequisitionDetails_Request parameters)
+        {
+            int result = await _manageGroceryRepository.SaveGroceryRequisitionDetails(parameters);
+
+            if (result == (int)SaveOperationEnums.NoRecordExists)
+            {
+                _response.Message = "No record exists";
+            }
+            else if (result == (int)SaveOperationEnums.ReocrdExists)
+            {
+                _response.Message = "Record is already exists";
+            }
+            else if (result == (int)SaveOperationEnums.NoResult)
+            {
+                _response.Message = "Something went wrong, please try again";
+            }
+            else if (result == -3)
+            {
+                _response.Message = "Not Allowed to approved requisition";
+            }
+            else
+            {
+                if (parameters.Id > 0)
+                {
+                    _response.Message = "Record updated successfully";
+                }
+                else
+                {
+                    _response.Message = "Record details saved successfully";
+                }
+            }
+            return _response;
+        }
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> GetGroceryRequisitionDetailsList(GroceryRequisitionDetails_Search parameters)
+        {
+            IEnumerable<GroceryRequisitionDetails_Response> lstRoles = await _manageGroceryRepository.GetGroceryRequisitionDetailsList(parameters);
+            _response.Data = lstRoles.ToList();
+            _response.Total = parameters.Total;
+            return _response;
+        }
+        #endregion
+
+        #region Grocery Outwarding
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> SaveGroceryOutwarding(GroceryOutwarding_Request parameters)
+        {
+            int result = await _manageGroceryRepository.SaveGroceryOutwarding(parameters);
+
+            if (result == (int)SaveOperationEnums.NoRecordExists)
+            {
+                _response.Message = "No record exists";
+            }
+            else if (result == (int)SaveOperationEnums.ReocrdExists)
+            {
+                _response.Message = "Record is already exists";
+            }
+            else if (result == (int)SaveOperationEnums.NoResult)
+            {
+                _response.Message = "Something went wrong, please try again";
+            }
+            else if (result == -3)
+            {
+                _response.Message = "Not Allowed to approved requisition";
+            }
+            else
+            {
+                if (parameters.Id > 0)
+                {
+                    _response.Message = "Record updated successfully";
+                }
+                else
+                {
+                    _response.Message = "Record details saved successfully";
+                }
+            }
+            return _response;
+        }
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> GetGroceryOutwardingList(GroceryOutwarding_Search parameters)
+        {
+            IEnumerable<GroceryOutwarding_Response> lstRoles = await _manageGroceryRepository.GetGroceryOutwardingList(parameters);
+            _response.Data = lstRoles.ToList();
+            _response.Total = parameters.Total;
+            return _response;
+        }
+
         #endregion
     }
 }

@@ -55,7 +55,14 @@ namespace Visitor.Persistence.Repositories
             queryParameters.Add("@Id", Id);
             return (await ListByStoredProcedure<GroceryRequisition_Response>("GetGroceryRequisitionById", queryParameters)).FirstOrDefault();
         }
+        public async Task<IEnumerable<GroceryRequisition_ApproveNRejectHistory_Response>> GetGroceryRequisition_ApproveNRejectHistoryListById(GroceryRequisition_ApproveNRejectHistory_Search parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@GroceryRequisitionId", parameters.GroceryRequisitionId);
 
+            var result = await ListByStoredProcedure<GroceryRequisition_ApproveNRejectHistory_Response>("GetGroceryRequisition_ApproveNRejectHistoryListById", queryParameters);
+            return result;
+        }
         #endregion
 
         #region Grocery Requisition Details
@@ -66,6 +73,8 @@ namespace Visitor.Persistence.Repositories
             queryParameters.Add("@GroceryRequisitionId", parameters.GroceryRequisitionId);
             queryParameters.Add("@GroceryId", parameters.GroceryId);
             queryParameters.Add("@OrderQty", parameters.OrderQty);
+            queryParameters.Add("@ReceivedQty", parameters.ReceivedQty);
+            queryParameters.Add("@IsOK", parameters.IsOK);
             queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
 
             return await SaveByStoredProcedure<int>("SaveGroceryRequisitionDetails", queryParameters);
@@ -74,7 +83,8 @@ namespace Visitor.Persistence.Repositories
         public async Task<IEnumerable<GroceryRequisitionDetails_Response>> GetGroceryRequisitionDetailsList(GroceryRequisitionDetails_Search parameters)
         {
             DynamicParameters queryParameters = new DynamicParameters();
-            queryParameters.Add("@StatusId", parameters.GroceryRequisitionId);
+            queryParameters.Add("@GroceryRequisitionId", parameters.GroceryRequisitionId);
+            queryParameters.Add("@IsOK", parameters.IsOk);
             queryParameters.Add("@SearchText", parameters.SearchText.SanitizeValue());
             queryParameters.Add("@IsActive", parameters.IsActive);
             queryParameters.Add("@PageNo", parameters.PageNo);
@@ -83,6 +93,38 @@ namespace Visitor.Persistence.Repositories
             queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
 
             var result = await ListByStoredProcedure<GroceryRequisitionDetails_Response>("GetGroceryRequisitionDetailsList", queryParameters);
+            parameters.Total = queryParameters.Get<int>("Total");
+
+            return result;
+        }
+
+        #endregion
+
+        #region Grocery Outwarding
+        public async Task<int> SaveGroceryOutwarding(GroceryOutwarding_Request parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@Id", parameters.Id);
+            queryParameters.Add("@GroceryId", parameters.GroceryId);
+            queryParameters.Add("@AvailableQty", parameters.AvailableQty);
+            queryParameters.Add("@OutwardingQty", parameters.OutwardingQty);
+            queryParameters.Add("@RemainingQty", parameters.RemainingQty);
+            queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
+
+            return await SaveByStoredProcedure<int>("SaveGroceryOutwarding", queryParameters);
+        }
+
+        public async Task<IEnumerable<GroceryOutwarding_Response>> GetGroceryOutwardingList(GroceryOutwarding_Search parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@SearchText", parameters.SearchText.SanitizeValue());
+            queryParameters.Add("@IsActive", parameters.IsActive);
+            queryParameters.Add("@PageNo", parameters.PageNo);
+            queryParameters.Add("@PageSize", parameters.PageSize);
+            queryParameters.Add("@Total", parameters.Total, null, System.Data.ParameterDirection.Output);
+            queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
+
+            var result = await ListByStoredProcedure<GroceryOutwarding_Response>("GetGroceryOutwardingList", queryParameters);
             parameters.Total = queryParameters.Get<int>("Total");
 
             return result;

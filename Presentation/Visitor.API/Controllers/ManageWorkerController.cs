@@ -58,6 +58,10 @@ namespace Visitor.API.Controllers
                 var vWorkerSearch = new WorkerSearch_Request();
                 vWorkerSearch.PurchaseOrderId = 0;
                 vWorkerSearch.BranchId = 0;
+                vWorkerSearch.ContractorId = 0;
+                vWorkerSearch.EmployeeId = 0;
+                vWorkerSearch.StatusId = 0;
+                vWorkerSearch.GateDetailsId = 0;
                 vWorkerSearch.IsBlackList = false;
                 vWorkerSearch.IsActive = true;
 
@@ -708,6 +712,9 @@ namespace Visitor.API.Controllers
                     PurchaseOrderId = 0,
                     IsBlackList = null,
                     ContractorId = 0,
+                    EmployeeId = 0,
+                    StatusId = 0,
+                    GateDetailsId = 0,
                     IsActive = true
                 };
 
