@@ -27,15 +27,16 @@ namespace Visitor.Persistence.Repositories
             queryParameters.Add("@Id", parameters.Id);
             queryParameters.Add("@StatusId", parameters.StatusId);
             queryParameters.Add("@Remarks", parameters.Remarks);
+            queryParameters.Add("@IsReceived", parameters.IsReceived);
             queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
 
             return await SaveByStoredProcedure<int>("SaveGroceryRequisition", queryParameters);
         }
-
         public async Task<IEnumerable<GroceryRequisitionList_Response>> GetGroceryRequisitionList(GroceryRequisition_Search parameters)
         {
             DynamicParameters queryParameters = new DynamicParameters();
             queryParameters.Add("@StatusId", parameters.StatusId);
+            queryParameters.Add("@IsReceived", parameters.IsReceived);
             queryParameters.Add("@SearchText", parameters.SearchText.SanitizeValue());
             queryParameters.Add("@IsActive", parameters.IsActive);
             queryParameters.Add("@PageNo", parameters.PageNo);
@@ -48,13 +49,24 @@ namespace Visitor.Persistence.Repositories
 
             return result;
         }
-
         public async Task<GroceryRequisition_Response?> GetGroceryRequisitionById(int Id)
         {
             DynamicParameters queryParameters = new DynamicParameters();
             queryParameters.Add("@Id", Id);
             return (await ListByStoredProcedure<GroceryRequisition_Response>("GetGroceryRequisitionById", queryParameters)).FirstOrDefault();
         }
+        public async Task<int> GroceryRequisitionApproveNReject(GroceryRequisition_ApproveNReject parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+
+            queryParameters.Add("@Id", parameters.Id);
+            queryParameters.Add("@StatusId", parameters.StatusId);
+            queryParameters.Add("@Remarks", parameters.Remarks);
+            queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
+
+            return await SaveByStoredProcedure<int>("GroceryRequisitionApproveNReject", queryParameters);
+        }
+
         public async Task<IEnumerable<GroceryRequisition_ApproveNRejectHistory_Response>> GetGroceryRequisition_ApproveNRejectHistoryListById(GroceryRequisition_ApproveNRejectHistory_Search parameters)
         {
             DynamicParameters queryParameters = new DynamicParameters();

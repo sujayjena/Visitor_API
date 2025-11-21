@@ -14,6 +14,7 @@ namespace Visitor.Application.Interfaces
         Task<int> SaveGroceryRequisition(GroceryRequisition_Request parameters);
         Task<IEnumerable<GroceryRequisitionList_Response>> GetGroceryRequisitionList(GroceryRequisition_Search parameters);
         Task<GroceryRequisition_Response?> GetGroceryRequisitionById(int Id);
+        Task<int> GroceryRequisitionApproveNReject(GroceryRequisition_ApproveNReject parameters);
         Task<IEnumerable<GroceryRequisition_ApproveNRejectHistory_Response>> GetGroceryRequisition_ApproveNRejectHistoryListById(GroceryRequisition_ApproveNRejectHistory_Search parameters);
         #endregion
 

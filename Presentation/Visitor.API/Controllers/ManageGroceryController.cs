@@ -13,10 +13,14 @@ namespace Visitor.API.Controllers
     {
         private ResponseModel _response;
         private readonly IManageGroceryRepository _manageGroceryRepository;
+        private readonly IAdminMasterRepository _adminMasterRepository;
+        private readonly INotificationRepository _notificationRepository;
 
-        public ManageGroceryController(IManageGroceryRepository manageGroceryRepository)
+        public ManageGroceryController(IManageGroceryRepository manageGroceryRepository, IAdminMasterRepository adminMasterRepository, INotificationRepository notificationRepository)
         {
             _manageGroceryRepository = manageGroceryRepository;
+            _adminMasterRepository = adminMasterRepository;
+            _notificationRepository = notificationRepository;
 
             _response = new ResponseModel();
             _response.IsSuccess = true;
@@ -67,11 +71,43 @@ namespace Visitor.API.Controllers
                             GroceryRequisitionId = result,
                             GroceryId = items.GroceryId,
                             OrderQty = items.OrderQty,
-                            ReceivedQty = 0,
-                            IsOK = 0,
+                            ReceivedQty = parameters.IsReceived == true ? items.OrderQty : 0,
+                            IsOK = parameters.IsReceived == true ? 1 : 0,
                         };
 
                         int resultUserOtherDetails = await _manageGroceryRepository.SaveGroceryRequisitionDetails(vGroceryRequisitionDetails);
+                    }
+                }
+                #endregion
+
+                #region  Notification
+                var vGroceryRequisition = await _manageGroceryRepository.GetGroceryRequisitionById(result);
+                if (vGroceryRequisition != null && parameters.Id == 0)
+                {
+                    string notifyMessage = String.Format(@"Requisition ID {0} is raised for approval.", vGroceryRequisition.RequisitionId);
+
+                    var vSearch = new GroceryApproval_Search()
+                    {
+                        IsActive = true,
+                    };
+
+                    var vGroceryApprovalList = await _adminMasterRepository.GetGroceryApprovalList(vSearch); //get grocery approval list
+                    var vEmployeeId = vGroceryApprovalList.Where(x => x.ApprovalType == 1).Select(x => x.EmployeeId).FirstOrDefault();
+                    if (vEmployeeId != null)
+                    {
+                        var vNotifyObj = new Notification_Request()
+                        {
+                            Subject = "Grocery Approval",
+                            SendTo = "Employee (Approver 1)",
+                            //CustomerId = vWorkOrderObj.CustomerId,
+                            //CustomerMessage = NotifyMessage,
+                            EmployeeId = vEmployeeId,
+                            EmployeeMessage = notifyMessage,
+                            RefValue1 = vGroceryRequisition.RequisitionId,
+                            ReadUnread = false
+                        };
+
+                        int resultNotification = await _notificationRepository.SaveNotification(vNotifyObj);
                     }
                 }
                 #endregion
@@ -113,6 +149,81 @@ namespace Visitor.API.Controllers
                 }
                 _response.Data = vResultObj;
             }
+            return _response;
+        }
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> GroceryRequisitionApproveNReject(GroceryRequisition_ApproveNReject parameters)
+        {
+            if (parameters.Id <= 0)
+            {
+                _response.Message = "Id is required";
+            }
+            else
+            {
+                int resultExpenseDetails = await _manageGroceryRepository.GroceryRequisitionApproveNReject(parameters);
+
+                if (resultExpenseDetails == (int)SaveOperationEnums.NoRecordExists)
+                {
+                    _response.Message = "No record exists";
+                }
+                else if (resultExpenseDetails == (int)SaveOperationEnums.ReocrdExists)
+                {
+                    _response.Message = "Record already exists";
+                }
+                else if (resultExpenseDetails == (int)SaveOperationEnums.NoResult)
+                {
+                    _response.Message = "Something went wrong, please try again";
+                }
+                else
+                {
+                    if (parameters.StatusId == 2)
+                    {
+                        _response.Message = "Grocery Requisition Approved successfully";
+                    }
+                    else if (parameters.StatusId == 3)
+                    {
+                        _response.Message = "Grocery Requisition Rejected successfully";
+                    }
+
+                    #region  Notification
+                    var vGroceryRequisition = await _manageGroceryRepository.GetGroceryRequisitionById(Convert.ToInt32(parameters.Id));
+                    if (vGroceryRequisition != null && parameters.StatusId == 2)
+                    {
+                        if(vGroceryRequisition.Approver1_Id > 0 && (vGroceryRequisition.Approver2_Id == null || vGroceryRequisition.Approver2_Id == 0))
+                        {
+                            string notifyMessage = String.Format(@"Requisition ID {0} is raised for approval.", vGroceryRequisition.RequisitionId);
+
+                            var vSearch = new GroceryApproval_Search()
+                            {
+                                IsActive = true,
+                            };
+
+                            var vGroceryApprovalList = await _adminMasterRepository.GetGroceryApprovalList(vSearch); //get grocery approval list
+                            var vEmployeeId = vGroceryApprovalList.Where(x => x.ApprovalType == 2).Select(x => x.EmployeeId).FirstOrDefault();
+                            if (vEmployeeId != null)
+                            {
+                                var vNotifyObj = new Notification_Request()
+                                {
+                                    Subject = "Grocery Approval",
+                                    SendTo = "Employee (Approver 2)",
+                                    //CustomerId = vWorkOrderObj.CustomerId,
+                                    //CustomerMessage = NotifyMessage,
+                                    EmployeeId = vEmployeeId,
+                                    EmployeeMessage = notifyMessage,
+                                    RefValue1 = vGroceryRequisition.RequisitionId,
+                                    ReadUnread = false
+                                };
+
+                                int resultNotification = await _notificationRepository.SaveNotification(vNotifyObj);
+                            }
+                        }
+                    }
+                    #endregion
+                }
+            }
+
             return _response;
         }
 
@@ -178,9 +289,22 @@ namespace Visitor.API.Controllers
         #region Grocery Outwarding
         [Route("[action]")]
         [HttpPost]
-        public async Task<ResponseModel> SaveGroceryOutwarding(GroceryOutwarding_Request parameters)
+        public async Task<ResponseModel> SaveGroceryOutwarding(List<GroceryOutwarding_Request> parameters)
         {
-            int result = await _manageGroceryRepository.SaveGroceryOutwarding(parameters);
+            int result = 0;
+
+            foreach (var item in parameters)
+            {
+                var vGroceryOutwarding = new GroceryOutwarding_Request()
+                {
+                    Id = item.Id,
+                    GroceryId = item.GroceryId,
+                    AvailableQty = item.AvailableQty,
+                    OutwardingQty = item.OutwardingQty,
+                    RemainingQty = item.RemainingQty
+                };
+                result = await _manageGroceryRepository.SaveGroceryOutwarding(vGroceryOutwarding);
+            }
 
             if (result == (int)SaveOperationEnums.NoRecordExists)
             {
@@ -194,20 +318,9 @@ namespace Visitor.API.Controllers
             {
                 _response.Message = "Something went wrong, please try again";
             }
-            else if (result == -3)
-            {
-                _response.Message = "Not Allowed to approved requisition";
-            }
             else
             {
-                if (parameters.Id > 0)
-                {
-                    _response.Message = "Record updated successfully";
-                }
-                else
-                {
-                    _response.Message = "Record details saved successfully";
-                }
+                _response.Message = "Record details saved successfully";
             }
             return _response;
         }

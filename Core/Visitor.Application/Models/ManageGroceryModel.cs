@@ -20,11 +20,15 @@ namespace Visitor.Application.Models
         [DefaultValue(1)]
         public int? StatusId { get; set; }
         public string? Remarks { get; set; }
+
+        [DefaultValue(false)]
+        public bool? IsReceived { get; set; }
         public List<GroceryRequisitionDetails_Request> GroceryRequisitionDetails { get; set; }
     }
     public class GroceryRequisition_Search : BaseSearchEntity
     {
         public int? StatusId { get; set; }
+        public bool? IsReceived { get; set; }
     }
     public class GroceryRequisitionList_Response : BaseResponseEntity
     {
@@ -36,6 +40,7 @@ namespace Visitor.Application.Models
         public string? Approver1_Name { get; set; }
         public int? Approver2_Id { get; set; }
         public string? Approver2_Name { get; set; }
+        public bool? IsReceived { get; set; }
     }
     public class GroceryRequisition_Response : BaseEntity
     {
@@ -51,6 +56,7 @@ namespace Visitor.Application.Models
         public string? Approver1_Name { get; set; }
         public int? Approver2_Id { get; set; }
         public string? Approver2_Name { get; set; }
+        public bool? IsReceived { get; set; }
         public List<GroceryRequisitionDetails_Response> GroceryRequisitionDetails { get; set; }
     }
     public class GroceryRequisition_ApproveNRejectHistory_Search : BaseSearchEntity
@@ -67,7 +73,12 @@ namespace Visitor.Application.Models
         public long CreatedBy { get; set; }
         public DateTime? CreatedDate { get; set; }
     }
-
+    public class GroceryRequisition_ApproveNReject
+    {
+        public int? Id { get; set; }
+        public int? StatusId { get; set; }
+        public string? Remarks { get; set; }
+    }
     #endregion
 
     #region grocery requisition details

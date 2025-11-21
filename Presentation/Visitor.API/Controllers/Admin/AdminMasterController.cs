@@ -2488,7 +2488,6 @@ namespace Visitor.API.Controllers.Admin
             return _response;
         }
 
-
         [Route("[action]")]
         [HttpPost]
         public async Task<ResponseModel> GetFoodItemList(FoodItem_Search_Request parameters)
@@ -2539,6 +2538,84 @@ namespace Visitor.API.Controllers.Admin
             return _response;
         }
 
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> ExportFoodItemData(FoodItem_Search_Request parameters)
+        {
+            _response.IsSuccess = false;
+            byte[] result;
+            int recordIndex;
+            ExcelWorksheet WorkSheet1;
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+
+            IEnumerable<FoodItem_Response> lstObj = await _adminMasterRepository.GetFoodItemList(parameters);
+
+            using (MemoryStream msExportDataFile = new MemoryStream())
+            {
+                using (ExcelPackage excelExportData = new ExcelPackage())
+                {
+                    WorkSheet1 = excelExportData.Workbook.Worksheets.Add("FoodItem");
+                    WorkSheet1.TabColor = System.Drawing.Color.Black;
+                    WorkSheet1.DefaultRowHeight = 12;
+
+                    //Header of table
+                    WorkSheet1.Row(1).Height = 20;
+                    WorkSheet1.Row(1).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    WorkSheet1.Row(1).Style.Font.Bold = true;
+
+                    WorkSheet1.Cells[1, 1].Value = "Days";
+                    WorkSheet1.Cells[1, 2].Value = "Canteen Name";
+                    WorkSheet1.Cells[1, 3].Value = "Food Item";
+                    WorkSheet1.Cells[1, 4].Value = "Is Veg";
+                    WorkSheet1.Cells[1, 5].Value = "Is Subsidised";
+                    WorkSheet1.Cells[1, 6].Value = "Price";
+                    WorkSheet1.Cells[1, 7].Value = "Created Date";
+                    WorkSheet1.Cells[1, 8].Value = "Created By";
+
+                    recordIndex = 2;
+
+                    foreach (var items in lstObj)
+                    {
+                        var vSearchRequest = new FoodItemDays_Search_Request();
+                        vSearchRequest.FoodItemId = items.Id;
+
+                        var vDayList = await _adminMasterRepository.GetFoodItemDaysList(vSearchRequest);
+
+                        string strDaysList = string.Empty;
+                        if (vDayList.ToList().Count > 0)
+                        {
+                            strDaysList = string.Join(",", vDayList.ToList().Select(x => x.DaysName));
+                        }
+
+                        WorkSheet1.Cells[recordIndex, 1].Value = strDaysList;
+                        WorkSheet1.Cells[recordIndex, 2].Value = items.CanteenName;
+                        WorkSheet1.Cells[recordIndex, 3].Value = items.MenuItemName;
+                        WorkSheet1.Cells[recordIndex, 4].Value = items.IsVeg == true ? "Yes" : "No";
+                        WorkSheet1.Cells[recordIndex, 5].Value = items.IsSubsidized == true ? "Yes" : "No";
+                        WorkSheet1.Cells[recordIndex, 6].Value = items.SellingPrice;
+                        WorkSheet1.Cells[recordIndex, 7].Value = Convert.ToDateTime(items.CreatedDate).ToString("dd/MM/yyyy");
+                        WorkSheet1.Cells[recordIndex, 8].Value = items.CreatorName;
+
+                        recordIndex += 1;
+                    }
+
+                    WorkSheet1.Columns.AutoFit();
+
+                    excelExportData.SaveAs(msExportDataFile);
+                    msExportDataFile.Position = 0;
+                    result = msExportDataFile.ToArray();
+                }
+            }
+
+            if (result != null)
+            {
+                _response.Data = result;
+                _response.IsSuccess = true;
+                _response.Message = "Exported successfully";
+            }
+
+            return _response;
+        }
         #endregion
 
         #region MenuItem
@@ -2893,7 +2970,6 @@ namespace Visitor.API.Controllers.Admin
             }
             return _response;
         }
-
 
         [Route("[action]")]
         [HttpPost]
