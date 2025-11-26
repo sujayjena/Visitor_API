@@ -333,6 +333,11 @@ namespace Visitor.API.Controllers
         public async Task<ResponseModel> GetWorkerList(WorkerSearch_Request parameters)
         {
             IEnumerable<Worker_Response> lstWorkers = await _manageWorkerRepository.GetWorkerList(parameters);
+            foreach(var items in lstWorkers)
+            {
+                var gateNolistObj = await _assignGateNoRepository.GetAssignGateNoById(items.Id, "Worker", 0);
+                items.GateNumberList = gateNolistObj.ToList();
+            }
             _response.Data = lstWorkers.ToList();
             _response.Total = parameters.Total;
             return _response;
