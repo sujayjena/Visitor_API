@@ -383,6 +383,7 @@ namespace Visitor.Application.Interfaces
         Task<int> SaveGroceryApproval(GroceryApproval_Request parameters);
         Task<IEnumerable<GroceryApproval_Response>> GetGroceryApprovalList(GroceryApproval_Search parameters);
         Task<GroceryApproval_Response?> GetGroceryApprovalById(int Id);
+        Task<IEnumerable<GroceryApprovalLogHistory_Response>> GetGroceryApprovalLogHistoryListById(GroceryApprovalLogHistory_Search parameters);
         #endregion
     }
 }

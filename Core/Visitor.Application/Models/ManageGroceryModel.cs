@@ -29,6 +29,7 @@ namespace Visitor.Application.Models
     {
         public int? StatusId { get; set; }
         public bool? IsReceived { get; set; }
+        public int? RequisitionId { get; set; }
     }
     public class GroceryRequisitionList_Response : BaseResponseEntity
     {

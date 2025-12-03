@@ -38,6 +38,7 @@ namespace Visitor.Application.Models
 
         [DefaultValue("")]
         public string? RefType { get; set; }
+        public int? RefId { get; set; }
     }
 
     public class Dashboard_TokenCountSummary_Result

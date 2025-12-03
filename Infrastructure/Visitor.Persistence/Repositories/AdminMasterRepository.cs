@@ -1844,7 +1844,14 @@ namespace Visitor.Persistence.Repositories
             queryParameters.Add("@Id", Id);
             return (await ListByStoredProcedure<GroceryApproval_Response>("GetGroceryApprovalById", queryParameters)).FirstOrDefault();
         }
+        public async Task<IEnumerable<GroceryApprovalLogHistory_Response>> GetGroceryApprovalLogHistoryListById(GroceryApprovalLogHistory_Search parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@GroceryApprovalId", parameters.GroceryApprovalId);
 
+            var result = await ListByStoredProcedure<GroceryApprovalLogHistory_Response>("GetGroceryApprovalLogHistoryListById", queryParameters);
+            return result;
+        }
         #endregion
     }
 }

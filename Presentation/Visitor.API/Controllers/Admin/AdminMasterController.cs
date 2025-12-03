@@ -3281,6 +3281,16 @@ namespace Visitor.API.Controllers.Admin
             return _response;
         }
 
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> GetGroceryApprovalLogHistoryListById(GroceryApprovalLogHistory_Search parameters)
+        {
+            IEnumerable<GroceryApprovalLogHistory_Response> lst = await _adminMasterRepository.GetGroceryApprovalLogHistoryListById(parameters);
+            _response.Data = lst.ToList();
+            _response.Total = parameters.Total;
+            return _response;
+        }
+
         #endregion
     }
 }

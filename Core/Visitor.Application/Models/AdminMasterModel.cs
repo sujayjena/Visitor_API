@@ -1125,5 +1125,23 @@ namespace Visitor.Application.Models
         public DateTime? EndDate { get; set; }
         public bool? IsActive { get; set; }
     }
+
+    public class GroceryApprovalLogHistory_Search : BaseSearchEntity
+    {
+        public int GroceryApprovalId { get; set; }
+    }
+    public class GroceryApprovalLogHistory_Response
+    {
+        public int? Id { get; set; }
+        public int? GroceryApprovalId { get; set; }
+        public string? ApprovalType { get; set; }
+        public DateTime? StartDate { get; set; }
+        public DateTime? EndDate { get; set; }
+        public string? Remarks { get; set; }
+        public string? CreatorName { get; set; }
+        public long CreatedBy { get; set; }
+        public DateTime? CreatedDate { get; set; }
+    }
+
     #endregion
 }
