@@ -1853,5 +1853,52 @@ namespace Visitor.Persistence.Repositories
             return result;
         }
         #endregion
+
+        #region Material Approval
+        public async Task<int> SaveMaterialApproval(MaterialApproval_Request parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@Id", parameters.Id);
+            queryParameters.Add("@ApprovalType", parameters.ApprovalType);
+            queryParameters.Add("@DepartmentId", parameters.DepartmentId);
+            queryParameters.Add("@RoleId", parameters.RoleId);
+            queryParameters.Add("@EmployeeId", parameters.EmployeeId);
+            queryParameters.Add("@IsActive", parameters.IsActive);
+            queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
+
+            return await SaveByStoredProcedure<int>("SaveMaterialApproval", queryParameters);
+        }
+
+        public async Task<IEnumerable<MaterialApproval_Response>> GetMaterialApprovalList(MaterialApproval_Search parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@SearchText", parameters.SearchText.SanitizeValue());
+            queryParameters.Add("@IsActive", parameters.IsActive);
+            queryParameters.Add("@PageNo", parameters.PageNo);
+            queryParameters.Add("@PageSize", parameters.PageSize);
+            queryParameters.Add("@Total", parameters.Total, null, System.Data.ParameterDirection.Output);
+            queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
+
+            var result = await ListByStoredProcedure<MaterialApproval_Response>("GetMaterialApprovalList", queryParameters);
+            parameters.Total = queryParameters.Get<int>("Total");
+
+            return result;
+        }
+
+        public async Task<MaterialApproval_Response?> GetMaterialApprovalById(int Id)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@Id", Id);
+            return (await ListByStoredProcedure<MaterialApproval_Response>("GetMaterialApprovalById", queryParameters)).FirstOrDefault();
+        }
+        public async Task<IEnumerable<MaterialApprovalLogHistory_Response>> GetMaterialApprovalLogHistoryListById(MaterialApprovalLogHistory_Search parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@MaterialApprovalId", parameters.MaterialApprovalId);
+
+            var result = await ListByStoredProcedure<MaterialApprovalLogHistory_Response>("GetMaterialApprovalLogHistoryListById", queryParameters);
+            return result;
+        }
+        #endregion
     }
 }

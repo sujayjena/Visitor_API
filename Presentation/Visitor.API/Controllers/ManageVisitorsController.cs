@@ -2048,7 +2048,7 @@ namespace Visitor.API.Controllers
                         else
                         {
                             _response.IsSuccess = false;
-                            _response.Message = "Barcode is already exists.";
+                            _response.Message = "Barcode already exists.";
 
                             return _response;
                         }
@@ -2105,7 +2105,7 @@ namespace Visitor.API.Controllers
                     else
                     {
                         _response.IsSuccess = false;
-                        _response.Message = "Barcode is already exists.";
+                        _response.Message = "Barcode already exists.";
 
                         return _response;
                     }
@@ -2167,7 +2167,7 @@ namespace Visitor.API.Controllers
                         else
                         {
                             _response.IsSuccess = false;
-                            _response.Message = "Barcode is already exists.";
+                            _response.Message = "Barcode already exists.";
 
                             return _response;
                         }

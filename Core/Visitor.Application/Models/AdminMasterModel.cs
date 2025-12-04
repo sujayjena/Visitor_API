@@ -1144,4 +1144,49 @@ namespace Visitor.Application.Models
     }
 
     #endregion
+
+    #region Material Approval
+    public class MaterialApproval_Search : BaseSearchEntity
+    {
+    }
+
+    public class MaterialApproval_Request : BaseEntity
+    {
+        public int? ApprovalType { get; set; }
+        public int? DepartmentId { get; set; }
+        public int? RoleId { get; set; }
+        public int? EmployeeId { get; set; }
+        public bool? IsActive { get; set; }
+    }
+
+    public class MaterialApproval_Response : BaseResponseEntity
+    {
+        public int? ApprovalType { get; set; }
+        public int? DepartmentId { get; set; }
+        public string? DepartmentName { get; set; }
+        public int? RoleId { get; set; }
+        public string? RoleName { get; set; }
+        public int? EmployeeId { get; set; }
+        public string? EmployeeName { get; set; }
+        public int? ReportingTo { get; set; }
+        public string? ReportingToName { get; set; }
+        public bool? IsActive { get; set; }
+    }
+
+    public class MaterialApprovalLogHistory_Search : BaseSearchEntity
+    {
+        public int MaterialApprovalId { get; set; }
+    }
+    public class MaterialApprovalLogHistory_Response
+    {
+        public int? Id { get; set; }
+        public int? MaterialApprovalId { get; set; }
+        public string? ApprovalType { get; set; }
+        public string? Remarks { get; set; }
+        public string? CreatorName { get; set; }
+        public long CreatedBy { get; set; }
+        public DateTime? CreatedDate { get; set; }
+    }
+
+    #endregion
 }

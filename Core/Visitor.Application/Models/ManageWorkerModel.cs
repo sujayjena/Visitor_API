@@ -126,6 +126,12 @@ namespace Visitor.Application.Models
 
         [DefaultValue(0)]
         public int? GateDetailsId { get; set; }
+
+        [DefaultValue(null)]
+        public DateTime? FromDate { get; set; }
+
+        [DefaultValue(null)]
+        public DateTime? ToDate { get; set; }
     }
 
     public class Worker_Response : BaseResponseEntity

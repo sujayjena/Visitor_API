@@ -195,8 +195,8 @@ namespace Visitor.API.Controllers
                         WorkSheet1.Cells[recordIndex, 1].Value = items.ContractorName;
                         WorkSheet1.Cells[recordIndex, 2].Value = items.PONumber;
                         WorkSheet1.Cells[recordIndex, 3].Value = items.POName;
-                        WorkSheet1.Cells[recordIndex, 4].Value = items.ValidFromDate.HasValue ? items.ValidFromDate.Value.ToString("dd/MM/yyyy hh:mm:ss:tt") : string.Empty;
-                        WorkSheet1.Cells[recordIndex, 5].Value = items.ValidToDate.HasValue ? items.ValidToDate.Value.ToString("dd/MM/yyyy hh:mm:ss:tt") : string.Empty;
+                        WorkSheet1.Cells[recordIndex, 4].Value = items.ValidFromDate.HasValue ? items.ValidFromDate.Value.ToString("dd/MM/yyyy") : string.Empty;
+                        WorkSheet1.Cells[recordIndex, 5].Value = items.ValidToDate.HasValue ? items.ValidToDate.Value.ToString("dd/MM/yyyy") : string.Empty;
                         WorkSheet1.Cells[recordIndex, 6].Value = items.NoofPOWorker;
                         WorkSheet1.Cells[recordIndex, 7].Value = items.IsActive == true ? "Active" : "Inactive";
 

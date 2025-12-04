@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Visitor.Application.Enums;
+using Visitor.Application.Helpers;
 using Visitor.Application.Interfaces;
 using Visitor.Application.Models;
 using Visitor.Persistence.Repositories;
@@ -15,12 +16,14 @@ namespace Visitor.API.Controllers
         private readonly IManageGroceryRepository _manageGroceryRepository;
         private readonly IAdminMasterRepository _adminMasterRepository;
         private readonly INotificationRepository _notificationRepository;
+        private readonly IUserRepository _userRepository;
 
-        public ManageGroceryController(IManageGroceryRepository manageGroceryRepository, IAdminMasterRepository adminMasterRepository, INotificationRepository notificationRepository)
+        public ManageGroceryController(IManageGroceryRepository manageGroceryRepository, IAdminMasterRepository adminMasterRepository, INotificationRepository notificationRepository, IUserRepository userRepository)
         {
             _manageGroceryRepository = manageGroceryRepository;
             _adminMasterRepository = adminMasterRepository;
             _notificationRepository = notificationRepository;
+            _userRepository = userRepository;
 
             _response = new ResponseModel();
             _response.IsSuccess = true;
@@ -189,28 +192,64 @@ namespace Visitor.API.Controllers
 
                     #region  Notification
                     var vGroceryRequisition = await _manageGroceryRepository.GetGroceryRequisitionById(Convert.ToInt32(parameters.Id));
-                    if (vGroceryRequisition != null && parameters.StatusId == 2)
+                    if (vGroceryRequisition != null)
                     {
-                        if(vGroceryRequisition.Approver1_Id > 0 && (vGroceryRequisition.Approver2_Id == null || vGroceryRequisition.Approver2_Id == 0))
+                        var vSearch = new GroceryApproval_Search()
                         {
-                            string notifyMessage = String.Format(@"Requisition ID {0} is raised for approval.", vGroceryRequisition.RequisitionId);
+                            IsActive = true,
+                        };
 
-                            var vSearch = new GroceryApproval_Search()
+                        var vGroceryApprovalList = await _adminMasterRepository.GetGroceryApprovalList(vSearch); //get grocery approval list
+
+                        if (parameters.StatusId == 2)
+                        {
+                            if (vGroceryRequisition.Approver1_Id > 0 && (vGroceryRequisition.Approver2_Id == null || vGroceryRequisition.Approver2_Id == 0))
                             {
-                                IsActive = true,
-                            };
+                                string notifyMessage = String.Format(@"Requisition ID {0} is raised for approval.", vGroceryRequisition.RequisitionId);
 
-                            var vGroceryApprovalList = await _adminMasterRepository.GetGroceryApprovalList(vSearch); //get grocery approval list
-                            var vEmployeeId = vGroceryApprovalList.Where(x => x.ApprovalType == 2).Select(x => x.EmployeeId).FirstOrDefault();
-                            if (vEmployeeId != null)
+                                var vEmployeeId = vGroceryApprovalList.Where(x => x.ApprovalType == 2).Select(x => x.EmployeeId).FirstOrDefault();
+                                if (vEmployeeId != null)
+                                {
+                                    var vNotifyObj = new Notification_Request()
+                                    {
+                                        Subject = "Grocery Approval",
+                                        SendTo = "Employee (Approver 2)",
+                                        //CustomerId = vWorkOrderObj.CustomerId,
+                                        //CustomerMessage = NotifyMessage,
+                                        EmployeeId = vEmployeeId,
+                                        EmployeeMessage = notifyMessage,
+                                        RefValue1 = vGroceryRequisition.RequisitionId,
+                                        ReadUnread = false
+                                    };
+
+                                    int resultNotification = await _notificationRepository.SaveNotification(vNotifyObj);
+                                }
+                            }
+                        }
+                        else if (parameters.StatusId == 3)
+                        {
+                            string approverName = string.Empty;
+                            var vUser = await _userRepository.GetUserById(SessionManager.LoggedInUserId);
+                            if (vUser != null)
+                            {
+                                approverName = vUser.UserName;
+                            }
+
+                            var vApprovalType = vGroceryApprovalList.Where(x => x.EmployeeId == SessionManager.LoggedInUserId).Select(x => x.ApprovalType).FirstOrDefault();
+                            string approvalTypeName = (vApprovalType == 1 ? "APPROVER 1" : vApprovalType == 2 ? "APPROVER 2" : "");
+
+                            string notifyMessage = String.Format(@"This Requisition ID {0} has been rejected by the approver: {1} ({2}), Rejection Remarks {3}.", vGroceryRequisition.RequisitionId, approverName, approvalTypeName, parameters.Remarks);
+
+                            var vCreatorEmployeeId = vGroceryRequisition?.CreatedBy;
+                            if (vCreatorEmployeeId != null)
                             {
                                 var vNotifyObj = new Notification_Request()
                                 {
                                     Subject = "Grocery Approval",
-                                    SendTo = "Employee (Approver 2)",
+                                    SendTo = "Employee Approver Reject",
                                     //CustomerId = vWorkOrderObj.CustomerId,
                                     //CustomerMessage = NotifyMessage,
-                                    EmployeeId = vEmployeeId,
+                                    EmployeeId = Convert.ToInt32(vCreatorEmployeeId),
                                     EmployeeMessage = notifyMessage,
                                     RefValue1 = vGroceryRequisition.RequisitionId,
                                     ReadUnread = false

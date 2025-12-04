@@ -385,5 +385,12 @@ namespace Visitor.Application.Interfaces
         Task<GroceryApproval_Response?> GetGroceryApprovalById(int Id);
         Task<IEnumerable<GroceryApprovalLogHistory_Response>> GetGroceryApprovalLogHistoryListById(GroceryApprovalLogHistory_Search parameters);
         #endregion
+
+        #region Material Approval
+        Task<int> SaveMaterialApproval(MaterialApproval_Request parameters);
+        Task<IEnumerable<MaterialApproval_Response>> GetMaterialApprovalList(MaterialApproval_Search parameters);
+        Task<MaterialApproval_Response?> GetMaterialApprovalById(int Id);
+        Task<IEnumerable<MaterialApprovalLogHistory_Response>> GetMaterialApprovalLogHistoryListById(MaterialApprovalLogHistory_Search parameters);
+        #endregion
     }
 }

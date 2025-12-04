@@ -43,7 +43,7 @@ namespace Visitor.Application.Models
         public string? Approver2_Name { get; set; }
         public bool? IsReceived { get; set; }
     }
-    public class GroceryRequisition_Response : BaseEntity
+    public class GroceryRequisition_Response : BaseResponseEntity
     {
         public GroceryRequisition_Response()
         {
