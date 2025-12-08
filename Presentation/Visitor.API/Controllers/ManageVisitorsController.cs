@@ -238,9 +238,57 @@ namespace Visitor.API.Controllers
                     var vUser = await _userRepository.GetUserById(SessionManager.LoggedInUserId);
                     if (vUser != null)
                     {
+                        var vVisitor = await _manageVisitorsRepository.GetVisitorsById(result);
+
+                        //Create Notification
+                        if (vVisitor != null)
+                        {
+                            var gateNolistObj = await _assignGateNoRepository.GetAssignGateNoById(vVisitor.Id, "Visitor", 0);
+
+                            var visitorGate = "";
+                            if (gateNolistObj != null)
+                            {
+                                visitorGate = string.Join(",", gateNolistObj.ToList().Select(x => x.GateNumber).ToList());
+                            }
+
+                            string notifyMessage = "";
+                            notifyMessage = String.Format(@"New visitor {0} has been registered for {1}.", vVisitor.VisitorName, vVisitor.VisitStartDate);
+
+                            var vSearch = new User_Search()
+                            {
+                                UserTypeId = 2,
+                                BranchId = 0
+                            };
+
+                            var vSecurityList = await _userRepository.GetUserList(vSearch); //get branch wise security list
+
+                            var vGateNumberList = await _assignGateNoRepository.GetAssignGateNoById(0, "Security", 0); //get gate list of security
+                            var vGateNumberList_1 = vGateNumberList.Where(x => x.GateNumber == "1").ToList();
+
+                            var vSecurityGate_1 = vSecurityList.Where(x => vGateNumberList_1.Select(x => x.RefId).Contains(x.Id)).ToList();
+                            if (vSecurityGate_1.Count > 0)
+                            {
+                                foreach (var vSecurity in vSecurityGate_1)
+                                {
+                                    var vNotifyObj = new Notification_Request()
+                                    {
+                                        Subject = "Visitor Created",
+                                        SendTo = "Security",
+                                        //CustomerId = vWorkOrderObj.CustomerId,
+                                        //CustomerMessage = NotifyMessage,
+                                        EmployeeId = vSecurity.Id,
+                                        EmployeeMessage = notifyMessage,
+                                        RefValue1 = vVisitor.VisitNumber,
+                                        ReadUnread = false
+                                    };
+
+                                    int resultNotification = await _notificationRepository.SaveNotification(vNotifyObj);
+                                }
+                            }
+                        }
+
                         if (vUser.IsHOD == true || vUser.IsApprover == true || parameters.MP_IsApproved == true)
                         {
-                            var vVisitor = await _manageVisitorsRepository.GetVisitorsById(result);
                             if (vVisitor != null)
                             {
                                 var vGenerateBarcode = _barcodeRepository.GenerateBarcode(vVisitor.VisitNumber);
@@ -304,61 +352,58 @@ namespace Visitor.API.Controllers
                                 bool bSMSResult = await _smsHelper.SMSSend(vsmsRequest);
 
                                 #endregion
-                            }
-                        }
 
-                        //Notification
-                        var vVisitors = await _manageVisitorsRepository.GetVisitorsById(result);
-                        if (vVisitors != null)
-                        {
-                            var gateNolistObj = await _assignGateNoRepository.GetAssignGateNoById(vVisitors.Id, "Visitor", 0);
+                                #region Notification
+                                var gateNolistObj = await _assignGateNoRepository.GetAssignGateNoById(vVisitor.Id, "Visitor", 0);
 
-                            var visitorGate = "";
-                            if (gateNolistObj != null)
-                            {
-                                visitorGate = string.Join(",", gateNolistObj.ToList().Select(x => x.GateNumber).ToList());
-                            }
-
-                            string notifyMessage = "";
-                            if (vVisitors.StatusName == "Approved")
-                            {
-                                notifyMessage = String.Format(@"Pass created for {0} at Gate Number - {1} on {2}.", vVisitors.VisitorName, visitorGate, vVisitors.CreatedDate);
-                            }
-                            else
-                            {
-                                notifyMessage = String.Format(@"Pass created for {0} at Gate Number - {1} on {2}.", vVisitors.VisitorName, visitorGate, vVisitors.CreatedDate);
-                            }
-
-                            var vSearch = new User_Search()
-                            {
-                                UserTypeId = 2,
-                                BranchId = 0
-                            };
-
-                            var vSecurityList = await _userRepository.GetUserList(vSearch); //get branch wise security list
-
-                            var vGateNumberList = await _assignGateNoRepository.GetAssignGateNoById(0, "Security", 0); //get gate list of security
-                            var vGateNumberList_1 = vGateNumberList.Where(x => x.GateNumber == "1").ToList();
-
-                            var vSecurityGate_1 = vSecurityList.Where(x => vGateNumberList_1.Select(x => x.RefId).Contains(x.Id)).ToList();
-                            if (vSecurityGate_1.Count > 0)
-                            {
-                                foreach (var vSecurity in vSecurityGate_1)
+                                var visitorGate = "";
+                                if (gateNolistObj != null)
                                 {
-                                    var vNotifyObj = new Notification_Request()
-                                    {
-                                        Subject = "Visitor Created",
-                                        SendTo = "Security",
-                                        //CustomerId = vWorkOrderObj.CustomerId,
-                                        //CustomerMessage = NotifyMessage,
-                                        EmployeeId = vSecurity.Id,
-                                        EmployeeMessage = notifyMessage,
-                                        RefValue1 = vVisitors.VisitNumber,
-                                        ReadUnread = false
-                                    };
-
-                                    int resultNotification = await _notificationRepository.SaveNotification(vNotifyObj);
+                                    visitorGate = string.Join(",", gateNolistObj.ToList().Select(x => x.GateNumber).ToList());
                                 }
+
+                                string notifyMessage = "";
+                                if (vVisitor.StatusName == "Approved")
+                                {
+                                    notifyMessage = String.Format(@"Pass created for {0} at Gate Number - {1} on {2}.", vVisitor.VisitorName, visitorGate, vVisitor.CreatedDate);
+                                }
+                                else
+                                {
+                                    notifyMessage = String.Format(@"Pass created for {0} at Gate Number - {1} on {2}.", vVisitor.VisitorName, visitorGate, vVisitor.CreatedDate);
+                                }
+
+                                var vSearch = new User_Search()
+                                {
+                                    UserTypeId = 2,
+                                    BranchId = 0
+                                };
+
+                                var vSecurityList = await _userRepository.GetUserList(vSearch); //get branch wise security list
+
+                                var vGateNumberList = await _assignGateNoRepository.GetAssignGateNoById(0, "Security", 0); //get gate list of security
+                                var vGateNumberList_1 = vGateNumberList.Where(x => x.GateNumber == "1").ToList();
+
+                                var vSecurityGate_1 = vSecurityList.Where(x => vGateNumberList_1.Select(x => x.RefId).Contains(x.Id)).ToList();
+                                if (vSecurityGate_1.Count > 0)
+                                {
+                                    foreach (var vSecurity in vSecurityGate_1)
+                                    {
+                                        var vNotifyObj = new Notification_Request()
+                                        {
+                                            Subject = "Visitor Approved",
+                                            SendTo = "Security",
+                                            //CustomerId = vWorkOrderObj.CustomerId,
+                                            //CustomerMessage = NotifyMessage,
+                                            EmployeeId = vSecurity.Id,
+                                            EmployeeMessage = notifyMessage,
+                                            RefValue1 = vVisitor.VisitNumber,
+                                            ReadUnread = false
+                                        };
+
+                                        int resultNotification = await _notificationRepository.SaveNotification(vNotifyObj);
+                                    }
+                                }
+                                #endregion
                             }
                         }
                     }
@@ -551,7 +596,7 @@ namespace Visitor.API.Controllers
                 {
                     if (vVisitorResponse != null)
                     {
-                        var vDuplicateBarcode = _barcodeRepository.GetBarcodeById(vVisitorResponse.VisitNumber);
+                        var vDuplicateBarcode = await _barcodeRepository.GetBarcodeById(vVisitorResponse.VisitNumber);
                         if (vDuplicateBarcode == null)
                         {
                             var vGenerateBarcode = _barcodeRepository.GenerateBarcode(vVisitorResponse.VisitNumber);
@@ -601,14 +646,13 @@ namespace Visitor.API.Controllers
                     _response.Message = "Visitor Approved successfully";
 
                     //Send Email
-                    if (parameters.Id > 0)
+                    if (parameters.Id > 0 && parameters.StatusId == 2)
                     {
                         var vEmailEmp = await SendVisitorApproved_EmailToSecurity(Convert.ToInt32(parameters.Id));
                     }
 
                     #region SMS Send
-
-                    if (vVisitorResponse != null)
+                    if (vVisitorResponse != null && parameters.StatusId == 2)
                     {
                         var vConfigRef_Search = new ConfigRef_Search()
                         {
@@ -647,6 +691,61 @@ namespace Visitor.API.Controllers
                             Mobile = vVisitorResponse.VisitorMobileNo,
                         };
                         bool bSMSResult = await _smsHelper.SMSSend(vsmsRequest);
+                    }
+                    #endregion
+
+                    #region Notification
+                    if (vVisitorResponse != null && parameters.StatusId == 2)
+                    {
+                        var gateNolistObj = await _assignGateNoRepository.GetAssignGateNoById(vVisitorResponse.Id, "Visitor", 0);
+
+                        var visitorGate = "";
+                        if (gateNolistObj != null)
+                        {
+                            visitorGate = string.Join(",", gateNolistObj.ToList().Select(x => x.GateNumber).ToList());
+                        }
+
+                        string notifyMessage = "";
+                        if (vVisitorResponse.StatusName == "Approved")
+                        {
+                            notifyMessage = String.Format(@"Pass created for {0} at Gate Number - {1} on {2}.", vVisitorResponse.VisitorName, visitorGate, vVisitorResponse.CreatedDate);
+                        }
+                        else
+                        {
+                            notifyMessage = String.Format(@"Pass created for {0} at Gate Number - {1} on {2}.", vVisitorResponse.VisitorName, visitorGate, vVisitorResponse.CreatedDate);
+                        }
+
+                        var vSearch = new User_Search()
+                        {
+                            UserTypeId = 2,
+                            BranchId = 0
+                        };
+
+                        var vSecurityList = await _userRepository.GetUserList(vSearch); //get branch wise security list
+
+                        var vGateNumberList = await _assignGateNoRepository.GetAssignGateNoById(0, "Security", 0); //get gate list of security
+                        var vGateNumberList_1 = vGateNumberList.Where(x => x.GateNumber == "1").ToList();
+
+                        var vSecurityGate_1 = vSecurityList.Where(x => vGateNumberList_1.Select(x => x.RefId).Contains(x.Id)).ToList();
+                        if (vSecurityGate_1.Count > 0)
+                        {
+                            foreach (var vSecurity in vSecurityGate_1)
+                            {
+                                var vNotifyObj = new Notification_Request()
+                                {
+                                    Subject = "Visitor Approved",
+                                    SendTo = "Security",
+                                    //CustomerId = vWorkOrderObj.CustomerId,
+                                    //CustomerMessage = NotifyMessage,
+                                    EmployeeId = vSecurity.Id,
+                                    EmployeeMessage = notifyMessage,
+                                    RefValue1 = vVisitorResponse.VisitNumber,
+                                    ReadUnread = false
+                                };
+
+                                int resultNotification = await _notificationRepository.SaveNotification(vNotifyObj);
+                            }
+                        }
                     }
                     #endregion
                 }
@@ -1839,7 +1938,7 @@ namespace Visitor.API.Controllers
                             rowNo++;
 
                             //Notification to Host Employee
-                            if (items.EmployeeId > 0) 
+                            if (items.EmployeeId > 0)
                             {
                                 string notifyMessage_host = String.Format(@"{0} missed his/her Appointement dated {1}", items.VisitorName, items.VisitDate);
                                 var vNotifyObj_host = new Notification_Request()
