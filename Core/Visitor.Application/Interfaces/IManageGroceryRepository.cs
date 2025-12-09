@@ -20,8 +20,9 @@ namespace Visitor.Application.Interfaces
 
         #region Grocery Requisition Details
         Task<int> SaveGroceryRequisitionDetails(GroceryRequisitionDetails_Request parameters);
-
         Task<IEnumerable<GroceryRequisitionDetails_Response>> GetGroceryRequisitionDetailsList(GroceryRequisitionDetails_Search parameters);
+        Task<int> SendStockPending_Notification();
+        Task<int> SendInwardingItemExpiry_Notification();
         #endregion
 
         #region Grocery Outwarding

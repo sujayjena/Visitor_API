@@ -88,6 +88,8 @@ namespace Visitor.Persistence.Repositories
             queryParameters.Add("@OrderQty", parameters.OrderQty);
             queryParameters.Add("@ReceivedQty", parameters.ReceivedQty);
             queryParameters.Add("@IsOK", parameters.IsOK);
+            queryParameters.Add("@LOTNumber", parameters.LOTNumber);
+            queryParameters.Add("@ExpiryDate", parameters.ExpiryDate);
             queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
 
             return await SaveByStoredProcedure<int>("SaveGroceryRequisitionDetails", queryParameters);
@@ -109,6 +111,22 @@ namespace Visitor.Persistence.Repositories
             parameters.Total = queryParameters.Get<int>("Total");
 
             return result;
+        }
+
+        public async Task<int> SendStockPending_Notification()
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
+
+            return await SaveByStoredProcedure<int>("SendStockPending_Notification", queryParameters);
+        }
+
+        public async Task<int> SendInwardingItemExpiry_Notification()
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
+
+            return await SaveByStoredProcedure<int>("SendInwardingItemExpiry_Notification", queryParameters);
         }
 
         #endregion

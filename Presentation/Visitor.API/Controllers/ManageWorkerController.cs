@@ -327,7 +327,6 @@ namespace Visitor.API.Controllers
             return _response;
         }
 
-
         [Route("[action]")]
         [HttpPost]
         public async Task<ResponseModel> GetWorkerList(WorkerSearch_Request parameters)

@@ -90,6 +90,8 @@ namespace Visitor.Application.Models
         public decimal? OrderQty { get; set; }
         public decimal? ReceivedQty { get; set; }
         public int? IsOK { get; set; }
+        public string? LOTNumber { get; set; }
+        public DateTime? ExpiryDate { get; set; }
     }
     public class GroceryRequisitionDetails_Search : BaseSearchEntity
     {
@@ -109,6 +111,8 @@ namespace Visitor.Application.Models
         public decimal? AvailableQty { get; set; }
         public decimal? ReceivedQty { get; set; }
         public int? IsOK { get; set; }
+        public string? LOTNumber { get; set; }
+        public DateTime? ExpiryDate { get; set; }
     }
 
     #endregion

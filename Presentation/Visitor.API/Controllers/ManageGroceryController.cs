@@ -76,6 +76,8 @@ namespace Visitor.API.Controllers
                             OrderQty = items.OrderQty,
                             ReceivedQty = parameters.IsReceived == true ? items.OrderQty : 0,
                             IsOK = parameters.IsReceived == true ? 1 : 0,
+                            LOTNumber = items.LOTNumber,
+                            ExpiryDate = items.ExpiryDate,
                         };
 
                         int resultUserOtherDetails = await _manageGroceryRepository.SaveGroceryRequisitionDetails(vGroceryRequisitionDetails);
@@ -323,6 +325,65 @@ namespace Visitor.API.Controllers
             _response.Total = parameters.Total;
             return _response;
         }
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> SendStockPending_Notification()
+        {
+            int result = await _manageGroceryRepository.SendStockPending_Notification();
+
+            if (result == (int)SaveOperationEnums.NoRecordExists)
+            {
+                _response.Message = "No record exists";
+            }
+            else if (result == (int)SaveOperationEnums.ReocrdExists)
+            {
+                _response.Message = "Record is already exists";
+            }
+            else if (result == (int)SaveOperationEnums.NoResult)
+            {
+                _response.Message = "Something went wrong, please try again";
+            }
+            else if (result == -3)
+            {
+                _response.Message = "Not Allowed to approved requisition";
+            }
+            else
+            {
+               _response.Message = "Record details saved successfully";
+            }
+            return _response;
+        }
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> SendInwardingItemExpiry_Notification()
+        {
+            int result = await _manageGroceryRepository.SendInwardingItemExpiry_Notification();
+
+            if (result == (int)SaveOperationEnums.NoRecordExists)
+            {
+                _response.Message = "No record exists";
+            }
+            else if (result == (int)SaveOperationEnums.ReocrdExists)
+            {
+                _response.Message = "Record is already exists";
+            }
+            else if (result == (int)SaveOperationEnums.NoResult)
+            {
+                _response.Message = "Something went wrong, please try again";
+            }
+            else if (result == -3)
+            {
+                _response.Message = "Not Allowed to approved requisition";
+            }
+            else
+            {
+                _response.Message = "Record details saved successfully";
+            }
+            return _response;
+        }
+
         #endregion
 
         #region Grocery Outwarding
