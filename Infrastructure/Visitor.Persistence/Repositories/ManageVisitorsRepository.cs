@@ -80,6 +80,23 @@ namespace Visitor.Persistence.Repositories
             queryParameters.Add("@CP_IsSnacks", parameters.CP_IsSnacks);
             queryParameters.Add("@CP_IsDinner", parameters.CP_IsDinner);
             queryParameters.Add("@IsAllowCanteenPrivilege", parameters.IsAllowCanteenPrivilege);
+            queryParameters.Add("@IsCrew", parameters.IsCrew);
+            queryParameters.Add("@NationalityId", parameters.NationalityId);
+            queryParameters.Add("@IsPassport", parameters.IsPassport);
+            queryParameters.Add("@PassportNo", parameters.PassportNo);
+            queryParameters.Add("@PlaceOfIssue", parameters.PlaceOfIssue);
+            queryParameters.Add("@PassportIssueDate", parameters.PassportIssueDate);
+            queryParameters.Add("@PassportValidTill", parameters.PassportValidTill);
+            queryParameters.Add("@PassportOriginalFileName", parameters.PassportOriginalFileName);
+            queryParameters.Add("@PassportFileName", parameters.PassportFileName);
+            queryParameters.Add("@VesselId", parameters.VesselId);
+            queryParameters.Add("@IsForeigner", parameters.IsForeigner);
+            queryParameters.Add("@IsVisa", parameters.IsVisa);
+            queryParameters.Add("@VisaNo", parameters.VisaNo);
+            queryParameters.Add("@VisaValidFrom", parameters.VisaValidFrom);
+            queryParameters.Add("@VisaValidTill", parameters.VisaValidTill);
+            queryParameters.Add("@VisaOriginalFileName", parameters.VisaOriginalFileName);
+            queryParameters.Add("@VisaFileName", parameters.VisaFileName);
             queryParameters.Add("@IsActive", parameters.IsActive);
             if(parameters.IsWithoutToken ==  true)
             {
@@ -107,6 +124,8 @@ namespace Visitor.Persistence.Repositories
             queryParameters.Add("@BranchId", parameters.BranchId);
             queryParameters.Add("@DepartmentId", parameters.DepartmentId);
             queryParameters.Add("@IsFilterType", parameters.IsFilterType);
+            queryParameters.Add("@IsCrew", parameters.IsCrew);
+            queryParameters.Add("@IsForeigner", parameters.IsForeigner);
             queryParameters.Add("@SearchText", parameters.SearchText.SanitizeValue());
             queryParameters.Add("@IsPlanned", parameters.IsPlanned);
             queryParameters.Add("@IsActive", parameters.IsActive);

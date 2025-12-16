@@ -34,7 +34,8 @@ namespace Visitor.API.Controllers
         private readonly INotificationRepository _notificationRepository;
         private readonly IAssignGateNoRepository _assignGateNoRepository;
         private readonly IManageWorkerRepository _manageWorkerRepository;
-        public ManageVisitorsController(IManageVisitorsRepository manageVisitorsRepository, IFileManager fileManager, IBarcodeRepository barcodeRepository, IUserRepository userRepository, IWebHostEnvironment environment, IEmailHelper emailHelper, ILoginRepository loginRepository, IConfigRefRepository configRefRepository, ISMSHelper smsHelper, INotificationRepository notificationRepository, IAssignGateNoRepository assignGateNoRepository, IManageWorkerRepository manageWorkerRepository)
+        private readonly IAdminMasterRepository _adminMasterRepository;
+        public ManageVisitorsController(IManageVisitorsRepository manageVisitorsRepository, IFileManager fileManager, IBarcodeRepository barcodeRepository, IUserRepository userRepository, IWebHostEnvironment environment, IEmailHelper emailHelper, ILoginRepository loginRepository, IConfigRefRepository configRefRepository, ISMSHelper smsHelper, INotificationRepository notificationRepository, IAssignGateNoRepository assignGateNoRepository, IManageWorkerRepository manageWorkerRepository, IAdminMasterRepository adminMasterRepository)
         {
             _manageVisitorsRepository = manageVisitorsRepository;
             _fileManager = fileManager;
@@ -48,6 +49,7 @@ namespace Visitor.API.Controllers
             _notificationRepository = notificationRepository;
             _assignGateNoRepository = assignGateNoRepository;
             _manageWorkerRepository = manageWorkerRepository;
+            _adminMasterRepository = adminMasterRepository;
 
             _response = new ResponseModel();
             _response.IsSuccess = true;
@@ -99,6 +101,28 @@ namespace Visitor.API.Controllers
                 if (!string.IsNullOrWhiteSpace(vUploadFile))
                 {
                     parameters.VehiclePhotoFileName = vUploadFile;
+                }
+            }
+
+            //Passport Photo Upload
+            if (parameters != null && !string.IsNullOrWhiteSpace(parameters.Passport_Base64))
+            {
+                var vUploadFile = _fileManager.UploadDocumentsBase64ToFile(parameters.Passport_Base64, "\\Uploads\\Visitors\\", parameters.PassportOriginalFileName);
+
+                if (!string.IsNullOrWhiteSpace(vUploadFile))
+                {
+                    parameters.PassportFileName = vUploadFile;
+                }
+            }
+
+            //VIsa Photo Upload
+            if (parameters != null && !string.IsNullOrWhiteSpace(parameters.Visa_Base64))
+            {
+                var vUploadFile = _fileManager.UploadDocumentsBase64ToFile(parameters.Visa_Base64, "\\Uploads\\Visitors\\", parameters.VisaOriginalFileName);
+
+                if (!string.IsNullOrWhiteSpace(vUploadFile))
+                {
+                    parameters.VisaFileName = vUploadFile;
                 }
             }
 
@@ -240,7 +264,7 @@ namespace Visitor.API.Controllers
                     {
                         var vVisitor = await _manageVisitorsRepository.GetVisitorsById(result);
 
-                        //Create Notification
+                        #region  Create Notification
                         if (vVisitor != null)
                         {
                             var gateNolistObj = await _assignGateNoRepository.GetAssignGateNoById(vVisitor.Id, "Visitor", 0);
@@ -286,8 +310,10 @@ namespace Visitor.API.Controllers
                                 }
                             }
                         }
+                        #endregion
 
-                        if (vUser.IsHOD == true || vUser.IsApprover == true || parameters.MP_IsApproved == true)
+                        #region Approved Visitor based on IsHOD, IsApprover, MP_IsApproved and IsCrew = true
+                        if (vUser.IsHOD == true || vUser.IsApprover == true || parameters.MP_IsApproved == true || parameters.IsCrew == true)
                         {
                             if (vVisitor != null)
                             {
@@ -406,6 +432,34 @@ namespace Visitor.API.Controllers
                                 #endregion
                             }
                         }
+                        #endregion
+
+                        #region IsCrew = true than checked in gate number 1
+                        if (parameters.IsCrew == true)
+                        {
+                            if (vVisitor != null)
+                            {
+                                var vSearch = new BaseSearchEntity()
+                                {
+                                    SearchText = "1"
+                                };
+
+                                var vGateDetails = await _adminMasterRepository.GetGateDetailsList(vSearch);
+                                var gateDetailsId = vGateDetails.ToList().FirstOrDefault().Id;
+
+                                var vVisitorCheckedInOut = new VisitorCheckedInOut_Request()
+                                {
+                                    RefId = vVisitor.Id,
+                                    RefType = "Visitor",
+                                    GateDetailsId = gateDetailsId,
+                                    IsCheckedIn_Out = 1,
+                                    CheckedInDate = null,
+                                    CheckedRemark = "Crew Checked In",
+                                };
+                                var vResult = await _manageVisitorsRepository.SaveVisitorCheckedInOut(vVisitorCheckedInOut);
+                            }
+                        }
+                        #endregion
                     }
                 }
                 #endregion
@@ -524,6 +578,7 @@ namespace Visitor.API.Controllers
                     }
                 }
                 #endregion
+
             }
             return _response;
         }

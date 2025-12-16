@@ -1774,6 +1774,7 @@ namespace Visitor.Persistence.Repositories
         public async Task<IEnumerable<Grocery_Response>> GetGroceryList(Grocery_Search parameters)
         {
             DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@IsMinimumQty", parameters.IsMinimumQty);
             queryParameters.Add("@SearchText", parameters.SearchText.SanitizeValue());
             queryParameters.Add("@IsActive", parameters.IsActive);
             queryParameters.Add("@PageNo", parameters.PageNo);

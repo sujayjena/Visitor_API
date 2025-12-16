@@ -36,6 +36,12 @@ namespace Visitor.Application.Models
 
         [DefaultValue("")]
         public string? IsFilterType { get; set; }
+
+        [DefaultValue(false)]
+        public bool? IsCrew { get; set; }
+
+        [DefaultValue(false)]
+        public bool? IsForeigner { get; set; }
         public bool? IsPlanned { get; set; }
     }
 
@@ -147,6 +153,46 @@ namespace Visitor.Application.Models
 
         [DefaultValue(false)]
         public bool? IsAllowCanteenPrivilege { get; set; }
+
+        [DefaultValue(false)]
+        public bool? IsCrew { get; set; }
+        public int? NationalityId { get; set; }
+
+        [DefaultValue(false)]
+        public bool? IsPassport { get; set; }
+        public string? PassportNo { get; set; }
+        public string? PlaceOfIssue { get; set; }
+        public DateTime? PassportIssueDate { get; set; }
+        public DateTime? PassportValidTill { get; set; }
+
+        [DefaultValue("")]
+        public string? PassportOriginalFileName { get; set; }
+
+        [DefaultValue("")]
+        public string? PassportFileName { get; set; }
+
+        [DefaultValue("")]
+        public string? Passport_Base64 { get; set; }
+        public int? VesselId { get; set; }
+
+        [DefaultValue(false)]
+        public bool? IsForeigner { get; set; }
+
+        [DefaultValue(false)]
+        public bool? IsVisa { get; set; }
+        public string? VisaNo { get; set; }
+        public DateTime? VisaValidFrom { get; set; }
+        public DateTime? VisaValidTill { get; set; }
+
+        [DefaultValue("")]
+        public string? VisaOriginalFileName { get; set; }
+
+        [DefaultValue("")]
+        public string? VisaFileName { get; set; }
+
+        [DefaultValue("")]
+        public string? Visa_Base64 { get; set; }
+
         public bool? IsActive { get; set; }
         public List<AssignGateNo_Request> GateNumberList { get; set; }
         public List<VisitorDocumentVerification_Request> DocumentVerificationList { get; set; }
@@ -264,7 +310,6 @@ namespace Visitor.Application.Models
         public int? VisitTypeId { get; set; }
         public string? VisitType { get; set; }
 
-
         public string? VisitorName { get; set; }
         public string? VisitorMobileNo { get; set; }
         public string? VerifyOTP { get; set; }
@@ -348,6 +393,27 @@ namespace Visitor.Application.Models
         public bool? CP_IsSnacks { get; set; }
         public bool? CP_IsDinner { get; set; }
         public bool? IsAllowCanteenPrivilege { get; set; }
+        public bool? IsCrew { get; set; }
+        public int? NationalityId { get; set; }
+        public string? NationalityName { get; set; }
+        public bool? IsPassport { get; set; }
+        public string? PassportNo { get; set; }
+        public string? PlaceOfIssue { get; set; }
+        public DateTime? PassportIssueDate { get; set; }
+        public DateTime? PassportValidTill { get; set; }
+        public string? PassportOriginalFileName { get; set; }
+        public string? PassportFileName { get; set; }
+        public string? PassportURL { get; set; }
+        public int? VesselId { get; set; }
+        public string? VesselName { get; set; }
+        public bool? IsForeigner { get; set; }
+        public bool? IsVisa { get; set; }
+        public string? VisaNo { get; set; }
+        public DateTime? VisaValidFrom { get; set; }
+        public DateTime? VisaValidTill { get; set; }
+        public string? VisaOriginalFileName { get; set; }
+        public string? VisaFileName { get; set; }
+        public string? VisaURL { get; set; }
         public bool? IsActive { get; set; }
 
         public List<AssignGateNo_Response> GateNumberList { get; set; }

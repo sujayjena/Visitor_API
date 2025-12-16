@@ -3145,15 +3145,13 @@ namespace Visitor.API.Controllers.Admin
 
         [Route("[action]")]
         [HttpPost]
-        public async Task<ResponseModel> ExportGroceryData()
+        public async Task<ResponseModel> ExportGroceryData(Grocery_Search request)
         {
             _response.IsSuccess = false;
             byte[] result;
             int recordIndex;
             ExcelWorksheet WorkSheet1;
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
-
-            var request = new Grocery_Search();
 
             IEnumerable<Grocery_Response> lstGroceryObj = await _adminMasterRepository.GetGroceryList(request);
 
@@ -3194,6 +3192,12 @@ namespace Visitor.API.Controllers.Admin
                         //WorkSheet1.Cells[recordIndex, 5].Style.Numberformat.Format = DateTimeFormatInfo.CurrentInfo.ShortDatePattern;
                         WorkSheet1.Cells[recordIndex, 7].Value = items.CreatedDate.ToString("dd/MM/yyyy");
                         WorkSheet1.Cells[recordIndex, 8].Value = items.CreatorName;
+
+                        if (items.MinQty > items.AvailableQty)
+                        {
+                            WorkSheet1.Row(recordIndex).Style.Fill.PatternType = ExcelFillStyle.Solid;
+                            WorkSheet1.Row(recordIndex).Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.Pink);
+                        }
 
                         recordIndex += 1;
                     }

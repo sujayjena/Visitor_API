@@ -1053,6 +1053,8 @@ namespace Visitor.Application.Models
     #region Grocery
     public class Grocery_Search : BaseSearchEntity
     {
+        [DefaultValue(false)]
+        public bool? IsMinimumQty { get; set; }
     }
 
     public class Grocery_Request : BaseEntity
