@@ -107,6 +107,9 @@ namespace Visitor.Application.Models
         [DefaultValue(false)]
         public bool? IsBlackList { get; set; }
 
+        [DefaultValue(0)]
+        public int? StatusId { get; set; }
+
         public bool? IsActive { get; set; }
         public List<AssignGateNo_Request> GateNumberList { get; set; }
         public List<VisitorDocumentVerification_Request> DocumentVerificationList { get; set; }
@@ -242,6 +245,8 @@ namespace Visitor.Application.Models
         public bool? IsCanteenPrivilege { get; set; }
         public bool? IsPrimary { get; set; }
         public bool? IsBlackList { get; set; }
+        public int? StatusId { get; set; }
+        public string? StatusName { get; set; }
         public bool? IsActive { get; set; }
         public List<AssignGateNo_Response> GateNumberList { get; set; }
         public List<VisitorDocumentVerification_Response> DocumentVerificationList { get; set; }

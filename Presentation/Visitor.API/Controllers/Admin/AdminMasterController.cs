@@ -42,7 +42,7 @@ namespace Visitor.API.Controllers.Admin
             }
             else if (result == (int)SaveOperationEnums.ReocrdExists)
             {
-                _response.Message = "Record is already exists";
+                _response.Message = "Record already exists";
             }
             else if (result == (int)SaveOperationEnums.NoResult)
             {
@@ -105,7 +105,7 @@ namespace Visitor.API.Controllers.Admin
             }
             else if (result == (int)SaveOperationEnums.ReocrdExists)
             {
-                _response.Message = "Record is already exists";
+                _response.Message = "Record already exists";
             }
             else if (result == (int)SaveOperationEnums.NoResult)
             {
@@ -161,7 +161,7 @@ namespace Visitor.API.Controllers.Admin
             }
             else if (result == (int)SaveOperationEnums.ReocrdExists)
             {
-                _response.Message = "Record is already exists";
+                _response.Message = "Record already exists";
             }
             else if (result == (int)SaveOperationEnums.NoResult)
             {
@@ -224,7 +224,7 @@ namespace Visitor.API.Controllers.Admin
             }
             else if (result == (int)SaveOperationEnums.ReocrdExists)
             {
-                _response.Message = "Record is already exists";
+                _response.Message = "Record already exists";
             }
             else if (result == (int)SaveOperationEnums.NoResult)
             {
@@ -287,7 +287,7 @@ namespace Visitor.API.Controllers.Admin
             }
             else if (result == (int)SaveOperationEnums.ReocrdExists)
             {
-                _response.Message = "Record is already exists";
+                _response.Message = "Record already exists";
             }
             else if (result == (int)SaveOperationEnums.NoResult)
             {
@@ -350,7 +350,7 @@ namespace Visitor.API.Controllers.Admin
             }
             else if (result == (int)SaveOperationEnums.ReocrdExists)
             {
-                _response.Message = "Record is already exists";
+                _response.Message = "Record already exists";
             }
             else if (result == (int)SaveOperationEnums.NoResult)
             {
@@ -413,7 +413,7 @@ namespace Visitor.API.Controllers.Admin
             }
             else if (result == (int)SaveOperationEnums.ReocrdExists)
             {
-                _response.Message = "Record is already exists";
+                _response.Message = "Record already exists";
             }
             else if (result == (int)SaveOperationEnums.NoResult)
             {
@@ -476,7 +476,7 @@ namespace Visitor.API.Controllers.Admin
             }
             else if (result == (int)SaveOperationEnums.ReocrdExists)
             {
-                _response.Message = "Record is already exists";
+                _response.Message = "Record already exists";
             }
             else if (result == (int)SaveOperationEnums.NoResult)
             {
@@ -539,7 +539,7 @@ namespace Visitor.API.Controllers.Admin
             }
             else if (result == (int)SaveOperationEnums.ReocrdExists)
             {
-                _response.Message = "Record is already exists";
+                _response.Message = "Record already exists";
             }
             else if (result == (int)SaveOperationEnums.NoResult)
             {
@@ -602,7 +602,7 @@ namespace Visitor.API.Controllers.Admin
             }
             else if (result == (int)SaveOperationEnums.ReocrdExists)
             {
-                _response.Message = "Record is already exists";
+                _response.Message = "Record already exists";
             }
             else if (result == (int)SaveOperationEnums.NoResult)
             {
@@ -665,7 +665,7 @@ namespace Visitor.API.Controllers.Admin
             }
             else if (result == (int)SaveOperationEnums.ReocrdExists)
             {
-                _response.Message = "Record is already exists";
+                _response.Message = "Record already exists";
             }
             else if (result == (int)SaveOperationEnums.NoResult)
             {
@@ -728,7 +728,7 @@ namespace Visitor.API.Controllers.Admin
             }
             else if (result == (int)SaveOperationEnums.ReocrdExists)
             {
-                _response.Message = "Record is already exists";
+                _response.Message = "Record already exists";
             }
             else if (result == (int)SaveOperationEnums.NoResult)
             {
@@ -791,7 +791,7 @@ namespace Visitor.API.Controllers.Admin
             }
             else if (result == (int)SaveOperationEnums.ReocrdExists)
             {
-                _response.Message = "Record is already exists";
+                _response.Message = "Record already exists";
             }
             else if (result == (int)SaveOperationEnums.NoResult)
             {
@@ -847,7 +847,7 @@ namespace Visitor.API.Controllers.Admin
             }
             else if (result == (int)SaveOperationEnums.ReocrdExists)
             {
-                _response.Message = "Record is already exists";
+                _response.Message = "Record already exists";
             }
             else if (result == (int)SaveOperationEnums.NoResult)
             {
@@ -910,7 +910,7 @@ namespace Visitor.API.Controllers.Admin
             }
             else if (result == (int)SaveOperationEnums.ReocrdExists)
             {
-                _response.Message = "Record is already exists";
+                _response.Message = "Record already exists";
             }
             else if (result == (int)SaveOperationEnums.NoResult)
             {
@@ -973,7 +973,7 @@ namespace Visitor.API.Controllers.Admin
             }
             else if (result == (int)SaveOperationEnums.ReocrdExists)
             {
-                _response.Message = "Record is already exists";
+                _response.Message = "Record already exists";
             }
             else if (result == (int)SaveOperationEnums.NoResult)
             {
@@ -1036,7 +1036,7 @@ namespace Visitor.API.Controllers.Admin
             }
             else if (result == (int)SaveOperationEnums.ReocrdExists)
             {
-                _response.Message = "Record is already exists";
+                _response.Message = "Record already exists";
             }
             else if (result == (int)SaveOperationEnums.NoResult)
             {
@@ -1099,7 +1099,7 @@ namespace Visitor.API.Controllers.Admin
             }
             else if (result == (int)SaveOperationEnums.ReocrdExists)
             {
-                _response.Message = "Record is already exists";
+                _response.Message = "Record already exists";
             }
             else if (result == (int)SaveOperationEnums.NoResult)
             {
@@ -1162,7 +1162,7 @@ namespace Visitor.API.Controllers.Admin
             }
             else if (result == (int)SaveOperationEnums.ReocrdExists)
             {
-                _response.Message = "Record is already exists";
+                _response.Message = "Record already exists";
             }
             else if (result == (int)SaveOperationEnums.NoResult)
             {
@@ -1225,7 +1225,7 @@ namespace Visitor.API.Controllers.Admin
             }
             else if (result == (int)SaveOperationEnums.ReocrdExists)
             {
-                _response.Message = "Record is already exists";
+                _response.Message = "Record already exists";
             }
             else if (result == (int)SaveOperationEnums.NoResult)
             {
@@ -1288,7 +1288,7 @@ namespace Visitor.API.Controllers.Admin
             }
             else if (result == (int)SaveOperationEnums.ReocrdExists)
             {
-                _response.Message = "Record is already exists";
+                _response.Message = "Record already exists";
             }
             else if (result == (int)SaveOperationEnums.NoResult)
             {
@@ -1351,7 +1351,7 @@ namespace Visitor.API.Controllers.Admin
             }
             else if (result == (int)SaveOperationEnums.ReocrdExists)
             {
-                _response.Message = "Record is already exists";
+                _response.Message = "Record already exists";
             }
             else if (result == (int)SaveOperationEnums.NoResult)
             {
@@ -1414,7 +1414,7 @@ namespace Visitor.API.Controllers.Admin
             }
             else if (result == (int)SaveOperationEnums.ReocrdExists)
             {
-                _response.Message = "Record is already exists";
+                _response.Message = "Record already exists";
             }
             else if (result == (int)SaveOperationEnums.NoResult)
             {
@@ -1477,7 +1477,7 @@ namespace Visitor.API.Controllers.Admin
             }
             else if (result == (int)SaveOperationEnums.ReocrdExists)
             {
-                _response.Message = "Record is already exists";
+                _response.Message = "Record already exists";
             }
             else if (result == (int)SaveOperationEnums.NoResult)
             {
@@ -1540,7 +1540,7 @@ namespace Visitor.API.Controllers.Admin
             }
             else if (result == (int)SaveOperationEnums.ReocrdExists)
             {
-                _response.Message = "Record is already exists";
+                _response.Message = "Record already exists";
             }
             else if (result == (int)SaveOperationEnums.NoResult)
             {
@@ -1604,7 +1604,7 @@ namespace Visitor.API.Controllers.Admin
             }
             else if (result == (int)SaveOperationEnums.ReocrdExists)
             {
-                _response.Message = "Record is already exists";
+                _response.Message = "Record already exists";
             }
             else if (result == (int)SaveOperationEnums.NoResult)
             {
@@ -1667,7 +1667,7 @@ namespace Visitor.API.Controllers.Admin
             }
             else if (result == (int)SaveOperationEnums.ReocrdExists)
             {
-                _response.Message = "Record is already exists";
+                _response.Message = "Record already exists";
             }
             else if (result == (int)SaveOperationEnums.NoResult)
             {
@@ -1730,7 +1730,7 @@ namespace Visitor.API.Controllers.Admin
             }
             else if (result == (int)SaveOperationEnums.ReocrdExists)
             {
-                _response.Message = "Record is already exists";
+                _response.Message = "Record already exists";
             }
             else if (result == (int)SaveOperationEnums.NoResult)
             {
@@ -1793,7 +1793,7 @@ namespace Visitor.API.Controllers.Admin
             }
             else if (result == (int)SaveOperationEnums.ReocrdExists)
             {
-                _response.Message = "Record is already exists";
+                _response.Message = "Record already exists";
             }
             else if (result == (int)SaveOperationEnums.NoResult)
             {
@@ -1868,7 +1868,7 @@ namespace Visitor.API.Controllers.Admin
             }
             else if (result == (int)SaveOperationEnums.ReocrdExists)
             {
-                _response.Message = "Record is already exists";
+                _response.Message = "Record already exists";
             }
             else if (result == (int)SaveOperationEnums.NoResult)
             {
@@ -1925,7 +1925,7 @@ namespace Visitor.API.Controllers.Admin
             }
             else if (result == (int)SaveOperationEnums.ReocrdExists)
             {
-                _response.Message = "Record is already exists";
+                _response.Message = "Record already exists";
             }
             else if (result == (int)SaveOperationEnums.NoResult)
             {
@@ -1988,7 +1988,7 @@ namespace Visitor.API.Controllers.Admin
             }
             else if (result == (int)SaveOperationEnums.ReocrdExists)
             {
-                _response.Message = "Record is already exists";
+                _response.Message = "Record already exists";
             }
             else if (result == (int)SaveOperationEnums.NoResult)
             {
@@ -2051,7 +2051,7 @@ namespace Visitor.API.Controllers.Admin
             }
             else if (result == (int)SaveOperationEnums.ReocrdExists)
             {
-                _response.Message = "Record is already exists";
+                _response.Message = "Record already exists";
             }
             else if (result == (int)SaveOperationEnums.NoResult)
             {
@@ -2155,7 +2155,7 @@ namespace Visitor.API.Controllers.Admin
             }
             else if (result == (int)SaveOperationEnums.ReocrdExists)
             {
-                _response.Message = "Record is already exists";
+                _response.Message = "Record already exists";
             }
             else if (result == (int)SaveOperationEnums.NoResult)
             {
@@ -2218,7 +2218,7 @@ namespace Visitor.API.Controllers.Admin
             }
             else if (result == (int)SaveOperationEnums.ReocrdExists)
             {
-                _response.Message = "Record is already exists";
+                _response.Message = "Record already exists";
             }
             else if (result == (int)SaveOperationEnums.NoResult)
             {
@@ -2281,7 +2281,7 @@ namespace Visitor.API.Controllers.Admin
             }
             else if (result == (int)SaveOperationEnums.ReocrdExists)
             {
-                _response.Message = "Record is already exists";
+                _response.Message = "Record already exists";
             }
             else if (result == (int)SaveOperationEnums.NoResult)
             {
@@ -2344,7 +2344,7 @@ namespace Visitor.API.Controllers.Admin
             }
             else if (result == (int)SaveOperationEnums.ReocrdExists)
             {
-                _response.Message = "Record is already exists";
+                _response.Message = "Record already exists";
             }
             else if (result == (int)SaveOperationEnums.NoResult)
             {
@@ -2420,7 +2420,7 @@ namespace Visitor.API.Controllers.Admin
             }
             else if (result == (int)SaveOperationEnums.ReocrdExists)
             {
-                _response.Message = "Record is already exists";
+                _response.Message = "Record already exists";
             }
             else if (result == (int)SaveOperationEnums.NoResult)
             {
@@ -2632,7 +2632,7 @@ namespace Visitor.API.Controllers.Admin
             }
             else if (result == (int)SaveOperationEnums.ReocrdExists)
             {
-                _response.Message = "Record is already exists";
+                _response.Message = "Record already exists";
             }
             else if (result == (int)SaveOperationEnums.NoResult)
             {
@@ -2695,7 +2695,7 @@ namespace Visitor.API.Controllers.Admin
             }
             else if (result == (int)SaveOperationEnums.ReocrdExists)
             {
-                _response.Message = "Record is already exists";
+                _response.Message = "Record already exists";
             }
             else if (result == (int)SaveOperationEnums.NoResult)
             {
@@ -2758,7 +2758,7 @@ namespace Visitor.API.Controllers.Admin
             }
             else if (result == (int)SaveOperationEnums.ReocrdExists)
             {
-                _response.Message = "Record is already exists";
+                _response.Message = "Record already exists";
             }
             else if (result == (int)SaveOperationEnums.NoResult)
             {
@@ -2821,7 +2821,7 @@ namespace Visitor.API.Controllers.Admin
             }
             else if (result == (int)SaveOperationEnums.ReocrdExists)
             {
-                _response.Message = "Record is already exists";
+                _response.Message = "Record already exists";
             }
             else if (result == (int)SaveOperationEnums.NoResult)
             {
@@ -2886,7 +2886,7 @@ namespace Visitor.API.Controllers.Admin
             }
             else if (result == (int)SaveOperationEnums.ReocrdExists)
             {
-                _response.Message = "Record is already exists";
+                _response.Message = "Record already exists";
             }
             else if (result == (int)SaveOperationEnums.NoResult)
             {
@@ -2951,7 +2951,7 @@ namespace Visitor.API.Controllers.Admin
             }
             else if (result == (int)SaveOperationEnums.ReocrdExists)
             {
-                _response.Message = "Record is already exists";
+                _response.Message = "Record already exists";
             }
             else if (result == (int)SaveOperationEnums.NoResult)
             {
@@ -3232,7 +3232,7 @@ namespace Visitor.API.Controllers.Admin
             }
             else if (result == (int)SaveOperationEnums.ReocrdExists)
             {
-                _response.Message = "Record is already exists";
+                _response.Message = "Record already exists";
             }
             else if (result == (int)SaveOperationEnums.NoResult)
             {
@@ -3307,7 +3307,7 @@ namespace Visitor.API.Controllers.Admin
             }
             else if (result == (int)SaveOperationEnums.ReocrdExists)
             {
-                _response.Message = "Record is already exists";
+                _response.Message = "Record already exists";
             }
             else if (result == (int)SaveOperationEnums.NoResult)
             {
@@ -3363,6 +3363,69 @@ namespace Visitor.API.Controllers.Admin
             IEnumerable<MaterialApprovalLogHistory_Response> lst = await _adminMasterRepository.GetMaterialApprovalLogHistoryListById(parameters);
             _response.Data = lst.ToList();
             _response.Total = parameters.Total;
+            return _response;
+        }
+
+        #endregion
+
+        #region Vessel
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> SaveVessel(Vessel_Request parameters)
+        {
+            int result = await _adminMasterRepository.SaveVessel(parameters);
+
+            if (result == (int)SaveOperationEnums.NoRecordExists)
+            {
+                _response.Message = "No record exists";
+            }
+            else if (result == (int)SaveOperationEnums.ReocrdExists)
+            {
+                _response.Message = "Record already exists";
+            }
+            else if (result == (int)SaveOperationEnums.NoResult)
+            {
+                _response.Message = "Something went wrong, please try again";
+            }
+            else
+            {
+                if (parameters.Id > 0)
+                {
+                    _response.Message = "Record updated successfully";
+                }
+                else
+                {
+                    _response.Message = "Record details saved successfully";
+                }
+            }
+            return _response;
+        }
+
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> GetVesselList(BaseSearchEntity parameters)
+        {
+            IEnumerable<Vessel_Response> lstRoles = await _adminMasterRepository.GetVesselList(parameters);
+            _response.Data = lstRoles.ToList();
+            _response.Total = parameters.Total;
+            return _response;
+        }
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> GetVesselById(int Id)
+        {
+            if (Id <= 0)
+            {
+                _response.Message = "Id is required";
+            }
+            else
+            {
+                var vResultObj = await _adminMasterRepository.GetVesselById(Id);
+                _response.Data = vResultObj;
+            }
             return _response;
         }
 

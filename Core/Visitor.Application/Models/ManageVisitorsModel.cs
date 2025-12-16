@@ -33,6 +33,9 @@ namespace Visitor.Application.Models
         public string? GateDetailsId_Filter { get; set; }
         public int? BranchId { get; set; }
         public int? DepartmentId { get; set; }
+
+        [DefaultValue("")]
+        public string? IsFilterType { get; set; }
         public bool? IsPlanned { get; set; }
     }
 

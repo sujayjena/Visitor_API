@@ -42,7 +42,7 @@ namespace Visitor.API.Controllers.Admin
             }
             else if (result == (int)SaveOperationEnums.ReocrdExists)
             {
-                _response.Message = "Record is already exists";
+                _response.Message = "Record already exists";
             }
             else if (result == (int)SaveOperationEnums.NoResult)
             {
@@ -105,7 +105,7 @@ namespace Visitor.API.Controllers.Admin
             }
             else if (result == (int)SaveOperationEnums.ReocrdExists)
             {
-                _response.Message = "Record is already exists";
+                _response.Message = "Record already exists";
             }
             else if (result == (int)SaveOperationEnums.NoResult)
             {
@@ -366,7 +366,7 @@ namespace Visitor.API.Controllers.Admin
             }
             else if (result == (int)SaveOperationEnums.ReocrdExists)
             {
-                _response.Message = "Record is already exists";
+                _response.Message = "Record already exists";
             }
             else if (result == (int)SaveOperationEnums.NoResult)
             {
@@ -627,7 +627,7 @@ namespace Visitor.API.Controllers.Admin
             }
             else if (result == (int)SaveOperationEnums.ReocrdExists)
             {
-                _response.Message = "Record is already exists";
+                _response.Message = "Record already exists";
             }
             else if (result == (int)SaveOperationEnums.NoResult)
             {
@@ -690,7 +690,7 @@ namespace Visitor.API.Controllers.Admin
             }
             else if (result == (int)SaveOperationEnums.ReocrdExists)
             {
-                _response.Message = "Record is already exists";
+                _response.Message = "Record already exists";
             }
             else if (result == (int)SaveOperationEnums.NoResult)
             {
@@ -753,7 +753,7 @@ namespace Visitor.API.Controllers.Admin
             }
             else if (result == (int)SaveOperationEnums.ReocrdExists)
             {
-                _response.Message = "Record is already exists";
+                _response.Message = "Record already exists";
             }
             else if (result == (int)SaveOperationEnums.NoResult)
             {

@@ -392,5 +392,11 @@ namespace Visitor.Application.Interfaces
         Task<MaterialApproval_Response?> GetMaterialApprovalById(int Id);
         Task<IEnumerable<MaterialApprovalLogHistory_Response>> GetMaterialApprovalLogHistoryListById(MaterialApprovalLogHistory_Search parameters);
         #endregion
+
+        #region Vessel
+        Task<int> SaveVessel(Vessel_Request parameters);
+        Task<IEnumerable<Vessel_Response>> GetVesselList(BaseSearchEntity parameters);
+        Task<Vessel_Response?> GetVesselById(int Id);
+        #endregion
     }
 }

@@ -26,8 +26,9 @@ namespace Visitor.API.Controllers
         private readonly IWebHostEnvironment _environment;
         private IEmailHelper _emailHelper;
         private readonly IUserRepository _userRepository;
+        private readonly IProfileRepository _profileRepository;
 
-        public ManageWorkerController(IManageWorkerRepository manageWorkerRepository, IFileManager fileManager, IManageContractorRepository manageContractorRepository, IAssignGateNoRepository assignGateNoRepository, IBarcodeRepository barcodeRepository, IManagePurchaseOrderRepository managePurchaseOrderRepository, IManageVisitorsRepository manageVisitorsRepository, IWebHostEnvironment environment, IEmailHelper emailHelper, IUserRepository userRepository)
+        public ManageWorkerController(IManageWorkerRepository manageWorkerRepository, IFileManager fileManager, IManageContractorRepository manageContractorRepository, IAssignGateNoRepository assignGateNoRepository, IBarcodeRepository barcodeRepository, IManagePurchaseOrderRepository managePurchaseOrderRepository, IManageVisitorsRepository manageVisitorsRepository, IWebHostEnvironment environment, IEmailHelper emailHelper, IUserRepository userRepository, IProfileRepository profileRepository)
         {
             _manageWorkerRepository = manageWorkerRepository;
             _fileManager = fileManager;
@@ -39,6 +40,7 @@ namespace Visitor.API.Controllers
             _environment = environment;
             _emailHelper = emailHelper;
             _userRepository = userRepository;
+            _profileRepository = profileRepository;
 
             _response = new ResponseModel();
             _response.IsSuccess = true;
@@ -66,7 +68,7 @@ namespace Visitor.API.Controllers
                 vWorkerSearch.IsActive = true;
 
                 var vWorker = await _manageWorkerRepository.GetWorkerList(vWorkerSearch);
-              
+
                 #region Contractor Wise Worker Check
 
                 if (parameters.PurchaseOrderId > 0)
@@ -179,7 +181,7 @@ namespace Visitor.API.Controllers
             }
             else if (result == (int)SaveOperationEnums.ReocrdExists)
             {
-                _response.Message = "Record is already exists";
+                _response.Message = "Record already exists";
             }
             else if (result == (int)SaveOperationEnums.NoResult)
             {
@@ -258,65 +260,6 @@ namespace Visitor.API.Controllers
 
                 #endregion
 
-                #region Worker Pass
-
-                if (parameters.Id == 0)
-                {
-                    var vWorkerPass = new WorkerPass_Request()
-                    {
-                        Id = 0,
-                        WorkerId = result,
-                        PassNumber = "",
-                        ValidFromDate = parameters.ValidFromDate,
-                        ValidToDate = parameters.ValidToDate,
-                        IsActive = parameters.IsActive
-                    };
-
-                    int resultWorkerPass = await _manageWorkerRepository.SaveWorkerPass(vWorkerPass);
-                }
-                
-                #endregion
-
-                #region Generate Barcode
-                if (parameters.Id == 0)
-                {
-                    var vWorker = await _manageWorkerRepository.GetWorkerById(result);
-                    if (vWorker != null)
-                    {
-                        string vBarcodeNo = "";
-                        if (vWorker.BranchName == "ANGRE PORT")
-                        {
-                            vBarcodeNo = await _barcodeRepository.AutoBarcodeGenerate(Convert.ToInt32(vWorker.BranchId ?? 0), "Worker", "");
-                        }
-                        else
-                        {
-                            vBarcodeNo = vWorker.PassNumber;
-                        }
-
-                        if (vBarcodeNo != "")
-                        {
-                            var vGenerateBarcode = _barcodeRepository.GenerateBarcode(vBarcodeNo);
-                            if (vGenerateBarcode.Barcode_Unique_Id != "")
-                            {
-                                var vBarcode_Request = new Barcode_Request()
-                                {
-                                    Id = 0,
-                                    BarcodeNo = vBarcodeNo,
-                                    BarcodeType = "Worker",
-                                    Barcode_Unique_Id = vGenerateBarcode.Barcode_Unique_Id,
-                                    BarcodeOriginalFileName = vGenerateBarcode.BarcodeOriginalFileName,
-                                    BarcodeFileName = vGenerateBarcode.BarcodeFileName,
-                                    BranchId = vWorker.BranchId,
-
-                                    RefId = result
-                                };
-                                var resultBarcode = _barcodeRepository.SaveBarcode(vBarcode_Request);
-                            }
-                        }
-                    }
-                }
-                #endregion
-
                 #region Document Approval Email 
                 if (parameters.DV_IsInsurance == true && parameters.DV_IsWC == true && parameters.IsPoliceV == true && parameters.IsFitnessCert == true && parameters.DV_IsESIC == true && parameters.Id > 0)
                 {
@@ -332,7 +275,7 @@ namespace Visitor.API.Controllers
         public async Task<ResponseModel> GetWorkerList(WorkerSearch_Request parameters)
         {
             IEnumerable<Worker_Response> lstWorkers = await _manageWorkerRepository.GetWorkerList(parameters);
-            foreach(var items in lstWorkers)
+            foreach (var items in lstWorkers)
             {
                 var gateNolistObj = await _assignGateNoRepository.GetAssignGateNoById(items.Id, "Worker", 0);
                 items.GateNumberList = gateNolistObj.ToList();
@@ -353,7 +296,7 @@ namespace Visitor.API.Controllers
             else
             {
                 var vResultObj = await _manageWorkerRepository.GetWorkerById(Id);
-                if(vResultObj != null)
+                if (vResultObj != null)
                 {
                     var gateNolistObj = await _assignGateNoRepository.GetAssignGateNoById(vResultObj.Id, "Worker", 0);
                     vResultObj.GateNumberList = gateNolistObj.ToList();
@@ -384,7 +327,7 @@ namespace Visitor.API.Controllers
             }
             else if (result == (int)SaveOperationEnums.ReocrdExists)
             {
-                _response.Message = "Record is already exists";
+                _response.Message = "Record already exists";
             }
             else if (result == (int)SaveOperationEnums.NoResult)
             {
@@ -831,7 +774,7 @@ namespace Visitor.API.Controllers
                         WorkSheet1.Cells[recordIndex, 6].Value = record.ValidToDate;
                         WorkSheet1.Cells[recordIndex, 7].Value = record.PONumber;
                         WorkSheet1.Cells[recordIndex, 8].Value = record.DateOfBirth;
-                        WorkSheet1.Cells[recordIndex, 9].Value =  record.BloodGroup;
+                        WorkSheet1.Cells[recordIndex, 9].Value = record.BloodGroup;
                         WorkSheet1.Cells[recordIndex, 10].Value = record.IdentificationMark;
                         WorkSheet1.Cells[recordIndex, 11].Value = record.Address;
                         WorkSheet1.Cells[recordIndex, 12].Value = record.Country;
@@ -989,13 +932,13 @@ namespace Visitor.API.Controllers
                         WorkSheet1.Cells[recordIndex, 6].Value = items.WorkerId;
                         WorkSheet1.Cells[recordIndex, 7].Value = items.WorkerType;
                         WorkSheet1.Cells[recordIndex, 8].Value = items.WorkerMobileNo;
-                        WorkSheet1.Cells[recordIndex, 9].Value = items.ValidFromDate.HasValue? items.ValidFromDate.Value.ToString("dd/MM/yyyy") : string.Empty;
-                        WorkSheet1.Cells[recordIndex, 10].Value = items.ValidToDate.HasValue? items.ValidToDate.Value.ToString("dd/MM/yyyy") : string.Empty;
-                        WorkSheet1.Cells[recordIndex, 11].Value = items.ContractorStartDate.HasValue? items.ContractorStartDate.Value.ToString("dd/MM/yyyy") : string.Empty;
-                        WorkSheet1.Cells[recordIndex, 12].Value = items.ContractorEndDate.HasValue? items.ContractorEndDate.Value.ToString("dd/MM/yyyy") : string.Empty;
-                        WorkSheet1.Cells[recordIndex, 13].Value = items.POStartDate.HasValue? items.POStartDate.Value.ToString("dd/MM/yyyy") : string.Empty;
-                        WorkSheet1.Cells[recordIndex, 14].Value = items.POEndDate.HasValue? items.POEndDate.Value.ToString("dd/MM/yyyy") : string.Empty;
-                        WorkSheet1.Cells[recordIndex, 15].Value = items.DOB.HasValue ? items.DOB.Value.ToString("dd/MM/yyyy") : string.Empty; 
+                        WorkSheet1.Cells[recordIndex, 9].Value = items.ValidFromDate.HasValue ? items.ValidFromDate.Value.ToString("dd/MM/yyyy") : string.Empty;
+                        WorkSheet1.Cells[recordIndex, 10].Value = items.ValidToDate.HasValue ? items.ValidToDate.Value.ToString("dd/MM/yyyy") : string.Empty;
+                        WorkSheet1.Cells[recordIndex, 11].Value = items.ContractorStartDate.HasValue ? items.ContractorStartDate.Value.ToString("dd/MM/yyyy") : string.Empty;
+                        WorkSheet1.Cells[recordIndex, 12].Value = items.ContractorEndDate.HasValue ? items.ContractorEndDate.Value.ToString("dd/MM/yyyy") : string.Empty;
+                        WorkSheet1.Cells[recordIndex, 13].Value = items.POStartDate.HasValue ? items.POStartDate.Value.ToString("dd/MM/yyyy") : string.Empty;
+                        WorkSheet1.Cells[recordIndex, 14].Value = items.POEndDate.HasValue ? items.POEndDate.Value.ToString("dd/MM/yyyy") : string.Empty;
+                        WorkSheet1.Cells[recordIndex, 15].Value = items.DOB.HasValue ? items.DOB.Value.ToString("dd/MM/yyyy") : string.Empty;
                         WorkSheet1.Cells[recordIndex, 16].Value = items.BloodGroup;
                         WorkSheet1.Cells[recordIndex, 17].Value = items.IdentificationMark;
                         WorkSheet1.Cells[recordIndex, 18].Value = items.Address;
@@ -1018,8 +961,8 @@ namespace Visitor.API.Controllers
                         WorkSheet1.Cells[recordIndex, 35].Value = items.IsDriver == true ? "Yes" : "No";
                         WorkSheet1.Cells[recordIndex, 36].Value = items.VehicleNumber;
                         WorkSheet1.Cells[recordIndex, 37].Value = items.DrivingLicenseNo;
-                        WorkSheet1.Cells[recordIndex, 38].Value = items.LicenseValidFrom.HasValue ? items.LicenseValidFrom.Value.ToString("dd/MM/yyyy") : string.Empty; 
-                        WorkSheet1.Cells[recordIndex, 39].Value = items.LicenseValidTo.HasValue? items.LicenseValidTo.Value.ToString("dd/MM/yyyy") : string.Empty;
+                        WorkSheet1.Cells[recordIndex, 38].Value = items.LicenseValidFrom.HasValue ? items.LicenseValidFrom.Value.ToString("dd/MM/yyyy") : string.Empty;
+                        WorkSheet1.Cells[recordIndex, 39].Value = items.LicenseValidTo.HasValue ? items.LicenseValidTo.Value.ToString("dd/MM/yyyy") : string.Empty;
                         WorkSheet1.Cells[recordIndex, 40].Value = items.ValidityPeriod;
                         WorkSheet1.Cells[recordIndex, 41].Value = vAadharNo;
                         WorkSheet1.Cells[recordIndex, 42].Value = items.IsBlackList == true ? "Yes" : "No";
@@ -1155,6 +1098,69 @@ namespace Visitor.API.Controllers
                     else if (parameters.StatusId == 3)
                     {
                         _response.Message = "Worker Rejected successfully.";
+                    }
+
+                    /**check role name**/
+                    var vRole = await _profileRepository.GetRoleById(SessionManager.LoggedInUserId);
+                    if (vRole != null)
+                    {
+                        if ((vRole.RoleName != "MANAGER-SECURITY" || vRole.RoleName != "Manager-Security") && parameters.StatusId == 2)
+                        {
+                            #region Worker Pass
+                            var vWorker = await _manageWorkerRepository.GetWorkerById(Convert.ToInt32(parameters.Id));
+                            if (vWorker != null)
+                            {
+                                var vWorkerPass = new WorkerPass_Request()
+                                {
+                                    Id = 0,
+                                    WorkerId = parameters.Id,
+                                    PassNumber = "",
+                                    ValidFromDate = vWorker.ValidFromDate,
+                                    ValidToDate = vWorker.ValidToDate,
+                                    IsActive = vWorker.IsActive
+                                };
+
+                                int resultWorkerPass = await _manageWorkerRepository.SaveWorkerPass(vWorkerPass);
+                            }
+                            #endregion
+
+                            #region Generate Barcode
+                            var vWorkerP = await _manageWorkerRepository.GetWorkerById(Convert.ToInt32(parameters.Id));
+                            if (vWorkerP != null)
+                            {
+                                string vBarcodeNo = "";
+                                if (vWorkerP.BranchName == "ANGRE PORT")
+                                {
+                                    vBarcodeNo = await _barcodeRepository.AutoBarcodeGenerate(Convert.ToInt32(vWorkerP.BranchId ?? 0), "Worker", "");
+                                }
+                                else
+                                {
+                                    vBarcodeNo = vWorkerP.PassNumber;
+                                }
+
+                                if (vBarcodeNo != "")
+                                {
+                                    var vGenerateBarcode = _barcodeRepository.GenerateBarcode(vBarcodeNo);
+                                    if (vGenerateBarcode.Barcode_Unique_Id != "")
+                                    {
+                                        var vBarcode_Request = new Barcode_Request()
+                                        {
+                                            Id = 0,
+                                            BarcodeNo = vBarcodeNo,
+                                            BarcodeType = "Worker",
+                                            Barcode_Unique_Id = vGenerateBarcode.Barcode_Unique_Id,
+                                            BarcodeOriginalFileName = vGenerateBarcode.BarcodeOriginalFileName,
+                                            BarcodeFileName = vGenerateBarcode.BarcodeFileName,
+                                            BranchId = vWorkerP.BranchId,
+
+                                            RefId = parameters.Id
+                                        };
+                                        var resultBarcode = _barcodeRepository.SaveBarcode(vBarcode_Request);
+                                    }
+                                }
+                            }
+                            #endregion
+                        }
                     }
                 }
             }

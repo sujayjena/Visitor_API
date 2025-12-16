@@ -1189,4 +1189,20 @@ namespace Visitor.Application.Models
     }
 
     #endregion
+
+    #region Vessel
+    public class Vessel_Request : BaseEntity
+    {
+        [DefaultValue("")]
+        public string? VesselName { get; set; }
+        public bool? IsActive { get; set; }
+    }
+
+    public class Vessel_Response : BaseResponseEntity
+    {
+        public string? VesselName { get; set; }
+        public bool? IsActive { get; set; }
+    }
+
+    #endregion
 }
