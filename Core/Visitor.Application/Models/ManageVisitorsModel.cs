@@ -193,6 +193,8 @@ namespace Visitor.Application.Models
         [DefaultValue("")]
         public string? Visa_Base64 { get; set; }
 
+        [DefaultValue(false)]
+        public bool? IsGovOfficials { get; set; }
         public bool? IsActive { get; set; }
         public List<AssignGateNo_Request> GateNumberList { get; set; }
         public List<VisitorDocumentVerification_Request> DocumentVerificationList { get; set; }
@@ -295,6 +297,12 @@ namespace Visitor.Application.Models
         public bool? CP_IsSnacks { get; set; }
         public bool? CP_IsDinner { get; set; }
         public bool? IsAllowCanteenPrivilege { get; set; }
+        public bool? IsCrew { get; set; }
+        public int? NationalityId { get; set; }
+        public string? NationalityName { get; set; }
+        public string? PassportNo { get; set; }
+        public bool? IsForeigner { get; set; }
+        public string? VisaNo { get; set; }
         public bool? IsActive { get; set; }
 
         public List<AssignGateNo_Response> GateNumberList { get; set; }
@@ -414,6 +422,7 @@ namespace Visitor.Application.Models
         public string? VisaOriginalFileName { get; set; }
         public string? VisaFileName { get; set; }
         public string? VisaURL { get; set; }
+        public bool? IsGovOfficials { get; set; }
         public bool? IsActive { get; set; }
 
         public List<AssignGateNo_Response> GateNumberList { get; set; }

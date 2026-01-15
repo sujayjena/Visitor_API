@@ -50,5 +50,7 @@ namespace Visitor.Application.Interfaces
         Task<int> SaveVisitorCheckedInOut_Offline(VisitorCheckedInOut_Offline_Request parameters);
 
         Task<int> DeleteVisitorAsset(int Id);
+
+        Task<int> SendPassportAndVisaExpiry_Notification();
     }
 }

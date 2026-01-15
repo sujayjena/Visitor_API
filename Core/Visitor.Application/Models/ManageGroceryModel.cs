@@ -9,9 +9,9 @@ using Visitor.Persistence.Repositories;
 
 namespace Visitor.Application.Models
 {
+    #region Grocery requisition
     public class GroceryRequisition_Request : BaseEntity
     {
-        #region Grocery requisition
         public GroceryRequisition_Request()
         {
             GroceryRequisitionDetails = new List<GroceryRequisitionDetails_Request>();
@@ -128,7 +128,7 @@ namespace Visitor.Application.Models
     public class GroceryOutwarding_Search : BaseSearchEntity
     {
     }
-    public class GroceryOutwarding_Response : BaseEntity
+    public class GroceryOutwarding_Response : BaseResponseEntity
     {
         public string? OutwardingId { get; set; }
         public int? GroceryId { get; set; }

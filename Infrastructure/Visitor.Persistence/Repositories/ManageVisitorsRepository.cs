@@ -97,6 +97,7 @@ namespace Visitor.Persistence.Repositories
             queryParameters.Add("@VisaValidTill", parameters.VisaValidTill);
             queryParameters.Add("@VisaOriginalFileName", parameters.VisaOriginalFileName);
             queryParameters.Add("@VisaFileName", parameters.VisaFileName);
+            queryParameters.Add("@IsGovOfficials", parameters.IsGovOfficials);
             queryParameters.Add("@IsActive", parameters.IsActive);
             if(parameters.IsWithoutToken ==  true)
             {
@@ -460,6 +461,14 @@ namespace Visitor.Persistence.Repositories
             queryParameters.Add("@Id", Id);
 
             return await SaveByStoredProcedure<int>("DeleteVisitorAsset", queryParameters);
+        }
+
+        public async Task<int> SendPassportAndVisaExpiry_Notification()
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
+
+            return await SaveByStoredProcedure<int>("SendPassportAndVisaExpiry_Notification", queryParameters);
         }
     }
 }

@@ -1661,7 +1661,7 @@ namespace Visitor.API.Controllers
                         WorkSheet1.Cells[recordIndex, 13].Value = items.StateName;
                         WorkSheet1.Cells[recordIndex, 14].Value = items.DistrictName;
                         WorkSheet1.Cells[recordIndex, 15].Value = items.Pincode;
-                        WorkSheet1.Cells[recordIndex, 16].Value = items.MeetingType;
+                        WorkSheet1.Cells[recordIndex, 16].Value = items.VisitType;
                         WorkSheet1.Cells[recordIndex, 17].Value = items.BranchName;
                         WorkSheet1.Cells[recordIndex, 18].Value = items.DepartmentName;
                         WorkSheet1.Cells[recordIndex, 19].Value = strGateNumberList;
@@ -2338,6 +2338,31 @@ namespace Visitor.API.Controllers
 
             _response.IsSuccess = true;
             _response.Message = "Barcode Regenerate successfully";
+            return _response;
+        }
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> SendPassportAndVisaExpiry_Notification()
+        {
+            int result = await _manageVisitorsRepository.SendPassportAndVisaExpiry_Notification();
+
+            if (result == (int)SaveOperationEnums.NoRecordExists)
+            {
+                _response.Message = "No record exists";
+            }
+            else if (result == (int)SaveOperationEnums.ReocrdExists)
+            {
+                _response.Message = "Record already exists";
+            }
+            else if (result == (int)SaveOperationEnums.NoResult)
+            {
+                _response.Message = "Something went wrong, please try again";
+            }
+            else
+            {
+                _response.Message = "Record details saved successfully";
+            }
             return _response;
         }
     }

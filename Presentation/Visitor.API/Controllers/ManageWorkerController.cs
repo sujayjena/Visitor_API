@@ -910,7 +910,7 @@ namespace Visitor.API.Controllers
                         var vVisitorDocumentVerificationList = await _manageVisitorsRepository.GetVisitorDocumentVerificationList(vVisitorDocumentVerification_Search);
                         if (vVisitorDocumentVerificationList.ToList().Count > 0)
                         {
-                            vAadharNo = string.Join(",", vVisitorDocumentVerificationList.ToList().Select(x => x.DocumentNumber));
+                            vAadharNo = string.Join(",", vVisitorDocumentVerificationList.Where(x=>x.IDType == "AADHAAR CARD").ToList().Select(x => x.DocumentNumber));
                         }
 
                         if (items.WorkerShift == 1)
