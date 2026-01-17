@@ -50,5 +50,22 @@ namespace Visitor.Persistence.Repositories
 
             return result;
         }
+
+        public async Task<IEnumerable<Dashboard_Security_TotalSummary_Result>> GetDashboard_Security_TotalSummary(Dashboard_Security_Search_Request parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+
+            queryParameters.Add("@FromDate", parameters.FromDate);
+            queryParameters.Add("@ToDate", parameters.ToDate);
+            queryParameters.Add("@GateDetailsId", parameters.GateDetailsId);
+            queryParameters.Add("@DepartmentId", parameters.DepartmentId);
+            queryParameters.Add("@BranchId", parameters.BranchId);
+            queryParameters.Add("@RefType", parameters.RefType);
+            queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
+
+            var result = await ListByStoredProcedure<Dashboard_Security_TotalSummary_Result>("GetDashboard_Security_TotalSummary", queryParameters);
+
+            return result;
+        }
     }
 }

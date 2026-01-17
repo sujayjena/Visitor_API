@@ -74,8 +74,6 @@ namespace Visitor.Application.Models
         public bool? DV_IsWC { get; set; }
         public string? DV_WCNumber { get; set; }
         public string? DV_WCOriginalFileName { get; set; }
-
-        [JsonIgnore]
         public string? DV_WCFileName { get; set; }
         public string? DV_WC_Base64 { get; set; }
 

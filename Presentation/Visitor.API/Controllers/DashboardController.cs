@@ -41,5 +41,14 @@ namespace Visitor.API.Controllers
             _response.Data = objList.ToList();
             return _response;
         }
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> GetDashboard_Security_TotalSummary(Dashboard_Security_Search_Request parameters)
+        {
+            var objList = await _dashboardRepository.GetDashboard_Security_TotalSummary(parameters);
+            _response.Data = objList.ToList();
+            return _response;
+        }
     }
 }

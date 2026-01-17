@@ -36,4 +36,29 @@ namespace Visitor.Application.Models
         public int? Snacks { get; set; }
         public int? Dinner { get; set; }
     }
+
+    public class CanteenWastageReport_Search : BaseSearchEntity
+    {
+        [DefaultValue(null)]
+        public DateTime? FromDate { get; set; }
+
+        [DefaultValue(null)]
+        public DateTime? ToDate { get; set; }
+
+        [DefaultValue("")]
+        public string? MealType { get; set; }
+    }
+
+    public class CanteenWastageReport_Response : BaseEntity
+    {
+        public DateTime? FWDate { get; set; }
+        public string? MealType { get; set; }
+        public string? ItemName { get; set; }
+        public string? Quantity { get; set; }
+        public int? UOMId { get; set; }
+        public string? UOMName { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public int? CreatedBy { get; set; }
+        public string? CreatorName { get; set; }
+    }
 }

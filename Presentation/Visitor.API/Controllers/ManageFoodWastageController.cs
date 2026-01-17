@@ -59,7 +59,7 @@ namespace Visitor.API.Controllers
 
         [Route("[action]")]
         [HttpPost]
-        public async Task<ResponseModel> GetFoodWastageList(BaseSearchEntity parameters)
+        public async Task<ResponseModel> GetFoodWastageList(FoodWastage_Search parameters)
         {
             IEnumerable<FoodWastage_Response> lstRoles = await _manageFoodWastageRepository.GetFoodWastageList(parameters);
             _response.Data = lstRoles.ToList();

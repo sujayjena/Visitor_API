@@ -35,9 +35,10 @@ namespace Visitor.Persistence.Repositories
             return await SaveByStoredProcedure<int>("SaveFoodWastage", queryParameters);
         }
 
-        public async Task<IEnumerable<FoodWastage_Response>> GetFoodWastageList(BaseSearchEntity parameters)
+        public async Task<IEnumerable<FoodWastage_Response>> GetFoodWastageList(FoodWastage_Search parameters)
         {
             DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@MealType", parameters.MealType);
             queryParameters.Add("@SearchText", parameters.SearchText.SanitizeValue());
             queryParameters.Add("@IsActive", parameters.IsActive);
             queryParameters.Add("@PageNo", parameters.PageNo);

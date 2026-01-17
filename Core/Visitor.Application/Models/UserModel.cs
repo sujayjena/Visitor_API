@@ -328,6 +328,7 @@ namespace Visitor.Application.Models
     {
         [DefaultValue(0)]
         public int? GateDetailsId { get; set; }
+        public int? UserTypeId { get; set; }
     }
 
     public class UserOffline_Response
@@ -344,6 +345,10 @@ namespace Visitor.Application.Models
         public string? CheckedInOutStatus { get; set; }
         public bool? IsCheckedInDisable { get; set; }
         public DateTime? CheckedInDate { get; set; }
+        public int? UserTypeId { get; set; }
+        public string? UserType { get; set; }
+        public DateTime? CreatedDate { get; set; }
+        public DateTime? ModifiedDate { get; set; }
     }
 
     public class UserOtherDetails_Request : BaseEntity

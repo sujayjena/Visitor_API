@@ -37,11 +37,15 @@ namespace Visitor.Application.Models
         [DefaultValue("")]
         public string? IsFilterType { get; set; }
 
-        [DefaultValue(false)]
+        [DefaultValue(null)]
         public bool? IsCrew { get; set; }
 
-        [DefaultValue(false)]
+        [DefaultValue(null)]
         public bool? IsForeigner { get; set; }
+
+        [DefaultValue(null)]
+        public bool? IsGovOfficials { get; set; }
+
         public bool? IsPlanned { get; set; }
     }
 
@@ -302,6 +306,7 @@ namespace Visitor.Application.Models
         public string? NationalityName { get; set; }
         public string? PassportNo { get; set; }
         public bool? IsForeigner { get; set; }
+        public bool? IsGovOfficials { get; set; }
         public string? VisaNo { get; set; }
         public bool? IsActive { get; set; }
 
@@ -565,6 +570,12 @@ namespace Visitor.Application.Models
 
         [DefaultValue(null)]
         public bool? IsPlanned { get; set; }
+
+        [DefaultValue(null)]
+        public bool? IsCrew { get; set; }
+
+        [DefaultValue(null)]
+        public bool? IsForeigner { get; set; }
     }
 
     public class VisitorPlanned_Response : BaseResponseEntity

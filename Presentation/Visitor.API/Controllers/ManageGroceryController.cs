@@ -439,6 +439,74 @@ namespace Visitor.API.Controllers
 
         [Route("[action]")]
         [HttpPost]
+        public async Task<ResponseModel> ExportAvailableStockData(Grocery_Search request)
+        {
+            _response.IsSuccess = false;
+            byte[] result;
+            int recordIndex;
+            ExcelWorksheet WorkSheet1;
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+
+            IEnumerable<Grocery_Response> lstGroceryObj = await _adminMasterRepository.GetGroceryList(request);
+
+            using (MemoryStream msExportDataFile = new MemoryStream())
+            {
+                using (ExcelPackage excelExportData = new ExcelPackage())
+                {
+                    WorkSheet1 = excelExportData.Workbook.Worksheets.Add("AvailableStock");
+                    WorkSheet1.TabColor = System.Drawing.Color.Black;
+                    WorkSheet1.DefaultRowHeight = 12;
+
+                    //Header of table
+                    WorkSheet1.Row(1).Height = 20;
+                    WorkSheet1.Row(1).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    WorkSheet1.Row(1).Style.Font.Bold = true;
+
+                    WorkSheet1.Cells[1, 1].Value = "GroceryName";
+                    WorkSheet1.Cells[1, 2].Value = "UOMName";
+                    WorkSheet1.Cells[1, 3].Value = "AvailableQty";
+                    WorkSheet1.Cells[1, 4].Value = "OutwardingQty";
+                    WorkSheet1.Cells[1, 5].Value = "RemainingQty";
+                    WorkSheet1.Cells[1, 6].Value = "MinQty";
+                    WorkSheet1.Cells[1, 7].Value = "CreatedDate";
+                    WorkSheet1.Cells[1, 8].Value = "CreatedBy";
+
+                    recordIndex = 2;
+
+                    foreach (var items in lstGroceryObj)
+                    {
+                        WorkSheet1.Cells[recordIndex, 1].Value = items.GroceryName;
+                        WorkSheet1.Cells[recordIndex, 2].Value = items.UOMName;
+                        WorkSheet1.Cells[recordIndex, 3].Value = items.AvailableQty;
+                        WorkSheet1.Cells[recordIndex, 4].Value = 0;
+                        WorkSheet1.Cells[recordIndex, 5].Value = items.AvailableQty;
+                        WorkSheet1.Cells[recordIndex, 6].Value = items.MinQty;
+                        WorkSheet1.Cells[recordIndex, 7].Value = items.CreatedDate.ToString("dd/MM/yyyy");
+                        WorkSheet1.Cells[recordIndex, 8].Value = items.CreatorName;
+
+                        recordIndex += 1;
+                    }
+
+                    WorkSheet1.Columns.AutoFit();
+
+                    excelExportData.SaveAs(msExportDataFile);
+                    msExportDataFile.Position = 0;
+                    result = msExportDataFile.ToArray();
+                }
+            }
+
+            if (result != null)
+            {
+                _response.Data = result;
+                _response.IsSuccess = true;
+                _response.Message = "Data Exported successfully";
+            }
+
+            return _response;
+        }
+
+        [Route("[action]")]
+        [HttpPost]
         public async Task<ResponseModel> ExportOutwardingStockData(GroceryOutwarding_Search request)
         {
             _response.IsSuccess = false;

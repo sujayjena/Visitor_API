@@ -12,7 +12,7 @@ namespace Visitor.Application.Interfaces
     {
         Task<int> SaveFoodWastage(FoodWastage_Request parameters);
 
-        Task<IEnumerable<FoodWastage_Response>> GetFoodWastageList(BaseSearchEntity parameters);
+        Task<IEnumerable<FoodWastage_Response>> GetFoodWastageList(FoodWastage_Search parameters);
 
         Task<FoodWastage_Response?> GetFoodWastageById(int Id);
     }

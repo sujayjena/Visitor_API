@@ -127,6 +127,7 @@ namespace Visitor.Persistence.Repositories
             queryParameters.Add("@IsFilterType", parameters.IsFilterType);
             queryParameters.Add("@IsCrew", parameters.IsCrew);
             queryParameters.Add("@IsForeigner", parameters.IsForeigner);
+            queryParameters.Add("@IsGovOfficials", parameters.IsGovOfficials);
             queryParameters.Add("@SearchText", parameters.SearchText.SanitizeValue());
             queryParameters.Add("@IsPlanned", parameters.IsPlanned);
             queryParameters.Add("@IsActive", parameters.IsActive);
@@ -236,6 +237,8 @@ namespace Visitor.Persistence.Repositories
             queryParameters.Add("@GateDetailsId", parameters.GateDetailsId);
             queryParameters.Add("@IsPlanned_CheckIn_CheckOut", parameters.IsPlanned_CheckIn_CheckOut);
             queryParameters.Add("@IsPlanned", parameters.IsPlanned);
+            queryParameters.Add("@IsCrew", parameters.IsCrew);
+            queryParameters.Add("@IsForeigner", parameters.IsForeigner);
             queryParameters.Add("@SearchText", parameters.SearchText.SanitizeValue());
             queryParameters.Add("@IsActive", parameters.IsActive);
             queryParameters.Add("@PageNo", parameters.PageNo);

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,6 +11,8 @@ namespace Visitor.Application.Models
 {
     public class FoodWastage_Search : BaseSearchEntity
     {
+        [DefaultValue("")]
+        public string? MealType { get; set; }
     }
     public class FoodWastage_Request : BaseEntity
     {
@@ -20,7 +23,6 @@ namespace Visitor.Application.Models
         public int? UOMId { get; set; }
         public bool? IsActive { get; set; }
     }
-
     public class FoodWastage_Response : BaseResponseEntity
     {
         public DateTime? FWDate { get; set; }
