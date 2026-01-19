@@ -121,6 +121,8 @@ namespace Visitor.Persistence.Repositories
             queryParameters.Add("@FromDate", parameters.FromDate);
             queryParameters.Add("@ToDate", parameters.ToDate);
             queryParameters.Add("@StatusId", parameters.StatusId);
+            queryParameters.Add("@IsCheckedIn", parameters.IsCheckedIn);
+            queryParameters.Add("@IsCheckedOut", parameters.IsCheckedOut);
             queryParameters.Add("@GateDetailsId_Filter", parameters.GateDetailsId_Filter);
             queryParameters.Add("@BranchId", parameters.BranchId);
             queryParameters.Add("@DepartmentId", parameters.DepartmentId);

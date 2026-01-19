@@ -37,6 +37,8 @@ namespace Visitor.Application.Models
 
         [DefaultValue(null)]
         public DateTime? ToDate { get; set; }
+
+        public int? IsDateFilterType { get; set; }
     }
 
     public class User_Request : BaseEntity

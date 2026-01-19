@@ -29,6 +29,12 @@ namespace Visitor.Application.Models
         public DateTime? ToDate { get; set; }
         public int? StatusId { get; set; }
 
+        [DefaultValue(null)]
+        public bool? IsCheckedIn { get; set; }
+
+        [DefaultValue(null)]
+        public bool? IsCheckedOut { get; set; }
+
         [DefaultValue("")]
         public string? GateDetailsId_Filter { get; set; }
         public int? BranchId { get; set; }
@@ -304,10 +310,19 @@ namespace Visitor.Application.Models
         public bool? IsCrew { get; set; }
         public int? NationalityId { get; set; }
         public string? NationalityName { get; set; }
+        public bool? IsPassport { get; set; }
         public string? PassportNo { get; set; }
+        public string? PlaceOfIssue { get; set; }
+        public DateTime? PassportIssueDate { get; set; }
+        public DateTime? PassportValidTill { get; set; }
+        public int? VesselId { get; set; }
+        public string? VesselName { get; set; }
         public bool? IsForeigner { get; set; }
-        public bool? IsGovOfficials { get; set; }
+        public bool? IsVisa { get; set; }
         public string? VisaNo { get; set; }
+        public DateTime? VisaValidFrom { get; set; }
+        public DateTime? VisaValidTill { get; set; }
+        public bool? IsGovOfficials { get; set; }
         public bool? IsActive { get; set; }
 
         public List<AssignGateNo_Response> GateNumberList { get; set; }
@@ -763,6 +778,19 @@ namespace Visitor.Application.Models
         public string? IsPUC { get; set; }
         public string? IsInsurance { get; set; }
         public string? Remarks { get; set; }
+        public string? IsCrew { get; set; }
+        public string? Nationality { get; set; }
+        public string? IsPassport { get; set; }
+        public string? PassportNo { get; set; }
+        public string? PlaceOfIssue { get; set; }
+        public DateTime? PassportIssueDate { get; set; }
+        public DateTime? PassportValidTill { get; set; }
+        public string? Vessel { get; set; }
+        public string? IsForeigner { get; set; }
+        public string? IsVisa { get; set; }
+        public string? VisaNo { get; set; }
+        public DateTime? VisaValidFrom { get; set; }
+        public DateTime? VisaValidTill { get; set; }
     }
 
     public class Visitor_ImportDataValidation
@@ -793,6 +821,19 @@ namespace Visitor.Application.Models
         public string? IsPUC { get; set; }
         public string? IsInsurance { get; set; }
         public string? Remarks { get; set; }
+        public string? IsCrew { get; set; }
+        public string? Nationality { get; set; }
+        public string? IsPassport { get; set; }
+        public string? PassportNo { get; set; }
+        public string? PlaceOfIssue { get; set; }
+        public string? PassportIssueDate { get; set; }
+        public string? PassportValidTill { get; set; }
+        public string? Vessel { get; set; }
+        public string? IsForeigner { get; set; }
+        public string? IsVisa { get; set; }
+        public string? VisaNo { get; set; }
+        public string? VisaValidFrom { get; set; }
+        public string? VisaValidTill { get; set; }
         public string ValidationMessage { get; set; }
     }
 

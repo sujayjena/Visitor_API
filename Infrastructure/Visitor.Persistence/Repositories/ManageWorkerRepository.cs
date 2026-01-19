@@ -99,6 +99,7 @@ namespace Visitor.Persistence.Repositories
             queryParameters.Add("@GateDetailsId", parameters.GateDetailsId);
             queryParameters.Add("@FromDate", parameters.FromDate);
             queryParameters.Add("@ToDate", parameters.ToDate);
+            queryParameters.Add("@IsDateFilterType", parameters.IsDateFilterType);
             queryParameters.Add("@PageNo", parameters.PageNo);
             queryParameters.Add("@PageSize", parameters.PageSize);
             queryParameters.Add("@Total", parameters.Total, null, System.Data.ParameterDirection.Output);

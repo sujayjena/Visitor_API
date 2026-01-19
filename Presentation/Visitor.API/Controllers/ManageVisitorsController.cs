@@ -1397,7 +1397,20 @@ namespace Visitor.API.Controllers
                     !string.Equals(workSheet.Cells[1, 23].Value.ToString(), "IsDrivingLicense", StringComparison.OrdinalIgnoreCase) ||
                     !string.Equals(workSheet.Cells[1, 24].Value.ToString(), "IsPUC", StringComparison.OrdinalIgnoreCase) ||
                     !string.Equals(workSheet.Cells[1, 25].Value.ToString(), "IsInsurance", StringComparison.OrdinalIgnoreCase) ||
-                    !string.Equals(workSheet.Cells[1, 26].Value.ToString(), "Remarks", StringComparison.OrdinalIgnoreCase))
+                    !string.Equals(workSheet.Cells[1, 26].Value.ToString(), "Remarks", StringComparison.OrdinalIgnoreCase) ||
+                    !string.Equals(workSheet.Cells[1, 27].Value.ToString(), "IsCrew", StringComparison.OrdinalIgnoreCase) ||
+                    !string.Equals(workSheet.Cells[1, 28].Value.ToString(), "Nationality", StringComparison.OrdinalIgnoreCase) ||
+                    !string.Equals(workSheet.Cells[1, 29].Value.ToString(), "IsPassport", StringComparison.OrdinalIgnoreCase) ||
+                    !string.Equals(workSheet.Cells[1, 30].Value.ToString(), "PassportNo", StringComparison.OrdinalIgnoreCase) ||
+                    !string.Equals(workSheet.Cells[1, 31].Value.ToString(), "PlaceOfIssue", StringComparison.OrdinalIgnoreCase) ||
+                    !string.Equals(workSheet.Cells[1, 32].Value.ToString(), "PassportIssueDate", StringComparison.OrdinalIgnoreCase) ||
+                    !string.Equals(workSheet.Cells[1, 33].Value.ToString(), "PassportValidTill", StringComparison.OrdinalIgnoreCase) ||
+                    !string.Equals(workSheet.Cells[1, 34].Value.ToString(), "Vessel", StringComparison.OrdinalIgnoreCase) ||
+                    !string.Equals(workSheet.Cells[1, 35].Value.ToString(), "IsForeigner", StringComparison.OrdinalIgnoreCase) ||
+                    !string.Equals(workSheet.Cells[1, 36].Value.ToString(), "IsVisa", StringComparison.OrdinalIgnoreCase) ||
+                    !string.Equals(workSheet.Cells[1, 37].Value.ToString(), "VisaNo", StringComparison.OrdinalIgnoreCase) ||
+                    !string.Equals(workSheet.Cells[1, 38].Value.ToString(), "VisaValidFrom", StringComparison.OrdinalIgnoreCase) ||
+                    !string.Equals(workSheet.Cells[1, 39].Value.ToString(), "VisaValidTill", StringComparison.OrdinalIgnoreCase))
                 {
                     _response.IsSuccess = false;
                     _response.Message = "Please upload a valid excel file";
@@ -1436,7 +1449,21 @@ namespace Visitor.API.Controllers
                             IsDrivingLicense = workSheet.Cells[rowIterator, 23].Value?.ToString(),
                             IsPUC = workSheet.Cells[rowIterator, 24].Value?.ToString(),
                             IsInsurance = workSheet.Cells[rowIterator, 25].Value?.ToString(),
-                            Remarks = workSheet.Cells[rowIterator, 26].Value?.ToString()
+                            Remarks = workSheet.Cells[rowIterator, 26].Value?.ToString(),
+
+                            IsCrew = workSheet.Cells[rowIterator, 27].Value?.ToString(),
+                            Nationality = workSheet.Cells[rowIterator, 28].Value?.ToString(),
+                            IsPassport = workSheet.Cells[rowIterator, 29].Value?.ToString(),
+                            PassportNo = workSheet.Cells[rowIterator, 30].Value?.ToString(),
+                            PlaceOfIssue = workSheet.Cells[rowIterator, 31].Value?.ToString(),
+                            PassportIssueDate = !string.IsNullOrWhiteSpace(workSheet.Cells[rowIterator, 32].Value?.ToString()) ? DateTime.ParseExact(workSheet.Cells[rowIterator, 32].Value?.ToString(), "dd/MM/yyyy", System.Globalization.CultureInfo.CurrentUICulture.DateTimeFormat) : null,
+                            PassportValidTill = !string.IsNullOrWhiteSpace(workSheet.Cells[rowIterator, 33].Value?.ToString()) ? DateTime.ParseExact(workSheet.Cells[rowIterator, 33].Value?.ToString(), "dd/MM/yyyy", System.Globalization.CultureInfo.CurrentUICulture.DateTimeFormat) : null,
+                            Vessel = workSheet.Cells[rowIterator, 34].Value?.ToString(),
+                            IsForeigner = workSheet.Cells[rowIterator, 35].Value?.ToString(),
+                            IsVisa = workSheet.Cells[rowIterator, 36].Value?.ToString(),
+                            VisaNo = workSheet.Cells[rowIterator, 37].Value?.ToString(),
+                            VisaValidFrom = !string.IsNullOrWhiteSpace(workSheet.Cells[rowIterator, 38].Value?.ToString()) ? DateTime.ParseExact(workSheet.Cells[rowIterator, 38].Value?.ToString(), "dd/MM/yyyy", System.Globalization.CultureInfo.CurrentUICulture.DateTimeFormat) : null,
+                            VisaValidTill = !string.IsNullOrWhiteSpace(workSheet.Cells[rowIterator, 39].Value?.ToString()) ? DateTime.ParseExact(workSheet.Cells[rowIterator, 39].Value?.ToString(), "dd/MM/yyyy", System.Globalization.CultureInfo.CurrentUICulture.DateTimeFormat) : null,
                         }); ;
                     }
                 }
@@ -1518,7 +1545,20 @@ namespace Visitor.API.Controllers
                     WorkSheet1.Cells[1, 24].Value = "IsPUC";
                     WorkSheet1.Cells[1, 25].Value = "IsInsurance";
                     WorkSheet1.Cells[1, 26].Value = "Remarks";
-                    WorkSheet1.Cells[1, 27].Value = "ErrorMessage";
+                    WorkSheet1.Cells[1, 27].Value = "IsCrew";
+                    WorkSheet1.Cells[1, 28].Value = "Nationality";
+                    WorkSheet1.Cells[1, 29].Value = "IsPassport";
+                    WorkSheet1.Cells[1, 30].Value = "PassportNo";
+                    WorkSheet1.Cells[1, 31].Value = "PlaceOfIssue";
+                    WorkSheet1.Cells[1, 32].Value = "PassportIssueDate";
+                    WorkSheet1.Cells[1, 33].Value = "PassportValidTill";
+                    WorkSheet1.Cells[1, 34].Value = "Vessel";
+                    WorkSheet1.Cells[1, 35].Value = "IsForeigner";
+                    WorkSheet1.Cells[1, 36].Value = "IsVisa";
+                    WorkSheet1.Cells[1, 37].Value = "VisaNo";
+                    WorkSheet1.Cells[1, 38].Value = "VisaValidFrom";
+                    WorkSheet1.Cells[1, 39].Value = "VisaValidTill";
+                    WorkSheet1.Cells[1, 40].Value = "ErrorMessage";
 
                     recordIndex = 2;
 
@@ -1555,7 +1595,22 @@ namespace Visitor.API.Controllers
                         WorkSheet1.Cells[recordIndex, 24].Value = record.IsPUC;
                         WorkSheet1.Cells[recordIndex, 25].Value = record.IsInsurance;
                         WorkSheet1.Cells[recordIndex, 26].Value = record.Remarks;
-                        WorkSheet1.Cells[recordIndex, 27].Value = record.ValidationMessage;
+
+                        WorkSheet1.Cells[recordIndex, 27].Value = record.IsCrew;
+                        WorkSheet1.Cells[recordIndex, 28].Value = record.Nationality;
+                        WorkSheet1.Cells[recordIndex, 29].Value = record.IsPassport;
+                        WorkSheet1.Cells[recordIndex, 30].Value = record.PassportNo;
+                        WorkSheet1.Cells[recordIndex, 31].Value = record.PlaceOfIssue;
+                        WorkSheet1.Cells[recordIndex, 32].Value = record.PassportIssueDate;
+                        WorkSheet1.Cells[recordIndex, 33].Value = record.PassportValidTill;
+                        WorkSheet1.Cells[recordIndex, 34].Value = record.Vessel;
+                        WorkSheet1.Cells[recordIndex, 35].Value = record.IsForeigner;
+                        WorkSheet1.Cells[recordIndex, 36].Value = record.IsVisa;
+                        WorkSheet1.Cells[recordIndex, 37].Value = record.VisaNo;
+                        WorkSheet1.Cells[recordIndex, 38].Value = record.VisaValidFrom;
+                        WorkSheet1.Cells[recordIndex, 39].Value = record.VisaValidTill;
+
+                        WorkSheet1.Cells[recordIndex, 40].Value = record.ValidationMessage;
 
                         recordIndex += 1;
                     }
@@ -1625,10 +1680,23 @@ namespace Visitor.API.Controllers
                     WorkSheet1.Cells[1, 27].Value = "Is PUC";
                     WorkSheet1.Cells[1, 28].Value = "Is Insurance";
                     WorkSheet1.Cells[1, 29].Value = "Remarks";
-                    WorkSheet1.Cells[1, 30].Value = "Status";
-                    WorkSheet1.Cells[1, 31].Value = "Is Active";
-                    WorkSheet1.Cells[1, 32].Value = "Created Date";
-                    WorkSheet1.Cells[1, 33].Value = "Created By";
+                    WorkSheet1.Cells[1, 30].Value = "IsCrew";
+                    WorkSheet1.Cells[1, 31].Value = "Nationality";
+                    WorkSheet1.Cells[1, 32].Value = "IsPassport";
+                    WorkSheet1.Cells[1, 33].Value = "PassportNo";
+                    WorkSheet1.Cells[1, 34].Value = "PlaceOfIssue";
+                    WorkSheet1.Cells[1, 35].Value = "PassportIssueDate";
+                    WorkSheet1.Cells[1, 36].Value = "PassportValidTill";
+                    WorkSheet1.Cells[1, 37].Value = "Vessel";
+                    WorkSheet1.Cells[1, 38].Value = "IsForeigner";
+                    WorkSheet1.Cells[1, 39].Value = "IsVisa";
+                    WorkSheet1.Cells[1, 40].Value = "VisaNo";
+                    WorkSheet1.Cells[1, 41].Value = "VisaValidFrom";
+                    WorkSheet1.Cells[1, 42].Value = "VisaValidTill";
+                    WorkSheet1.Cells[1, 43].Value = "Status";
+                    WorkSheet1.Cells[1, 44].Value = "Is Active";
+                    WorkSheet1.Cells[1, 45].Value = "Created Date";
+                    WorkSheet1.Cells[1, 46].Value = "Created By";
 
                     recordIndex = 2;
 
@@ -1675,11 +1743,24 @@ namespace Visitor.API.Controllers
                         WorkSheet1.Cells[recordIndex, 27].Value = items.IsPUC;
                         WorkSheet1.Cells[recordIndex, 28].Value = items.IsInsurance;
                         WorkSheet1.Cells[recordIndex, 29].Value = items.Remarks;
-                        WorkSheet1.Cells[recordIndex, 30].Value = items.StatusName;
+                        WorkSheet1.Cells[recordIndex, 30].Value = items.IsCrew == true ? "Yes" : "No"; 
+                        WorkSheet1.Cells[recordIndex, 31].Value = items.NationalityName;
+                        WorkSheet1.Cells[recordIndex, 32].Value = items.IsPassport == true ? "Yes" : "No";
+                        WorkSheet1.Cells[recordIndex, 33].Value = items.PassportNo;
+                        WorkSheet1.Cells[recordIndex, 34].Value = items.PlaceOfIssue;
+                        WorkSheet1.Cells[recordIndex, 35].Value = items.PassportIssueDate != null ? Convert.ToDateTime(items.PassportIssueDate).ToString("dd/MM/yyyy") : "";
+                        WorkSheet1.Cells[recordIndex, 36].Value = items.PassportValidTill != null ? Convert.ToDateTime(items.PassportValidTill).ToString("dd/MM/yyyy") : "";
+                        WorkSheet1.Cells[recordIndex, 37].Value = items.VesselName;
+                        WorkSheet1.Cells[recordIndex, 38].Value = items.IsForeigner == true ? "Yes" : "No"; 
+                        WorkSheet1.Cells[recordIndex, 39].Value = items.IsVisa == true ? "Yes" : "No";
+                        WorkSheet1.Cells[recordIndex, 40].Value = items.VisaNo;
+                        WorkSheet1.Cells[recordIndex, 41].Value = items.VisaValidFrom != null ? Convert.ToDateTime(items.VisaValidFrom).ToString("dd/MM/yyyy") : "";
+                        WorkSheet1.Cells[recordIndex, 42].Value = items.VisaValidTill != null ? Convert.ToDateTime(items.VisaValidTill).ToString("dd/MM/yyyy") : "";
+                        WorkSheet1.Cells[recordIndex, 43].Value = items.StatusName;
 
-                        WorkSheet1.Cells[recordIndex, 31].Value = items.IsActive == true ? "Active" : "Inactive";
-                        WorkSheet1.Cells[recordIndex, 32].Value = Convert.ToDateTime(items.CreatedDate).ToString("dd/MM/yyyy");
-                        WorkSheet1.Cells[recordIndex, 33].Value = items.CreatorName;
+                        WorkSheet1.Cells[recordIndex, 44].Value = items.IsActive == true ? "Active" : "Inactive";
+                        WorkSheet1.Cells[recordIndex, 45].Value = Convert.ToDateTime(items.CreatedDate).ToString("dd/MM/yyyy");
+                        WorkSheet1.Cells[recordIndex, 46].Value = items.CreatorName;
 
                         recordIndex += 1;
                         i++;
