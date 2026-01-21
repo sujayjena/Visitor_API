@@ -252,6 +252,27 @@ namespace Visitor.API.Controllers
             return _response;
         }
 
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> DeleteMaterialRequestDetails(int Id)
+        {
+            int result = await _materialManagementRepository.DeleteMaterialRequestDetails(Id);
+
+            if (result == (int)SaveOperationEnums.NoRecordExists)
+            {
+                _response.Message = "No record exists";
+            }
+            else if (result == (int)SaveOperationEnums.NoResult)
+            {
+                _response.Message = "Something went wrong, please try again";
+            }
+            else
+            {
+                _response.Message = "Record details deleted successfully";
+            }
+            return _response;
+        }
+
         #endregion
     }
 }

@@ -134,6 +134,15 @@ namespace Visitor.Persistence.Repositories
             return result;
         }
 
+        public async Task<int> DeleteMaterialRequestDetails(int Id)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+
+            queryParameters.Add("@Id", Id);
+
+            return await SaveByStoredProcedure<int>("DeleteMaterialRequestDetails", queryParameters);
+        }
+
         #endregion
     }
 }

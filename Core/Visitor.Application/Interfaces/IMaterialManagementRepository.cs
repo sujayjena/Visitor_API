@@ -20,6 +20,7 @@ namespace Visitor.Application.Interfaces
         #region Material Request Details
         Task<int> SaveMaterialRequestDetails(MaterialRequestDetails_Request parameters);
         Task<IEnumerable<MaterialRequestDetails_Response>> GetMaterialRequestDetailsList(MaterialRequestDetails_Search parameters);
+        Task<int> DeleteMaterialRequestDetails(int Id);
         #endregion
     }
 }
