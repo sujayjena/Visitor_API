@@ -76,6 +76,7 @@ namespace Visitor.Persistence.Repositories
             queryParameters.Add("@LicenseValidFrom", parameters.LicenseValidFrom);
             queryParameters.Add("@LicenseValidTo", parameters.LicenseValidTo);
 
+            queryParameters.Add("@Remarks", parameters.Remarks);
             queryParameters.Add("@IsCanteenPrivilege", parameters.IsCanteenPrivilege);
             queryParameters.Add("@IsPrimary", parameters.IsPrimary);
             queryParameters.Add("@IsBlackList", parameters.IsBlackList);

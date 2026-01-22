@@ -100,6 +100,7 @@ namespace Visitor.Application.Models
         public int? VisitorId { get; set; }
         public string? VisitNumber { get; set; }
         public string? RequisitionCode { get; set; }
+        public int? TransactionTypeId { get; set; }
         public int? ContractorTypeId { get; set; }
         public string? ContractorType { get; set; }
         public int? ContractorId { get; set; }

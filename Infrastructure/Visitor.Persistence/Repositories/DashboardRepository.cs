@@ -67,5 +67,17 @@ namespace Visitor.Persistence.Repositories
 
             return result;
         }
+        public async Task<IEnumerable<Dashboard_TokenCountSummary_Result>> GetDashboard_CanteenWastageSummary(Dashboard_CanteenWastageSummary_Search parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+
+            queryParameters.Add("@FromDate", parameters.FromDate);
+            queryParameters.Add("@ToDate", parameters.ToDate);
+            queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
+
+            var result = await ListByStoredProcedure<Dashboard_TokenCountSummary_Result>("GetDashboard_CanteenWastageSummary", queryParameters);
+
+            return result;
+        }
     }
 }

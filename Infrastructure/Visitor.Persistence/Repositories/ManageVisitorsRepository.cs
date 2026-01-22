@@ -90,6 +90,8 @@ namespace Visitor.Persistence.Repositories
             queryParameters.Add("@PassportOriginalFileName", parameters.PassportOriginalFileName);
             queryParameters.Add("@PassportFileName", parameters.PassportFileName);
             queryParameters.Add("@VesselId", parameters.VesselId);
+            queryParameters.Add("@VesselStartDate", parameters.VesselStartDate);
+            queryParameters.Add("@VesselEndDate", parameters.VesselEndDate);
             queryParameters.Add("@IsForeigner", parameters.IsForeigner);
             queryParameters.Add("@IsVisa", parameters.IsVisa);
             queryParameters.Add("@VisaNo", parameters.VisaNo);

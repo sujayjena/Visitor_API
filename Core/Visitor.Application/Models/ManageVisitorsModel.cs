@@ -184,6 +184,8 @@ namespace Visitor.Application.Models
         [DefaultValue("")]
         public string? Passport_Base64 { get; set; }
         public int? VesselId { get; set; }
+        public DateTime? VesselStartDate { get; set; }
+        public DateTime? VesselEndDate { get; set; }
 
         [DefaultValue(false)]
         public bool? IsForeigner { get; set; }
@@ -317,6 +319,8 @@ namespace Visitor.Application.Models
         public DateTime? PassportValidTill { get; set; }
         public int? VesselId { get; set; }
         public string? VesselName { get; set; }
+        public DateTime? VesselStartDate { get; set; }
+        public DateTime? VesselEndDate { get; set; }
         public bool? IsForeigner { get; set; }
         public bool? IsVisa { get; set; }
         public string? VisaNo { get; set; }
@@ -434,6 +438,8 @@ namespace Visitor.Application.Models
         public string? PassportURL { get; set; }
         public int? VesselId { get; set; }
         public string? VesselName { get; set; }
+        public DateTime? VesselStartDate { get; set; }
+        public DateTime? VesselEndDate { get; set; }
         public bool? IsForeigner { get; set; }
         public bool? IsVisa { get; set; }
         public string? VisaNo { get; set; }

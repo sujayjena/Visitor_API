@@ -240,7 +240,7 @@ namespace Visitor.API.Controllers
                             }
 
                             var vApprovalType = vGroceryApprovalList.Where(x => x.EmployeeId == SessionManager.LoggedInUserId).Select(x => x.ApprovalType).FirstOrDefault();
-                            string approvalTypeName = (vApprovalType == 1 ? "APPROVER 1" : vApprovalType == 2 ? "APPROVER 2" : "");
+                            string approvalTypeName = (vApprovalType == 1 ? "PRIMARY APPROVER" : vApprovalType == 2 ? "FINAL APPROVER" : "");
 
                             string notifyMessage = String.Format(@"This Requisition ID {0} has been rejected by the approver: {1} ({2}), Rejection Remarks {3}.", vGroceryRequisition.RequisitionId, approverName, approvalTypeName, parameters.Remarks);
 

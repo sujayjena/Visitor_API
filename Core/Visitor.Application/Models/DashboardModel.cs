@@ -74,4 +74,10 @@ namespace Visitor.Application.Models
         public int? TotalCheckedInCount { get; set; }
         public int? TotalCheckedOutCount { get; set; }
     }
+
+    public class Dashboard_CanteenWastageSummary_Search
+    {
+        public DateTime? FromDate { get; set; }
+        public DateTime? ToDate { get; set; }
+    }
 }

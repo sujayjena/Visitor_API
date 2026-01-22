@@ -50,5 +50,15 @@ namespace Visitor.API.Controllers
             _response.Data = objList.ToList();
             return _response;
         }
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> GetDashboard_CanteenWastageSummary(Dashboard_CanteenWastageSummary_Search parameters)
+        {
+            var objList = await _dashboardRepository.GetDashboard_CanteenWastageSummary(parameters);
+            _response.Data = objList.ToList();
+            return _response;
+        }
+
     }
 }

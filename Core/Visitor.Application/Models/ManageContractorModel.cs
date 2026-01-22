@@ -86,6 +86,7 @@ namespace Visitor.Application.Models
 
         [DefaultValue(false)]
         public bool? IsCanteenPrivilege { get; set; }
+        public string? Remarks { get; set; }
         public bool? IsActive { get; set; }
 
         [DefaultValue(false)]
@@ -175,6 +176,7 @@ namespace Visitor.Application.Models
         public string? DV_ESICFileName { get; set; }
         public string? DV_ESICURL { get; set; }
         public bool? IsCanteenPrivilege { get; set; }
+        public string? Remarks { get; set; }
         public bool? IsActive { get; set; }
         public bool? IsBlackList { get; set; }
         public List<ContractorAsset_Response> assetList { get; set; }

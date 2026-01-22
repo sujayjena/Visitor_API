@@ -68,6 +68,7 @@ namespace Visitor.Persistence.Repositories
             queryParameters.Add("@DV_ESICFileName", parameters.DV_ESICFileName);
 
             queryParameters.Add("@IsCanteenPrivilege", parameters.IsCanteenPrivilege);
+            queryParameters.Add("@Remarks", parameters.Remarks);
             queryParameters.Add("@IsActive", parameters.IsActive);
             queryParameters.Add("@IsBlackList", parameters.IsBlackList);
             queryParameters.Add("@UserId", SessionManager.LoggedInUserId);

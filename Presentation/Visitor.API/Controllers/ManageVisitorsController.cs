@@ -280,11 +280,12 @@ namespace Visitor.API.Controllers
 
                             var vSearch = new User_Search()
                             {
-                                UserTypeId = 2,
+                                UserTypeId = 0,
                                 BranchId = 0
                             };
 
-                            var vSecurityList = await _userRepository.GetUserList(vSearch); //get branch wise security list
+                            var vUserList = await _userRepository.GetUserList(vSearch); //get branch wise security list
+                            var vSecurityList = vUserList.ToList().Where(x => x.UserTypeId == 2);
 
                             var vGateNumberList = await _assignGateNoRepository.GetAssignGateNoById(0, "Security", 0); //get gate list of security
                             var vGateNumberList_1 = vGateNumberList.Where(x => x.GateNumber == "1").ToList();
@@ -307,6 +308,41 @@ namespace Visitor.API.Controllers
                                     };
 
                                     int resultNotification = await _notificationRepository.SaveNotification(vNotifyObj);
+                                }
+                            }
+
+                            //send notification to HOD and security also
+                            if (parameters.StatusId == 1)
+                            {
+                                var vHODEmployeeList = vUserList.ToList().Where(x => x.BranchId == parameters.BranchId && x.DepartmentId == parameters.DepartmentId && x.IsHOD == true).ToList();
+                                foreach (var vHODEmployee in vHODEmployeeList)
+                                {
+                                    string notifyMessage_Hod = String.Format(@"Visitor {0}, Visitor ID {1} and Mobile Number {2} is waiting for approval from {3}.", parameters.VisitorName, vVisitor.VisitNumber, parameters.VisitorMobileNo, vHODEmployee.UserName);
+                                    var vNotifyObj = new Notification_Request()
+                                    {
+                                        Subject = "Visitor Approval",
+                                        SendTo = "HOD Employee",
+                                        //CustomerId = vWorkOrderObj.CustomerId,
+                                        //CustomerMessage = NotifyMessage,
+                                        EmployeeId = vHODEmployee.Id,
+                                        EmployeeMessage = notifyMessage_Hod,
+                                        RefValue1 = vVisitor.VisitNumber,
+                                        ReadUnread = false
+                                    };
+                                    int resultNotification = await _notificationRepository.SaveNotification(vNotifyObj);
+
+                                    var vNotifyToSecurityObj = new Notification_Request()
+                                    {
+                                        Subject = "Visitor Approval",
+                                        SendTo = "Request Raised Security",
+                                        //CustomerId = vWorkOrderObj.CustomerId,
+                                        //CustomerMessage = NotifyMessage,
+                                        EmployeeId = Convert.ToInt32(SessionManager.LoggedInUserId),
+                                        EmployeeMessage = notifyMessage_Hod,
+                                        RefValue1 = vVisitor.VisitNumber,
+                                        ReadUnread = false
+                                    };
+                                    int resultSecurityNotification = await _notificationRepository.SaveNotification(vNotifyToSecurityObj);
                                 }
                             }
                         }

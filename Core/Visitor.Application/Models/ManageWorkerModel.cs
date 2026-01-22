@@ -97,6 +97,7 @@ namespace Visitor.Application.Models
 
         [DefaultValue(null)]
         public DateTime? LicenseValidTo { get; set; }
+        public string? Remarks { get; set; }
 
         [DefaultValue(false)]
         public bool? IsCanteenPrivilege { get; set; }
