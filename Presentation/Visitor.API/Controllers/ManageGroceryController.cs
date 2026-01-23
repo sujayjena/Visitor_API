@@ -279,6 +279,7 @@ namespace Visitor.API.Controllers
             _response.Total = parameters.Total;
             return _response;
         }
+
         #endregion
 
         #region Grocery Inwarding

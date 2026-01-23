@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using OfficeOpenXml;
+using OfficeOpenXml.Style;
 using Visitor.Application.Enums;
 using Visitor.Application.Helpers;
 using Visitor.Application.Interfaces;
@@ -80,6 +82,69 @@ namespace Visitor.API.Controllers
                 var vResultObj = await _manageFoodWastageRepository.GetFoodWastageById(Id);
                 _response.Data = vResultObj;
             }
+            return _response;
+        }
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> ExportFoodWastageData(FoodWastage_Search parameters)
+        {
+            _response.IsSuccess = false;
+            byte[] result;
+            int recordIndex;
+            ExcelWorksheet WorkSheet1;
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+
+            IEnumerable<FoodWastage_Response> lstObj = await _manageFoodWastageRepository.GetFoodWastageList(parameters);
+
+            using (MemoryStream msExportDataFile = new MemoryStream())
+            {
+                using (ExcelPackage excelExportData = new ExcelPackage())
+                {
+                    WorkSheet1 = excelExportData.Workbook.Worksheets.Add("FoodWastage");
+                    WorkSheet1.TabColor = System.Drawing.Color.Black;
+                    WorkSheet1.DefaultRowHeight = 12;
+
+                    //Header of table
+                    WorkSheet1.Row(1).Height = 20;
+                    WorkSheet1.Row(1).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    WorkSheet1.Row(1).Style.Font.Bold = true;
+
+                    WorkSheet1.Cells[1, 1].Value = "Date";
+                    WorkSheet1.Cells[1, 2].Value = "Item Name";
+                    WorkSheet1.Cells[1, 3].Value = "Quantity";
+                    WorkSheet1.Cells[1, 4].Value = "UOM";
+                    WorkSheet1.Cells[1, 5].Value = "Created Date";
+                    WorkSheet1.Cells[1, 6].Value = "Created By";
+
+                    recordIndex = 2;
+
+                    foreach (var items in lstObj)
+                    {
+                        WorkSheet1.Cells[recordIndex, 1].Value = items.FWDate != null ? Convert.ToDateTime(items.FWDate).ToString("dd/MM/yyyy") : ""; 
+                        WorkSheet1.Cells[recordIndex, 2].Value = items.ItemName;
+                        WorkSheet1.Cells[recordIndex, 3].Value = items.Quantity;
+                        WorkSheet1.Cells[recordIndex, 4].Value = items.UOMName;
+                        WorkSheet1.Cells[recordIndex, 5].Value = Convert.ToDateTime(items.CreatedDate).ToString("dd/MM/yyyy");
+                        WorkSheet1.Cells[recordIndex, 6].Value = items.CreatorName;
+
+                        recordIndex += 1;
+                    }
+
+                    WorkSheet1.Columns.AutoFit();
+
+                    excelExportData.SaveAs(msExportDataFile);
+                    msExportDataFile.Position = 0;
+                    result = msExportDataFile.ToArray();
+                }
+            }
+
+            if (result != null)
+            {
+                _response.Data = result;
+                _response.IsSuccess = true;
+                _response.Message = "Exported successfully";
+            }
+
             return _response;
         }
     }
