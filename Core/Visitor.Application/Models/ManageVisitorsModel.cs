@@ -52,6 +52,9 @@ namespace Visitor.Application.Models
         [DefaultValue(null)]
         public bool? IsGovOfficials { get; set; }
 
+        [DefaultValue(false)]
+        public bool? IsLiveReport { get; set; }
+
         public bool? IsPlanned { get; set; }
     }
 

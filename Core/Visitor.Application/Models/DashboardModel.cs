@@ -70,9 +70,9 @@ namespace Visitor.Application.Models
     public class Dashboard_Security_TotalSummary_Result
     {
         public int? TotalCount { get; set; }
-        public int? TotalPendingCount { get; set; }
         public int? TotalCheckedInCount { get; set; }
         public int? TotalCheckedOutCount { get; set; }
+        public int? TotalPendingCount { get; set; }
     }
 
     public class Dashboard_CanteenWastageSummary_Search

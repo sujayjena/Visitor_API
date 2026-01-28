@@ -103,6 +103,7 @@ namespace Visitor.Persistence.Repositories
             queryParameters.Add("@FromDate", parameters.FromDate);
             queryParameters.Add("@ToDate", parameters.ToDate);
             queryParameters.Add("@IsDateFilterType", parameters.IsDateFilterType);
+            queryParameters.Add("@IsLiveReport", parameters.IsLiveReport);
             queryParameters.Add("@SearchText", parameters.SearchText.SanitizeValue());
             queryParameters.Add("@IsActive", parameters.IsActive);
             queryParameters.Add("@PageNo", parameters.PageNo);

@@ -37,8 +37,10 @@ namespace Visitor.Application.Models
 
         [DefaultValue(null)]
         public DateTime? ToDate { get; set; }
-
         public int? IsDateFilterType { get; set; }
+
+        [DefaultValue(false)]
+        public bool? IsLiveReport { get; set; }
     }
 
     public class User_Request : BaseEntity
