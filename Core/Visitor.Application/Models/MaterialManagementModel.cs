@@ -82,6 +82,9 @@ namespace Visitor.Application.Models
         public int? StatusId { get; set; }
         public string? StatusName { get; set; }
         public string? Remarks { get; set; }
+        public bool? IsApprovedReject { get; set; }
+        public int? HOD_ApproverId { get; set; }
+        public string? HODApprover_Name { get; set; }
         public int? Approver1_Id { get; set; }
         public string? Approver1_Name { get; set; }
         public int? Approver2_Id { get; set; }
@@ -144,6 +147,8 @@ namespace Visitor.Application.Models
         public int? StatusId { get; set; }
         public string? StatusName { get; set; }
         public string? Remarks { get; set; }
+        public int? HOD_ApproverId { get; set; }
+        public string? HODApprover_Name { get; set; }
         public int? Approver1_Id { get; set; }
         public string? Approver1_Name { get; set; }
         public int? Approver2_Id { get; set; }

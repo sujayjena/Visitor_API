@@ -59,10 +59,6 @@ namespace Visitor.API.Controllers
             {
                 _response.Message = "Something went wrong, please try again";
             }
-            else if (result == -3)
-            {
-                _response.Message = "Not Allowed to approved requisition";
-            }
             else
             {
                 if (parameters.Id > 0)
@@ -235,6 +231,10 @@ namespace Visitor.API.Controllers
                 else if (resultExpenseDetails == (int)SaveOperationEnums.NoResult)
                 {
                     _response.Message = "Something went wrong, please try again";
+                }
+                else if (resultExpenseDetails == -3)
+                {
+                    _response.Message = "Not Allowed to approved requisition";
                 }
                 else
                 {
