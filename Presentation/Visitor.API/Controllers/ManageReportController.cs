@@ -253,5 +253,84 @@ namespace Visitor.API.Controllers
             return _response;
         }
         #endregion
+
+        #region Safety Report
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> GetSafetyReport(SafetyReport_Search parameters)
+        {
+            IEnumerable<SafetyReport_Response> lst = await _manageReportRepository.GetSafetyReport(parameters);
+
+            _response.Data = lst.ToList();
+            _response.Total = parameters.Total;
+            return _response;
+        }
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> ExportSafetyReportData(SafetyReport_Search request)
+        {
+            _response.IsSuccess = false;
+            byte[] result;
+            int recordIndex;
+            ExcelWorksheet WorkSheet1;
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+
+            IEnumerable<SafetyReport_Response> lstObj = await _manageReportRepository.GetSafetyReport(request);
+
+            using (MemoryStream msExportDataFile = new MemoryStream())
+            {
+                using (ExcelPackage excelExportData = new ExcelPackage())
+                {
+                    WorkSheet1 = excelExportData.Workbook.Worksheets.Add("Safety_Report");
+                    WorkSheet1.TabColor = System.Drawing.Color.Black;
+                    WorkSheet1.DefaultRowHeight = 12;
+
+                    //Header of table
+                    WorkSheet1.Row(1).Height = 20;
+                    WorkSheet1.Row(1).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    WorkSheet1.Row(1).Style.Font.Bold = true;
+
+                    WorkSheet1.Cells[1, 1].Value = "Sr.No";
+                    WorkSheet1.Cells[1, 2].Value = "Date";
+                    WorkSheet1.Cells[1, 3].Value = "Employee";
+                    WorkSheet1.Cells[1, 4].Value = "Worker";
+                    WorkSheet1.Cells[1, 5].Value = "Visitor";
+
+                    recordIndex = 2;
+
+                    int a = 1;
+                    foreach (var items in lstObj)
+                    {
+                        WorkSheet1.Cells[recordIndex, 1].Value = a;
+                        WorkSheet1.Cells[recordIndex, 2].Value = Convert.ToDateTime(items.CheckInDate).ToString("dd/MM/yyyy");
+                        WorkSheet1.Cells[recordIndex, 3].Value = items.Employee;
+                        WorkSheet1.Cells[recordIndex, 4].Value = items.Worker;
+                        WorkSheet1.Cells[recordIndex, 5].Value = items.Visitor;
+
+                        recordIndex += 1;
+
+                        a++;
+                    }
+
+                    WorkSheet1.Columns.AutoFit();
+
+                    excelExportData.SaveAs(msExportDataFile);
+                    msExportDataFile.Position = 0;
+                    result = msExportDataFile.ToArray();
+                }
+            }
+
+            if (result != null)
+            {
+                _response.Data = result;
+                _response.IsSuccess = true;
+                _response.Message = "Data Exported successfully";
+            }
+
+            return _response;
+        }
+
+        #endregion
     }
 }

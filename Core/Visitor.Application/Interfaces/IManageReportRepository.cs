@@ -12,5 +12,6 @@ namespace Visitor.Application.Interfaces
     {
         Task<IEnumerable<CanteenUsageReport_Response>> GetCanteenUsageReport(CanteenUsageReport_Search parameters);
         Task<IEnumerable<CanteenWastageReport_Response>> GetCanteenWastageReport(CanteenWastageReport_Search parameters);
+        Task<IEnumerable<SafetyReport_Response>> GetSafetyReport(SafetyReport_Search parameters);
     }
 }

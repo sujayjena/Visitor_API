@@ -61,4 +61,19 @@ namespace Visitor.Application.Models
         public int? CreatedBy { get; set; }
         public string? CreatorName { get; set; }
     }
+    public class SafetyReport_Search : BaseSearchEntity
+    {
+        [DefaultValue(null)]
+        public DateTime? FromDate { get; set; }
+
+        [DefaultValue(null)]
+        public DateTime? ToDate { get; set; }
+    }
+    public class SafetyReport_Response : BaseEntity
+    {
+        public DateTime? CheckInDate { get; set; }
+        public int? Employee { get; set; }
+        public int? Worker { get; set; }
+        public int? Visitor { get; set; }
+    }
 }
