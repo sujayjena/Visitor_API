@@ -281,6 +281,7 @@ namespace Visitor.Persistence.Repositories
             queryParameters.Add("@RefType", parameters.RefType);
             queryParameters.Add("@GateDetailsId", parameters.GateDetailsId);
             queryParameters.Add("@IsReject", parameters.IsReject);
+            queryParameters.Add("@IsLiveReport", parameters.IsLiveReport);
             queryParameters.Add("@SearchText", parameters.SearchText.SanitizeValue());
             queryParameters.Add("@IsActive", parameters.IsActive);
             queryParameters.Add("@PageNo", parameters.PageNo);

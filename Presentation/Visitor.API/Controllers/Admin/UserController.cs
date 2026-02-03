@@ -1338,5 +1338,119 @@ namespace Visitor.API.Controllers.Admin
 
             return _response;
         }
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> ExportEmployeeLiveReportData(User_Search parameters)
+        {
+            _response.IsSuccess = false;
+            byte[] result;
+            int recordIndex;
+            ExcelWorksheet WorkSheet1;
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+
+            IEnumerable<User_Response> lstSizeObj = await _userRepository.GetUserList(parameters);
+
+            using (MemoryStream msExportDataFile = new MemoryStream())
+            {
+                using (ExcelPackage excelExportData = new ExcelPackage())
+                {
+                    WorkSheet1 = excelExportData.Workbook.Worksheets.Add("EmployeeAttendance");
+                    WorkSheet1.TabColor = System.Drawing.Color.Black;
+                    WorkSheet1.DefaultRowHeight = 12;
+
+                    //Header of table
+                    WorkSheet1.Row(1).Height = 20;
+                    WorkSheet1.Row(1).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    WorkSheet1.Row(1).Style.Font.Bold = true;
+
+                    WorkSheet1.Cells[1, 1].Value = "Sr.No";
+                    WorkSheet1.Cells[1, 2].Value = "Employee Code";
+                    WorkSheet1.Cells[1, 3].Value = "Employee Name";
+                    WorkSheet1.Cells[1, 4].Value = "Branch";
+                    WorkSheet1.Cells[1, 5].Value = "Gate No";
+                    WorkSheet1.Cells[1, 6].Value = "Status";
+                    WorkSheet1.Cells[1, 7].Value = "Remark";
+                    WorkSheet1.Cells[1, 8].Value = "Created Date";
+                    WorkSheet1.Cells[1, 9].Value = "Created By";
+
+                    recordIndex = 2;
+
+                    int i = 1;
+
+                    foreach (var items in lstSizeObj)
+                    {
+                        //log history list
+                        var vCheckedInOutLogHistory_Search = new CheckedInOutLogHistory_Search();
+                        vCheckedInOutLogHistory_Search.RefId = items.Id;
+                        vCheckedInOutLogHistory_Search.RefType = "Employee";
+                        vCheckedInOutLogHistory_Search.GateDetailsId = 0;
+                        vCheckedInOutLogHistory_Search.IsReject = null;
+
+                        if (parameters.IsLiveReport == true)
+                        {
+                            vCheckedInOutLogHistory_Search.IsLiveReport = parameters.IsLiveReport;
+                            vCheckedInOutLogHistory_Search.FromDate = parameters.FromDate;
+                            vCheckedInOutLogHistory_Search.GateDetailsId = parameters.GateDetailsId;
+                        }
+
+                        int j = 0;
+                        IEnumerable<CheckedInOutLogHistory_Response> lstMUserObj = await _manageVisitorsRepository.GetCheckedInOutLogHistoryList(vCheckedInOutLogHistory_Search);
+                        if (lstMUserObj.ToList().Count > 0)
+                        {
+                            foreach (var mitems in lstMUserObj.ToList().Take(1))
+                            {
+                                if (j == 0)
+                                {
+                                    WorkSheet1.Cells[recordIndex, 1].Value = i.ToString();
+                                }
+                                else
+                                {
+                                    WorkSheet1.Cells[recordIndex, 1].Value = i + "." + j;
+                                }
+                                WorkSheet1.Cells[recordIndex, 2].Value = items.UserCode;
+                                WorkSheet1.Cells[recordIndex, 3].Value = items.UserName;
+                                WorkSheet1.Cells[recordIndex, 4].Value = items.BranchName;
+                                WorkSheet1.Cells[recordIndex, 5].Value = mitems.GateNumber;
+                                WorkSheet1.Cells[recordIndex, 6].Value = mitems.CheckedStatus;
+                                WorkSheet1.Cells[recordIndex, 7].Value = mitems.CheckedRemark;
+                                WorkSheet1.Cells[recordIndex, 8].Value = Convert.ToDateTime(mitems.CreatedDate).ToString("dd/MM/yyyy");
+                                WorkSheet1.Cells[recordIndex, 9].Value = mitems.CreatorName;
+
+                                recordIndex += 1;
+
+                                j++;
+                            }
+                        }
+                        else
+                        {
+                            WorkSheet1.Cells[recordIndex, 1].Value = i.ToString();
+                            WorkSheet1.Cells[recordIndex, 2].Value = items.UserCode;
+                            WorkSheet1.Cells[recordIndex, 3].Value = items.UserName;
+                            WorkSheet1.Cells[recordIndex, 4].Value = items.BranchName;
+
+                            recordIndex += 1;
+                        }
+
+                        i++;
+                    }
+
+                    WorkSheet1.Columns.AutoFit();
+
+                    excelExportData.SaveAs(msExportDataFile);
+                    msExportDataFile.Position = 0;
+                    result = msExportDataFile.ToArray();
+                }
+            }
+
+            if (result != null)
+            {
+                _response.Data = result;
+                _response.IsSuccess = true;
+                _response.Message = "Exported successfully";
+            }
+
+            return _response;
+        }
     }
 }

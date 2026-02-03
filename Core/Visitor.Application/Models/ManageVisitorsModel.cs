@@ -674,6 +674,9 @@ namespace Visitor.Application.Models
 
         [DefaultValue(null)]
         public bool? IsReject { get; set; }
+
+        [DefaultValue(null)]
+        public bool? IsLiveReport { get; set; }
     }
 
     public class CheckedInOutLogHistory_Response

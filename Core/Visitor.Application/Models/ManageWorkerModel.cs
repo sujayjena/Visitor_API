@@ -125,7 +125,7 @@ namespace Visitor.Application.Models
         public int? ContractorId { get; set; }
         public int? EmployeeId { get; set; }
 
-        [DefaultValue(0)]
+        [DefaultValue(null)]
         public int? StatusId { get; set; }
 
         [DefaultValue(0)]

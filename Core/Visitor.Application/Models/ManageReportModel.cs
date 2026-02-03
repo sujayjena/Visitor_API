@@ -68,6 +68,7 @@ namespace Visitor.Application.Models
 
         [DefaultValue(null)]
         public DateTime? ToDate { get; set; }
+        public int? BranchId { get; set; }
     }
     public class SafetyReport_Response : BaseEntity
     {
