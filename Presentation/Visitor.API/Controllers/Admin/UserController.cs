@@ -301,7 +301,7 @@ namespace Visitor.API.Controllers.Admin
                         {
                             Id = 0,
                             BarcodeNo = parameters.UserCode,
-                            BarcodeType = "Employee",
+                            BarcodeType = parameters.UserTypeId == 1 ? "Employee" : parameters.UserTypeId == 2 ? "Security" : "",
                             Barcode_Unique_Id = vGenerateBarcode.Barcode_Unique_Id,
                             BarcodeOriginalFileName = vGenerateBarcode.BarcodeOriginalFileName,
                             BarcodeFileName = vGenerateBarcode.BarcodeFileName,
