@@ -331,6 +331,9 @@ namespace Visitor.Application.Models
         public DateTime? VisaValidTill { get; set; }
         public bool? IsGovOfficials { get; set; }
         public bool? IsActive { get; set; }
+        public int? ApprovedBy { get; set; }
+        public string? ApprovedByName { get; set; }
+        public DateTime? ApprovedDate { get; set; }
 
         public List<AssignGateNo_Response> GateNumberList { get; set; }
         public List<VisitorDocumentVerification_Response> DocumentVerificationList { get; set; }
@@ -453,7 +456,9 @@ namespace Visitor.Application.Models
         public string? VisaURL { get; set; }
         public bool? IsGovOfficials { get; set; }
         public bool? IsActive { get; set; }
-
+        public int? ApprovedBy { get; set; }
+        public string? ApprovedByName { get; set; }
+        public DateTime? ApprovedDate { get; set; }
         public List<AssignGateNo_Response> GateNumberList { get; set; }
         public List<VisitorDocumentVerification_Response> DocumentVerificationList { get; set; }
         public List<VisitorAsset_Response> AssetList { get; set; }

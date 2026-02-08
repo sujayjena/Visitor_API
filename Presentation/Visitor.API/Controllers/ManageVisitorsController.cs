@@ -939,6 +939,16 @@ namespace Visitor.API.Controllers
                         emailTemplateContent = emailTemplateContent.Replace("[VisitPurpose]", vVisitor.VisitType);
                     }
 
+                    if (emailTemplateContent.IndexOf("[ApprovedByName]", StringComparison.OrdinalIgnoreCase) > 0)
+                    {
+                        emailTemplateContent = emailTemplateContent.Replace("[ApprovedByName]", vVisitor.ApprovedByName);
+                    }
+
+                    if (emailTemplateContent.IndexOf("[ApprovedDate]", StringComparison.OrdinalIgnoreCase) > 0)
+                    {
+                        emailTemplateContent = emailTemplateContent.Replace("[ApprovedDate]", vVisitor.ApprovedDate.ToString());
+                    }
+
                     sSubjectDynamicContent = "Visitor Approved - " + vVisitor.VisitorName;
                     result = await _emailHelper.SendEmail(module: "Visitor Approved", subject: sSubjectDynamicContent, sendTo: "Security", content: emailTemplateContent, recipientEmail: recipientEmail, files: null, remarks: remarks);
                 }
@@ -1292,7 +1302,7 @@ namespace Visitor.API.Controllers
                                 WorkSheet1.Cells[recordIndex, 7].Value = mitems.GateNumber;
                                 WorkSheet1.Cells[recordIndex, 8].Value = mitems.CheckedStatus;
                                 WorkSheet1.Cells[recordIndex, 9].Value = mitems.CheckedRemark;
-                                WorkSheet1.Cells[recordIndex, 10].Value = Convert.ToDateTime(mitems.CreatedDate).ToString("dd/MM/yyyy");
+                                WorkSheet1.Cells[recordIndex, 10].Value = Convert.ToDateTime(mitems.CreatedDate).ToString("dd/MM/yyyy hh:mm:ss:tt");
                                 WorkSheet1.Cells[recordIndex, 11].Value = mitems.CreatorName;
 
                                 recordIndex += 1;
@@ -2193,7 +2203,7 @@ namespace Visitor.API.Controllers
 
                 return _response;
             }
-            else if (parameters.CheckedInDate == null)
+            else if (parameters.CheckedInDate == null && parameters.IsCheckedIn_Out > 0)
             {
                 _response.IsSuccess = false;
                 _response.Message = "CheckedIn Date is required.";

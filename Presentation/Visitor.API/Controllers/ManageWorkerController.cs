@@ -344,44 +344,44 @@ namespace Visitor.API.Controllers
                     _response.Message = "Record details saved successfully";
                 }
 
-                #region Generate Barcode
-                if (parameters.Id == 0)
-                {
-                    var vWorker = await _manageWorkerRepository.GetWorkerById(Convert.ToInt32(parameters.WorkerId));
-                    if (vWorker != null)
-                    {
-                        string vBarcodeNo = "";
-                        if (vWorker.BranchName == "ANGRE PORT")
-                        {
-                            vBarcodeNo = await _barcodeRepository.AutoBarcodeGenerate(Convert.ToInt32(vWorker.BranchId ?? 0), "Worker", "");
-                        }
-                        else
-                        {
-                            vBarcodeNo = vWorker.PassNumber;
-                        }
+                //#region Generate Barcode
+                //if (parameters.Id == 0)
+                //{
+                //    var vWorker = await _manageWorkerRepository.GetWorkerById(Convert.ToInt32(parameters.WorkerId));
+                //    if (vWorker != null)
+                //    {
+                //        string vBarcodeNo = "";
+                //        if (vWorker.BranchName == "ANGRE PORT")
+                //        {
+                //            vBarcodeNo = await _barcodeRepository.AutoBarcodeGenerate(Convert.ToInt32(vWorker.BranchId ?? 0), "Worker", "");
+                //        }
+                //        else
+                //        {
+                //            vBarcodeNo = vWorker.PassNumber;
+                //        }
 
-                        if (vBarcodeNo != "")
-                        {
-                            var vGenerateBarcode = _barcodeRepository.GenerateBarcode(vBarcodeNo);
-                            if (vGenerateBarcode.Barcode_Unique_Id != "")
-                            {
-                                var vBarcode_Request = new Barcode_Request()
-                                {
-                                    Id = 0,
-                                    BarcodeNo = vBarcodeNo,
-                                    BarcodeType = "Worker",
-                                    Barcode_Unique_Id = vGenerateBarcode.Barcode_Unique_Id,
-                                    BarcodeOriginalFileName = vGenerateBarcode.BarcodeOriginalFileName,
-                                    BarcodeFileName = vGenerateBarcode.BarcodeFileName,
-                                    BranchId = vWorker.BranchId,
-                                    RefId = result
-                                };
-                                var resultBarcode = _barcodeRepository.SaveBarcode(vBarcode_Request);
-                            }
-                        }
-                    }
-                }
-                #endregion
+                //        if (vBarcodeNo != "")
+                //        {
+                //            var vGenerateBarcode = _barcodeRepository.GenerateBarcode(vBarcodeNo);
+                //            if (vGenerateBarcode.Barcode_Unique_Id != "")
+                //            {
+                //                var vBarcode_Request = new Barcode_Request()
+                //                {
+                //                    Id = 0,
+                //                    BarcodeNo = vBarcodeNo,
+                //                    BarcodeType = "Worker",
+                //                    Barcode_Unique_Id = vGenerateBarcode.Barcode_Unique_Id,
+                //                    BarcodeOriginalFileName = vGenerateBarcode.BarcodeOriginalFileName,
+                //                    BarcodeFileName = vGenerateBarcode.BarcodeFileName,
+                //                    BranchId = vWorker.BranchId,
+                //                    RefId = result
+                //                };
+                //                var resultBarcode = _barcodeRepository.SaveBarcode(vBarcode_Request);
+                //            }
+                //        }
+                //    }
+                //}
+                //#endregion
             }
             return _response;
         }
@@ -648,57 +648,57 @@ namespace Visitor.API.Controllers
                 _response.Message = "Record imported successfully";
             }
 
-            lst_ImportData.RemoveAll(x => lst_ImportDataValidation.Select(x => x.WorkerMobileNo).Contains(x.WorkerMobileNo));
+            //lst_ImportData.RemoveAll(x => lst_ImportDataValidation.Select(x => x.WorkerMobileNo).Contains(x.WorkerMobileNo));
 
-            foreach (var vItem in lst_ImportData)
-            {
-                var vSearch = new WorkerSearch_Request()
-                {
-                    SearchText = vItem.WorkerMobileNo,
-                    BranchId = 0,
-                    PurchaseOrderId = 0,
-                    IsBlackList = null,
-                    ContractorId = 0,
-                    EmployeeId = 0,
-                    StatusId = 0,
-                    GateDetailsId = 0,
-                    IsActive = true
-                };
+            //foreach (var vItem in lst_ImportData)
+            //{
+            //    var vSearch = new WorkerSearch_Request()
+            //    {
+            //        SearchText = vItem.WorkerMobileNo,
+            //        BranchId = 0,
+            //        PurchaseOrderId = 0,
+            //        IsBlackList = null,
+            //        ContractorId = 0,
+            //        EmployeeId = 0,
+            //        StatusId = 0,
+            //        GateDetailsId = 0,
+            //        IsActive = true
+            //    };
 
-                var vWorkerList = await _manageWorkerRepository.GetWorkerList(vSearch);
-                if (vWorkerList.ToList().Count > 0)
-                {
-                    #region Generate Barcode
+            //    var vWorkerList = await _manageWorkerRepository.GetWorkerList(vSearch);
+            //    if (vWorkerList.ToList().Count > 0)
+            //    {
+            //        #region Generate Barcode
 
-                    string vBarcodeNo = "";
-                    if (vWorkerList.ToList().FirstOrDefault().BranchName == "ANGRE PORT")
-                    {
-                        vBarcodeNo = await _barcodeRepository.AutoBarcodeGenerate(Convert.ToInt32(vWorkerList.ToList().FirstOrDefault().BranchId ?? 0), "Worker", "");
-                    }
-                    else
-                    {
-                        vBarcodeNo = vWorkerList.ToList().FirstOrDefault().PassNumber;
-                    }
+            //        string vBarcodeNo = "";
+            //        if (vWorkerList.ToList().FirstOrDefault().BranchName == "ANGRE PORT")
+            //        {
+            //            vBarcodeNo = await _barcodeRepository.AutoBarcodeGenerate(Convert.ToInt32(vWorkerList.ToList().FirstOrDefault().BranchId ?? 0), "Worker", "");
+            //        }
+            //        else
+            //        {
+            //            vBarcodeNo = vWorkerList.ToList().FirstOrDefault().PassNumber;
+            //        }
 
-                    var vGenerateBarcode = _barcodeRepository.GenerateBarcode(vBarcodeNo);
-                    if (vGenerateBarcode.Barcode_Unique_Id != "")
-                    {
-                        var vBarcode_Request = new Barcode_Request()
-                        {
-                            Id = 0,
-                            BarcodeNo = vBarcodeNo,
-                            BarcodeType = "Worker",
-                            Barcode_Unique_Id = vGenerateBarcode.Barcode_Unique_Id,
-                            BarcodeOriginalFileName = vGenerateBarcode.BarcodeOriginalFileName,
-                            BarcodeFileName = vGenerateBarcode.BarcodeFileName,
-                            BranchId = vWorkerList.ToList().FirstOrDefault().BranchId,
-                            RefId = vWorkerList.ToList().FirstOrDefault().Id
-                        };
-                        var resultBarcode = _barcodeRepository.SaveBarcode(vBarcode_Request);
-                    }
-                    #endregion
-                }
-            }
+            //        var vGenerateBarcode = _barcodeRepository.GenerateBarcode(vBarcodeNo);
+            //        if (vGenerateBarcode.Barcode_Unique_Id != "")
+            //        {
+            //            var vBarcode_Request = new Barcode_Request()
+            //            {
+            //                Id = 0,
+            //                BarcodeNo = vBarcodeNo,
+            //                BarcodeType = "Worker",
+            //                Barcode_Unique_Id = vGenerateBarcode.Barcode_Unique_Id,
+            //                BarcodeOriginalFileName = vGenerateBarcode.BarcodeOriginalFileName,
+            //                BarcodeFileName = vGenerateBarcode.BarcodeFileName,
+            //                BranchId = vWorkerList.ToList().FirstOrDefault().BranchId,
+            //                RefId = vWorkerList.ToList().FirstOrDefault().Id
+            //            };
+            //            var resultBarcode = _barcodeRepository.SaveBarcode(vBarcode_Request);
+            //        }
+            //        #endregion
+            //    }
+            //}
 
             #endregion
 
