@@ -2299,9 +2299,9 @@ namespace Visitor.API.Controllers
                 {
                     if (vVisitorResponse.StatusId == 2)
                     {
-                        var vDuplicateBarcode = await _barcodeRepository.GetBarcodeById(vVisitorResponse.VisitNumber);
-                        if (vDuplicateBarcode == null)
-                        {
+                        //var vDuplicateBarcode = await _barcodeRepository.GetBarcodeById(vVisitorResponse.VisitNumber);
+                        //if (vDuplicateBarcode == null)
+                        //{
                             var vGenerateBarcode = _barcodeRepository.GenerateBarcode(vVisitorResponse.VisitNumber);
                             if (vGenerateBarcode.Barcode_Unique_Id != "")
                             {
@@ -2326,14 +2326,14 @@ namespace Visitor.API.Controllers
 
                                 return _response;
                             }
-                        }
-                        else
-                        {
-                            _response.IsSuccess = false;
-                            _response.Message = "Barcode already exists.";
+                        //}
+                        //else
+                        //{
+                        //    _response.IsSuccess = false;
+                        //    _response.Message = "Barcode already exists.";
 
-                            return _response;
-                        }
+                        //    return _response;
+                        //}
                     }
                     else
                     {
@@ -2356,9 +2356,9 @@ namespace Visitor.API.Controllers
                 var vEmployeeResponse = await _userRepository.GetUserById(Convert.ToInt32(parameters.RefId));
                 if (vEmployeeResponse != null)
                 {
-                    var vDuplicateBarcode = await _barcodeRepository.GetBarcodeById(vEmployeeResponse.UserCode);
-                    if (vDuplicateBarcode == null)
-                    {
+                    //var vDuplicateBarcode = await _barcodeRepository.GetBarcodeById(vEmployeeResponse.UserCode);
+                    //if (vDuplicateBarcode == null)
+                    //{
                         var vGenerateBarcode = _barcodeRepository.GenerateBarcode(vEmployeeResponse.UserCode);
                         if (vGenerateBarcode.Barcode_Unique_Id != "")
                         {
@@ -2383,14 +2383,14 @@ namespace Visitor.API.Controllers
 
                             return _response;
                         }
-                    }
-                    else
-                    {
-                        _response.IsSuccess = false;
-                        _response.Message = "Barcode already exists.";
+                    //}
+                    //else
+                    //{
+                    //    _response.IsSuccess = false;
+                    //    _response.Message = "Barcode already exists.";
 
-                        return _response;
-                    }
+                    //    return _response;
+                    //}
                 }
                 else
                 {
@@ -2417,9 +2417,9 @@ namespace Visitor.API.Controllers
 
                     if (vBarcodeNo != "")
                     {
-                        var vDuplicateBarcode = await _barcodeRepository.GetBarcodeById(vBarcodeNo);
-                        if (vDuplicateBarcode == null)
-                        {
+                        //var vDuplicateBarcode = await _barcodeRepository.GetBarcodeById(vBarcodeNo);
+                        //if (vDuplicateBarcode == null)
+                        //{
                             var vGenerateBarcode = _barcodeRepository.GenerateBarcode(vBarcodeNo);
                             if (vGenerateBarcode.Barcode_Unique_Id != "")
                             {
@@ -2445,14 +2445,14 @@ namespace Visitor.API.Controllers
 
                                 return _response;
                             }
-                        }
-                        else
-                        {
-                            _response.IsSuccess = false;
-                            _response.Message = "Barcode already exists.";
+                        //}
+                        //else
+                        //{
+                        //    _response.IsSuccess = false;
+                        //    _response.Message = "Barcode already exists.";
 
-                            return _response;
-                        }
+                        //    return _response;
+                        //}
                     }
                 }
                 else
