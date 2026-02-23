@@ -70,9 +70,11 @@ namespace Visitor.Application.Models
     public class Dashboard_Security_TotalSummary_Result
     {
         public int? TotalCount { get; set; }
+        public int? TodayCheckedInCount { get; set; }
+        public int? PreviousCheckedInCount { get; set; }
         public int? TotalPreviousCheckedInCount { get; set; }
-        public int? TotalTodayCheckedInCount { get; set; }
-        public int? TotalCheckedInCount { get; set; }
+        public int? TodayCheckedOutCount { get; set; }
+        public int? PreviousCheckedOutCount { get; set; }
         public int? TotalCheckedOutCount { get; set; }
         public int? TotalPendingCount { get; set; }
     }

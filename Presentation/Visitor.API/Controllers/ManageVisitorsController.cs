@@ -1310,54 +1310,54 @@ namespace Visitor.API.Controllers
 
                                 j++;
                             }
-                        }
-                        else
-                        {
-                            WorkSheet1.Cells[recordIndex, 1].Value = i.ToString();
-                            WorkSheet1.Cells[recordIndex, 2].Value = items.VisitNumber;
-                            WorkSheet1.Cells[recordIndex, 3].Value = items.VisitorName;
-                            WorkSheet1.Cells[recordIndex, 4].Value = items.VisitType;
-                            WorkSheet1.Cells[recordIndex, 5].Value = items.BranchName;
-                            WorkSheet1.Cells[recordIndex, 6].Value = items.DepartmentName;
 
-                            recordIndex += 1;
-                        }
+                            //meeting log
+                            var vMeetingPurposeLogHistory_Search = new MeetingPurposeLogHistory_Search();
+                            vMeetingPurposeLogHistory_Search.FromDate = parameters.FromDate;
+                            vMeetingPurposeLogHistory_Search.ToDate = parameters.ToDate;
+                            vMeetingPurposeLogHistory_Search.VisitorId = items.Id;
 
-                        //meeting log
-                        var vMeetingPurposeLogHistory_Search = new MeetingPurposeLogHistory_Search();
-                        vMeetingPurposeLogHistory_Search.FromDate = parameters.FromDate;
-                        vMeetingPurposeLogHistory_Search.ToDate = parameters.ToDate;
-                        vMeetingPurposeLogHistory_Search.VisitorId = items.Id;
-
-                        int k = 1;
-                        IEnumerable<MeetingPurposeLogHistory_Response> lstMeetingObj = await _manageVisitorsRepository.GetMeetingPurposeLogHistoryList(vMeetingPurposeLogHistory_Search);
-                        foreach (var mitems in lstMeetingObj)
-                        {
-                            if (j > 0)
+                            int k = 1;
+                            IEnumerable<MeetingPurposeLogHistory_Response> lstMeetingObj = await _manageVisitorsRepository.GetMeetingPurposeLogHistoryList(vMeetingPurposeLogHistory_Search);
+                            foreach (var mitems in lstMeetingObj)
                             {
-                                WorkSheet1.Cells[recordIndex, 1].Value = i + "." + j + "." + k;
-                            }
-                            else
-                            {
-                                WorkSheet1.Cells[recordIndex, 1].Value = i + "." + k;
-                            }
-                            WorkSheet1.Cells[recordIndex, 2].Value = items.VisitNumber;
-                            WorkSheet1.Cells[recordIndex, 3].Value = items.VisitorName;
-                            WorkSheet1.Cells[recordIndex, 4].Value = items.VisitType;
-                            WorkSheet1.Cells[recordIndex, 5].Value = items.BranchName;
-                            WorkSheet1.Cells[recordIndex, 6].Value = items.DepartmentName;
-                            WorkSheet1.Cells[recordIndex, 7].Value = mitems.GateNumber;
-                            WorkSheet1.Cells[recordIndex, 8].Value = ((mitems.IsMeetingOver == false || mitems.IsMeetingOver == null) ? "Reassign" : "Meeting Over");
-                            WorkSheet1.Cells[recordIndex, 9].Value = "";
-                            WorkSheet1.Cells[recordIndex, 10].Value = Convert.ToDateTime(mitems.CreatedDate).ToString("dd/MM/yyyy hh:mm:ss:tt");
-                            WorkSheet1.Cells[recordIndex, 11].Value = mitems.CreatorName;
+                                if (j > 0)
+                                {
+                                    WorkSheet1.Cells[recordIndex, 1].Value = i + "." + j + "." + k;
+                                }
+                                else
+                                {
+                                    WorkSheet1.Cells[recordIndex, 1].Value = i + "." + k;
+                                }
+                                WorkSheet1.Cells[recordIndex, 2].Value = items.VisitNumber;
+                                WorkSheet1.Cells[recordIndex, 3].Value = items.VisitorName;
+                                WorkSheet1.Cells[recordIndex, 4].Value = items.VisitType;
+                                WorkSheet1.Cells[recordIndex, 5].Value = items.BranchName;
+                                WorkSheet1.Cells[recordIndex, 6].Value = items.DepartmentName;
+                                WorkSheet1.Cells[recordIndex, 7].Value = mitems.GateNumber;
+                                WorkSheet1.Cells[recordIndex, 8].Value = ((mitems.IsMeetingOver == false || mitems.IsMeetingOver == null) ? "Reassign" : "Meeting Over");
+                                WorkSheet1.Cells[recordIndex, 9].Value = "";
+                                WorkSheet1.Cells[recordIndex, 10].Value = Convert.ToDateTime(mitems.CreatedDate).ToString("dd/MM/yyyy hh:mm:ss:tt");
+                                WorkSheet1.Cells[recordIndex, 11].Value = mitems.CreatorName;
 
-                            recordIndex += 1;
+                                recordIndex += 1;
 
-                            k++;
+                                k++;
+                            }
+
+                            i++;
                         }
+                        //else
+                        //{
+                        //    WorkSheet1.Cells[recordIndex, 1].Value = i.ToString();
+                        //    WorkSheet1.Cells[recordIndex, 2].Value = items.VisitNumber;
+                        //    WorkSheet1.Cells[recordIndex, 3].Value = items.VisitorName;
+                        //    WorkSheet1.Cells[recordIndex, 4].Value = items.VisitType;
+                        //    WorkSheet1.Cells[recordIndex, 5].Value = items.BranchName;
+                        //    WorkSheet1.Cells[recordIndex, 6].Value = items.DepartmentName;
 
-                        i++;
+                        //    recordIndex += 1;
+                        //}
                     }
 
                     WorkSheet1.Columns.AutoFit();
@@ -2513,7 +2513,7 @@ namespace Visitor.API.Controllers
             {
                 using (ExcelPackage excelExportData = new ExcelPackage())
                 {
-                    WorkSheet1 = excelExportData.Workbook.Worksheets.Add("VisitorAttendance");
+                    WorkSheet1 = excelExportData.Workbook.Worksheets.Add("VisitorLiveReport");
                     WorkSheet1.TabColor = System.Drawing.Color.Black;
                     WorkSheet1.DefaultRowHeight = 12;
 
@@ -2582,20 +2582,22 @@ namespace Visitor.API.Controllers
 
                                 j++;
                             }
-                        }
-                        else
-                        {
-                            WorkSheet1.Cells[recordIndex, 1].Value = i.ToString();
-                            WorkSheet1.Cells[recordIndex, 2].Value = items.VisitNumber;
-                            WorkSheet1.Cells[recordIndex, 3].Value = items.VisitorName;
-                            WorkSheet1.Cells[recordIndex, 4].Value = items.VisitType;
-                            WorkSheet1.Cells[recordIndex, 5].Value = items.BranchName;
-                            WorkSheet1.Cells[recordIndex, 6].Value = items.DepartmentName;
 
-                            recordIndex += 1;
+                            i++;
                         }
+                        //else
+                        //{
+                        //    WorkSheet1.Cells[recordIndex, 1].Value = i.ToString();
+                        //    WorkSheet1.Cells[recordIndex, 2].Value = items.VisitNumber;
+                        //    WorkSheet1.Cells[recordIndex, 3].Value = items.VisitorName;
+                        //    WorkSheet1.Cells[recordIndex, 4].Value = items.VisitType;
+                        //    WorkSheet1.Cells[recordIndex, 5].Value = items.BranchName;
+                        //    WorkSheet1.Cells[recordIndex, 6].Value = items.DepartmentName;
 
-                        i++;
+                        //    recordIndex += 1;
+                        //}
+
+                        //i++;
                     }
 
                     WorkSheet1.Columns.AutoFit();

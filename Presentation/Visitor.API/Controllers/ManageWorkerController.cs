@@ -463,18 +463,20 @@ namespace Visitor.API.Controllers
 
                                 j++;
                             }
-                        }
-                        else
-                        {
-                            WorkSheet1.Cells[recordIndex, 1].Value = i.ToString();
-                            WorkSheet1.Cells[recordIndex, 2].Value = items.WorkerId;
-                            WorkSheet1.Cells[recordIndex, 3].Value = items.WorkerName;
-                            WorkSheet1.Cells[recordIndex, 4].Value = items.BranchName;
 
-                            recordIndex += 1;
+                            i++;
                         }
+                        //else
+                        //{
+                        //    WorkSheet1.Cells[recordIndex, 1].Value = i.ToString();
+                        //    WorkSheet1.Cells[recordIndex, 2].Value = items.WorkerId;
+                        //    WorkSheet1.Cells[recordIndex, 3].Value = items.WorkerName;
+                        //    WorkSheet1.Cells[recordIndex, 4].Value = items.BranchName;
 
-                        i++;
+                        //    recordIndex += 1;
+                        //}
+
+                        //i++;
                     }
 
                     WorkSheet1.Columns.AutoFit();
@@ -1186,7 +1188,7 @@ namespace Visitor.API.Controllers
             {
                 using (ExcelPackage excelExportData = new ExcelPackage())
                 {
-                    WorkSheet1 = excelExportData.Workbook.Worksheets.Add("WorkerAttendance");
+                    WorkSheet1 = excelExportData.Workbook.Worksheets.Add("WorkerLiveReport");
                     WorkSheet1.TabColor = System.Drawing.Color.Black;
                     WorkSheet1.DefaultRowHeight = 12;
 
@@ -1252,18 +1254,20 @@ namespace Visitor.API.Controllers
 
                                 j++;
                             }
-                        }
-                        else
-                        {
-                            WorkSheet1.Cells[recordIndex, 1].Value = i.ToString();
-                            WorkSheet1.Cells[recordIndex, 2].Value = items.WorkerId;
-                            WorkSheet1.Cells[recordIndex, 3].Value = items.WorkerName;
-                            WorkSheet1.Cells[recordIndex, 4].Value = items.BranchName;
 
-                            recordIndex += 1;
+                            i++;
                         }
+                        //else
+                        //{
+                        //    WorkSheet1.Cells[recordIndex, 1].Value = i.ToString();
+                        //    WorkSheet1.Cells[recordIndex, 2].Value = items.WorkerId;
+                        //    WorkSheet1.Cells[recordIndex, 3].Value = items.WorkerName;
+                        //    WorkSheet1.Cells[recordIndex, 4].Value = items.BranchName;
 
-                        i++;
+                        //    recordIndex += 1;
+                        //}
+
+                        //i++;
                     }
 
                     WorkSheet1.Columns.AutoFit();
