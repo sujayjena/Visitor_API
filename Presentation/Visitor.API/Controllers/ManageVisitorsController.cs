@@ -1278,7 +1278,8 @@ namespace Visitor.API.Controllers
                         vCheckedInOutLogHistory_Search.RefType = "Visitor";
                         vCheckedInOutLogHistory_Search.GateDetailsId = 0;
                         vCheckedInOutLogHistory_Search.IsReject = null;
-
+                        vCheckedInOutLogHistory_Search.FromDate = parameters.FromDate;
+                        vCheckedInOutLogHistory_Search.ToDate = parameters.ToDate;
 
                         int j = 0;
                         IEnumerable<CheckedInOutLogHistory_Response> lstMUserObj = await _manageVisitorsRepository.GetCheckedInOutLogHistoryList(vCheckedInOutLogHistory_Search);
@@ -1324,6 +1325,8 @@ namespace Visitor.API.Controllers
 
                         //meeting log
                         var vMeetingPurposeLogHistory_Search = new MeetingPurposeLogHistory_Search();
+                        vMeetingPurposeLogHistory_Search.FromDate = parameters.FromDate;
+                        vMeetingPurposeLogHistory_Search.ToDate = parameters.ToDate;
                         vMeetingPurposeLogHistory_Search.VisitorId = items.Id;
 
                         int k = 1;
@@ -1346,7 +1349,7 @@ namespace Visitor.API.Controllers
                             WorkSheet1.Cells[recordIndex, 7].Value = mitems.GateNumber;
                             WorkSheet1.Cells[recordIndex, 8].Value = ((mitems.IsMeetingOver == false || mitems.IsMeetingOver == null) ? "Reassign" : "Meeting Over");
                             WorkSheet1.Cells[recordIndex, 9].Value = "";
-                            WorkSheet1.Cells[recordIndex, 10].Value = Convert.ToDateTime(mitems.CreatedDate).ToString("dd/MM/yyyy");
+                            WorkSheet1.Cells[recordIndex, 10].Value = Convert.ToDateTime(mitems.CreatedDate).ToString("dd/MM/yyyy hh:mm:ss:tt");
                             WorkSheet1.Cells[recordIndex, 11].Value = mitems.CreatorName;
 
                             recordIndex += 1;

@@ -1239,6 +1239,8 @@ namespace Visitor.API.Controllers.Admin
                         vCheckedInOutLogHistory_Search.RefType = "Employee";
                         vCheckedInOutLogHistory_Search.GateDetailsId = 0;
                         vCheckedInOutLogHistory_Search.IsReject = null;
+                        vCheckedInOutLogHistory_Search.FromDate = parameters.FromDate;
+                        vCheckedInOutLogHistory_Search.ToDate = parameters.ToDate;
 
                         int j = 0;
                         IEnumerable<CheckedInOutLogHistory_Response> lstMUserObj = await _manageVisitorsRepository.GetCheckedInOutLogHistoryList(vCheckedInOutLogHistory_Search);
@@ -1260,7 +1262,7 @@ namespace Visitor.API.Controllers.Admin
                                 WorkSheet1.Cells[recordIndex, 5].Value = mitems.GateNumber;
                                 WorkSheet1.Cells[recordIndex, 6].Value = mitems.CheckedStatus;
                                 WorkSheet1.Cells[recordIndex, 7].Value = mitems.CheckedRemark;
-                                WorkSheet1.Cells[recordIndex, 8].Value = Convert.ToDateTime(mitems.CreatedDate).ToString("dd/MM/yyyy");
+                                WorkSheet1.Cells[recordIndex, 8].Value = Convert.ToDateTime(mitems.CreatedDate).ToString("dd/MM/yyyy hh:mm:ss:tt");
                                 WorkSheet1.Cells[recordIndex, 9].Value = mitems.CreatorName;
 
                                 recordIndex += 1;
