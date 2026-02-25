@@ -1908,6 +1908,8 @@ namespace Visitor.Persistence.Repositories
             DynamicParameters queryParameters = new DynamicParameters();
             queryParameters.Add("@Id", parameters.Id);
             queryParameters.Add("@VesselName", parameters.VesselName.SanitizeValue());
+            queryParameters.Add("@StartDate", parameters.StartDate);
+            queryParameters.Add("@EndDate", parameters.EndDate);
             queryParameters.Add("@IsActive", parameters.IsActive);
             queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
 

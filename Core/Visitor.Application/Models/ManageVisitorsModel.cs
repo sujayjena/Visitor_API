@@ -54,6 +54,7 @@ namespace Visitor.Application.Models
 
         [DefaultValue(false)]
         public bool? IsLiveReport { get; set; }
+        public int? VesselId { get; set; }
 
         public bool? IsPlanned { get; set; }
     }

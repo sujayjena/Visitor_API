@@ -133,6 +133,7 @@ namespace Visitor.Persistence.Repositories
             queryParameters.Add("@IsForeigner", parameters.IsForeigner);
             queryParameters.Add("@IsGovOfficials", parameters.IsGovOfficials);
             queryParameters.Add("@IsLiveReport", parameters.IsLiveReport);
+            queryParameters.Add("@VesselId", parameters.VesselId);
             queryParameters.Add("@SearchText", parameters.SearchText.SanitizeValue());
             queryParameters.Add("@IsPlanned", parameters.IsPlanned);
             queryParameters.Add("@IsActive", parameters.IsActive);
