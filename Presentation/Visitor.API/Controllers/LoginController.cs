@@ -150,7 +150,7 @@ namespace Visitor.API.Controllers
                     return _response;
                 }
 
-                if (Convert.ToDateTime(DateTime.Now) < Convert.ToDateTime("2026-03-05"))
+                if (Convert.ToDateTime(DateTime.Now) < Convert.ToDateTime("2026-04-07"))
                 {
                     if (loginResponse.IsActive == true && (loginResponse.IsWebUser == true && parameters.IsWebOrMobileUser == "W" || loginResponse.IsMobileUser == true && parameters.IsWebOrMobileUser == "M"))
                     {
