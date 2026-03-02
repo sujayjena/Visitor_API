@@ -130,27 +130,29 @@ namespace Visitor.API.Controllers
                     WorkSheet1.Row(1).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                     WorkSheet1.Row(1).Style.Font.Bold = true;
 
-                    WorkSheet1.Cells[1, 1].Value = "Employee Name";
-                    WorkSheet1.Cells[1, 2].Value = "Meal Type";
-                    WorkSheet1.Cells[1, 3].Value = "Meal Name";
-                    WorkSheet1.Cells[1, 4].Value = "Token Code";
-                    WorkSheet1.Cells[1, 5].Value = "MRP";
-                    WorkSheet1.Cells[1, 6].Value = "Subsidized Price";
-                    WorkSheet1.Cells[1, 7].Value = "Created Date";
-                    WorkSheet1.Cells[1, 8].Value = "Created By";
+                    WorkSheet1.Cells[1, 1].Value = "Employee Code";
+                    WorkSheet1.Cells[1, 2].Value = "Employee Name";
+                    WorkSheet1.Cells[1, 3].Value = "Meal Type";
+                    WorkSheet1.Cells[1, 4].Value = "Meal Name";
+                    WorkSheet1.Cells[1, 5].Value = "Token Code";
+                    WorkSheet1.Cells[1, 6].Value = "MRP";
+                    WorkSheet1.Cells[1, 7].Value = "Subsidized Price";
+                    WorkSheet1.Cells[1, 8].Value = "Created Date";
+                    WorkSheet1.Cells[1, 9].Value = "Created By";
 
                     recordIndex = 2;
 
                     foreach (var items in lstObj)
                     {
-                        WorkSheet1.Cells[recordIndex, 1].Value = items.RefName;
-                        WorkSheet1.Cells[recordIndex, 2].Value = items.MealType;
-                        WorkSheet1.Cells[recordIndex, 3].Value = items.MenuItemName;
-                        WorkSheet1.Cells[recordIndex, 4].Value = items.TokenNo;
-                        WorkSheet1.Cells[recordIndex, 5].Value = items.SellingPrice;
-                        WorkSheet1.Cells[recordIndex, 6].Value = items.SubsidizedPrice;
-                        WorkSheet1.Cells[recordIndex, 7].Value = Convert.ToDateTime(items.CreatedDate).ToString("dd/MM/yyyy");
-                        WorkSheet1.Cells[recordIndex, 8].Value = items.CreatorName;
+                        WorkSheet1.Cells[recordIndex, 1].Value = items.RefCode;
+                        WorkSheet1.Cells[recordIndex, 2].Value = items.RefName;
+                        WorkSheet1.Cells[recordIndex, 3].Value = items.MealType;
+                        WorkSheet1.Cells[recordIndex, 4].Value = items.MenuItemName;
+                        WorkSheet1.Cells[recordIndex, 5].Value = items.TokenNo;
+                        WorkSheet1.Cells[recordIndex, 6].Value = items.SellingPrice;
+                        WorkSheet1.Cells[recordIndex, 7].Value = items.SubsidizedPrice;
+                        WorkSheet1.Cells[recordIndex, 8].Value = Convert.ToDateTime(items.CreatedDate).ToString("dd/MM/yyyy");
+                        WorkSheet1.Cells[recordIndex, 9].Value = items.CreatorName;
 
                         recordIndex += 1;
                     }

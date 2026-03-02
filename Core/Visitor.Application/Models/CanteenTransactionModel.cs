@@ -29,6 +29,7 @@ namespace Visitor.Application.Models
     }
     public class CanteenTransaction_Response : BaseEntity
     {
+        public string? RefCode { get; set; }
         public string? RefType { get; set; }
         public int? RefId { get; set; }
         public string? RefName { get; set; }
