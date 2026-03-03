@@ -35,6 +35,18 @@ namespace Visitor.Application.Models
         public int? PeopleInsideCount { get; set; }
         public int? TotalLeftCount { get; set; }
         public int? CanteenCount { get; set; }
+        public int? EmployeeEarlyLeaveCount { get; set; }
+        public int? EmployeeEarlyLeavePendingCount { get; set; }
+        public int? EmployeeEarlyLeaveApproveCount { get; set; }
+        public int? EmployeeEarlyLeaveRejectCount { get; set; }
+        public int? WorkerEarlyLeaveCount { get; set; }
+        public int? WorkerEarlyLeavePendingCount { get; set; }
+        public int? WorkerEarlyLeaveApproveCount { get; set; }
+        public int? WorkerEarlyLeaveRejectCount { get; set; }
+        public int? MaterialRequestCount { get; set; }
+        public int? MaterialRequestPendingCount { get; set; }
+        public int? MaterialRequestApproveCount { get; set; }
+        public int? MaterialRequestRejectCount { get; set; }
     }
 
     public class Dashboard_TokenCountSummary_Search

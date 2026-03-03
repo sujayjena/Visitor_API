@@ -378,7 +378,7 @@ namespace Visitor.API.Controllers
             }
             else if (result == -3)
             {
-                _response.Message = "Not Allowed to approved requisition";
+                _response.Message = "Canteen User not exists.";
             }
             else
             {
