@@ -48,6 +48,10 @@ namespace Visitor.Application.Models
         public string? StatusName { get; set; }
         public string? Remarks { get; set; }
         public bool? IsApprovedReject { get; set; }
+        public int? HOD_ApproverId { get; set; }
+        public string? HOD_ApproverName { get; set; }
+        public int? HR_ApproverId { get; set; }
+        public string? HR_ApproverName { get; set; }
         public bool? IsActive { get; set; }
     }
     public class EmployeeEarlyLeave_CheckedInOut_Search : BaseSearchEntity
@@ -121,6 +125,11 @@ namespace Visitor.Application.Models
         public int? StatusId { get; set; }
         public string? StatusName { get; set; }
         public string? Remarks { get; set; }
+        public bool? IsApprovedReject { get; set; }
+        public int? HOD_ApproverId { get; set; }
+        public string? HOD_ApproverName { get; set; }
+        public int? HR_ApproverId { get; set; }
+        public string? HR_ApproverName { get; set; }
         public bool? IsActive { get; set; }
     }
 

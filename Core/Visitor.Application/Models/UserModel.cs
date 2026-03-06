@@ -317,6 +317,8 @@ namespace Visitor.Application.Models
         public DateTime? LastWorkingDate { get; set; }
         public bool? IsCheckedInDisable { get; set; }
         public string? Remarks { get; set; }
+        public string? LastCheckedInOutType { get; set; }
+        public DateTime? LastCheckedInOutDate { get; set; }
         public bool? IsMobileUser { get; set; }
 
         public bool? IsWebUser { get; set; }

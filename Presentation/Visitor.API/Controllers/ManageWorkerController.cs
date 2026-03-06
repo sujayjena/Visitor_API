@@ -933,7 +933,7 @@ namespace Visitor.API.Controllers
                         WorkSheet1.Cells[recordIndex, 3].Value = items.ContractorName;
                         WorkSheet1.Cells[recordIndex, 4].Value = items.PONumber;
                         WorkSheet1.Cells[recordIndex, 5].Value = items.WorkerName;
-                        WorkSheet1.Cells[recordIndex, 6].Value = items.WorkerId;
+                        WorkSheet1.Cells[recordIndex, 6].Value = items.PassNumber;
                         WorkSheet1.Cells[recordIndex, 7].Value = items.WorkerType;
                         WorkSheet1.Cells[recordIndex, 8].Value = items.WorkerMobileNo;
                         WorkSheet1.Cells[recordIndex, 9].Value = items.ValidFromDate.HasValue ? items.ValidFromDate.Value.ToString("dd/MM/yyyy") : string.Empty;
@@ -1198,7 +1198,7 @@ namespace Visitor.API.Controllers
                     WorkSheet1.Row(1).Style.Font.Bold = true;
 
                     WorkSheet1.Cells[1, 1].Value = "Sr.No";
-                    WorkSheet1.Cells[1, 2].Value = "Worker ID";
+                    WorkSheet1.Cells[1, 2].Value = "Pass ID";
                     WorkSheet1.Cells[1, 3].Value = "Worker Name";
                     WorkSheet1.Cells[1, 4].Value = "Branch";
                     WorkSheet1.Cells[1, 5].Value = "Gate No";
@@ -1241,7 +1241,7 @@ namespace Visitor.API.Controllers
                                 {
                                     WorkSheet1.Cells[recordIndex, 1].Value = i + "." + j;
                                 }
-                                WorkSheet1.Cells[recordIndex, 2].Value = items.WorkerId;
+                                WorkSheet1.Cells[recordIndex, 2].Value = items.PassNumber;
                                 WorkSheet1.Cells[recordIndex, 3].Value = items.WorkerName;
                                 WorkSheet1.Cells[recordIndex, 4].Value = items.BranchName;
                                 WorkSheet1.Cells[recordIndex, 5].Value = mitems.GateNumber;
