@@ -26,6 +26,11 @@ namespace Visitor.Application.Models
 
     public class EarlyLeave_Search : BaseSearchEntity
     {
+        [DefaultValue(null)]
+        public DateTime? FromDate { get; set; }
+
+        [DefaultValue(null)]
+        public DateTime? ToDate { get; set; }
         public int? StatusId { get; set; }
         public int? DepartmentId { get; set; }
     }
@@ -103,6 +108,11 @@ namespace Visitor.Application.Models
 
     public class WorkerEarlyLeave_Search : BaseSearchEntity
     {
+        [DefaultValue(null)]
+        public DateTime? FromDate { get; set; }
+
+        [DefaultValue(null)]
+        public DateTime? ToDate { get; set; }
         public int? StatusId { get; set; }
         public int? DepartmentId { get; set; }
     }

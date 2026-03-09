@@ -471,7 +471,7 @@ namespace Visitor.API.Controllers
                         #endregion
 
                         #region IsCrew = true than checked in gate number 1
-                        if (parameters.IsCrew == true)
+                        if (parameters.IsCrew == true && parameters.StatusId==2)
                         {
                             if (vVisitor != null)
                             {
@@ -1474,8 +1474,8 @@ namespace Visitor.API.Controllers
                         lstVisitor_ImportData.Add(new Visitor_ImportData()
                         {
                             PassType = workSheet.Cells[rowIterator, 1].Value?.ToString(),
-                            VisitStartDate = !string.IsNullOrWhiteSpace(workSheet.Cells[rowIterator, 2].Value?.ToString()) ? DateTime.ParseExact(workSheet.Cells[rowIterator, 2].Value?.ToString(), "dd/MM/yyyy", System.Globalization.CultureInfo.CurrentUICulture.DateTimeFormat) : null,
-                            VisitEndDate = !string.IsNullOrWhiteSpace(workSheet.Cells[rowIterator, 3].Value?.ToString()) ? DateTime.ParseExact(workSheet.Cells[rowIterator, 3].Value?.ToString(), "dd/MM/yyyy", System.Globalization.CultureInfo.CurrentUICulture.DateTimeFormat) : null,
+                            VisitStartDate = !string.IsNullOrWhiteSpace(workSheet.Cells[rowIterator, 2].Value?.ToString()) ? DateTime.ParseExact(workSheet.Cells[rowIterator, 2].Value?.ToString(), "dd/MM/yyyy hh:mm:ss tt", System.Globalization.CultureInfo.CurrentUICulture.DateTimeFormat) : null,
+                            VisitEndDate = !string.IsNullOrWhiteSpace(workSheet.Cells[rowIterator, 3].Value?.ToString()) ? DateTime.ParseExact(workSheet.Cells[rowIterator, 3].Value?.ToString(), "dd/MM/yyyy hh:mm:ss tt", System.Globalization.CultureInfo.CurrentUICulture.DateTimeFormat) : null,
                             VisitorMobileNo = workSheet.Cells[rowIterator, 4].Value?.ToString(),
                             VisitorName = workSheet.Cells[rowIterator, 5].Value?.ToString(),
                             VisitorEmailId = workSheet.Cells[rowIterator, 6].Value?.ToString(),

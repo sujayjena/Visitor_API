@@ -252,6 +252,8 @@ namespace Visitor.Application.Models
         public bool? IsBlackList { get; set; }
         public int? StatusId { get; set; }
         public string? StatusName { get; set; }
+        public string? LastCheckedInOutType { get; set; }
+        public DateTime? LastCheckedInOutDate { get; set; }
         public bool? IsActive { get; set; }
         public List<AssignGateNo_Response> GateNumberList { get; set; }
         public List<VisitorDocumentVerification_Response> DocumentVerificationList { get; set; }

@@ -335,6 +335,8 @@ namespace Visitor.Application.Models
         public int? ApprovedBy { get; set; }
         public string? ApprovedByName { get; set; }
         public DateTime? ApprovedDate { get; set; }
+        public string? LastCheckedInOutType { get; set; }
+        public DateTime? LastCheckedInOutDate { get; set; }
 
         public List<AssignGateNo_Response> GateNumberList { get; set; }
         public List<VisitorDocumentVerification_Response> DocumentVerificationList { get; set; }

@@ -41,6 +41,8 @@ namespace Visitor.Persistence.Repositories
         public async Task<IEnumerable<EarlyLeave_Response>> GetEarlyLeaveList(EarlyLeave_Search parameters)
         {
             DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@FromDate", parameters.FromDate);
+            queryParameters.Add("@ToDate", parameters.ToDate);
             queryParameters.Add("@StatusId", parameters.StatusId);
             queryParameters.Add("@DepartmentId", parameters.DepartmentId);
             queryParameters.Add("@SearchText", parameters.SearchText.SanitizeValue());
@@ -107,6 +109,8 @@ namespace Visitor.Persistence.Repositories
         public async Task<IEnumerable<WorkerEarlyLeave_Response>> GetWorkerEarlyLeaveList(WorkerEarlyLeave_Search parameters)
         {
             DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@FromDate", parameters.FromDate);
+            queryParameters.Add("@ToDate", parameters.ToDate);
             queryParameters.Add("@StatusId", parameters.StatusId);
             queryParameters.Add("@DepartmentId", parameters.DepartmentId);
             queryParameters.Add("@SearchText", parameters.SearchText.SanitizeValue());
