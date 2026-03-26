@@ -245,6 +245,7 @@ namespace Visitor.Persistence.Repositories
             queryParameters.Add("@IsPlanned", parameters.IsPlanned);
             queryParameters.Add("@IsCrew", parameters.IsCrew);
             queryParameters.Add("@IsForeigner", parameters.IsForeigner);
+            queryParameters.Add("@IsMaterialRequest", parameters.IsMaterialRequest);
             queryParameters.Add("@SearchText", parameters.SearchText.SanitizeValue());
             queryParameters.Add("@IsActive", parameters.IsActive);
             queryParameters.Add("@PageNo", parameters.PageNo);

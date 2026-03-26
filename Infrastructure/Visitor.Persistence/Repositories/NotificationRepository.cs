@@ -64,5 +64,17 @@ namespace Visitor.Persistence.Repositories
 
             return (await ListByStoredProcedure<Notification_Response>("GetNotificationById", queryParameters)).FirstOrDefault();
         }
+
+        public async Task<Notification_Response?> GetNotificationByOtherFilter(string Subject, string SendTo, int? EmployeeId, string RefValue1)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+
+            queryParameters.Add("@EmployeeId", EmployeeId);
+            queryParameters.Add("@Subject", Subject);
+            queryParameters.Add("@SendTo", SendTo);
+            queryParameters.Add("@RefValue1", RefValue1);
+
+            return (await ListByStoredProcedure<Notification_Response>("GetNotificationByOtherFilter", queryParameters)).FirstOrDefault();
+        }
     }
 }

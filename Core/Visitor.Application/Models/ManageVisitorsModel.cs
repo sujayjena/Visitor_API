@@ -608,6 +608,9 @@ namespace Visitor.Application.Models
 
         [DefaultValue(null)]
         public bool? IsForeigner { get; set; }
+
+        [DefaultValue(false)]
+        public bool? IsMaterialRequest { get; set; }
     }
 
     public class VisitorPlanned_Response : BaseResponseEntity

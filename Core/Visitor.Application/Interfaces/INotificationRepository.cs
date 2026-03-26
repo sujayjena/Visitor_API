@@ -12,5 +12,6 @@ namespace Visitor.Application.Interfaces
         Task<int> SaveNotification(Notification_Request parameters);
         Task<IEnumerable<Notification_Response>> GetNotificationList(Notification_Search parameters);
         Task<Notification_Response?> GetNotificationById(int Id);
+        Task<Notification_Response?> GetNotificationByOtherFilter(string Subject, string SendTo, int? EmployeeId, string RefValue1);
     }
 }
