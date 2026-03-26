@@ -225,9 +225,41 @@ namespace Visitor.API.Controllers
                                         RefValue1 = vGroceryRequisition.RequisitionId,
                                         ReadUnread = false
                                     };
-
                                     int resultNotification = await _notificationRepository.SaveNotification(vNotifyObj);
+
+                                    var vNotifycreatorObj = new Notification_Request()
+                                    {
+                                        Subject = "Grocery Approval",
+                                        SendTo = "Request Raised By",
+                                        //CustomerId = vWorkOrderObj.CustomerId,
+                                        //CustomerMessage = NotifyMessage,
+                                        EmployeeId = Convert.ToInt32(vGroceryRequisition.CreatedBy),
+                                        EmployeeMessage = notifyMessage,
+                                        RefValue1 = vGroceryRequisition.RequisitionId,
+                                        ReadUnread = false
+                                    };
+                                    int resultCreatorNotification = await _notificationRepository.SaveNotification(vNotifycreatorObj);
                                 }
+                            }
+
+                            /**approved notification send to creator**/
+                            var vuser = await _userRepository.GetUserById(SessionManager.LoggedInUserId);
+                            if (vuser != null)
+                            {
+                                string approverName = vuser.UserName;
+                                string notifyMessage = String.Format(@"The requisition ID {0} has been approved by the {1}.", vGroceryRequisition.RequisitionId, approverName);
+                                var vNotifycreatorObj = new Notification_Request()
+                                {
+                                    Subject = "Grocery Approved",
+                                    SendTo = "Request Raised By",
+                                    //CustomerId = vWorkOrderObj.CustomerId,
+                                    //CustomerMessage = NotifyMessage,
+                                    EmployeeId = Convert.ToInt32(vGroceryRequisition.CreatedBy),
+                                    EmployeeMessage = notifyMessage,
+                                    RefValue1 = vGroceryRequisition.RequisitionId,
+                                    ReadUnread = false
+                                };
+                                int resultCreatorNotification = await _notificationRepository.SaveNotification(vNotifycreatorObj);
                             }
                         }
                         else if (parameters.StatusId == 3)
@@ -258,8 +290,20 @@ namespace Visitor.API.Controllers
                                     RefValue1 = vGroceryRequisition.RequisitionId,
                                     ReadUnread = false
                                 };
-
                                 int resultNotification = await _notificationRepository.SaveNotification(vNotifyObj);
+
+                                var vNotifycreatorObj = new Notification_Request()
+                                {
+                                    Subject = "Grocery Approval",
+                                    SendTo = "Request Raised By",
+                                    //CustomerId = vWorkOrderObj.CustomerId,
+                                    //CustomerMessage = NotifyMessage,
+                                    EmployeeId = Convert.ToInt32(vGroceryRequisition.CreatedBy),
+                                    EmployeeMessage = notifyMessage,
+                                    RefValue1 = vGroceryRequisition.RequisitionId,
+                                    ReadUnread = false
+                                };
+                                int resultCreatorNotification = await _notificationRepository.SaveNotification(vNotifycreatorObj);
                             }
                         }
                     }

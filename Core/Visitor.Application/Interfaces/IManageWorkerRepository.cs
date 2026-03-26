@@ -16,5 +16,6 @@ namespace Visitor.Application.Interfaces
         Task<int> SaveWorkerPass(WorkerPass_Request parameters);
         Task<IEnumerable<WorkerPass_Response>> GetWorkerPassList(WorkerPassSearch_Request parameters);
         Task<int> WorkerApproveNReject(Worker_ApproveNReject parameters);
+        Task<int> SendWorkerApprovalPending_Notification();
     }
 }

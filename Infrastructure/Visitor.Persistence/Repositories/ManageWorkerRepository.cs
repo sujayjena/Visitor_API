@@ -171,5 +171,13 @@ namespace Visitor.Persistence.Repositories
 
             return await SaveByStoredProcedure<int>("WorkerApproveNReject", queryParameters);
         }
+
+        public async Task<int> SendWorkerApprovalPending_Notification()
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
+
+            return await SaveByStoredProcedure<int>("SendWorkerApprovalPending_Notification", queryParameters);
+        }
     }
 }

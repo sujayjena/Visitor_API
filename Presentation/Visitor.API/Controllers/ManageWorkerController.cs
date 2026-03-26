@@ -27,8 +27,9 @@ namespace Visitor.API.Controllers
         private IEmailHelper _emailHelper;
         private readonly IUserRepository _userRepository;
         private readonly IProfileRepository _profileRepository;
+        private readonly INotificationRepository _notificationRepository;
 
-        public ManageWorkerController(IManageWorkerRepository manageWorkerRepository, IFileManager fileManager, IManageContractorRepository manageContractorRepository, IAssignGateNoRepository assignGateNoRepository, IBarcodeRepository barcodeRepository, IManagePurchaseOrderRepository managePurchaseOrderRepository, IManageVisitorsRepository manageVisitorsRepository, IWebHostEnvironment environment, IEmailHelper emailHelper, IUserRepository userRepository, IProfileRepository profileRepository)
+        public ManageWorkerController(IManageWorkerRepository manageWorkerRepository, IFileManager fileManager, IManageContractorRepository manageContractorRepository, IAssignGateNoRepository assignGateNoRepository, IBarcodeRepository barcodeRepository, IManagePurchaseOrderRepository managePurchaseOrderRepository, IManageVisitorsRepository manageVisitorsRepository, IWebHostEnvironment environment, IEmailHelper emailHelper, IUserRepository userRepository, IProfileRepository profileRepository, INotificationRepository notificationRepository)
         {
             _manageWorkerRepository = manageWorkerRepository;
             _fileManager = fileManager;
@@ -44,6 +45,7 @@ namespace Visitor.API.Controllers
 
             _response = new ResponseModel();
             _response.IsSuccess = true;
+            _notificationRepository = notificationRepository;
         }
 
         [Route("[action]")]
@@ -1105,10 +1107,10 @@ namespace Visitor.API.Controllers
                     }
 
                     /**check role name**/
-                    var vRole = await _profileRepository.GetRoleById(SessionManager.LoggedInUserId);
-                    if (vRole != null)
+                    var vUser = await _userRepository.GetUserById(SessionManager.LoggedInUserId);
+                    if (vUser != null)
                     {
-                        if ((vRole.RoleName != "MANAGER-SECURITY" || vRole.RoleName != "Manager-Security") && parameters.StatusId == 2)
+                        if ((vUser.RoleName != "MANAGER-SECURITY" || vUser.RoleName != "Manager-Security") && parameters.StatusId == 2)
                         {
                             #region Worker Pass
                             var vWorker = await _manageWorkerRepository.GetWorkerById(Convert.ToInt32(parameters.Id));
@@ -1129,6 +1131,7 @@ namespace Visitor.API.Controllers
                             #endregion
 
                             #region Generate Barcode
+                            int resultBarcode = 0;
                             var vWorkerP = await _manageWorkerRepository.GetWorkerById(Convert.ToInt32(parameters.Id));
                             if (vWorkerP != null)
                             {
@@ -1159,9 +1162,28 @@ namespace Visitor.API.Controllers
 
                                             RefId = parameters.Id
                                         };
-                                        var resultBarcode = _barcodeRepository.SaveBarcode(vBarcode_Request);
+                                        resultBarcode = await _barcodeRepository.SaveBarcode(vBarcode_Request);
                                     }
                                 }
+                            }
+                            #endregion
+
+                            #region send notification to worker creator after approval of worker documents
+                            if (resultBarcode > 0)
+                            {
+                                string notifyMessage = String.Format(@"{0} is approved by IRPR and the worker pass has been successfully created.", vWorkerP.WorkerName);
+                                var vNotifyObj = new Notification_Request()
+                                {
+                                    Subject = "Worker Approval",
+                                    SendTo = "Worker Creator",
+                                    //CustomerId = vWorkOrderObj.CustomerId,
+                                    //CustomerMessage = NotifyMessage,
+                                    EmployeeId = Convert.ToInt32(vWorkerP.CreatedBy),
+                                    EmployeeMessage = notifyMessage,
+                                    RefValue1 = vWorkerP.PassNumber,
+                                    ReadUnread = false
+                                };
+                                int resultNotification = await _notificationRepository.SaveNotification(vNotifyObj);
                             }
                             #endregion
                         }
@@ -1285,6 +1307,35 @@ namespace Visitor.API.Controllers
                 _response.Message = "Exported successfully";
             }
 
+            return _response;
+        }
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> SendWorkerApprovalPending_Notification()
+        {
+            int result = await _manageWorkerRepository.SendWorkerApprovalPending_Notification();
+
+            if (result == (int)SaveOperationEnums.NoRecordExists)
+            {
+                _response.Message = "No record exists";
+            }
+            else if (result == (int)SaveOperationEnums.ReocrdExists)
+            {
+                _response.Message = "Record already exists";
+            }
+            else if (result == (int)SaveOperationEnums.NoResult)
+            {
+                _response.Message = "Something went wrong, please try again";
+            }
+            else if (result == -3)
+            {
+                _response.Message = "Not Allowed to approved requisition";
+            }
+            else
+            {
+                _response.Message = "Record details saved successfully";
+            }
             return _response;
         }
     }
