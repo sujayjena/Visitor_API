@@ -764,10 +764,15 @@ namespace Visitor.API.Controllers
                 {
                     _response.Message = "Visitor Approved successfully";
 
-                    //Send Email
-                    if (parameters.Id > 0 && parameters.StatusId == 2)
+                    /**check role name**/
+                    var vUser = await _userRepository.GetUserById(SessionManager.LoggedInUserId);
+                    if (vUser != null)
                     {
-                        var vEmailEmp = await SendVisitorApproved_EmailToSecurity(Convert.ToInt32(parameters.Id));
+                        //Send Email
+                        if (parameters.Id > 0 && (vUser.RoleName != "MANAGER-SECURITY" || vUser.RoleName != "Manager-Security") && parameters.StatusId == 2)
+                        {
+                            var vEmailEmp = await SendVisitorApproved_EmailToSecurity(Convert.ToInt32(parameters.Id));
+                        }
                     }
 
                     #region SMS Send
