@@ -769,7 +769,7 @@ namespace Visitor.API.Controllers
                     if (vUser != null)
                     {
                         //Send Email
-                        if (parameters.Id > 0 && (vUser.RoleName != "MANAGER-SECURITY" || vUser.RoleName != "Manager-Security") && parameters.StatusId == 2)
+                        if (parameters.Id > 0 && vUser.RoleName != "MANAGER-SECURITY" && parameters.StatusId == 2)
                         {
                             var vEmailEmp = await SendVisitorApproved_EmailToSecurity(Convert.ToInt32(parameters.Id));
 
