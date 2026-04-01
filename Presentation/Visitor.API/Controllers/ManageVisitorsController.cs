@@ -772,106 +772,106 @@ namespace Visitor.API.Controllers
                         if (parameters.Id > 0 && (vUser.RoleName != "MANAGER-SECURITY" || vUser.RoleName != "Manager-Security") && parameters.StatusId == 2)
                         {
                             var vEmailEmp = await SendVisitorApproved_EmailToSecurity(Convert.ToInt32(parameters.Id));
-                        }
-                    }
 
-                    #region SMS Send
-                    if (vVisitorResponse != null && parameters.StatusId == 2)
-                    {
-                        var vConfigRef_Search = new ConfigRef_Search()
-                        {
-                            Ref_Type = "SMS",
-                            Ref_Param = "VisitorApproved"
-                        };
-
-                        string sSMSTemplateName = string.Empty;
-                        string sSMSTemplateContent = string.Empty;
-                        var vConfigRefObj = _configRefRepository.GetConfigRefList(vConfigRef_Search).Result.ToList().FirstOrDefault();
-                        if (vConfigRefObj != null)
-                        {
-                            sSMSTemplateName = vConfigRefObj.Ref_Value1;
-                            sSMSTemplateContent = vConfigRefObj.Ref_Value2;
-
-                            if (!string.IsNullOrWhiteSpace(sSMSTemplateContent))
+                            #region SMS Send
+                            if (vVisitorResponse != null && parameters.StatusId == 2)
                             {
-                                //Replace parameter 
-                                sSMSTemplateContent = sSMSTemplateContent.Replace("{#var#}", vVisitorResponse.VisitorName.ToString());
-                                sSMSTemplateContent = sSMSTemplateContent.Replace("{#var1#}", Convert.ToDateTime(vVisitorResponse.VisitStartDate).ToString("dd/MM/yyyy"));
-                                sSMSTemplateContent = sSMSTemplateContent.Replace("{#var2#}", Convert.ToDateTime(vVisitorResponse.VisitStartDate).ToString("hh:mm:ss:tt"));
-
-                                //StringBuilder sb = new StringBuilder();
-                                //sb.AppendFormat(sSMSTemplateContent, iOTP.ToString(), parameters.VisitNumber);
-
-                                //sSMSTemplateContent = sb.ToString();
-                            }
-                        }
-
-                        // Send SMS
-                        var vsmsRequest = new SMS_Request()
-                        {
-                            Ref2_Other = vVisitorResponse.VisitNumber,
-                            TemplateName = sSMSTemplateName,
-                            TemplateContent = sSMSTemplateContent,
-                            Mobile = vVisitorResponse.VisitorMobileNo,
-                        };
-                        bool bSMSResult = await _smsHelper.SMSSend(vsmsRequest);
-                    }
-                    #endregion
-
-                    #region Notification
-                    if (vVisitorResponse != null && parameters.StatusId == 2)
-                    {
-                        var gateNolistObj = await _assignGateNoRepository.GetAssignGateNoById(vVisitorResponse.Id, "Visitor", 0);
-
-                        var visitorGate = "";
-                        if (gateNolistObj != null)
-                        {
-                            visitorGate = string.Join(",", gateNolistObj.ToList().Select(x => x.GateNumber).ToList());
-                        }
-
-                        string notifyMessage = "";
-                        if (vVisitorResponse.StatusName == "Approved")
-                        {
-                            notifyMessage = String.Format(@"Pass created for {0} at Gate Number - {1} on {2}.", vVisitorResponse.VisitorName, visitorGate, vVisitorResponse.CreatedDate);
-                        }
-                        else
-                        {
-                            notifyMessage = String.Format(@"Pass created for {0} at Gate Number - {1} on {2}.", vVisitorResponse.VisitorName, visitorGate, vVisitorResponse.CreatedDate);
-                        }
-
-                        var vSearch = new User_Search()
-                        {
-                            UserTypeId = 2,
-                            BranchId = 0
-                        };
-
-                        var vSecurityList = await _userRepository.GetUserList(vSearch); //get branch wise security list
-
-                        var vGateNumberList = await _assignGateNoRepository.GetAssignGateNoById(0, "Security", 0); //get gate list of security
-                        var vGateNumberList_1 = vGateNumberList.Where(x => x.GateNumber == "1").ToList();
-
-                        var vSecurityGate_1 = vSecurityList.Where(x => vGateNumberList_1.Select(x => x.RefId).Contains(x.Id)).ToList();
-                        if (vSecurityGate_1.Count > 0)
-                        {
-                            foreach (var vSecurity in vSecurityGate_1)
-                            {
-                                var vNotifyObj = new Notification_Request()
+                                var vConfigRef_Search = new ConfigRef_Search()
                                 {
-                                    Subject = "Visitor Approved",
-                                    SendTo = "Security",
-                                    //CustomerId = vWorkOrderObj.CustomerId,
-                                    //CustomerMessage = NotifyMessage,
-                                    EmployeeId = vSecurity.Id,
-                                    EmployeeMessage = notifyMessage,
-                                    RefValue1 = vVisitorResponse.VisitNumber,
-                                    ReadUnread = false
+                                    Ref_Type = "SMS",
+                                    Ref_Param = "VisitorApproved"
                                 };
 
-                                int resultNotification = await _notificationRepository.SaveNotification(vNotifyObj);
+                                string sSMSTemplateName = string.Empty;
+                                string sSMSTemplateContent = string.Empty;
+                                var vConfigRefObj = _configRefRepository.GetConfigRefList(vConfigRef_Search).Result.ToList().FirstOrDefault();
+                                if (vConfigRefObj != null)
+                                {
+                                    sSMSTemplateName = vConfigRefObj.Ref_Value1;
+                                    sSMSTemplateContent = vConfigRefObj.Ref_Value2;
+
+                                    if (!string.IsNullOrWhiteSpace(sSMSTemplateContent))
+                                    {
+                                        //Replace parameter 
+                                        sSMSTemplateContent = sSMSTemplateContent.Replace("{#var#}", vVisitorResponse.VisitorName.ToString());
+                                        sSMSTemplateContent = sSMSTemplateContent.Replace("{#var1#}", Convert.ToDateTime(vVisitorResponse.VisitStartDate).ToString("dd/MM/yyyy"));
+                                        sSMSTemplateContent = sSMSTemplateContent.Replace("{#var2#}", Convert.ToDateTime(vVisitorResponse.VisitStartDate).ToString("hh:mm:ss:tt"));
+
+                                        //StringBuilder sb = new StringBuilder();
+                                        //sb.AppendFormat(sSMSTemplateContent, iOTP.ToString(), parameters.VisitNumber);
+
+                                        //sSMSTemplateContent = sb.ToString();
+                                    }
+                                }
+
+                                // Send SMS
+                                var vsmsRequest = new SMS_Request()
+                                {
+                                    Ref2_Other = vVisitorResponse.VisitNumber,
+                                    TemplateName = sSMSTemplateName,
+                                    TemplateContent = sSMSTemplateContent,
+                                    Mobile = vVisitorResponse.VisitorMobileNo,
+                                };
+                                bool bSMSResult = await _smsHelper.SMSSend(vsmsRequest);
                             }
+                            #endregion
+
+                            #region Notification
+                            if (vVisitorResponse != null && parameters.StatusId == 2)
+                            {
+                                var gateNolistObj = await _assignGateNoRepository.GetAssignGateNoById(vVisitorResponse.Id, "Visitor", 0);
+
+                                var visitorGate = "";
+                                if (gateNolistObj != null)
+                                {
+                                    visitorGate = string.Join(",", gateNolistObj.ToList().Select(x => x.GateNumber).ToList());
+                                }
+
+                                string notifyMessage = "";
+                                if (vVisitorResponse.StatusName == "Approved")
+                                {
+                                    notifyMessage = String.Format(@"Pass created for {0} at Gate Number - {1} on {2}.", vVisitorResponse.VisitorName, visitorGate, vVisitorResponse.CreatedDate);
+                                }
+                                else
+                                {
+                                    notifyMessage = String.Format(@"Pass created for {0} at Gate Number - {1} on {2}.", vVisitorResponse.VisitorName, visitorGate, vVisitorResponse.CreatedDate);
+                                }
+
+                                var vSearch = new User_Search()
+                                {
+                                    UserTypeId = 2,
+                                    BranchId = 0
+                                };
+
+                                var vSecurityList = await _userRepository.GetUserList(vSearch); //get branch wise security list
+
+                                var vGateNumberList = await _assignGateNoRepository.GetAssignGateNoById(0, "Security", 0); //get gate list of security
+                                var vGateNumberList_1 = vGateNumberList.Where(x => x.GateNumber == "1").ToList();
+
+                                var vSecurityGate_1 = vSecurityList.Where(x => vGateNumberList_1.Select(x => x.RefId).Contains(x.Id)).ToList();
+                                if (vSecurityGate_1.Count > 0)
+                                {
+                                    foreach (var vSecurity in vSecurityGate_1)
+                                    {
+                                        var vNotifyObj = new Notification_Request()
+                                        {
+                                            Subject = "Visitor Approved",
+                                            SendTo = "Security",
+                                            //CustomerId = vWorkOrderObj.CustomerId,
+                                            //CustomerMessage = NotifyMessage,
+                                            EmployeeId = vSecurity.Id,
+                                            EmployeeMessage = notifyMessage,
+                                            RefValue1 = vVisitorResponse.VisitNumber,
+                                            ReadUnread = false
+                                        };
+
+                                        int resultNotification = await _notificationRepository.SaveNotification(vNotifyObj);
+                                    }
+                                }
+                            }
+                            #endregion
                         }
                     }
-                    #endregion
                 }
             }
 
