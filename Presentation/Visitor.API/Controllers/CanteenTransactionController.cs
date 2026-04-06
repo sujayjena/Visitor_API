@@ -137,8 +137,9 @@ namespace Visitor.API.Controllers
                     WorkSheet1.Cells[1, 5].Value = "Token Code";
                     WorkSheet1.Cells[1, 6].Value = "MRP";
                     WorkSheet1.Cells[1, 7].Value = "Subsidized Price";
-                    WorkSheet1.Cells[1, 8].Value = "Created Date";
-                    WorkSheet1.Cells[1, 9].Value = "Created By";
+                    WorkSheet1.Cells[1, 8].Value = "Branch";
+                    WorkSheet1.Cells[1, 9].Value = "Created Date";
+                    WorkSheet1.Cells[1, 10].Value = "Created By";
 
                     recordIndex = 2;
 
@@ -151,8 +152,9 @@ namespace Visitor.API.Controllers
                         WorkSheet1.Cells[recordIndex, 5].Value = items.TokenNo;
                         WorkSheet1.Cells[recordIndex, 6].Value = items.SellingPrice;
                         WorkSheet1.Cells[recordIndex, 7].Value = items.SubsidizedPrice;
-                        WorkSheet1.Cells[recordIndex, 8].Value = Convert.ToDateTime(items.CreatedDate).ToString("dd/MM/yyyy");
-                        WorkSheet1.Cells[recordIndex, 9].Value = items.CreatorName;
+                        WorkSheet1.Cells[recordIndex, 8].Value = items.BranchName;
+                        WorkSheet1.Cells[recordIndex, 9].Value = Convert.ToDateTime(items.CreatedDate).ToString("dd/MM/yyyy");
+                        WorkSheet1.Cells[recordIndex, 10].Value = items.CreatorName;
 
                         recordIndex += 1;
                     }

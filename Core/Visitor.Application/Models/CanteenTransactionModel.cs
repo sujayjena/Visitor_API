@@ -42,6 +42,7 @@ namespace Visitor.Application.Models
         public decimal? SubsidizedPrice { get; set; }
         public string? TokenNo { get; set; }
         public bool? IsPaid { get; set; }
+        public string? BranchName { get; set; }
         public DateTime? CTDate { get; set; }
         public DateTime? CreatedDate { get; set; }
         public long CreatedBy { get; set; }
