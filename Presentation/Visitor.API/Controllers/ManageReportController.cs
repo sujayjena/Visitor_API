@@ -175,7 +175,7 @@ namespace Visitor.API.Controllers
 
         #endregion
 
-        #region Canteen Usage Report
+        #region Canteen Wastage Report
         [Route("[action]")]
         [HttpPost]
         public async Task<ResponseModel> GetCanteenWastageReport(CanteenWastageReport_Search parameters)

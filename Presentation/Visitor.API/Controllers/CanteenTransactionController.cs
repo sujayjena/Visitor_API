@@ -130,8 +130,8 @@ namespace Visitor.API.Controllers
                     WorkSheet1.Row(1).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                     WorkSheet1.Row(1).Style.Font.Bold = true;
 
-                    WorkSheet1.Cells[1, 1].Value = "Employee Code";
-                    WorkSheet1.Cells[1, 2].Value = "Employee Name";
+                    WorkSheet1.Cells[1, 1].Value = parameters.RefType == "Employee" ? "Employee Code" : parameters.RefType == "Visitor" ? "Visit Number" : parameters.RefType == "Contractor" ? "Contractor Code" : "";
+                    WorkSheet1.Cells[1, 2].Value = parameters.RefType == "Employee" ? "Employee Name" : parameters.RefType == "Visitor" ? "Visitor Name" : parameters.RefType == "Contractor" ? "Contractor Name" : "";
                     WorkSheet1.Cells[1, 3].Value = "Meal Type";
                     WorkSheet1.Cells[1, 4].Value = "Meal Name";
                     WorkSheet1.Cells[1, 5].Value = "Token Code";

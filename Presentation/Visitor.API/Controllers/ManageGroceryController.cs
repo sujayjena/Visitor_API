@@ -113,8 +113,20 @@ namespace Visitor.API.Controllers
                             RefValue1 = vGroceryRequisition.RequisitionId,
                             ReadUnread = false
                         };
-
                         int resultNotification = await _notificationRepository.SaveNotification(vNotifyObj);
+
+                        var vNotifycreatorObj = new Notification_Request()
+                        {
+                            Subject = "Grocery Approval",
+                            SendTo = "Request Raised By",
+                            //CustomerId = vWorkOrderObj.CustomerId,
+                            //CustomerMessage = NotifyMessage,
+                            EmployeeId = Convert.ToInt32(vGroceryRequisition.CreatedBy),
+                            EmployeeMessage = notifyMessage,
+                            RefValue1 = vGroceryRequisition.RequisitionId,
+                            ReadUnread = false
+                        };
+                        int resultCreatorNotification = await _notificationRepository.SaveNotification(vNotifycreatorObj);
                     }
                 }
                 #endregion
