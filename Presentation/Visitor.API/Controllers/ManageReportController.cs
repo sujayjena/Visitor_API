@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
 using Visitor.Application.Enums;
@@ -16,11 +17,13 @@ namespace Visitor.API.Controllers
     {
         private ResponseModel _response;
         private readonly IManageReportRepository _manageReportRepository;
+        private readonly IAdminMasterRepository _adminMasterRepository;
         private IFileManager _fileManager;
 
-        public ManageReportController(IManageReportRepository manageReportRepository, IFileManager fileManager)
+        public ManageReportController(IManageReportRepository manageReportRepository, IFileManager fileManager, IAdminMasterRepository adminMasterRepository)
         {
             _manageReportRepository = manageReportRepository;
+            _adminMasterRepository = adminMasterRepository;
             _fileManager = fileManager;
 
             _response = new ResponseModel();
@@ -39,6 +42,72 @@ namespace Visitor.API.Controllers
             return _response;
         }
 
+        //[Route("[action]")]
+        //[HttpPost]
+        //public async Task<ResponseModel> ExportCanteenUsageSummaryData(CanteenUsageReport_Search request)
+        //{
+        //    _response.IsSuccess = false;
+        //    byte[] result;
+        //    int recordIndex;
+        //    ExcelWorksheet WorkSheet1;
+        //    ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+
+        //    IEnumerable<CanteenUsageReport_Response> lstObj = await _manageReportRepository.GetCanteenUsageReport(request);
+
+        //    using (MemoryStream msExportDataFile = new MemoryStream())
+        //    {
+        //        using (ExcelPackage excelExportData = new ExcelPackage())
+        //        {
+        //            WorkSheet1 = excelExportData.Workbook.Worksheets.Add("CanteenUsage_Summary");
+        //            WorkSheet1.TabColor = System.Drawing.Color.Black;
+        //            WorkSheet1.DefaultRowHeight = 12;
+
+        //            //Header of table
+        //            WorkSheet1.Row(1).Height = 20;
+        //            WorkSheet1.Row(1).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+        //            WorkSheet1.Row(1).Style.Font.Bold = true;
+
+        //            WorkSheet1.Cells[1, 1].Value = "Code";
+        //            WorkSheet1.Cells[1, 2].Value = "Name";
+        //            WorkSheet1.Cells[1, 3].Value = "Company Name";
+        //            WorkSheet1.Cells[1, 4].Value = "Breakfast";
+        //            WorkSheet1.Cells[1, 5].Value = "Lunch";
+        //            WorkSheet1.Cells[1, 6].Value = "Snacks";
+        //            WorkSheet1.Cells[1, 7].Value = "Dinner";
+
+        //            recordIndex = 2;
+
+        //            foreach (var items in lstObj)
+        //            {
+        //                WorkSheet1.Cells[recordIndex, 1].Value = items.RefTypeID;
+        //                WorkSheet1.Cells[recordIndex, 2].Value = items.RefName;
+        //                WorkSheet1.Cells[recordIndex, 3].Value = items.CompanyName;
+        //                WorkSheet1.Cells[recordIndex, 4].Value = items.Breakfast;
+        //                WorkSheet1.Cells[recordIndex, 5].Value = items.Lunch;
+        //                WorkSheet1.Cells[recordIndex, 6].Value = items.Snacks;
+        //                WorkSheet1.Cells[recordIndex, 7].Value = items.Dinner;
+
+        //                recordIndex += 1;
+        //            }
+
+        //            WorkSheet1.Columns.AutoFit();
+
+        //            excelExportData.SaveAs(msExportDataFile);
+        //            msExportDataFile.Position = 0;
+        //            result = msExportDataFile.ToArray();
+        //        }
+        //    }
+
+        //    if (result != null)
+        //    {
+        //        _response.Data = result;
+        //        _response.IsSuccess = true;
+        //        _response.Message = "Data Exported successfully";
+        //    }
+
+        //    return _response;
+        //}
+
         [Route("[action]")]
         [HttpPost]
         public async Task<ResponseModel> ExportCanteenUsageSummaryData(CanteenUsageReport_Search request)
@@ -49,7 +118,7 @@ namespace Visitor.API.Controllers
             ExcelWorksheet WorkSheet1;
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 
-            IEnumerable<CanteenUsageReport_Response> lstObj = await _manageReportRepository.GetCanteenUsageReport(request);
+            IEnumerable<CanteenUsageSummaryReport_Response> lstObj = await _manageReportRepository.GetCanteenUsageSummaryReport(request);
 
             using (MemoryStream msExportDataFile = new MemoryStream())
             {
@@ -64,25 +133,53 @@ namespace Visitor.API.Controllers
                     WorkSheet1.Row(1).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                     WorkSheet1.Row(1).Style.Font.Bold = true;
 
-                    WorkSheet1.Cells[1, 1].Value = "Code";
-                    WorkSheet1.Cells[1, 2].Value = "Name";
-                    WorkSheet1.Cells[1, 3].Value = "Company Name";
-                    WorkSheet1.Cells[1, 4].Value = "Breakfast";
-                    WorkSheet1.Cells[1, 5].Value = "Lunch";
-                    WorkSheet1.Cells[1, 6].Value = "Snacks";
-                    WorkSheet1.Cells[1, 7].Value = "Dinner";
+                    WorkSheet1.Cells[1, 1].Value = "ConsumptionDate";
+                    WorkSheet1.Cells[1, 2].Value = "DepartmentName";
+                    WorkSheet1.Cells[1, 3].Value = "Code";
+                    WorkSheet1.Cells[1, 4].Value = "Name";
+
+                    int a = 5;
+
+                    var vBaseSearchEntity = new BaseSearchEntity();
+                    var vMenuItems = await _adminMasterRepository.GetMenuItemList(vBaseSearchEntity);
+
+                    foreach (var jItem in vMenuItems)
+                    {
+                        WorkSheet1.Cells[1, a].Value = jItem.MenuItemName.ToString(); 
+                        a++;
+                    }
+                    WorkSheet1.Cells[1, a].Value = "Total";
 
                     recordIndex = 2;
 
                     foreach (var items in lstObj)
                     {
-                        WorkSheet1.Cells[recordIndex, 1].Value = items.RefTypeID;
-                        WorkSheet1.Cells[recordIndex, 2].Value = items.RefName;
-                        WorkSheet1.Cells[recordIndex, 3].Value = items.CompanyName;
-                        WorkSheet1.Cells[recordIndex, 4].Value = items.Breakfast;
-                        WorkSheet1.Cells[recordIndex, 5].Value = items.Lunch;
-                        WorkSheet1.Cells[recordIndex, 6].Value = items.Snacks;
-                        WorkSheet1.Cells[recordIndex, 7].Value = items.Dinner;
+                        WorkSheet1.Cells[recordIndex, 1].Value = Convert.ToDateTime(items.ConsumptionDate).ToString("dd/MM/yyyy");
+                        WorkSheet1.Cells[recordIndex, 2].Value = items.DepartmentName;
+                        WorkSheet1.Cells[recordIndex, 3].Value = items.RefTypeID;
+                        WorkSheet1.Cells[recordIndex, 4].Value = items.RefName;
+
+                        decimal total = 0;
+                        int b = 5;
+                        var jsonData = JsonConvert.DeserializeObject<dynamic>(items.MenuItemsJson);
+                        foreach (var jItem in vMenuItems)
+                        {
+                            foreach (var itm in jsonData)
+                            {
+                                if (jItem.MenuItemName == itm.MenuItemName.ToString())
+                                {
+                                    total += Convert.ToDecimal(itm.SellingPrice.ToString() == "" ? "0" : itm.SellingPrice.ToString());
+                                    WorkSheet1.Cells[recordIndex, b].Value = Convert.ToDecimal(itm.SellingPrice.ToString() == "" ? "0" : itm.SellingPrice.ToString());
+                                    break;
+                                }
+                                else
+                                {
+                                    WorkSheet1.Cells[recordIndex, b].Value = 0;
+                                }
+                            }
+                            b++;
+                        }
+                        WorkSheet1.Cells[recordIndex, b].Value = total;
 
                         recordIndex += 1;
                     }

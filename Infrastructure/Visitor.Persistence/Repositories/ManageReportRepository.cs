@@ -41,6 +41,27 @@ namespace Visitor.Persistence.Repositories
 
             return result;
         }
+        public async Task<IEnumerable<CanteenUsageSummaryReport_Response>> GetCanteenUsageSummaryReport(CanteenUsageReport_Search parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@FromDate", parameters.FromDate);
+            queryParameters.Add("@ToDate", parameters.ToDate);
+            queryParameters.Add("@RefType", parameters.RefType);
+            queryParameters.Add("@RefId", parameters.RefId);
+            queryParameters.Add("@IsExportType", parameters.IsExportType);
+            queryParameters.Add("@IsActive", parameters.IsActive);
+            queryParameters.Add("@SearchText", parameters.SearchText.SanitizeValue());
+            queryParameters.Add("@IsActive", parameters.IsActive);
+            queryParameters.Add("@PageNo", parameters.PageNo);
+            queryParameters.Add("@PageSize", parameters.PageSize);
+            queryParameters.Add("@Total", parameters.Total, null, System.Data.ParameterDirection.Output);
+            queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
+
+            var result = await ListByStoredProcedure<CanteenUsageSummaryReport_Response>("GetCanteenUsageSummaryReport", queryParameters);
+            parameters.Total = queryParameters.Get<int>("Total");
+
+            return result;
+        }
         public async Task<IEnumerable<CanteenWastageReport_Response>> GetCanteenWastageReport(CanteenWastageReport_Search parameters)
         {
             DynamicParameters queryParameters = new DynamicParameters();

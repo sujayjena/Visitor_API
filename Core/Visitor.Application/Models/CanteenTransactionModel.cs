@@ -53,6 +53,7 @@ namespace Visitor.Application.Models
     {
         [DefaultValue("")]
         public string? MealType { get; set; }
+        public int? NoofToken { get; set; }
     }
 
     public class CanteenTransactionToken_Response : BaseEntity

@@ -37,6 +37,15 @@ namespace Visitor.Application.Models
         public int? Dinner { get; set; }
     }
 
+    public class CanteenUsageSummaryReport_Response : BaseEntity
+    {
+        public DateTime? ConsumptionDate { get; set; }
+        public string? DepartmentName { get; set; }
+        public string? RefTypeID { get; set; }
+        public string? RefName { get; set; }
+        public string? MenuItemsJson { get; set; }
+    }
+
     public class CanteenWastageReport_Search : BaseSearchEntity
     {
         [DefaultValue(null)]

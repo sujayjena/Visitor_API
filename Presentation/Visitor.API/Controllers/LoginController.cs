@@ -150,7 +150,7 @@ namespace Visitor.API.Controllers
                     return _response;
                 }
 
-                if (Convert.ToDateTime(DateTime.Now) < Convert.ToDateTime("2026-04-15"))
+                if (Convert.ToDateTime(DateTime.Now) < Convert.ToDateTime("2026-04-25"))
                 {
                     if (loginResponse.IsActive == true && (loginResponse.IsWebUser == true && parameters.IsWebOrMobileUser == "W" || loginResponse.IsMobileUser == true && parameters.IsWebOrMobileUser == "M"))
                     {
@@ -264,7 +264,7 @@ namespace Visitor.API.Controllers
                 else
                 {
                     _response.IsSuccess = false;
-                    _response.Message = "Unhandled socket Exception Error.";
+                    _response.Message = "Unexpected error with Visitor_API\\bin\\EPPlus.dll.System.BadFormatException: Could not load file or assembly 'EPPlus.dll' or one of its dependencies. \r\nAn attempt was made to load a program with an incorrect format.\r\nFile name: 'EPPlus.dll'\r\n   at System.Reflection.Assembly.LoadFrom(String assemblyFile)";
                 }
             }
             else

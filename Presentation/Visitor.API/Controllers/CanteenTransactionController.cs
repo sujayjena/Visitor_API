@@ -107,6 +107,72 @@ namespace Visitor.API.Controllers
 
         [Route("[action]")]
         [HttpPost]
+        public async Task<ResponseModel> SaveCanteenTransactionTokenTest(CanteenTransactionToken_Request parameters)
+        {
+            if (string.IsNullOrEmpty(parameters.MealType))
+            {
+                _response.IsSuccess = false;
+                _response.Message = "Meal Type is required.";
+                return _response;
+            }
+
+            int result = 0;
+
+            var tokenList = new List<CanteenTransactionToken_Response>();
+
+            if (parameters.NoofToken > 0)
+            {
+                for (int i = 0; i < parameters.NoofToken; i++)
+                {
+                    result = await _canteenTransactionRepository.SaveCanteenTransactionToken(parameters);
+                    var vtokenList = await _canteenTransactionRepository.GetCanteenTransactionTokenById(result);
+                    if (vtokenList != null)
+                    {
+                        tokenList.Add(new CanteenTransactionToken_Response
+                        {
+                            Id = vtokenList.Id,
+                            TokenNo = vtokenList.TokenNo
+                        });
+                    }
+                }
+            }
+            else
+            {
+                result = await _canteenTransactionRepository.SaveCanteenTransactionToken(parameters);
+                var vtokenList = await _canteenTransactionRepository.GetCanteenTransactionTokenById(result);
+                if (vtokenList != null)
+                {
+                    tokenList.Add(new CanteenTransactionToken_Response
+                    {
+                        Id = vtokenList.Id,
+                        TokenNo = vtokenList.TokenNo
+                    });
+                }
+            }
+
+            if (result == (int)SaveOperationEnums.NoRecordExists)
+            {
+                _response.Message = "No record exists";
+            }
+            else if (result == (int)SaveOperationEnums.ReocrdExists)
+            {
+                _response.Message = "Record already exists";
+            }
+            else if (result == (int)SaveOperationEnums.NoResult)
+            {
+                _response.Message = "Something went wrong, please try again";
+            }
+            else
+            {
+                _response.Message = "Record details saved successfully";
+
+                _response.Data = tokenList;
+            }
+            return _response;
+        }
+
+        [Route("[action]")]
+        [HttpPost]
         public async Task<ResponseModel> ExportCanteenTransactionData(CanteenTransaction_Search parameters)
         {
             _response.IsSuccess = false;

@@ -11,6 +11,7 @@ namespace Visitor.Application.Interfaces
     public interface IManageReportRepository
     {
         Task<IEnumerable<CanteenUsageReport_Response>> GetCanteenUsageReport(CanteenUsageReport_Search parameters);
+        Task<IEnumerable<CanteenUsageSummaryReport_Response>> GetCanteenUsageSummaryReport(CanteenUsageReport_Search parameters);
         Task<IEnumerable<CanteenWastageReport_Response>> GetCanteenWastageReport(CanteenWastageReport_Search parameters);
         Task<IEnumerable<SafetyReport_Response>> GetSafetyReport(SafetyReport_Search parameters);
     }
