@@ -3434,5 +3434,99 @@ namespace Visitor.API.Controllers.Admin
         }
 
         #endregion
+
+        #region Canteen Machine
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> SaveCanteenMachine(CanteenMachine_Request parameters)
+        {
+            int result = await _adminMasterRepository.SaveCanteenMachine(parameters);
+
+            if (result == (int)SaveOperationEnums.NoRecordExists)
+            {
+                _response.Message = "No record exists";
+            }
+            else if (result == (int)SaveOperationEnums.ReocrdExists)
+            {
+                _response.Message = "Record already exists";
+            }
+            else if (result == (int)SaveOperationEnums.NoResult)
+            {
+                _response.Message = "Something went wrong, please try again";
+            }
+            else
+            {
+                if (parameters.Id > 0)
+                {
+                    _response.Message = "Record updated successfully";
+                }
+                else
+                {
+                    _response.Message = "Record details saved successfully";
+                }
+            }
+            return _response;
+        }
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> GetCanteenMachineList(CanteenMachine_Search parameters)
+        {
+            IEnumerable<CanteenMachine_Response> lstRoles = await _adminMasterRepository.GetCanteenMachineList(parameters);
+            _response.Data = lstRoles.ToList();
+            _response.Total = parameters.Total;
+            return _response;
+        }
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> GetCanteenMachineById(int Id)
+        {
+            if (Id <= 0)
+            {
+                _response.Message = "Id is required";
+            }
+            else
+            {
+                var vResultObj = await _adminMasterRepository.GetCanteenMachineById(Id);
+                _response.Data = vResultObj;
+            }
+            return _response;
+        }
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> UpdateCanteenMachineUsedStatus(UpdateCanteenMachineUsedStatus_Request parameters)
+        {
+            int result = await _adminMasterRepository.UpdateCanteenMachineUsedStatus(parameters);
+
+            if (result == (int)SaveOperationEnums.NoRecordExists)
+            {
+                _response.Message = "No record exists";
+            }
+            else if (result == (int)SaveOperationEnums.ReocrdExists)
+            {
+                _response.Message = "Record already exists";
+            }
+            else if (result == (int)SaveOperationEnums.NoResult)
+            {
+                _response.Message = "Something went wrong, please try again";
+            }
+            else
+            {
+                if (parameters.Id > 0)
+                {
+                    _response.Message = "Record updated successfully";
+                }
+                else
+                {
+                    _response.Message = "Record details saved successfully";
+                }
+            }
+            return _response;
+        }
+
+        #endregion
     }
 }

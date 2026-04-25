@@ -398,5 +398,12 @@ namespace Visitor.Application.Interfaces
         Task<IEnumerable<Vessel_Response>> GetVesselList(BaseSearchEntity parameters);
         Task<Vessel_Response?> GetVesselById(int Id);
         #endregion
+
+        #region Canteen Machine
+        Task<int> SaveCanteenMachine(CanteenMachine_Request parameters);
+        Task<IEnumerable<CanteenMachine_Response>> GetCanteenMachineList(CanteenMachine_Search parameters);
+        Task<CanteenMachine_Response?> GetCanteenMachineById(int Id);
+        Task<int> UpdateCanteenMachineUsedStatus(UpdateCanteenMachineUsedStatus_Request parameters);
+        #endregion
     }
 }

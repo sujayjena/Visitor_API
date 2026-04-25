@@ -1940,5 +1940,53 @@ namespace Visitor.Persistence.Repositories
         }
 
         #endregion
+
+        #region Canteen Machine
+        public async Task<int> SaveCanteenMachine(CanteenMachine_Request parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@Id", parameters.Id);
+            queryParameters.Add("@CanteenMachineName", parameters.CanteenMachineName.SanitizeValue());
+            queryParameters.Add("@IsActive", parameters.IsActive);
+            queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
+
+            return await SaveByStoredProcedure<int>("SaveCanteenMachine", queryParameters);
+        }
+
+        public async Task<IEnumerable<CanteenMachine_Response>> GetCanteenMachineList(CanteenMachine_Search parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@IsMachineUsed", parameters.IsMachineUsed);
+            queryParameters.Add("@SearchText", parameters.SearchText.SanitizeValue());
+            queryParameters.Add("@IsActive", parameters.IsActive);
+            queryParameters.Add("@PageNo", parameters.PageNo);
+            queryParameters.Add("@PageSize", parameters.PageSize);
+            queryParameters.Add("@Total", parameters.Total, null, System.Data.ParameterDirection.Output);
+            queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
+
+            var result = await ListByStoredProcedure<CanteenMachine_Response>("GetCanteenMachineList", queryParameters);
+            parameters.Total = queryParameters.Get<int>("Total");
+
+            return result;
+        }
+
+        public async Task<CanteenMachine_Response?> GetCanteenMachineById(int Id)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@Id", Id);
+            return (await ListByStoredProcedure<CanteenMachine_Response>("GetCanteenMachineById", queryParameters)).FirstOrDefault();
+        }
+
+        public async Task<int> UpdateCanteenMachineUsedStatus(UpdateCanteenMachineUsedStatus_Request parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@Id", parameters.Id);
+            queryParameters.Add("@IsMachineUsed", parameters.IsMachineUsed);
+            queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
+
+            return await SaveByStoredProcedure<int>("UpdateCanteenMachineUsedStatus", queryParameters);
+        }
+
+        #endregion
     }
 }

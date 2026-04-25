@@ -1211,4 +1211,28 @@ namespace Visitor.Application.Models
     }
 
     #endregion
+
+    #region Canteen Machine
+    public class CanteenMachine_Request : BaseEntity
+    {
+        [DefaultValue("")]
+        public string? CanteenMachineName { get; set; }
+        public bool? IsActive { get; set; }
+    }
+    public class CanteenMachine_Search : BaseSearchEntity
+    {
+        [DefaultValue(null)]
+        public bool? IsMachineUsed { get; set; }
+    }
+    public class CanteenMachine_Response : BaseResponseEntity
+    {
+        public string? CanteenMachineName { get; set; }
+        public bool? IsActive { get; set; }
+    }
+    public class UpdateCanteenMachineUsedStatus_Request : BaseEntity
+    {
+        public bool? IsMachineUsed { get; set; }
+    }
+
+    #endregion
 }
