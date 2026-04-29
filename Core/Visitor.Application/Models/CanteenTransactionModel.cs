@@ -60,4 +60,26 @@ namespace Visitor.Application.Models
     {
         public string? TokenNo { get; set; }
     }
+
+    public class CanteenTransactionOffline_Request : BaseEntity
+    {
+        [DefaultValue("Visitor")]
+        public string? RefType { get; set; }
+        public int? RefId { get; set; }
+        public string? MealType { get; set; }
+        public int? FoodItemId { get; set; }
+        public string? TokenNo { get; set; }
+
+        [DefaultValue(false)]
+        public bool? IsPaid { get; set; }
+        public DateTime? CTDate { get; set; }
+    }
+
+    public class CanteenTransactionOfflineLatest_Response
+    {
+        public string? Breakfast { get; set; }
+        public string? Lunch { get; set; }
+        public string? Snack { get; set; }
+        public string? Dinner { get; set; }
+    }
 }

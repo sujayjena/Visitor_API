@@ -110,6 +110,7 @@ namespace Visitor.Application.Models
         public int BranchId { get; set; }
         public string AssignedGateDetailsId { get; set; }
         public int CurrentCheckedInGateDetailsId { get; set; }
+        public int CanteenMachineId { get; set; }
         
         public bool? IsHOD { get; set; }
         public bool IsWebUser { get; set; }

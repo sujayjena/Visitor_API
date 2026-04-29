@@ -13,5 +13,7 @@ namespace Visitor.Application.Interfaces
         Task<IEnumerable<CanteenTransaction_Response>> GetCanteenTransactionList(CanteenTransaction_Search parameters);
         Task<int> SaveCanteenTransactionToken(CanteenTransactionToken_Request parameters);
         Task<CanteenTransactionToken_Response?> GetCanteenTransactionTokenById(int Id);
+        Task<int> SaveCanteenTransactionOffline(CanteenTransactionOffline_Request parameters);
+        Task<CanteenTransactionOfflineLatest_Response?> GetCanteenTransactionOfflineLatest();
     }
 }

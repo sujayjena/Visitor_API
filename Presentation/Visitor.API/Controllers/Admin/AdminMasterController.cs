@@ -17,11 +17,13 @@ namespace Visitor.API.Controllers.Admin
     {
         private ResponseModel _response;
         private readonly IAdminMasterRepository _adminMasterRepository;
+        private readonly ICanteenTransactionRepository _canteenTransactionRepository;
         private readonly IFileManager _fileManager;
 
-        public AdminMasterController(IAdminMasterRepository adminMasterRepository, IFileManager fileManager)
+        public AdminMasterController(IAdminMasterRepository adminMasterRepository, ICanteenTransactionRepository canteenTransactionRepository, IFileManager fileManager)
         {
             _adminMasterRepository = adminMasterRepository;
+            _canteenTransactionRepository = canteenTransactionRepository;   
             _fileManager = fileManager;
 
             _response = new ResponseModel();
@@ -3515,14 +3517,10 @@ namespace Visitor.API.Controllers.Admin
             }
             else
             {
-                if (parameters.Id > 0)
-                {
-                    _response.Message = "Record updated successfully";
-                }
-                else
-                {
-                    _response.Message = "Record details saved successfully";
-                }
+                _response.Message = "Record details saved successfully";
+
+                var vResultObj = await _canteenTransactionRepository.GetCanteenTransactionOfflineLatest();
+                _response.Data = vResultObj;    
             }
             return _response;
         }

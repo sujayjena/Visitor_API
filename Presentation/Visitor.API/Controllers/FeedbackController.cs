@@ -59,6 +59,35 @@ namespace Visitor.API.Controllers
 
         [Route("[action]")]
         [HttpPost]
+        public async Task<ResponseModel> SaveFeedbackDuplicate(List<Feedback_Request> parameters)
+        {
+            int result = 0;
+            foreach (var item in parameters)
+            {
+                result = await _feedbackRepository.SaveFeedback(item);
+            }
+
+            if (result == (int)SaveOperationEnums.NoRecordExists)
+            {
+                _response.Message = "No record exists";
+            }
+            else if (result == (int)SaveOperationEnums.ReocrdExists)
+            {
+                _response.Message = "Record already exists";
+            }
+            else if (result == (int)SaveOperationEnums.NoResult)
+            {
+                _response.Message = "Something went wrong, please try again";
+            }
+            else
+            {
+                _response.Message = "Record details saved successfully";
+            }
+            return _response;
+        }
+
+        [Route("[action]")]
+        [HttpPost]
         public async Task<ResponseModel> GetFeedbackList(Feedback_Search parameters)
         {
             IEnumerable<Feedback_Response> lstRoles = await _feedbackRepository.GetFeedbackList(parameters);

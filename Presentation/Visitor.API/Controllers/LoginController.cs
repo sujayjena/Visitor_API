@@ -22,6 +22,7 @@ namespace Visitor.API.Controllers
         private readonly IManageSecurityRepository _manageSecurityRepository;
         private readonly IManageVisitorsRepository _manageVisitorsRepository;
         private readonly IAssignGateNoRepository _assignGateNoRepository;
+        private readonly IAdminMasterRepository _adminMasterRepository;
 
         public LoginController(ILoginRepository loginRepository,
             IJwtUtilsRepository jwt,
@@ -30,7 +31,8 @@ namespace Visitor.API.Controllers
             IBranchRepository branchRepository,
             IManageSecurityRepository manageSecurityRepository,
             IManageVisitorsRepository manageVisitorsRepository,
-            IAssignGateNoRepository assignGateNoRepository)
+            IAssignGateNoRepository assignGateNoRepository,
+            IAdminMasterRepository adminMasterRepository)
         {
             _loginRepository = loginRepository;
             _jwt = jwt;
@@ -40,6 +42,7 @@ namespace Visitor.API.Controllers
             _manageSecurityRepository = manageSecurityRepository;
             _manageVisitorsRepository = manageVisitorsRepository;
             _assignGateNoRepository = assignGateNoRepository;
+            _adminMasterRepository = adminMasterRepository;
 
             _response = new ResponseModel();
             _response.IsSuccess = true;
@@ -161,6 +164,7 @@ namespace Visitor.API.Controllers
                             string strBrnachIdList = string.Empty;
                             string strGateDetailsIdList = string.Empty;
                             int intCurrentCheckedInGateDetailsId = 0;
+                            int intCurrentCanteenMachineId = 0;
 
                             var vRoleList = await _rolePermissionRepository.GetRoleMasterEmployeePermissionById(Convert.ToInt64(loginResponse.UserId));
                             //var vUserNotificationList = await _notificationService.GetNotificationListById(Convert.ToInt64(loginResponse.EmployeeId));
@@ -197,6 +201,24 @@ namespace Visitor.API.Controllers
 
                             #endregion
 
+                            #region canteen machine
+
+                            var vCanteenMachine_Search = new CanteenMachine_Search()
+                            {
+                                IsMachineUsed = null,
+                                EmployeeId = Convert.ToInt32(loginResponse.UserId),
+                                SearchText = "",
+                                IsActive = true
+                            };
+
+                            var vCanteenMachineObj = _adminMasterRepository.GetCanteenMachineList(vCanteenMachine_Search).Result.ToList().OrderByDescending(x => x.Id).Where(x => x.IsMachineUsed == true).ToList().FirstOrDefault();
+                            if (vCanteenMachineObj != null)
+                            {
+                                intCurrentCanteenMachineId = vCanteenMachineObj.IsMachineUsed == true ? vCanteenMachineObj.Id : 0;
+                            }
+
+                            #endregion
+
                             //var vSecurityGateDetail = await _manageSecurityRepository.GetSecurityLoginGateDetailsById(SecurityLoginId: Convert.ToInt32(loginResponse.SecurityId), GateDetailsId: 0);
                             //if (vSecurityGateDetail.ToList().Count > 0)
                             //{
@@ -227,6 +249,7 @@ namespace Visitor.API.Controllers
                                 BranchId = loginResponse.BranchId,
                                 AssignedGateDetailsId = strGateDetailsIdList,
                                 CurrentCheckedInGateDetailsId = intCurrentCheckedInGateDetailsId,
+                                CanteenMachineId = intCurrentCanteenMachineId,
 
                                 ProfileImage = vUserDetail != null ? vUserDetail.ProfileImage : String.Empty,
                                 ProfileOriginalFileName = vUserDetail != null ? vUserDetail.ProfileOriginalFileName : String.Empty,

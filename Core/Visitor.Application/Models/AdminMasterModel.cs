@@ -1223,10 +1223,17 @@ namespace Visitor.Application.Models
     {
         [DefaultValue(null)]
         public bool? IsMachineUsed { get; set; }
+        public int? EmployeeId { get; set; }
     }
     public class CanteenMachine_Response : BaseResponseEntity
     {
         public string? CanteenMachineName { get; set; }
+
+        [JsonIgnore]
+        public bool? IsMachineUsed { get; set; }
+
+        [JsonIgnore]
+        public int? EmployeeId { get; set; }
         public bool? IsActive { get; set; }
     }
     public class UpdateCanteenMachineUsedStatus_Request : BaseEntity

@@ -1957,6 +1957,7 @@ namespace Visitor.Persistence.Repositories
         {
             DynamicParameters queryParameters = new DynamicParameters();
             queryParameters.Add("@IsMachineUsed", parameters.IsMachineUsed);
+            queryParameters.Add("@EmployeeId", parameters.EmployeeId);
             queryParameters.Add("@SearchText", parameters.SearchText.SanitizeValue());
             queryParameters.Add("@IsActive", parameters.IsActive);
             queryParameters.Add("@PageNo", parameters.PageNo);

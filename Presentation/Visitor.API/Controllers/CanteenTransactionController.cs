@@ -59,7 +59,6 @@ namespace Visitor.API.Controllers
             return _response;
         }
 
-
         [Route("[action]")]
         [HttpPost]
         public async Task<ResponseModel> GetCanteenTransactionList(CanteenTransaction_Search parameters)
@@ -240,6 +239,35 @@ namespace Visitor.API.Controllers
                 _response.Message = "Exported successfully";
             }
 
+            return _response;
+        }
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> SaveCanteenTransactionOffline(List<CanteenTransactionOffline_Request> parameters)
+        {
+            int result = 0;
+            foreach (var item in parameters)
+            {
+                result = await _canteenTransactionRepository.SaveCanteenTransactionOffline(item);
+            }
+
+            if (result == (int)SaveOperationEnums.NoRecordExists)
+            {
+                _response.Message = "No record exists";
+            }
+            else if (result == (int)SaveOperationEnums.ReocrdExists)
+            {
+                _response.Message = "Record already exists";
+            }
+            else if (result == (int)SaveOperationEnums.NoResult)
+            {
+                _response.Message = "Something went wrong, please try again";
+            }
+            else
+            {
+                _response.Message = "Record details saved successfully";
+            }
             return _response;
         }
     }

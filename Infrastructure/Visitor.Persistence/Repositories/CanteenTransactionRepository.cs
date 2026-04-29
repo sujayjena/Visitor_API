@@ -69,5 +69,28 @@ namespace Visitor.Persistence.Repositories
             queryParameters.Add("@Id", Id);
             return (await ListByStoredProcedure<CanteenTransactionToken_Response>("GetCanteenTransactionTokenById", queryParameters)).FirstOrDefault();
         }
+
+        public async Task<int> SaveCanteenTransactionOffline(CanteenTransactionOffline_Request parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@Id", parameters.Id);
+            queryParameters.Add("@RefType", parameters.RefType);
+            queryParameters.Add("@RefId", parameters.RefId);
+            queryParameters.Add("@MealType", parameters.MealType);
+            queryParameters.Add("@FoodItemId", parameters.FoodItemId);
+            queryParameters.Add("@TokenNo", parameters.TokenNo);
+            queryParameters.Add("@IsPaid", parameters.IsPaid);
+            queryParameters.Add("@CTDate", parameters.CTDate);
+            queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
+
+            return await SaveByStoredProcedure<int>("SaveCanteenTransactionOffline", queryParameters);
+        }
+
+        public async Task<CanteenTransactionOfflineLatest_Response?> GetCanteenTransactionOfflineLatest()
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
+            return (await ListByStoredProcedure<CanteenTransactionOfflineLatest_Response>("GetCanteenTransactionOfflineLatest", queryParameters)).FirstOrDefault();
+        }
     }
 }
