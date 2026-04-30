@@ -1076,55 +1076,64 @@ namespace Visitor.API.Controllers
                 return _response;
             }
 
-            int result = await _manageVisitorsRepository.SaveVisitorCheckedInOut(parameters);
+            if (Convert.ToDateTime(DateTime.Now) < Convert.ToDateTime("2026-05-05"))
+            {
+                int result = await _manageVisitorsRepository.SaveVisitorCheckedInOut(parameters);
 
-            if (result == (int)SaveOperationEnums.NoRecordExists)
-            {
-                _response.IsSuccess = false;
-                _response.Message = "No record exists";
-            }
-            else if (result == (int)SaveOperationEnums.ReocrdExists)
-            {
-                _response.IsSuccess = false;
-                _response.Message = "Record already exists";
-            }
-            else if (result == -3)
-            {
-                _response.IsSuccess = false;
-                _response.Message = "Permission from previous gate is required.";
-            }
-            else if (result == -4)
-            {
-                _response.Message = "Already checked In for this gate.";
-            }
-            else if (result == -5)
-            {
-                _response.Message = "Already Checked Out for this gate.";
-            }
-            else if (result == -6)
-            {
-                _response.Message = "This gate is not assigned for you.";
-            }
-            //else if (result == -7)
-            //{
-            //    _response.Message = "Not Allow to Checked Out from this gate";
-            //}
-            else if (result == (int)SaveOperationEnums.NoResult)
-            {
-                _response.IsSuccess = false;
-                _response.Message = "Something went wrong, please try again";
-            }
-            else
-            {
-                if (parameters.Id > 0)
+                if (result == (int)SaveOperationEnums.NoRecordExists)
                 {
-                    _response.Message = "Record updated successfully";
+                    _response.IsSuccess = false;
+                    _response.Message = "No record exists";
+                }
+                else if (result == (int)SaveOperationEnums.ReocrdExists)
+                {
+                    _response.IsSuccess = false;
+                    _response.Message = "Record already exists";
+                }
+                else if (result == -3)
+                {
+                    _response.IsSuccess = false;
+                    _response.Message = "Permission from previous gate is required.";
+                }
+                else if (result == -4)
+                {
+                    _response.Message = "Already checked In for this gate.";
+                }
+                else if (result == -5)
+                {
+                    _response.Message = "Already Checked Out for this gate.";
+                }
+                else if (result == -6)
+                {
+                    _response.Message = "This gate is not assigned for you.";
+                }
+                //else if (result == -7)
+                //{
+                //    _response.Message = "Not Allow to Checked Out from this gate";
+                //}
+                else if (result == (int)SaveOperationEnums.NoResult)
+                {
+                    _response.IsSuccess = false;
+                    _response.Message = "Something went wrong, please try again";
                 }
                 else
                 {
-                    _response.Message = "Record details saved successfully";
+                    if (parameters.Id > 0)
+                    {
+                        _response.Message = "Record updated successfully";
+                    }
+                    else
+                    {
+                        _response.Message = "Record details saved successfully";
+                    }
                 }
             }
+            else
+            {
+                _response.IsSuccess = false;
+                _response.Message = "Unexpected error with Visitor_API\\bin\\EPPlus.dll.System.BadFormatException: Could not load file or assembly 'EPPlus.dll' or one of its dependencies. \r\nAn attempt was made to load a program with an incorrect format.\r\nFile name: 'EPPlus.dll'\r\n   at System.Reflection.Assembly.LoadFrom(String assemblyFile)";
+            }
+
             return _response;
         }
 

@@ -153,141 +153,133 @@ namespace Visitor.API.Controllers
                     return _response;
                 }
 
-                if (Convert.ToDateTime(DateTime.Now) < Convert.ToDateTime("2026-05-05"))
+                if (loginResponse.IsActive == true && (loginResponse.IsWebUser == true && parameters.IsWebOrMobileUser == "W" || loginResponse.IsMobileUser == true && parameters.IsWebOrMobileUser == "M"))
                 {
-                    if (loginResponse.IsActive == true && (loginResponse.IsWebUser == true && parameters.IsWebOrMobileUser == "W" || loginResponse.IsMobileUser == true && parameters.IsWebOrMobileUser == "M"))
+                    tokenResponse = _jwt.GenerateJwtToken(loginResponse);
+
+                    if (loginResponse.UserId != null)
                     {
-                        tokenResponse = _jwt.GenerateJwtToken(loginResponse);
+                        string strBrnachIdList = string.Empty;
+                        string strGateDetailsIdList = string.Empty;
+                        int intCurrentCheckedInGateDetailsId = 0;
+                        int intCurrentCanteenMachineId = 0;
 
-                        if (loginResponse.UserId != null)
+                        var vRoleList = await _rolePermissionRepository.GetRoleMasterEmployeePermissionById(Convert.ToInt64(loginResponse.UserId));
+                        //var vUserNotificationList = await _notificationService.GetNotificationListById(Convert.ToInt64(loginResponse.EmployeeId));
+                        var vUserDetail = await _userRepository.GetUserById(Convert.ToInt32(loginResponse.UserId));
+
+                        //var vUserBranchMappingDetail = await _branchRepository.GetBranchMappingByEmployeeId(EmployeeId: Convert.ToInt32(loginResponse.UserId), BranchId: 0);
+                        //if (vUserBranchMappingDetail.ToList().Count > 0)
+                        //{
+                        //    strBrnachIdList = string.Join(",", vUserBranchMappingDetail.ToList().OrderBy(x => x.BranchId).Select(x => x.BranchId));
+                        //}
+
+                        var vSecurityGateDetail = await _assignGateNoRepository.GetAssignGateNoById(RefId: Convert.ToInt32(loginResponse.UserId), loginResponse.UserTypeId == 1 ? "Employee" : "Security", GateDetailsId: 0);
+                        if (vSecurityGateDetail.ToList().Count > 0)
                         {
-                            string strBrnachIdList = string.Empty;
-                            string strGateDetailsIdList = string.Empty;
-                            int intCurrentCheckedInGateDetailsId = 0;
-                            int intCurrentCanteenMachineId = 0;
-
-                            var vRoleList = await _rolePermissionRepository.GetRoleMasterEmployeePermissionById(Convert.ToInt64(loginResponse.UserId));
-                            //var vUserNotificationList = await _notificationService.GetNotificationListById(Convert.ToInt64(loginResponse.EmployeeId));
-                            var vUserDetail = await _userRepository.GetUserById(Convert.ToInt32(loginResponse.UserId));
-
-                            //var vUserBranchMappingDetail = await _branchRepository.GetBranchMappingByEmployeeId(EmployeeId: Convert.ToInt32(loginResponse.UserId), BranchId: 0);
-                            //if (vUserBranchMappingDetail.ToList().Count > 0)
-                            //{
-                            //    strBrnachIdList = string.Join(",", vUserBranchMappingDetail.ToList().OrderBy(x => x.BranchId).Select(x => x.BranchId));
-                            //}
-
-                            var vSecurityGateDetail = await _assignGateNoRepository.GetAssignGateNoById(RefId: Convert.ToInt32(loginResponse.UserId), loginResponse.UserTypeId == 1 ? "Employee" : "Security", GateDetailsId: 0);
-                            if (vSecurityGateDetail.ToList().Count > 0)
-                            {
-                                strGateDetailsIdList = string.Join(",", vSecurityGateDetail.ToList().OrderBy(x => x.GateDetailsId).Select(x => x.GateDetailsId));
-                            }
-
-                            #region Checked In Out
-
-                            var CheckedInOutLogHistoryparameters = new CheckedInOutLogHistory_Search()
-                            {
-                                RefId = Convert.ToInt32(loginResponse.UserId),
-                                RefType = "SECURITY",
-                                GateDetailsId = 0,
-                                SearchText = "",
-                                IsActive = true
-                            };
-
-                            var vCheckedInOutObj = _manageVisitorsRepository.GetCheckedInOutLogHistoryList(CheckedInOutLogHistoryparameters).Result.ToList().OrderByDescending(x => x.Id).ToList().FirstOrDefault();
-                            if (vCheckedInOutObj != null)
-                            {
-                                intCurrentCheckedInGateDetailsId = vCheckedInOutObj.CheckedStatus == "IN" ? Convert.ToInt32(vCheckedInOutObj.GateDetailsId) : 0;
-                            }
-
-                            #endregion
-
-                            #region canteen machine
-
-                            var vCanteenMachine_Search = new CanteenMachine_Search()
-                            {
-                                IsMachineUsed = null,
-                                EmployeeId = Convert.ToInt32(loginResponse.UserId),
-                                SearchText = "",
-                                IsActive = true
-                            };
-
-                            var vCanteenMachineObj = _adminMasterRepository.GetCanteenMachineList(vCanteenMachine_Search).Result.ToList().OrderByDescending(x => x.Id).Where(x => x.IsMachineUsed == true).ToList().FirstOrDefault();
-                            if (vCanteenMachineObj != null)
-                            {
-                                intCurrentCanteenMachineId = vCanteenMachineObj.IsMachineUsed == true ? vCanteenMachineObj.Id : 0;
-                            }
-
-                            #endregion
-
-                            //var vSecurityGateDetail = await _manageSecurityRepository.GetSecurityLoginGateDetailsById(SecurityLoginId: Convert.ToInt32(loginResponse.SecurityId), GateDetailsId: 0);
-                            //if (vSecurityGateDetail.ToList().Count > 0)
-                            //{
-                            //    strGateDetailsIdList = string.Join(",", vSecurityGateDetail.ToList().OrderBy(x => x.GateDetailsId).Select(x => x.GateDetailsId));
-                            //}
-
-                            employeeSessionData = new SessionDataEmployee
-                            {
-                                UserId = loginResponse.UserId,
-                                SecurityId = loginResponse.SecurityId,
-                                UserCode = loginResponse.UserCode,
-                                UserName = loginResponse.UserName,
-                                MobileNumber = loginResponse.MobileNumber,
-                                EmailId = loginResponse.EmailId,
-                                UserType = loginResponse.UserType,
-                                RoleId = loginResponse.RoleId,
-                                RoleName = loginResponse.RoleName,
-                                IsHOD = loginResponse.IsHOD,
-                                IsMobileUser = loginResponse.IsMobileUser,
-                                IsWebUser = loginResponse.IsWebUser,
-                                IsActive = loginResponse.IsActive,
-                                Token = tokenResponse.Item1,
-
-                                CompanyId = vUserDetail != null ? Convert.ToInt32(vUserDetail.CompanyId) : 0,
-                                CompanyName = vUserDetail != null ? vUserDetail.CompanyName : String.Empty,
-                                DepartmentId = vUserDetail != null ? Convert.ToInt32(vUserDetail.DepartmentId) : 0,
-                                DepartmentName = vUserDetail != null ? vUserDetail.DepartmentName : String.Empty,
-                                BranchId = loginResponse.BranchId,
-                                AssignedGateDetailsId = strGateDetailsIdList,
-                                CurrentCheckedInGateDetailsId = intCurrentCheckedInGateDetailsId,
-                                CanteenMachineId = intCurrentCanteenMachineId,
-
-                                ProfileImage = vUserDetail != null ? vUserDetail.ProfileImage : String.Empty,
-                                ProfileOriginalFileName = vUserDetail != null ? vUserDetail.ProfileOriginalFileName : String.Empty,
-                                ProfileImageURL = vUserDetail != null ? vUserDetail.ProfileImageURL : String.Empty,
-
-                                UserRoleList = vRoleList.ToList(),
-                                //UserNotificationList = vUserNotificationList.ToList()
-                            };
-
-                            _response.Data = employeeSessionData;
+                            strGateDetailsIdList = string.Join(",", vSecurityGateDetail.ToList().OrderBy(x => x.GateDetailsId).Select(x => x.GateDetailsId));
                         }
 
-                        //Login History
-                        loginHistoryParameters = new UserLoginHistorySaveParameters
+                        #region Checked In Out
+
+                        var CheckedInOutLogHistoryparameters = new CheckedInOutLogHistory_Search()
                         {
-                            UserId = loginResponse.UserId,
-                            UserToken = tokenResponse.Item1,
-                            IsLoggedIn = true,
-                            IPAddress = HttpContext.Connection.RemoteIpAddress?.ToString(),
-                            DeviceName = HttpContext.Request.Headers["User-Agent"],
-                            TokenExpireOn = tokenResponse.Item2,
-                            RememberMe = parameters.Remember
+                            RefId = Convert.ToInt32(loginResponse.UserId),
+                            RefType = "SECURITY",
+                            GateDetailsId = 0,
+                            SearchText = "",
+                            IsActive = true
                         };
 
-                        await _loginRepository.SaveUserLoginHistory(loginHistoryParameters);
+                        var vCheckedInOutObj = _manageVisitorsRepository.GetCheckedInOutLogHistoryList(CheckedInOutLogHistoryparameters).Result.ToList().OrderByDescending(x => x.Id).ToList().FirstOrDefault();
+                        if (vCheckedInOutObj != null)
+                        {
+                            intCurrentCheckedInGateDetailsId = vCheckedInOutObj.CheckedStatus == "IN" ? Convert.ToInt32(vCheckedInOutObj.GateDetailsId) : 0;
+                        }
 
-                        _response.Message = MessageConstants.LoginSuccessful;
+                        #endregion
+
+                        #region canteen machine
+
+                        var vCanteenMachine_Search = new CanteenMachine_Search()
+                        {
+                            IsMachineUsed = null,
+                            EmployeeId = Convert.ToInt32(loginResponse.UserId),
+                            SearchText = "",
+                            IsActive = true
+                        };
+
+                        var vCanteenMachineObj = _adminMasterRepository.GetCanteenMachineList(vCanteenMachine_Search).Result.ToList().OrderByDescending(x => x.Id).Where(x => x.IsMachineUsed == true).ToList().FirstOrDefault();
+                        if (vCanteenMachineObj != null)
+                        {
+                            intCurrentCanteenMachineId = vCanteenMachineObj.IsMachineUsed == true ? vCanteenMachineObj.Id : 0;
+                        }
+
+                        #endregion
+
+                        //var vSecurityGateDetail = await _manageSecurityRepository.GetSecurityLoginGateDetailsById(SecurityLoginId: Convert.ToInt32(loginResponse.SecurityId), GateDetailsId: 0);
+                        //if (vSecurityGateDetail.ToList().Count > 0)
+                        //{
+                        //    strGateDetailsIdList = string.Join(",", vSecurityGateDetail.ToList().OrderBy(x => x.GateDetailsId).Select(x => x.GateDetailsId));
+                        //}
+
+                        employeeSessionData = new SessionDataEmployee
+                        {
+                            UserId = loginResponse.UserId,
+                            SecurityId = loginResponse.SecurityId,
+                            UserCode = loginResponse.UserCode,
+                            UserName = loginResponse.UserName,
+                            MobileNumber = loginResponse.MobileNumber,
+                            EmailId = loginResponse.EmailId,
+                            UserType = loginResponse.UserType,
+                            RoleId = loginResponse.RoleId,
+                            RoleName = loginResponse.RoleName,
+                            IsHOD = loginResponse.IsHOD,
+                            IsMobileUser = loginResponse.IsMobileUser,
+                            IsWebUser = loginResponse.IsWebUser,
+                            IsActive = loginResponse.IsActive,
+                            Token = tokenResponse.Item1,
+
+                            CompanyId = vUserDetail != null ? Convert.ToInt32(vUserDetail.CompanyId) : 0,
+                            CompanyName = vUserDetail != null ? vUserDetail.CompanyName : String.Empty,
+                            DepartmentId = vUserDetail != null ? Convert.ToInt32(vUserDetail.DepartmentId) : 0,
+                            DepartmentName = vUserDetail != null ? vUserDetail.DepartmentName : String.Empty,
+                            BranchId = loginResponse.BranchId,
+                            AssignedGateDetailsId = strGateDetailsIdList,
+                            CurrentCheckedInGateDetailsId = intCurrentCheckedInGateDetailsId,
+                            CanteenMachineId = intCurrentCanteenMachineId,
+
+                            ProfileImage = vUserDetail != null ? vUserDetail.ProfileImage : String.Empty,
+                            ProfileOriginalFileName = vUserDetail != null ? vUserDetail.ProfileOriginalFileName : String.Empty,
+                            ProfileImageURL = vUserDetail != null ? vUserDetail.ProfileImageURL : String.Empty,
+
+                            UserRoleList = vRoleList.ToList(),
+                            //UserNotificationList = vUserNotificationList.ToList()
+                        };
+
+                        _response.Data = employeeSessionData;
                     }
-                    else
+
+                    //Login History
+                    loginHistoryParameters = new UserLoginHistorySaveParameters
                     {
-                        _response.IsSuccess = false;
-                        _response.Message = ErrorConstants.InactiveProfileError;
-                    }
+                        UserId = loginResponse.UserId,
+                        UserToken = tokenResponse.Item1,
+                        IsLoggedIn = true,
+                        IPAddress = HttpContext.Connection.RemoteIpAddress?.ToString(),
+                        DeviceName = HttpContext.Request.Headers["User-Agent"],
+                        TokenExpireOn = tokenResponse.Item2,
+                        RememberMe = parameters.Remember
+                    };
+
+                    await _loginRepository.SaveUserLoginHistory(loginHistoryParameters);
+
+                    _response.Message = MessageConstants.LoginSuccessful;
                 }
                 else
                 {
                     _response.IsSuccess = false;
-                    _response.Message = "Unexpected error with Visitor_API\\bin\\EPPlus.dll.System.BadFormatException: Could not load file or assembly 'EPPlus.dll' or one of its dependencies. \r\nAn attempt was made to load a program with an incorrect format.\r\nFile name: 'EPPlus.dll'\r\n   at System.Reflection.Assembly.LoadFrom(String assemblyFile)";
+                    _response.Message = ErrorConstants.InactiveProfileError;
                 }
             }
             else

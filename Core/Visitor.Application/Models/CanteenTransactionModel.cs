@@ -72,6 +72,7 @@ namespace Visitor.Application.Models
 
         [DefaultValue(false)]
         public bool? IsPaid { get; set; }
+        public int? CanteenMachineId { get; set; }
         public DateTime? CTDate { get; set; }
     }
 

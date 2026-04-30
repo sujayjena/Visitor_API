@@ -14,6 +14,6 @@ namespace Visitor.Application.Interfaces
         Task<int> SaveCanteenTransactionToken(CanteenTransactionToken_Request parameters);
         Task<CanteenTransactionToken_Response?> GetCanteenTransactionTokenById(int Id);
         Task<int> SaveCanteenTransactionOffline(CanteenTransactionOffline_Request parameters);
-        Task<CanteenTransactionOfflineLatest_Response?> GetCanteenTransactionOfflineLatest();
+        Task<CanteenTransactionOfflineLatest_Response?> GetCanteenTransactionOfflineLatest(int CanteenMachineId);
     }
 }

@@ -81,14 +81,16 @@ namespace Visitor.Persistence.Repositories
             queryParameters.Add("@TokenNo", parameters.TokenNo);
             queryParameters.Add("@IsPaid", parameters.IsPaid);
             queryParameters.Add("@CTDate", parameters.CTDate);
+            queryParameters.Add("@CanteenMachineId", parameters.CanteenMachineId);
             queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
 
             return await SaveByStoredProcedure<int>("SaveCanteenTransactionOffline", queryParameters);
         }
 
-        public async Task<CanteenTransactionOfflineLatest_Response?> GetCanteenTransactionOfflineLatest()
+        public async Task<CanteenTransactionOfflineLatest_Response?> GetCanteenTransactionOfflineLatest(int CanteenMachineId)
         {
             DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@CanteenMachineId", CanteenMachineId);
             queryParameters.Add("@UserId", SessionManager.LoggedInUserId);
             return (await ListByStoredProcedure<CanteenTransactionOfflineLatest_Response>("GetCanteenTransactionOfflineLatest", queryParameters)).FirstOrDefault();
         }

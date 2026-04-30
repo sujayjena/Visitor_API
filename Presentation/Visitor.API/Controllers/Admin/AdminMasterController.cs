@@ -3519,7 +3519,7 @@ namespace Visitor.API.Controllers.Admin
             {
                 _response.Message = "Record details saved successfully";
 
-                var vResultObj = await _canteenTransactionRepository.GetCanteenTransactionOfflineLatest();
+                var vResultObj = await _canteenTransactionRepository.GetCanteenTransactionOfflineLatest(parameters.Id);
                 _response.Data = vResultObj;    
             }
             return _response;
